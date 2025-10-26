@@ -1,0 +1,84 @@
+/**
+ * These mixins exist primarily to avoid constant repetition.
+ */
+@mixin row($gap: 1rem, $xAlign: left, $yAlign: center) {
+  display: flex;
+  flex-direction: row;
+  gap: $gap;
+
+  @if $xAlign == left {
+    justify-content: start;
+  }
+
+  @if $xAlign == center {
+    justify-content: center;
+  }
+
+  @if $xAlign == right {
+    justify-content: end;
+  }
+
+  @if $yAlign == top {
+    align-items: start;
+  }
+
+  @if $yAlign == center {
+    align-items: center;
+  }
+
+  @if $yAlign == bottom {
+    align-items: end;
+  }
+}
+
+@mixin column($gap: 1rem, $xAlign: none, $yAlign: top) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+
+  @if $xAlign == left {
+    align-items: start;
+  }
+
+  @if $xAlign == center {
+    align-items: center;
+  }
+
+  @if $xAlign == right {
+    align-items: end;
+  }
+
+  @if $yAlign == top {
+    justify-content: start;
+  }
+
+  @if $yAlign == center {
+    justify-content: center;
+  }
+
+  @if $yAlign == right {
+    justify-content: end;
+  }
+}
+
+@mixin centered($gap: 1rem) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin stretchy {
+  flex: 1 auto;
+}
+
+@mixin stackable {
+  @include column;
+
+  @media (width >= 560px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}

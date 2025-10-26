@@ -1,0 +1,77 @@
+@use "../../style/borders";
+@use "../../style/corners";
+@use "../../style/flex";
+@use "../../style/shadows";
+@use "../../style/sizes";
+@use "../../style/text";
+@use "../../style/variants";
+
+.AppNavigation {
+  @include borders.normal($side: bottom);
+  @include shadows.surface;
+  @include text.ui;
+
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+
+  box-sizing: border-box;
+  width: 100vw;
+  height: var(--app-bar-height);
+  padding: 0 1rem;
+
+  background-color: var(--background-color-default);
+
+  &[data-layout="mobile"] {
+    grid-template-areas: "navigation logo secondary";
+    grid-template-columns: 1fr var(--app-bar-logo-size) 1fr;
+  }
+
+  &[data-layout="desktop"] {
+    grid-template-areas: "logo navigation secondary";
+    grid-template-columns: var(--app-bar-logo-size) 1fr auto;
+  }
+
+  &_Logo {
+    grid-area: logo;
+    width: var(--app-bar-logo-size);
+    height: var(--app-bar-logo-size);
+  }
+
+  &_Navigation {
+    display: flex;
+    grid-area: navigation;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &_SecondaryControls {
+    display: flex;
+    grid-area: secondary;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
+// Small sub-sub-sub-component, but used by both desktop and navigation:
+.Link {
+  @include corners.normal;
+  @include text.ui;
+  @include variants.ghost;
+  @include sizes.normal;
+
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: start;
+
+  box-sizing: border-box;
+  padding: 0.25rem 0.5rem;
+
+  text-decoration: none;
+}
+
+.ChildRoutes {
+  @include flex.column($gap: 0.25rem);
+}

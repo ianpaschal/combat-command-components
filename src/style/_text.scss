@@ -1,0 +1,88 @@
+@use "./variables";
+
+@mixin shared {
+  font-family: "Figtree", sans-serif;
+  color: var(--text-color-default);
+  letter-spacing: 0.25px;
+  font-weight: 400;
+}
+
+@mixin ui($bold: false, $muted: false, $link: false) {
+  @include shared;
+
+  font-size: var(--font-size-normal);
+  line-height: var(--line-height-normal);
+
+  @if $bold == true {
+    font-weight: 500;
+  }
+
+  @if $muted == true {
+    font-weight: 300;
+    color: var(--text-color-muted);
+  }
+
+  @if $link == true {
+    color: var(--text-color-blue);
+  }
+}
+
+@mixin small($bold: false, $muted: false, $link: false) {
+  @include shared;
+
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+
+  @if $bold == true {
+    font-weight: 500;
+  }
+
+  @if $muted == true {
+    color: var(--text-color-muted);
+  }
+
+  @if $link == true {
+    color: var(--text-color-blue);
+  }
+}
+
+@mixin large($bold: false, $muted: false, $link: false) {
+  @include shared;
+
+  font-size: 1.5rem;
+  line-height: 2rem;
+
+  @if $bold == true {
+    font-weight: 500;
+  }
+
+  @if $muted == true {
+    font-weight: 300;
+    color: var(--text-color-muted);
+  }
+
+  @if $link == true {
+    color: var(--text-color-blue);
+  }
+}
+
+// - `text.uiBold` 0.875rem x 1.25rem, 700
+// - `text.uiMuted` 0.875rem x 1.25rem, 700
+// - `text.normal` 0.875rem, muted color
+
+@mixin max-lines($lines: 1) {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  line-clamp: $lines;
+
+  text-overflow: ellipsis;
+}
+
+@mixin single-line {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

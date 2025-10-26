@@ -1,0 +1,96 @@
+@use "../../../../style/borders";
+@use "../../../../style/corners";
+@use "../../../../style/flex";
+@use "../../../../style/shadows";
+@use "../../../../style/sizes";
+@use "../../../../style/text";
+@use "../../../../style/variants";
+
+.MobileNavigation {
+  &_Trigger {
+    @include corners.round;
+    @include sizes.large;
+    @include variants.ghost;
+  }
+
+  &_Backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background-color: var(--background-color-backdrop);
+
+    transition: opacity 0.3s ease;
+
+    &[data-starting-style],
+    &[data-ending-style] {
+      opacity: 0;
+    }
+  }
+
+  &_Drawer {
+    @include shadows.elevated;
+
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(0);
+
+    display: flex;
+    flex-direction: column;
+
+    width: 20rem;
+    max-width: calc(100vw - 2rem);
+
+    background-color: var(--background-color-default);
+
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &[data-starting-style],
+    &[data-ending-style] {
+      transform: translateX(-100%);
+    }
+
+    @media (width <= 480px) {
+      width: calc(100vw - 1rem);
+    }
+  }
+
+  &_Header {
+    @include borders.normal($side: bottom);
+    @include flex.row;
+
+    justify-content: space-between;
+    height: var(--app-bar-height);
+    padding: 0 1rem;
+
+    &_Logo {
+      width: var(--app-bar-logo-size);
+      height: var(--app-bar-logo-size);
+    }
+
+    &_Close {
+      @include corners.round;
+      @include variants.ghost;
+      @include sizes.large;
+    }
+  }
+
+  &_RoutesList {
+    @include flex.column($gap: 0.5rem);
+
+    padding: 1rem;
+  }
+
+  &_PrimaryRoute {
+    @include text.ui($bold: true);
+  }
+
+  &_ChildRoutes {
+    padding-left: 1rem;
+  }
+}

@@ -1,0 +1,85 @@
+@use "/src/style/variables";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Figtree, sans-serif;
+}
+
+html,
+body {
+  position: absolute;
+  inset: 0;
+
+  overflow: hidden;
+  overscroll-behavior: none;
+
+  font-size: 16px;
+  line-height: 1.5rem;
+  color: var(--text-color-default);
+
+  background-color: var(--page-bg);
+}
+
+// Sizes
+h1 {
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+}
+
+h3,
+a,
+p,
+li {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+// Weights & Colors
+h1,
+h2,
+h3 {
+  font-weight: 600;
+}
+
+p,
+li {
+  font-weight: 300;
+  color: var(--text-color-muted);
+}
+
+a {
+  font-weight: 400;
+  color: variables.$text-link;
+}
+
+// Spacing
+li {
+  margin-left: 2rem;
+}
+
+@media (width >= 480px) {
+  h1 {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+    line-height: 1.25rem;
+  }
+
+  h3,
+  a,
+  p,
+  li {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}

@@ -1,0 +1,222 @@
+
+@use "./borders";
+@use "./corners";
+@use "./shadows";
+
+@import  "./variables.css";
+
+// Skeleton variables (defined locally to avoid module import issues)
+$skeleton-bg: rgba(0, 0, 0, 0.025);
+$skeleton-bg-alt: rgba(0, 0, 0, 0.1);
+
+// TODO: Move to utils
+@mixin reset {
+  box-sizing: border-box;
+  background-color: transparent;
+  border: none;
+  text-decoration: none;
+  user-select: none;
+}
+
+@mixin variant-defaults {
+  transition-timing-function: ease-in-out;
+  transition-duration: 250ms;
+  transition-property: color, background-color;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  
+  cursor: pointer;
+  user-select: none;
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+// Primary UI elements
+@mixin primary($hover: true) {
+  @include variant-defaults;
+
+  color: var(--primary-default-text);
+  background-color: var(--primary-default-bg);
+  border: none;
+
+  @if $hover {
+    &:not(:disabled):hover {
+      background-color: var(--primary-default-bg-hover);
+    }
+
+    &:not(:disabled):active {
+      background-color: var(--primary-default-bg-active);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.1;
+  }
+}
+
+@mixin primary-danger($hover: true) {
+  @include variant-defaults;
+
+  color: var(--primary-danger-text);
+  background-color: var(--primary-danger-bg);
+  border: none;
+
+  @if $hover {
+    &:not(:disabled):hover {
+      background-color: var(--primary-danger-bg-hover);
+    }
+
+    &:not(:disabled):active {
+      background-color: var(--primary-danger-bg-active);
+    }
+  }
+}
+
+// Secondary UI elements
+@mixin secondary($hover: true) {
+  @include variant-defaults;
+
+  color: var(--secondary-default-text);
+  background-color: var(--secondary-default-bg);
+  border: none;
+
+  @if $hover {
+    &:not(:disabled):hover {
+      background-color: var(--secondary-default-bg-hover);
+    }
+
+    &:not(:disabled):active {
+      background-color: var(--secondary-default-bg-active);
+    }
+  }
+}
+
+@mixin secondary-danger($hover: true) {
+  @include variant-defaults;
+
+  color: var(--secondary-danger-text);
+  background-color: var(--secondary-danger-bg);
+  border: none;
+
+  @if $hover {
+    &:not(:disabled):hover {
+      background-color: var(--secondary-danger-bg-hover);
+    }
+
+    &:not(:disabled):active {
+      background-color: var(--secondary-danger-bg-active);
+    }
+  }
+}
+
+// Outlined UI elements
+@mixin outlined($hover: true) {
+  @include variant-defaults;
+  @include borders.normal;
+
+  color: var(--outlined-default-text);
+  background-color: var(--outlined-default-bg);
+  border-color: var(--outlined-default-border);
+
+  @if $hover {
+    &:not(:disabled):hover {
+      background-color: var(--outlined-default-bg-hover);
+      border-color: var(--outlined-default-border-hover);
+    }
+
+    &:not(:disabled):active {
+      background-color: var(--outlined-default-bg-active);
+      border-color: var(--outlined-default-border-active);
+    }
+  }
+}
+
+@mixin outlined-danger($hover: true) {
+  @include variant-defaults;
+  @include borders.normal;
+
+  color: var(--outlined-danger-text);
+  background-color: var(--outlined-danger-bg);
+  border-color: var(--outlined-danger-border);
+
+  @if $hover {
+    &:not(:disabled):hover {
+      background-color: var(--outlined-danger-bg-hover);
+      border-color: var(--outlined-danger-border-hover);
+    }
+
+    &:not(:disabled):active {
+      background-color: var(--outlined-danger-bg-active);
+      border-color: var(--outlined-danger-border-active);
+    }
+  }
+}
+
+// Ghost UI elements
+@mixin ghost($hover: true) {
+  @include variant-defaults;
+
+  color: var(--ghost-default-text);
+  background-color: var(--ghost-default-bg);
+  border: none;
+
+  @if $hover {
+    &:not(:disabled):hover {
+      background-color: var(--ghost-default-bg-hover);
+    }
+
+    &:not(:disabled):active {
+      background-color: var(--ghost-default-bg-active);
+    }
+  }
+}
+
+@mixin ghost-danger($hover: true) {
+  @include variant-defaults;
+
+  color: var(--ghost-danger-text);
+  background-color: var(--ghost-danger-bg);
+  border: none;
+
+  @if $hover {
+    &:not(:disabled):hover {
+      background-color: var(--ghost-danger-bg-hover);
+    }
+
+    &:not(:disabled):active {
+      background-color: var(--ghost-danger-bg-active);
+    }
+  }
+}
+
+@mixin skeleton {
+  border: none;
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: $skeleton-bg;
+  }
+
+  100% {
+    background-color: $skeleton-bg-alt;
+  }
+}
+
+@mixin card($elevated: false) {
+  @include borders.normal;
+  @include corners.normal;
+  @include shadows.surface;
+
+  background-color: var(--background-color-default);
+
+  @if $elevated {
+    @include shadows.elevated;
+  }
+}
