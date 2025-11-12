@@ -7,12 +7,25 @@
 @use "../../../../style/flex";
 
 .DesktopNavigation {
+  flex-grow: 1;
   min-width: max-content;
 
-  &_RoutesList {
+  &_Routes {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &_PrimaryRoutes {
     @include flex.row($gap: 0.5rem);
 
+    // Reset because Base-UI makes this a list:
+    margin: 0;
+    padding: 0;
     list-style: none;
+  }
+
+  &_SecondaryRoutes {
+    @include flex.row($gap: 0.5rem);
   }
 
   &_PrimaryRoute {

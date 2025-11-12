@@ -5,17 +5,19 @@ import clsx from 'clsx';
 import { Menu, X } from 'lucide-react';
 
 import { AppLogo } from '../../../AppLogo';
-import { Route } from '../../AppNavigation.types';
+import { Route, SecondaryRoute } from '../../AppNavigation.types';
 
 import sharedStyles from '../../AppNavigation.module.scss';
 import styles from './MobileNavigation.module.scss';
 
 interface MobileNavigationProps {
   routes: Route[];
+  secondaryRoutes?: SecondaryRoute[];
 }
 
 export const MobileNavigation = ({
   routes,
+  secondaryRoutes = [],
 }: MobileNavigationProps): JSX.Element => {
   const [isOpen, setIsOpen] = React.useState(false);
   return (
@@ -35,7 +37,7 @@ export const MobileNavigation = ({
           <nav className={styles.MobileNavigation_RoutesList}>
             {routes.map((route) => (
               <div key={route.path}>
-                <Link key={route.path} to={route.path} className={clsx(sharedStyles.Link, styles.MobileNavigation_PrimaryRoute)}>
+                <Link to={route.path} className={clsx(sharedStyles.Link, styles.MobileNavigation_PrimaryRoute)}>
                   {route.title}
                 </Link>
                 {route.children && route.children.length > 0 && (
@@ -48,6 +50,12 @@ export const MobileNavigation = ({
                   </div>
                 )}
               </div>
+            ))}
+            {secondaryRoutes.map((route) => (
+              <Link key={route.path} to={route.path} className={clsx(sharedStyles.Link, styles.MobileNavigation_PrimaryRoute)}>
+                {route.icon}
+                {route.title}
+              </Link>
             ))}
           </nav>
         </Dialog.Popup>

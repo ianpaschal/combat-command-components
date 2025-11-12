@@ -7,5 +7,7 @@ export const DesktopNavigation_Popup_Arrow_Fill: string;
 export const DesktopNavigation_Popup_Arrow_Stroke: string;
 export const DesktopNavigation_Positioner: string;
 export const DesktopNavigation_PrimaryRoute_Icon: string;
-export const DesktopNavigation_RoutesList: string;
+export const DesktopNavigation_PrimaryRoutes: string;
+export const DesktopNavigation_Routes: string;
+export const DesktopNavigation_SecondaryRoutes: string;
 export const DesktopNavigation_Viewport: string;

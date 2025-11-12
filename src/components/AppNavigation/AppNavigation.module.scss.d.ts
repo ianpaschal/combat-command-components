@@ -1,4 +1,5 @@
 export const AppNavigation: string;
+export const AppNavigation_Content: string;
 export const AppNavigation_Logo: string;
 export const AppNavigation_Navigation: string;
 export const AppNavigation_SecondaryControls: string;

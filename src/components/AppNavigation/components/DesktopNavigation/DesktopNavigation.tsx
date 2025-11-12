@@ -3,56 +3,69 @@ import { NavigationMenu } from '@base-ui-components/react/navigation-menu';
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
 
-import { Route } from '../../AppNavigation.types';
+import { Route, SecondaryRoute } from '../../AppNavigation.types';
 
 import sharedStyles from '../../AppNavigation.module.scss';
 import styles from './DesktopNavigation.module.scss';
 
 interface NavigationProps {
   routes: Route[];
+  secondaryRoutes?: SecondaryRoute[];
 }
 
 export const DesktopNavigation = ({
   routes,
+  secondaryRoutes = [],
 }: NavigationProps): JSX.Element => {
   const navigate = useNavigate();
   return (
     <NavigationMenu.Root className={styles.DesktopNavigation}>
-      <NavigationMenu.List className={styles.DesktopNavigation_RoutesList}>
-        {routes.map((route) => (
-          <NavigationMenu.Item key={route.path}>
-            {route.children && route.children.length > 0 ? (
-              <>
-                <NavigationMenu.Trigger
-                  className={sharedStyles.Link}
-                  onClick={() => navigate(route.path)}
-                >
-                  {route.title}
-                  <NavigationMenu.Icon className={styles.DesktopNavigation_PrimaryRoute_Icon}>
-                    <ChevronDown />
-                  </NavigationMenu.Icon>
-                </NavigationMenu.Trigger>
-                <NavigationMenu.Content className={clsx(sharedStyles.ChildRoutes, styles.DesktopNavigation_ChildRoutes)}>
-                  {route.children.map((childRoute) => (
-                    <NavigationMenu.Link key={childRoute.path} render={() => (
-                      <Link to={childRoute.path} className={sharedStyles.Link}>
-                        {childRoute.title}
-                      </Link>
-                    )} />
-                  ))}
-                </NavigationMenu.Content>
-              </>
-            ) : (
-              <NavigationMenu.Link render={() => (
-                <Link to={route.path} className={sharedStyles.Link}>
-                  {route.title}
-                </Link>
-              )} />
-            )}
-          </NavigationMenu.Item>
-        ))}
-      </NavigationMenu.List>
-
+      <div className={styles.DesktopNavigation_Routes}>
+        <NavigationMenu.List className={styles.DesktopNavigation_PrimaryRoutes}>
+          {routes.map((route) => (
+            <NavigationMenu.Item key={route.path}>
+              {route.children && route.children.length > 0 ? (
+                <>
+                  <NavigationMenu.Trigger
+                    className={sharedStyles.Link}
+                    onClick={() => navigate(route.path)}
+                  >
+                    {route.title}
+                    <NavigationMenu.Icon className={styles.DesktopNavigation_PrimaryRoute_Icon}>
+                      <ChevronDown />
+                    </NavigationMenu.Icon>
+                  </NavigationMenu.Trigger>
+                  <NavigationMenu.Content className={clsx(sharedStyles.ChildRoutes, styles.DesktopNavigation_ChildRoutes)}>
+                    {route.children.map((childRoute) => (
+                      <NavigationMenu.Link key={childRoute.path} render={() => (
+                        <Link to={childRoute.path} className={sharedStyles.Link}>
+                          {childRoute.title}
+                        </Link>
+                      )} />
+                    ))}
+                  </NavigationMenu.Content>
+                </>
+              ) : (
+                <NavigationMenu.Link render={() => (
+                  <Link to={route.path} className={sharedStyles.Link}>
+                    {route.title}
+                  </Link>
+                )} />
+              )}
+            </NavigationMenu.Item>
+          ))}
+        </NavigationMenu.List>
+        {secondaryRoutes.length > 0 && (
+          <div className={styles.DesktopNavigation_SecondaryRoutes}>
+            {secondaryRoutes.map((route) => (
+              <Link key={route.path} to={route.path} className={sharedStyles.Link}>
+                {route.icon}
+                {route.title}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
       <NavigationMenu.Portal>
         <NavigationMenu.Positioner
           className={styles.DesktopNavigation_Positioner}

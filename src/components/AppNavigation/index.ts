@@ -4,4 +4,5 @@ export {
 } from './AppNavigation';
 export type {
   Route,
+  SecondaryRoute,
 } from './AppNavigation.types';

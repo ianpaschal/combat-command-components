@@ -11,25 +11,31 @@
   @include shadows.surface;
   @include text.ui;
 
-  display: grid;
-  gap: 1.5rem;
-  align-items: center;
+  overflow: hidden;
 
   box-sizing: border-box;
   width: 100vw;
   height: var(--app-bar-height);
-  padding: 0 1rem;
+  padding: 0.75rem 1rem calc(0.75rem - var(--border-width));
 
   background-color: var(--background-color-default);
 
-  &[data-layout="mobile"] {
-    grid-template-areas: "navigation logo secondary";
-    grid-template-columns: 1fr var(--app-bar-logo-size) 1fr;
-  }
+  &_Content {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
 
-  &[data-layout="desktop"] {
-    grid-template-areas: "logo navigation secondary";
-    grid-template-columns: var(--app-bar-logo-size) 1fr auto;
+    &[data-layout="mobile"] {
+      grid-template-areas: "navigation logo secondary";
+      grid-template-columns: 1fr var(--app-bar-logo-size) 1fr;
+      grid-template-rows: 2.5rem;
+    }
+
+    &[data-layout="desktop"] {
+      grid-template-areas: "logo navigation secondary";
+      grid-template-columns: var(--app-bar-logo-size) 1fr auto;
+      grid-template-rows: 2.5rem;
+    }
   }
 
   &_Logo {
@@ -60,6 +66,9 @@
   @include text.ui;
   @include variants.ghost;
   @include sizes.normal;
+
+  cursor: pointer;
+  user-select: none;
 
   display: flex;
   flex-direction: row;

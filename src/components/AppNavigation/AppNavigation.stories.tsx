@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { HelpCircle } from 'lucide-react';
 
-import { AppNavigation } from './AppNavigation';
-import { Route } from './AppNavigation.types';
+import { AppNavigation, AppNavigationProps } from './AppNavigation';
 
 const meta: Meta<typeof AppNavigation> = {
   title: 'Components/AppNavigation',
@@ -18,46 +18,56 @@ const meta: Meta<typeof AppNavigation> = {
   },
 };
 
-const sampleRoutes: Route[] = [
-  {
-    title: 'Overview',
-    path: '/overview',
-    children: [
-      { title: 'Quick Start', path: '/overview/quick-start' },
-      { title: 'Accessibility', path: '/overview/accessibility' },
-      { title: 'Releases', path: '/overview/releases' },
-    ],
-  },
-  {
-    title: 'Handbook',
-    path: '/handbook',
-    children: [
-      { title: 'Styling', path: '/handbook/styling' },
-      { title: 'Animation', path: '/handbook/animation' },
-      { title: 'Composition', path: '/handbook/composition' },
-    ],
-  },
-  {
-    title: 'GitHub',
-    path: 'https://github.com/mui/base-ui',
-  },
-];
+const defaultProps: AppNavigationProps = {
+  routes: [
+    {
+      title: 'Overview',
+      path: '/overview',
+      children: [
+        { title: 'Quick Start', path: '/overview/quick-start' },
+        { title: 'Accessibility', path: '/overview/accessibility' },
+        { title: 'Releases', path: '/overview/releases' },
+      ],
+    },
+    {
+      title: 'Handbook',
+      path: '/handbook',
+      children: [
+        { title: 'Styling', path: '/handbook/styling' },
+        { title: 'Animation', path: '/handbook/animation' },
+        { title: 'Composition', path: '/handbook/composition' },
+      ],
+    },
+    {
+      title: 'GitHub',
+      path: 'https://github.com/mui/base-ui',
+    },
+  ],
+  secondaryControls: (
+    <button>Click me</button>
+  ),
+  secondaryRoutes: [
+    {
+      icon: <HelpCircle />,
+      title: 'Help',
+      path: 'https://www.combatcommand.net/help',
+    },
+  ],
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Desktop: Story = {
   args: {
+    ...defaultProps,
     mobile: false,
-    routes: sampleRoutes,
-    secondaryControls: <button>Click me</button>,
   },
 };
 
 export const Mobile: Story = {
   args: {
+    ...defaultProps,
     mobile: true,
-    routes: sampleRoutes,
-    secondaryControls: <button>Click me</button>,
   },
 };
