@@ -1,13 +1,18 @@
 import { ReactElement } from 'react';
 import { createPortal } from 'react-dom';
-import clsx from 'clsx';
 
 import { DesktopNavigation } from './components/DesktopNavigation';
 import { MobileNavigation } from './components/MobileNavigation';
 import { AppLogo } from '../AppLogo';
+import { useTheme } from '../ThemeProvider';
+import {
+  Content,
+  Logo,
+  Navigation,
+  Root,
+  SecondaryControls,
+} from './AppNavigation.styles';
 import { Route, SecondaryRoute } from './AppNavigation.types';
-
-import styles from './AppNavigation.module.scss';
 
 export interface AppNavigationProps {
   className?: string;
@@ -25,22 +30,27 @@ export const AppNavigation = ({
   routes,
   secondaryControls,
   secondaryRoutes,
-}: AppNavigationProps): JSX.Element => createPortal((
-  <div className={clsx(styles.AppNavigation, className)}>
-    <div className={styles.AppNavigation_Content} style={{ maxWidth }} data-layout={mobile ? 'mobile' : 'desktop'}>
-      <AppLogo className={styles.AppNavigation_Logo} />
-      <div className={styles.AppNavigation_Navigation}>
-        {mobile ? (
-          <MobileNavigation routes={routes} secondaryRoutes={secondaryRoutes} />
-        ) : (
-          <DesktopNavigation routes={routes} secondaryRoutes={secondaryRoutes} />
+}: AppNavigationProps): JSX.Element => {
+  const theme = useTheme();
+  return createPortal((
+    <Root className={className} theme={theme}>
+      <Content mobile={mobile} style={{ maxWidth }}>
+        <Logo>
+          <AppLogo />
+        </Logo>
+        <Navigation>
+          {mobile ? (
+            <MobileNavigation routes={routes} secondaryRoutes={secondaryRoutes} />
+          ) : (
+            <DesktopNavigation routes={routes} secondaryRoutes={secondaryRoutes} />
+          )}
+        </Navigation>
+        {secondaryControls && (
+          <SecondaryControls>
+            {secondaryControls}
+          </SecondaryControls>
         )}
-      </div>
-      {secondaryControls && (
-        <div className={styles.AppNavigation_SecondaryControls}>
-          {secondaryControls}
-        </div>
-      )}
-    </div>
-  </div>
-), document.body);
+      </Content>
+    </Root>
+  ), document.body);
+};

@@ -22,7 +22,7 @@ export default defineConfig({
       fileName: 'index',
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react-router-dom'],
+      external: ['react', 'react-dom', 'react-router-dom', 'goober'],
     },
   },
 });

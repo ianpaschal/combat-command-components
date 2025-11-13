@@ -1,11 +1,13 @@
-import React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dialog } from '@base-ui-components/react/dialog';
 import clsx from 'clsx';
 import { Menu, X } from 'lucide-react';
 
 import { AppLogo } from '../../../AppLogo';
+import { useTheme } from '../../../ThemeProvider';
 import { Route, SecondaryRoute } from '../../AppNavigation.types';
+import Styled from './MobileNavigation.styles';
 
 import sharedStyles from '../../AppNavigation.module.scss';
 import styles from './MobileNavigation.module.scss';
@@ -19,14 +21,15 @@ export const MobileNavigation = ({
   routes,
   secondaryRoutes = [],
 }: MobileNavigationProps): JSX.Element => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const theme = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
-      <Dialog.Trigger className={styles.MobileNavigation_Trigger}>
+      <Styled.Trigger>
         <Menu />
-      </Dialog.Trigger>
+      </Styled.Trigger>
       <Dialog.Portal>
-        <Dialog.Backdrop className={styles.MobileNavigation_Backdrop} />
+        <Styled.Backdrop theme={theme} />
         <Dialog.Popup className={styles.MobileNavigation_Drawer}>
           <div className={styles.MobileNavigation_Header}>
             <AppLogo className={styles.MobileNavigation_Header_Logo} />
