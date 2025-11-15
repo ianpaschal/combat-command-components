@@ -11,6 +11,7 @@ import styles from './AppNavigation.module.scss';
 
 export interface AppNavigationProps {
   className?: string;
+  logo?: ReactElement;
   maxWidth?: number | string;
   mobile?: boolean;
   routes: Route[];
@@ -20,6 +21,7 @@ export interface AppNavigationProps {
 
 export const AppNavigation = ({
   className,
+  logo,
   maxWidth = '100vw',
   mobile = false,
   routes,
@@ -28,7 +30,9 @@ export const AppNavigation = ({
 }: AppNavigationProps): JSX.Element => createPortal((
   <div className={clsx(styles.AppNavigation, className)}>
     <div className={styles.AppNavigation_Content} style={{ maxWidth }} data-layout={mobile ? 'mobile' : 'desktop'}>
-      <AppLogo className={styles.AppNavigation_Logo} />
+      <div className={styles.AppNavigation_Logo}>
+        {logo ?? <AppLogo />}
+      </div>
       <div className={styles.AppNavigation_Navigation}>
         {mobile ? (
           <MobileNavigation routes={routes} secondaryRoutes={secondaryRoutes} />
