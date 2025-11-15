@@ -1,4 +1,4 @@
-@use "/src/style/variables";
+@import "./variables.css";
 
 * {
   box-sizing: border-box;
@@ -56,12 +56,6 @@ li {
 
 a {
   font-weight: 400;
-  color: variables.$text-link;
-}
-
-// Spacing
-li {
-  margin-left: 2rem;
 }
 
 @media (width >= 480px) {

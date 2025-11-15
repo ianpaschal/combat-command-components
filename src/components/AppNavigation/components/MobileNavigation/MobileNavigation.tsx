@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dialog } from '@base-ui-components/react/dialog';
 import clsx from 'clsx';
@@ -19,7 +19,7 @@ export const MobileNavigation = ({
   routes,
   secondaryRoutes = [],
 }: MobileNavigationProps): JSX.Element => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger className={styles.MobileNavigation_Trigger}>
@@ -36,26 +36,32 @@ export const MobileNavigation = ({
           </div>
           <nav className={styles.MobileNavigation_RoutesList}>
             {routes.map((route) => (
-              <div key={route.path}>
-                <Link to={route.path} className={clsx(sharedStyles.Link, styles.MobileNavigation_PrimaryRoute)}>
-                  {route.title}
-                </Link>
+              <Fragment key={route.path}>
+                <Dialog.Close nativeButton={false} render={(props) => (
+                  <Link {...props} to={route.path} className={clsx(sharedStyles.Link, styles.MobileNavigation_PrimaryRoute)}>
+                    {route.title}
+                  </Link>
+                )} />
                 {route.children && route.children.length > 0 && (
                   <div className={clsx(sharedStyles.ChildRoutes, styles.MobileNavigation_ChildRoutes)}>
                     {route.children.map((childRoute) => (
-                      <Link key={childRoute.path} to={childRoute.path} className={sharedStyles.Link}>
-                        {childRoute.title}
-                      </Link>
+                      <Dialog.Close key={childRoute.path} nativeButton={false} render={(props) => (
+                        <Link {...props} to={childRoute.path} className={sharedStyles.Link}>
+                          {childRoute.title}
+                        </Link>
+                      )} />
                     ))}
                   </div>
                 )}
-              </div>
+              </Fragment>
             ))}
             {secondaryRoutes.map((route) => (
-              <Link key={route.path} to={route.path} className={clsx(sharedStyles.Link, styles.MobileNavigation_PrimaryRoute)}>
-                {route.icon}
-                {route.title}
-              </Link>
+              <Dialog.Close key={route.path} nativeButton={false} render={(props) => (
+                <Link {...props} to={route.path} className={clsx(sharedStyles.Link, styles.MobileNavigation_PrimaryRoute)}>
+                  {route.icon}
+                  {route.title}
+                </Link>
+              )} />
             ))}
           </nav>
         </Dialog.Popup>

@@ -37,8 +37,8 @@ export const DesktopNavigation = ({
                   </NavigationMenu.Trigger>
                   <NavigationMenu.Content className={clsx(sharedStyles.ChildRoutes, styles.DesktopNavigation_ChildRoutes)}>
                     {route.children.map((childRoute) => (
-                      <NavigationMenu.Link key={childRoute.path} render={() => (
-                        <Link to={childRoute.path} className={sharedStyles.Link}>
+                      <NavigationMenu.Link key={childRoute.path} render={(props) => (
+                        <Link {...props} to={childRoute.path} className={sharedStyles.Link}>
                           {childRoute.title}
                         </Link>
                       )} />

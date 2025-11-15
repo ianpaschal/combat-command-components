@@ -1,3 +1,9 @@
+import './style/index.scss';
+
+export {
+  AppLogo,
+  type AppLogoProps,
+} from './components/AppLogo';
 export {
   AppNavigation,
   type AppNavigationProps,

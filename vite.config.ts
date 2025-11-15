@@ -14,6 +14,11 @@ export default defineConfig({
       insertTypesEntry: true,
     }),
   ],
+  css: {
+    modules: {
+      localsConvention: 'camelCase',
+    },
+  },
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),

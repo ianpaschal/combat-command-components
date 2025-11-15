@@ -100,6 +100,24 @@
   --primary-danger-bg: var(--tomato-9);
   --primary-danger-text: var(--tomato-1);
 
+  /* Primary - Warning */
+  --primary-warning-bg-active: var(--amber-11);
+  --primary-warning-bg-hover: var(--amber-10);
+  --primary-warning-bg: var(--amber-9);
+  --primary-warning-text: var(--amber-12);
+
+  /* Primary - Success */
+  --primary-success-bg-active: var(--grass-11);
+  --primary-success-bg-hover: var(--grass-10);
+  --primary-success-bg: var(--grass-9);
+  --primary-success-text: var(--grass-1);
+
+  /* Primary - Info */
+  --primary-info-bg-active: var(--blue-11);
+  --primary-info-bg-hover: var(--blue-10);
+  --primary-info-bg: var(--blue-9);
+  --primary-info-text: var(--blue-1);
+
   /* Secondary - Default */
   --secondary-default-bg-active: var(--gray-5);
   --secondary-default-bg-hover: var(--gray-4);
@@ -124,7 +142,7 @@
   /* Outlined - Danger */
   --outlined-danger-bg-active: var(--tomato-a3);
   --outlined-danger-bg-hover: var(--tomato-a2);
-  --outlined-danger-bg: transparent;
+  --outlined-danger-bg: var(--background-color-default);
   --outlined-danger-border-active: var(--tomato-8);
   --outlined-danger-border-hover: var(--tomato-7);
   --outlined-danger-border: var(--tomato-6);
@@ -160,6 +178,9 @@
   --secondary-default-bg: var(--gray-5);
   --card-bg: var(--gray-2);
   --page-bg: var(--gray-1);
+  --background-color-default: var(--gray-2);
+  --background-color-page: var(--gray-1);
+  --background-color-backdrop: var(--gray-a9);
 }
 
 @media (width >= 480px) {

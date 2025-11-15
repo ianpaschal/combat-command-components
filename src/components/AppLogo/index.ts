@@ -1,1 +1,4 @@
-export { AppLogo } from './AppLogo';
+export {
+  AppLogo,
+  type AppLogoProps,
+} from './AppLogo';

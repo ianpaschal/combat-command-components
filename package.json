@@ -10,10 +10,12 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "style": "./dist/index.css"
     },
     "./styles/variables.css": "./dist/styles/variables.css",
-    "./styles/reset.css": "./dist/styles/reset.css"
+    "./styles/reset.css": "./dist/styles/reset.css",
+    "./index.css": "./dist/index.css"
   },
   "files": [
     "dist"
