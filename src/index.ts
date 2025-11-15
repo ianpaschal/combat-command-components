@@ -9,3 +9,7 @@ export {
   type AppNavigationProps,
   type Route,
 } from './components/AppNavigation';
+export {
+  Badge,
+  type BadgeProps,
+} from './components/Badge';
