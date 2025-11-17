@@ -3,7 +3,7 @@
 .Badge {
   position: relative;
 
-  &[data-visible]::after {
+  &[data-badge-visible]::after {
     --size: 1.25rem;
     --content-size: 0.75rem;
     --padding-y: calc((var(--size) - var(--content-size)) / 2);
@@ -30,27 +30,27 @@
     text-align: center;
   }
 
-  &[data-intent="default"]::after {
+  &[data-badge-intent="default"]::after {
     color: var(--primary-default-text);
     background: var(--primary-default-bg);
   }
 
-  &[data-intent="danger"]::after {
+  &[data-badge-intent="danger"]::after {
     color: var(--primary-danger-text);
     background: var(--primary-danger-bg);
   }
 
-  &[data-intent="warning"]::after {
+  &[data-badge-intent="warning"]::after {
     color: var(--primary-warning-text);
     background: var(--primary-warning-bg);
   }
 
-  &[data-intent="success"]::after {
+  &[data-badge-intent="success"]::after {
     color: var(--primary-success-text);
     background: var(--primary-success-bg);
   }
 
-  &[data-intent="info"]::after {
+  &[data-badge-intent="info"]::after {
     color: var(--primary-info-text);
     background: var(--primary-info-bg);
   }

@@ -29,8 +29,8 @@ export const Badge = forwardRef<unknown, BadgeProps>(({
     ...children.props.style,
     '--badge-value': `"${value ?? ''}"`,
   } as CSSProperties,
-  'data-intent': intent,
-  ...(value && String(value).length > 0 && { 'data-visible': true }),
+  'data-badge-intent': intent,
+  ...(value && String(value).length > 0 && { 'data-badge-visible': true }),
 }));
 
 Badge.displayName = 'Badge';

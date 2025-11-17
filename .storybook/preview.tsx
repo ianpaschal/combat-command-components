@@ -1,6 +1,8 @@
-import type { Preview } from '@storybook/react'
-import { BrowserRouter } from 'react-router-dom'
-import React from 'react'
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import type { Preview } from '@storybook/react';
+
+import '../src/style/index.scss';
 
 const preview: Preview = {
   parameters: {
@@ -18,6 +20,6 @@ const preview: Preview = {
       </BrowserRouter>
     ),
   ],
-}
+};
 
-export default preview
+export default preview;

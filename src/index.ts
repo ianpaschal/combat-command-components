@@ -13,3 +13,8 @@ export {
   Badge,
   type BadgeProps,
 } from './components/Badge';
+export {
+  type ColumnDef,
+  Table,
+  type TableProps,
+} from './components/Table';
