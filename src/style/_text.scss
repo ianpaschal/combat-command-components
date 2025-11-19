@@ -1,4 +1,4 @@
-@import "./variables.css";
+@use "./variables";
 
 @mixin shared {
   font-family: Figtree, sans-serif;

@@ -72,14 +72,10 @@
   @include text.ui;
   @include variants.ghost;
   @include sizes.normal;
+  @include flex.row($gap: 0.5rem, $xAlign: left);
 
   cursor: pointer;
   user-select: none;
-
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  justify-content: start;
 
   box-sizing: border-box;
   padding: 0.25rem 0.5rem;

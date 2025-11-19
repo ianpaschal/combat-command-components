@@ -12,12 +12,12 @@
 
 .Table {
   // User can override these with a CSS class in order to adjust spacing:
-  --cell-padding: 0.5rem;
-  --cell-padding-x: var(--cell-padding);
-  --cell-padding-y: var(--cell-padding);
-  --table-padding: var(--cell-padding);
-  --table-padding-left: var(--table-padding);
-  --table-padding-right: var(--table-padding);
+  --user-cell-padding: var(--cell-padding, 0.5rem);
+  --user-cell-padding-x: var(--cell-padding-x, var(--user-cell-padding));
+  --user-cell-padding-y: var(--cell-padding-y, var(--user-cell-padding));
+  --user-table-padding: var(--table-padding, var(--user-cell-padding-x));
+  --user-table-padding-left: var(--table-padding-left, var(--user-table-padding));
+  --user-table-padding-right: var(--table-padding-right, var(--user-table-padding));
 
   position: relative;
   overflow: hidden; // Radix handles scroll
@@ -35,7 +35,7 @@
     display: flex;
     align-items: center;
     min-width: 1.5rem;
-    padding: var(--cell-padding-y) var(--cell-padding-x);
+    padding: var(--user-cell-padding-y) var(--user-cell-padding-x);
 
     &[data-header="true"] {
       @include borders.normal($side: bottom);
@@ -51,11 +51,11 @@
     }
 
     &[data-column-first="true"] {
-      padding-left: var(--table-padding-left);
+      padding-left: var(--user-table-padding-left);
     }
 
     &[data-column-last="true"] {
-      padding-right: var(--table-padding-right);
+      padding-right: var(--user-table-padding-right);
     }
 
     &[data-x-align="left"] {

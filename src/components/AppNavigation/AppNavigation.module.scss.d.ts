@@ -1,8 +1,8 @@
-export const AppNavigation: string;
-export const AppNavigation_Content: string;
-export const AppNavigation_Logo: string;
-export const AppNavigation_Navigation: string;
-export const AppNavigation_SecondaryControls: string;
-export const ChildRoutes: string;
-export const dark: string;
-export const Link: string;
+export declare const AppNavigation: string;
+export declare const AppNavigation_Content: string;
+export declare const AppNavigation_Logo: string;
+export declare const AppNavigation_Navigation: string;
+export declare const AppNavigation_SecondaryControls: string;
+export declare const ChildRoutes: string;
+export declare const dark: string;
+export declare const Link: string;

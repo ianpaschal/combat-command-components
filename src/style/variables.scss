@@ -1,0 +1,210 @@
+/* YELLOW */
+@import "@radix-ui/colors/amber-alpha.css";
+@import "@radix-ui/colors/amber-dark-alpha.css";
+@import "@radix-ui/colors/amber-dark.css";
+@import "@radix-ui/colors/amber.css";
+
+/* BLACK */
+@import "@radix-ui/colors/black-alpha.css";
+
+/* BLUE */
+@import "@radix-ui/colors/blue-alpha.css";
+@import "@radix-ui/colors/blue-dark-alpha.css";
+@import "@radix-ui/colors/blue-dark.css";
+@import "@radix-ui/colors/blue.css";
+
+/* GREEN */
+@import "@radix-ui/colors/grass-alpha.css";
+@import "@radix-ui/colors/grass-dark-alpha.css";
+@import "@radix-ui/colors/grass-dark.css";
+@import "@radix-ui/colors/grass.css";
+
+/* DEFAULT */
+@import "@radix-ui/colors/gray-alpha.css";
+@import "@radix-ui/colors/gray-dark-alpha.css";
+@import "@radix-ui/colors/gray-dark.css";
+@import "@radix-ui/colors/gray.css";
+
+/* RED */
+@import "@radix-ui/colors/tomato-alpha.css";
+@import "@radix-ui/colors/tomato-dark-alpha.css";
+@import "@radix-ui/colors/tomato-dark.css";
+@import "@radix-ui/colors/tomato.css";
+
+/* FONTS */
+@import "@fontsource/figtree/300.css";
+@import "@fontsource/figtree/400.css";
+@import "@fontsource/figtree/500.css";
+@import "@fontsource/figtree/600.css";
+@import "@fontsource/figtree/700.css";
+
+:root {
+  /*
+   * COLOR SYSTEM
+   *
+   * The color system is made up of a combination of two different attributes: variant and intent.
+   *
+   * Variants:
+   * - Static
+   * - Primary
+   * - Secondary
+   * - Outlined
+   * - Ghost
+   * NOTE: Static should only be used on non-interactive UI elements. The rest are interactive.
+   *
+   * Intents:
+   * - Default
+   * - Danger
+   * - Warning
+   * - Info
+   * - Success
+   * NOTE: Some intents do double-duty: 'danger' is also 'error'.
+   *
+   * NAMING: --{type}-{intent}-{property}-{state}
+  */
+
+  // Define color mappings for intents
+  $intent-colors: (
+    "default": "gray",
+    "danger": "tomato",
+    "warning": "amber",
+    "info": "blue",
+    "success": "grass"
+  );
+
+  // ---- STATIC ----
+
+  // Default: Special case - uses white for bg
+  --static-default-bg: white;
+  --static-default-border: var(--gray-4);
+  --static-default-text: var(--gray-12);
+
+  // Muted: Special case - uses white for bg
+  --static-muted-bg: white;
+  --static-muted-border: var(--gray-3);
+  --static-muted-text: var(--gray-11);
+
+  // Other static intents
+  @each $intent, $color in $intent-colors {
+    @if $intent != "default" {
+      --static-#{$intent}-bg: var(--#{$color}-1);
+      --static-#{$intent}-border: var(--#{$color}-9);
+      --static-#{$intent}-text: var(--#{$color}-11);
+    }
+  }
+
+  // ---- PRIMARY ----
+  @each $intent, $color in $intent-colors {
+    @if $intent == "default" {
+      --primary-#{$intent}-bg-active: var(--#{$color}-10);
+      --primary-#{$intent}-bg-hover: var(--#{$color}-11);
+      --primary-#{$intent}-bg: var(--#{$color}-12);
+    } @else {
+      --primary-#{$intent}-bg-active: var(--#{$color}-7);
+      --primary-#{$intent}-bg-hover: var(--#{$color}-8);
+      --primary-#{$intent}-bg: var(--#{$color}-9);
+    }
+
+    --primary-#{$intent}-text: var(--#{$color}-1);
+  }
+
+  // ---- SECONDARY ----
+  @each $intent, $color in $intent-colors {
+    --secondary-#{$intent}-bg-active: var(--#{$color}-5);
+    --secondary-#{$intent}-bg-hover: var(--#{$color}-4);
+    --secondary-#{$intent}-bg: var(--#{$color}-3);
+    --secondary-#{$intent}-text: var(--#{$color}-11);
+  }
+
+  // ---- OUTLINED ----
+  @each $intent, $color in $intent-colors {
+    --outlined-#{$intent}-bg-active: var(--#{$color}-3);
+    --outlined-#{$intent}-bg-hover: var(--#{$color}-2);
+    --outlined-#{$intent}-bg: var(--background-color-default);
+    --outlined-#{$intent}-border-active: var(--#{$color}-8);
+    --outlined-#{$intent}-border-hover: var(--#{$color}-7);
+    --outlined-#{$intent}-border: var(--#{$color}-6);
+    --outlined-#{$intent}-text: var(--#{$color}-11);
+  }
+
+  // ---- GHOST ----
+  @each $intent, $color in $intent-colors {
+    --ghost-#{$intent}-bg-active: var(--#{$color}-a3);
+    --ghost-#{$intent}-bg-hover: var(--#{$color}-a2);
+    --ghost-#{$intent}-bg: transparent;
+    --ghost-#{$intent}-text: var(--#{$color}-11);
+  }
+
+  /* RANDOM STUFF */
+  --border-width: 1px;
+
+  // App Bar
+  --app-bar-height: 4rem;
+  --app-bar-logo-size: 2.5rem;
+
+  // Modals (Dialogs & Drawers)
+  --modal-padding: 1rem;
+  --modal-margin: 0.5rem;
+  --modal-backdrop-bg: var(--black-a8);
+  --modal-backdrop-nested-bg: var(--black-a4);
+
+  /* GENERAL COLORS */ // TODO: Get rid of this. USE STATIC VARIANT
+
+  /* Core */ // TODO: Get rid of this.
+  --border-color-default: var(--gray-a4);
+  --border-color-muted: var(--gray-a3);
+
+  /* BACKGROUND COLORS */
+
+  /* Core */ // TODO: Get rid of this.
+  --background-color-default: white;
+  --background-color-page: var(--gray-2);
+
+  // ---- TYPOGRAPHY ----  // TODO: Get rid of this.
+  --text-color-default: var(--gray-12);
+  --text-color-disabled: var(--gray-7);
+  --text-color-muted: var(--gray-11);
+  --text-color-danger: var(--tomato-9);
+  --text-color-warning: var(--amber-11);
+  --text-color-info: var(--blue-9);
+  --text-color-success: var(--grass-9);
+
+  /* FONTS */
+  --font-size-large: 1.125rem;
+  --font-size-normal: 1rem;
+  --font-size-small: 0.875rem;
+  --font-size-tiny: 0.75rem;
+  --line-height-large: 1.375rem;
+  --line-height-normal: 1.25rem;
+  --line-height-small: 1.125rem;
+  --line-height-tiny: 1rem;
+}
+
+.dark {
+  // --outlined-default-border-active: var(--gray-8);
+  // --outlined-default-border-hover: var(--gray-7);
+  // --outlined-default-border: var(--gray-6);
+  // --secondary-default-bg-active: var(--gray-7);
+  // --secondary-default-bg-hover: var(--gray-6);
+  // --secondary-default-bg: var(--gray-5);
+  --card-bg: var(--gray-2);
+  --page-bg: var(--gray-1);
+  --background-color-default: var(--gray-2);
+  --background-color-page: var(--gray-1);
+  --background-color-backdrop: var(--gray-a9);
+}
+
+@media (width >= 480px) {
+  :root {
+    --font-size-large: 1rem;
+    --font-size-normal: 0.875rem;
+    --font-size-small: 0.75rem;
+    --font-size-tiny: 0.625rem;
+    --line-height-large: 1.25rem;
+    --line-height-normal: 1.125rem;
+    --line-height-small: 1rem;
+    --line-height-tiny: 0.875rem;
+    --modal-padding: 1.5rem;
+    --modal-margin: 1rem;
+  }
+}

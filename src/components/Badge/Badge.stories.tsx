@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { Mail } from 'lucide-react';
 
+import { Button } from '../Button';
 import { Badge } from './Badge';
 
 const meta: Meta<typeof Badge> = {
@@ -44,7 +46,7 @@ export const WithNumber: Story = {
   args: {
     value: '5',
     intent: 'danger',
-    children: <button>Notifications</button>,
+    children: <Button icon={<Mail />} variant="secondary" />,
   },
 };
 
@@ -52,6 +54,6 @@ export const WithText: Story = {
   args: {
     value: 'New',
     intent: 'info',
-    children: <button>Notifications</button>,
+    children: <Button text="Notifications" />,
   },
 };

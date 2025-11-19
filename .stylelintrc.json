@@ -8,9 +8,22 @@
     "@stylistic/stylelint-config"
   ],
   "rules": {
-    "selector-class-pattern": null,
-    "no-duplicate-selectors": null,
+    "@stylistic/block-closing-brace-newline-after": ["always", {
+      "ignoreAtRules": ["if", "else"]
+    }],
     "@stylistic/no-eol-whitespace": [true],
-    "declaration-block-no-redundant-longhand-properties": null
+    "at-rule-empty-line-before": ["always", {
+      "except": ["blockless-after-same-name-blockless", "first-nested"],
+      "ignore": ["after-comment"],
+      "ignoreAtRules": ["else"]
+    }],
+    "declaration-block-no-redundant-longhand-properties": null,
+    "no-duplicate-selectors": null,
+    "scss/at-else-closing-brace-newline-after": "always-last-in-chain",
+    "scss/at-else-closing-brace-space-after": "always-intermediate",
+    "scss/at-else-empty-line-before": "never",
+    "scss/at-if-closing-brace-newline-after": "always-last-in-chain",
+    "scss/at-if-closing-brace-space-after": "always-intermediate",
+    "selector-class-pattern": null
   }
 }
