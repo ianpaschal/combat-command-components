@@ -1,15 +1,23 @@
+import { ReactNode } from 'react';
 import { Dialog as BaseDialog } from '@base-ui-components/react/dialog';
 import { X } from 'lucide-react';
 
-import { Button } from '../Button';
+import { Button, ButtonProps } from '../Button';
 import { ScrollArea } from '../ScrollArea';
-import {
-  closeDialog,
-  DialogProps,
-  removeDialog,
-} from './DialogProvider.store';
+import { useDialogs } from './DialogProvider.hooks';
 
 import styles from './Dialog.module.scss';
+
+export type DialogProps = {
+  actions?: ButtonProps[];
+  content: ReactNode;
+  disablePadding?: boolean;
+  id: string;
+  onCancel?: () => void;
+  open: boolean;
+  preventCancel?: boolean;
+  title: string;
+};
 
 export interface DialogPropsWithNested extends DialogProps {
   nested?: DialogProps[];
@@ -26,18 +34,19 @@ export const Dialog = ({
   preventCancel = false,
   title,
 }: DialogPropsWithNested): JSX.Element => {
+  const { close, remove } = useDialogs();
   const handleOpenChange = (id: string, open: boolean): void => {
     if (!open) {
       if (onCancel) {
         onCancel();
       } else {
-        closeDialog(id);
+        close(id);
       }
     }
   };
   const handleOpenChangeComplete = (open: boolean): void => {
     if (!open) {
-      removeDialog(id);
+      remove(id);
     }
   };
   const [child, ...children] = nested ?? [];

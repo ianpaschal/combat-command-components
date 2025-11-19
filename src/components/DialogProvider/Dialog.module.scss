@@ -93,7 +93,7 @@
   }
 
   &_Footer {
-    @include flex.row;
+    @include flex.row($xAlign: right);
 
     grid-area: footer;
     padding: 0 var(--modal-padding);

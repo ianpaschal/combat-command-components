@@ -4,6 +4,6 @@ export * from './components/AppLogo';
 export * from './components/AppNavigation';
 export * from './components/Badge';
 export * from './components/Button';
-export * from './components/Dialog';
+export * from './components/DialogProvider';
 export * from './components/Spinner';
 export * from './components/Table';

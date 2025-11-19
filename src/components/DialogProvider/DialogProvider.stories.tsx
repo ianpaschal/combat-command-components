@@ -2,11 +2,8 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
-import {
-  closeDialog,
-  DialogProvider,
-  openDialog,
-} from './';
+import { DialogProvider } from './DialogProvider';
+import { useDialogs } from './DialogProvider.hooks';
 
 interface StoryArgs {
   title: string;
@@ -15,30 +12,31 @@ interface StoryArgs {
   disablePadding?: boolean;
 }
 
-const BasicDialogWrapper = (args: StoryArgs): JSX.Element => (
-  <>
-    <Button text="Click Me" onClick={() => openDialog(args)} />
-    <DialogProvider />
-  </>
-);
+const BasicDialogWrapper = (args: StoryArgs): JSX.Element => {
+  const { open } = useDialogs();
+  return (
+    <Button text="Click Me" onClick={() => open(args)} />
+  );
+};
 
-const NestedDialogWrapper = (args: StoryArgs): JSX.Element => {
+const NestedDialogStory = (args: StoryArgs): JSX.Element => {
+  const { open, close } = useDialogs();
   const [id, setId] = useState<string>('');
   const handleClick = (): void => {
-    setId(openDialog({
+    setId(open({
       ...args,
       actions: [
         {
           text: 'Delete',
           intent: 'danger',
-          onClick: () => openDialog({
+          onClick: () => open({
             title: 'Are you sure?',
             content: 'This cannot be undone.',
             actions: [
               {
                 text: 'Confirm',
                 intent: 'danger',
-                onClick: () => closeDialog(id),
+                onClick: () => close(id),
               },
             ],
           }),
@@ -47,16 +45,12 @@ const NestedDialogWrapper = (args: StoryArgs): JSX.Element => {
     }));
   };
   return (
-    <>
-      <Button text="Click Me" onClick={handleClick} />
-      <DialogProvider />
-    </>
+    <Button text="Click Me" onClick={handleClick} />
   );
 };
 
 const meta: Meta<StoryArgs> = {
   title: 'Components/Dialog',
-  component: DialogProvider,
   parameters: {
     layout: 'centered',
   },
@@ -96,7 +90,11 @@ export const Default: Story = {
     preventCancel: false,
     disablePadding: false,
   },
-  render: (args) => <BasicDialogWrapper {...args} />,
+  render: (args) => (
+    <DialogProvider>
+      <BasicDialogWrapper {...args} />
+    </DialogProvider>
+  ),
 };
 
 export const PreventCancel: Story = {
@@ -107,7 +105,11 @@ export const PreventCancel: Story = {
     preventCancel: true,
     disablePadding: false,
   },
-  render: (args) => <BasicDialogWrapper {...args} />,
+  render: (args) => (
+    <DialogProvider>
+      <BasicDialogWrapper {...args} />
+    </DialogProvider>
+  ),
 };
 
 export const NestedConfirmation: Story = {
@@ -118,5 +120,9 @@ export const NestedConfirmation: Story = {
     preventCancel: false,
     disablePadding: false,
   },
-  render: (args) => <NestedDialogWrapper {...args} />,
+  render: (args) => (
+    <DialogProvider>
+      <NestedDialogStory {...args} />
+    </DialogProvider>
+  ),
 };
