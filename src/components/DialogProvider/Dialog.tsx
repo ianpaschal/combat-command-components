@@ -72,8 +72,10 @@ export const Dialog = ({
               )} />
             )}
           </div>
-          <ScrollArea className={styles.dialogContent} data-padding={!disablePadding}>
-            {content}
+          <ScrollArea className={styles.dialogScrollArea} indicators={{ top: { border: true }, bottom: { border: true } }}>
+            <div className={styles.dialogContent} data-padding={!disablePadding}>
+              {content}
+            </div>
           </ScrollArea>
           <div className={styles.dialogFooter}>
             {!preventCancel && (

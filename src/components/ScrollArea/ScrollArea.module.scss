@@ -8,7 +8,6 @@ $scrollbar-size: 1rem;
 $scrollbar-padding: 0.25rem;
 $indicator-gradient-start-color: var(--black-a1);
 $indicator-gradient-end-color: rgb(0 0 0 / 0%);
-$indicator-border: var(--border-width) solid var(--passive-muted-border);
 
 .scroll-area {
   &_Root {
@@ -40,7 +39,7 @@ $indicator-border: var(--border-width) solid var(--passive-muted-border);
       background-image: linear-gradient(to bottom, $indicator-gradient-start-color, $indicator-gradient-end-color);
 
       &[data-bordered="true"] {
-        border-top: var(--indicator-border);
+        border-top: var(--default-border);
       }
     }
 
@@ -51,7 +50,7 @@ $indicator-border: var(--border-width) solid var(--passive-muted-border);
       background-image: linear-gradient(to top, $indicator-gradient-start-color, $indicator-gradient-end-color);
 
       &[data-bordered="true"] {
-        border-bottom: var(--indicator-border);
+        border-bottom: var(--default-border);
       }
     }
 
@@ -62,7 +61,7 @@ $indicator-border: var(--border-width) solid var(--passive-muted-border);
       background-image: linear-gradient(to right, $indicator-gradient-start-color, $indicator-gradient-end-color);
 
       &[data-bordered="true"] {
-        border-left: var(--indicator-border);
+        border-left: var(--default-border);
       }
     }
 
@@ -73,7 +72,7 @@ $indicator-border: var(--border-width) solid var(--passive-muted-border);
       background-image: linear-gradient(to left, $indicator-gradient-start-color, $indicator-gradient-end-color);
 
       &[data-bordered="true"] {
-        border-right: var(--indicator-border);
+        border-right: var(--default-border);
       }
     }
   }

@@ -17,7 +17,7 @@ body {
 
   font-size: 16px;
   line-height: 1.5rem;
-  color: var(--text-color-neutral);
+  color: var(--passive-neutral-text);
 
   background-color: var(--page-bg);
 }
@@ -45,13 +45,13 @@ li {
 h1,
 h2,
 h3 {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 p,
 li {
   font-weight: 300;
-  color: var(--text-color-muted);
+  color: var(--passive-muted-text);
 }
 
 a {
