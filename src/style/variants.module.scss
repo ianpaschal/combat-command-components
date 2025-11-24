@@ -1,23 +1,18 @@
-@use "./borders";
-@use "./corners";
-@use "./shadows";
 @use "./variables";
+@use "./text";
 
-// TODO: Move to utils
-@mixin reset {
-  user-select: none;
+$intents: "neutral", "danger", "warning", "info", "success";
+$sides: "top", "right", "bottom", "left";
 
-  box-sizing: border-box;
-  border: none;
+@mixin common {
+  @include text.ui;
 
-  text-decoration: none;
-
-  background-color: transparent;
-}
-
-@mixin variant-defaults {
   cursor: pointer;
   user-select: none;
+
+  border-radius: var(--border-radius-normal);
+
+  text-decoration: none; // For applying variants to links
 
   transition-timing-function: ease-in-out;
   transition-duration: 250ms;
@@ -28,9 +23,8 @@
   }
 }
 
-// Primary
-@mixin primary($intent: "default") {
-  @include variant-defaults;
+@mixin primary($intent: "neutral") {
+  @include common;
 
   border: none;
   color: var(--primary-#{$intent}-text);
@@ -45,9 +39,18 @@
   }
 }
 
-// Secondary
-@mixin secondary($intent: "default") {
-  @include variant-defaults;
+.primary {
+  @include primary;
+
+  @each $intent in $intents {
+    &.#{$intent} {
+      @include primary($intent);
+    }
+  }
+}
+
+@mixin secondary($intent: "neutral") {
+  @include common;
 
   border: none;
   color: var(--secondary-#{$intent}-text);
@@ -62,13 +65,25 @@
   }
 }
 
-// Outlined
-@mixin outlined($intent: "default") {
-  @include variant-defaults;
-  @include borders.normal;
+.secondary {
+  @include secondary;
+
+  @each $intent in $intents {
+    &.#{$intent} {
+      @include secondary($intent);
+    }
+  }
+}
+
+@mixin outlined($intent: "neutral") {
+  @include common;
 
   border-color: var(--outlined-#{$intent}-border);
+  border-style: solid;
+  border-width: var(--border-width);
+
   color: var(--outlined-#{$intent}-text);
+
   background-color: var(--outlined-#{$intent}-bg);
 
   &:not(:disabled):hover {
@@ -82,9 +97,18 @@
   }
 }
 
-// Ghost
-@mixin ghost($intent: "default") {
-  @include variant-defaults;
+.outlined {
+  @include outlined;
+
+  @each $intent in $intents {
+    &.#{$intent} {
+      @include outlined($intent);
+    }
+  }
+}
+
+@mixin ghost($intent: "neutral") {
+  @include common;
 
   border: none;
   color: var(--ghost-#{$intent}-text);
@@ -99,23 +123,40 @@
   }
 }
 
-// Static
-@mixin static($intent: "default") {
-  @include borders.normal;
+.ghost {
+  @include ghost;
 
-  border-color: var(--static-#{$intent}-border);
-  color: var(--static-#{$intent}-text);
-  background-color: var(--static-#{$intent}-bg);
+  @each $intent in $intents {
+    &.#{$intent} {
+      @include ghost($intent);
+    }
+  }
 }
 
-@mixin card($elevated: false) {
-  @include borders.normal;
-  @include corners.normal;
-  @include shadows.surface;
+// TODO: Maybe move elsewhere?
+@mixin passive($intent: "neutral") {
+  @include text.ui;
 
-  background-color: var(--background-color-default);
+  border-color: var(--passive-#{$intent}-border);
+  border-style: solid;
+  border-width: var(--border-width);
+  border-radius: var(--border-radius-normal);
 
-  @if $elevated {
-    @include shadows.elevated;
+  color: var(--passive-#{$intent}-text);
+
+  background-color: var(--passive-#{$intent}-bg);
+}
+
+.passive {
+  @include passive;
+
+  @each $intent in $intents {
+    &.#{$intent} {
+      @include passive($intent);
+    }
+
+    &.muted {
+      @include passive("muted");
+    }
   }
 }

@@ -58,9 +58,9 @@ export const Dialog = ({
       disablePointerDismissal={preventCancel}
     >
       <BaseDialog.Portal>
-        <BaseDialog.Backdrop className={styles.Dialog_Backdrop} />
-        <BaseDialog.Popup className={styles.Dialog_Popup}>
-          <div className={styles.Dialog_Header}>
+        <BaseDialog.Backdrop className={styles.dialogBackdrop} />
+        <BaseDialog.Popup className={styles.dialogPopup}>
+          <div className={styles.dialogHeader}>
             <BaseDialog.Title>
               {title}
             </BaseDialog.Title>
@@ -70,10 +70,10 @@ export const Dialog = ({
               )} />
             )}
           </div>
-          <ScrollArea className={styles.Dialog_Content} data-padding={!disablePadding}>
+          <ScrollArea className={styles.dialogContent} data-padding={!disablePadding}>
             {content}
           </ScrollArea>
-          <div className={styles.Dialog_Footer}>
+          <div className={styles.dialogFooter}>
             {!preventCancel && (
               <BaseDialog.Close render={(props) => (
                 <Button {...props} text="Cancel" variant="secondary" />

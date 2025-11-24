@@ -1,6 +1,6 @@
 export declare const dark: string;
-export declare const Dialog_Backdrop: string;
-export declare const Dialog_Content: string;
-export declare const Dialog_Footer: string;
-export declare const Dialog_Header: string;
-export declare const Dialog_Popup: string;
+export declare const dialogBackdrop: string;
+export declare const dialogContent: string;
+export declare const dialogFooter: string;
+export declare const dialogHeader: string;
+export declare const dialogPopup: string;

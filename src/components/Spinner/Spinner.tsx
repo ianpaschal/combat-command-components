@@ -11,7 +11,7 @@ export const Spinner = ({
   size = 24,
 }: SpinnerProps): JSX.Element => (
   <div
-    className={styles.Spinner}
+    className={styles.spinner}
     style={{
       width: `${size}px`,
       height: `${size}px`,

@@ -7,3 +7,4 @@ export * from './components/Button';
 export * from './components/DialogProvider';
 export * from './components/Spinner';
 export * from './components/Table';
+export * from './utils/getStyleClassNames';

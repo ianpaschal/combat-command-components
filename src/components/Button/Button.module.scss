@@ -1,131 +1,19 @@
-@use "../../style/corners";
 @use "../../style/flex";
-@use "../../style/sizes";
-@use "../../style/text";
-@use "../../style/variants";
-@use "../../style/variables";
 
-$variants: "primary", "secondary", "outlined", "ghost";
-$intents: "default", "danger", "warning", "info", "success";
-
-@mixin apply-variant($variant, $intent) {
-  @if $variant == "primary" {
-    @include variants.primary($intent);
-  } @else if $variant == "secondary" {
-    @include variants.secondary($intent);
-  } @else if $variant == "outlined" {
-    @include variants.outlined($intent);
-  } @else if $variant == "ghost" {
-    @include variants.ghost($intent);
-  }
-}
-
-.Button {
-  @include corners.normal;
+.button {
+  @include flex.row($xAlign: center, $gap: 0.5rem);
 
   position: relative;
-
-  display: flex;
   flex-shrink: 0;
-  gap: 0.5rem;
-  align-items: center;
-  justify-content: center;
-
   box-sizing: border-box;
-
-  font-size: var(--font-size-normal);
-  font-weight: 500;
-  line-height: var(--line-height-normal);
   white-space: nowrap;
-
-  svg {
-    flex-shrink: 0;
-  }
 
   &[data-reverse="true"] {
     flex-direction: row-reverse;
   }
 
-  &[data-round="true"] {
-    @include corners.round;
-  }
-
-  // ---- VARIANTS ----
-  @each $variant in $variants {
-    &[data-variant="#{$variant}"] {
-      @each $intent in $intents {
-        &[data-intent="#{$intent}"] {
-          @include apply-variant($variant, $intent);
-        }
-      }
-    }
-  }
-
-  // ---- SIZES ----
-  &[data-size="tiny"] {
-    @include sizes.tiny;
-
-    padding: 0 0.375rem;
-
-    &[data-collapse-padding="true"] {
-      margin: 0 -0.375rem;
-    }
-
-    svg {
-      width: 0.75rem;
-      height: 0.75rem;
-    }
-  }
-
-  &[data-size="small"] {
-    @include sizes.small;
-
-    padding: 0 0.5rem;
-
-    &[data-collapse-padding="true"] {
-      margin: 0 -0.5rem;
-    }
-
-    svg {
-      width: 1rem;
-      height: 1rem;
-    }
-  }
-
-  &[data-size="normal"] {
-    @include sizes.normal;
-
-    padding: 0 0.75rem;
-
-    &[data-collapse-padding="true"] {
-      margin: 0 -0.75rem;
-    }
-
-    svg {
-      width: 1rem;
-      height: 1rem;
-    }
-  }
-
-  &[data-size="large"] {
-    @include sizes.large;
-
-    padding: 0 0.875rem;
-
-    &[data-collapse-padding="true"] {
-      margin: 0 -0.875rem;
-    }
-
-    svg {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
-  }
-}
-
-// This is a bit hacky, but dramatically improves how the buttons render on Safari:
-@supports (-webkit-appearance: none) {
-  .Button {
+  // This is a bit hacky, but dramatically improves how the buttons render on Safari:
+  &[data-safari="true"] {
     span {
       transform: translateY(1px);
     }

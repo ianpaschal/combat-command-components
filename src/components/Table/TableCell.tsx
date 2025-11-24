@@ -7,6 +7,7 @@ import {
   RowData,
 } from './Table.types';
 
+import variants from '../../style/variants.module.scss';
 import styles from './Table.module.scss';
 
 export interface TableCellProps<T extends RowData> {
@@ -42,19 +43,23 @@ export const TableCell = <T extends RowData>({
 
   return (
     <div
-      className={clsx(styles.Table_Cell, column.className)}
-      data-x-align={column.xAlign ?? 'left'}
-      data-y-align={column.yAlign ?? 'center'}
-      data-row-first={position?.row?.includes('first')}
-      data-row-last={position?.row?.includes('last')}
+      className={clsx([
+        isHeader ? variants.staticNeutral : variants.staticMuted,
+        styles.tableCell,
+        column.className,
+      ])}
       data-column-first={position?.column?.includes('first')}
       data-column-last={position?.column?.includes('last')}
       data-header={isHeader}
+      data-row-first={position?.row?.includes('first')}
+      data-row-last={position?.row?.includes('last')}
+      data-x-align={column.xAlign ?? 'left'}
+      data-y-align={column.yAlign ?? 'center'}
     >
       {renderInner()}
       {isHeader && (
-        <div className={styles.Table_ScrollIndicator} data-visible={showScrollIndicator} />
+        <div className={styles.tableScrollIndicator} data-visible={showScrollIndicator} />
       )}
-    </div>
+    </div >
   );
 };

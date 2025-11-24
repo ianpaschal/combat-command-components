@@ -29,7 +29,7 @@
     "prelint": "tsc --noEmit",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:scss": "stylelint '**/*.scss'",
-    "gen:scss": "typed-scss-modules src --nameFormat none"
+    "gen:scss": "typed-scss-modules src"
   },
   "devDependencies": {
     "@storybook/react-vite": "^10.0.8",

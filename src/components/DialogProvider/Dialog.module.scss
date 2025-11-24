@@ -3,8 +3,8 @@
 @use "../../style/corners";
 @use "../../style/shadows";
 
-.Dialog {
-  &_Backdrop {
+.dialog {
+  &-backdrop {
     position: fixed;
     inset: 0;
 
@@ -27,7 +27,7 @@
     }
   }
 
-  &_Popup {
+  &-popup {
     @include corners.wide;
     @include shadows.elevated;
 
@@ -74,7 +74,7 @@
     }
   }
 
-  &_Header {
+  &-header {
     @include flex.row;
 
     grid-area: header;
@@ -82,7 +82,7 @@
     padding: 0 var(--modal-padding);
   }
 
-  &_Content {
+  &-content {
     grid-area: body;
     padding: 0 var(--modal-padding);
 
@@ -92,7 +92,7 @@
     }
   }
 
-  &_Footer {
+  &-footer {
     @include flex.row($xAlign: right);
 
     grid-area: footer;

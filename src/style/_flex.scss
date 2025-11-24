@@ -72,13 +72,3 @@
 @mixin stretchy {
   flex: 1 auto;
 }
-
-@mixin stackable {
-  @include column;
-
-  @media (width >= 560px) {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-}

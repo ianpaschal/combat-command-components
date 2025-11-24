@@ -1,1 +1,1 @@
-export declare const AppLogo: string;
+export declare const appLogo: string;

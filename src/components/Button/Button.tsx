@@ -10,8 +10,10 @@ import {
   ElementSize,
   ElementVariant,
 } from '../../types';
+import { getStyleClassNames } from '../../utils/getStyleClassNames';
 import { Spinner } from '../Spinner';
 
+import sizes from '../../style/sizes.module.scss';
 import styles from './Button.module.scss';
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title' | 'children'> {
@@ -21,7 +23,7 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   iconPosition?: 'start' | 'end';
   intent?: ElementIntent;
   loading?: boolean;
-  round?: boolean;
+  rounded?: boolean;
   size?: ElementSize;
   text?: string;
   variant?: ElementVariant;
@@ -32,9 +34,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   collapsePadding,
   icon,
   iconPosition,
-  intent = 'default',
+  intent = 'neutral',
   loading = false,
-  round,
+  rounded,
   size = 'normal',
   text,
   variant = 'primary',
@@ -42,20 +44,25 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
 }, ref): JSX.Element => (
   <button
     ref={ref}
-    className={clsx(styles.Button, className)}
-    data-collapse-padding={collapsePadding}
-    data-intent={intent}
+    className={clsx(getStyleClassNames({
+      intent,
+      size,
+      variant,
+      collapsePadding,
+      rounded,
+      square: icon && !text,
+    }), styles.button, className)}
     data-reverse={iconPosition === 'end'}
-    data-round={round}
-    data-size={size}
-    data-variant={variant}
+    data-safari={/^((?!chrome|android).)*safari/i.test(navigator.userAgent)}
     {...props}
   >
     {icon && !loading && (
-      icon
+      <span className={sizes.icon}>{icon}</span>
     )}
     {loading && (
-      <Spinner size={16} />
+      <span className={sizes.icon}>
+        <Spinner size={16} />
+      </span>
     )}
     {text && (
       <span>{text}</span>

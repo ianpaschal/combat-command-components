@@ -34,22 +34,22 @@ export const ScrollArea = forwardRef<ScrollAreaRef, ScrollAreaProps>(({
   };
   return (
     <RadixScrollArea.Root
-      className={clsx(styles.ScrollArea_Root, className)}
+      className={clsx(styles.scrollAreaRoot, className)}
       ref={ref}
       type="scroll"
 
       scrollHideDelay={1000}
       {...props}
     >
-      <RadixScrollArea.Viewport className={styles.ScrollArea_Viewport} ref={viewportRef} onScroll={handleScroll}>
+      <RadixScrollArea.Viewport className={styles.scrollAreaViewport} ref={viewportRef} onScroll={handleScroll}>
         {children}
       </RadixScrollArea.Viewport>
       {indicators}
-      <RadixScrollArea.Scrollbar className={styles.ScrollArea_Scrollbar} orientation="vertical">
-        <RadixScrollArea.Thumb className={styles.ScrollArea_Thumb} />
+      <RadixScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="vertical">
+        <RadixScrollArea.Thumb className={styles.scrollAreaThumb} />
       </RadixScrollArea.Scrollbar>
-      <RadixScrollArea.Scrollbar className={styles.ScrollArea_Scrollbar} orientation="horizontal">
-        <RadixScrollArea.Thumb className={styles.ScrollArea_Thumb} />
+      <RadixScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="horizontal">
+        <RadixScrollArea.Thumb className={styles.scrollAreaThumb} />
       </RadixScrollArea.Scrollbar>
       <RadixScrollArea.Corner />
     </RadixScrollArea.Root>

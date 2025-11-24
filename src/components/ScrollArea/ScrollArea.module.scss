@@ -8,22 +8,22 @@ $scrollbar-size: 1rem;
 $scrollbar-padding: 0.25rem;
 $indicator-gradient-start-color: var(--black-a1);
 $indicator-gradient-end-color: rgb(0 0 0 / 0%);
-$indicator-border: var(--border-width) solid var(--border-color-muted);
+$indicator-border: var(--border-width) solid var(--passive-muted-border);
 
-.ScrollArea {
+.scroll-area {
   &_Root {
     overflow: hidden;
     display: flex;
     width: 100%;
   }
 
-  &_Viewport {
+  &-viewport {
     @include flex.stretchy;
 
     border-radius: inherit;
   }
 
-  &_Indicator {
+  &-indicator {
     pointer-events: none;
     position: absolute;
     opacity: 0;
@@ -78,7 +78,7 @@ $indicator-border: var(--border-width) solid var(--border-color-muted);
     }
   }
 
-  &_Scrollbar {
+  &-scrollbar {
     /* disable browser handling of all panning and zooming gestures on touch devices */
     touch-action: none;
 
@@ -117,7 +117,7 @@ $indicator-border: var(--border-width) solid var(--border-color-muted);
     }
   }
 
-  &_Thumb {
+  &-thumb {
     position: relative;
 
     flex: 1;

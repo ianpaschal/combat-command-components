@@ -1,2 +1,2 @@
 export declare const spin: string;
-export declare const Spinner: string;
+export declare const spinner: string;

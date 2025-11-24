@@ -1,0 +1,12 @@
+export declare const border: string;
+export declare const borderBottom: string;
+export declare const borderLeft: string;
+export declare const borderRight: string;
+export declare const borderTop: string;
+export declare const danger: string;
+export declare const dark: string;
+export declare const info: string;
+export declare const muted: string;
+export declare const neutral: string;
+export declare const success: string;
+export declare const warning: string;

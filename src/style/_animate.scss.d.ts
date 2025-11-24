@@ -1,0 +1,12 @@
+export declare const fadeIn: string;
+export declare const fadeOut: string;
+export declare const popIn: string;
+export declare const popOut: string;
+export declare const slideInBottom: string;
+export declare const slideInLeft: string;
+export declare const slideInRight: string;
+export declare const slideInTop: string;
+export declare const slideOutBottom: string;
+export declare const slideOutLeft: string;
+export declare const slideOutRight: string;
+export declare const slideOutTop: string;

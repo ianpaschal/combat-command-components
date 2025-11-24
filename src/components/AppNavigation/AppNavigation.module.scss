@@ -2,14 +2,10 @@
 @use "../../style/corners";
 @use "../../style/flex";
 @use "../../style/shadows";
-@use "../../style/sizes";
-@use "../../style/text";
-@use "../../style/variants";
 
-.AppNavigation {
-  @include borders.normal($side: bottom);
+.app-navigation {
+  // @include borders.normal($side: bottom);
   @include shadows.surface;
-  @include text.ui;
 
   position: fixed;
   top: 0;
@@ -21,9 +17,9 @@
   width: 100vw;
   height: var(--app-bar-height);
 
-  background-color: var(--background-color-default);
+  background-color: var(--passive-neutral-bg);
 
-  &_Content {
+  &-content {
     display: grid;
     gap: 1.5rem;
     align-items: center;
@@ -44,45 +40,24 @@
     }
   }
 
-  &_Logo {
+  &-logo {
     grid-area: logo;
     width: var(--app-bar-logo-size);
     height: var(--app-bar-logo-size);
   }
 
-  &_Navigation {
+  &-navigation {
     display: flex;
     grid-area: navigation;
     flex-direction: row;
     align-items: center;
   }
 
-  &_SecondaryControls {
+  &-secondary-controls {
     display: flex;
     grid-area: secondary;
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
   }
-}
-
-// Small sub-sub-sub-component, but used by both desktop and navigation:
-.Link {
-  @include corners.normal;
-  @include text.ui;
-  @include variants.ghost;
-  @include sizes.normal;
-  @include flex.row($gap: 0.5rem, $xAlign: left);
-
-  cursor: pointer;
-  user-select: none;
-
-  box-sizing: border-box;
-  padding: 0.25rem 0.5rem;
-
-  text-decoration: none;
-}
-
-.ChildRoutes {
-  @include flex.column($gap: 0.25rem);
 }

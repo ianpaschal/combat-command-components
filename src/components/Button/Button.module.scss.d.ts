@@ -1,2 +1,1 @@
-export declare const Button: string;
-export declare const dark: string;
+export declare const button: string;

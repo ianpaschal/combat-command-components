@@ -1,6 +1,7 @@
-.Spinner {
+.spinner {
   transform-origin: center center;
 
+  box-sizing: border-box;
   border-color: currentcolor;
   border-style: solid;
   border-top-color: transparent;
