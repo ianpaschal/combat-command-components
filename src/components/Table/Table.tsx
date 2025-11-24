@@ -23,12 +23,12 @@ export const Table = <T extends RowData>({
   const style = useGridStyle(columns);
   return (
     <ScrollArea
-      className={clsx(styles.Table, className)}
+      className={clsx(styles.table, className)}
       ref={ref}
       onScroll={updateIndicators}
       indicators={{ top: { visible: false } }}
     >
-      <div className={styles.Table_Content} style={style}>
+      <div className={styles.tableContent} style={style}>
         {columns.map((c, i) => (
           <TableCell
             key={`cell_head_${String(c.key)}`}

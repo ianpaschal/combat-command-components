@@ -4,11 +4,19 @@ import { Dialog } from '@base-ui-components/react/dialog';
 import clsx from 'clsx';
 import { Menu, X } from 'lucide-react';
 
+import { getStyleClassNames } from '../../../../utils/getStyleClassNames';
 import { AppLogo } from '../../../AppLogo';
+import { Button } from '../../../Button';
 import { Route, SecondaryRoute } from '../../AppNavigation.types';
 
-import sharedStyles from '../../AppNavigation.module.scss';
 import styles from './MobileNavigation.module.scss';
+
+const linkClassName = clsx(getStyleClassNames({
+  variant: 'ghost',
+  size: 'normal',
+  corners: 'normal',
+  collapsePadding: true,
+}), styles.mobileNavigationPrimaryRoute);
 
 interface MobileNavigationProps {
   routes: Route[];
@@ -22,31 +30,31 @@ export const MobileNavigation = ({
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
-      <Dialog.Trigger className={styles.MobileNavigation_Trigger}>
-        <Menu />
-      </Dialog.Trigger>
+      <Dialog.Trigger render={(props) => (
+        <Button {...props} icon={<Menu />} size="large" variant="ghost" rounded />
+      )} />
       <Dialog.Portal>
-        <Dialog.Backdrop className={styles.MobileNavigation_Backdrop} />
-        <Dialog.Popup className={styles.MobileNavigation_Drawer}>
-          <div className={styles.MobileNavigation_Header}>
-            <AppLogo className={styles.MobileNavigation_Header_Logo} />
-            <Dialog.Close className={styles.MobileNavigation_Header_Close}>
-              <X />
-            </Dialog.Close>
+        <Dialog.Backdrop className={styles.mobileNavigationBackdrop} />
+        <Dialog.Popup className={styles.mobileNavigationDrawer}>
+          <div className={clsx(getStyleClassNames({ border: 'bottom' }), styles.mobileNavigationHeader)}>
+            <AppLogo className={styles.mobileNavigationHeaderLogo} />
+            <Dialog.Close render={(props) => (
+              <Button {...props} icon={<X />} size="large" variant="ghost" rounded />
+            )} />
           </div>
-          <nav className={styles.MobileNavigation_RoutesList}>
+          <nav className={styles.mobileNavigationRoutesList}>
             {routes.map((route) => (
               <Fragment key={route.path}>
                 <Dialog.Close nativeButton={false} render={(props) => (
-                  <Link {...props} to={route.path} className={clsx(sharedStyles.Link, styles.MobileNavigation_PrimaryRoute)}>
+                  <Link {...props} to={route.path} className={linkClassName}>
                     {route.title}
                   </Link>
                 )} />
                 {route.children && route.children.length > 0 && (
-                  <div className={clsx(sharedStyles.ChildRoutes, styles.MobileNavigation_ChildRoutes)}>
+                  <div className={clsx(styles.mobileNavigationChildRoutes)}>
                     {route.children.map((childRoute) => (
                       <Dialog.Close key={childRoute.path} nativeButton={false} render={(props) => (
-                        <Link {...props} to={childRoute.path} className={sharedStyles.Link}>
+                        <Link {...props} to={childRoute.path} className={linkClassName}>
                           {childRoute.title}
                         </Link>
                       )} />
@@ -57,7 +65,7 @@ export const MobileNavigation = ({
             ))}
             {secondaryRoutes.map((route) => (
               <Dialog.Close key={route.path} nativeButton={false} render={(props) => (
-                <Link {...props} to={route.path} className={clsx(sharedStyles.Link, styles.MobileNavigation_PrimaryRoute)}>
+                <Link {...props} to={route.path} className={linkClassName}>
                   {route.icon}
                   {route.title}
                 </Link>

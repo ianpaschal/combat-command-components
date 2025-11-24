@@ -1,5 +1,5 @@
-export const dark: string;
-export const Table: string;
-export const Table_Cell: string;
-export const Table_Content: string;
-export const Table_ScrollIndicator: string;
+export declare const dark: string;
+export declare const table: string;
+export declare const tableCell: string;
+export declare const tableContent: string;
+export declare const tableScrollIndicator: string;

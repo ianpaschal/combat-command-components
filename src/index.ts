@@ -1,20 +1,10 @@
 import './style/index.scss';
 
-export {
-  AppLogo,
-  type AppLogoProps,
-} from './components/AppLogo';
-export {
-  AppNavigation,
-  type AppNavigationProps,
-  type Route,
-} from './components/AppNavigation';
-export {
-  Badge,
-  type BadgeProps,
-} from './components/Badge';
-export {
-  type ColumnDef,
-  Table,
-  type TableProps,
-} from './components/Table';
+export * from './components/AppLogo';
+export * from './components/AppNavigation';
+export * from './components/Badge';
+export * from './components/Button';
+export * from './components/DialogProvider';
+export * from './components/Spinner';
+export * from './components/Table';
+export * from './utils/getStyleClassNames';

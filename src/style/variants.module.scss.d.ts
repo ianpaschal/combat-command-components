@@ -1,0 +1,12 @@
+export declare const danger: string;
+export declare const dark: string;
+export declare const ghost: string;
+export declare const info: string;
+export declare const muted: string;
+export declare const neutral: string;
+export declare const outlined: string;
+export declare const passive: string;
+export declare const primary: string;
+export declare const secondary: string;
+export declare const success: string;
+export declare const warning: string;

@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import type { Preview } from '@storybook/react';
 
 import '../src/style/index.scss';
+import './preview.css';
 
 const preview: Preview = {
   parameters: {

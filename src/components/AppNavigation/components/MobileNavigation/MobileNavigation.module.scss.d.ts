@@ -1,10 +1,8 @@
-export const dark: string;
-export const MobileNavigation_Backdrop: string;
-export const MobileNavigation_ChildRoutes: string;
-export const MobileNavigation_Drawer: string;
-export const MobileNavigation_Header: string;
-export const MobileNavigation_Header_Close: string;
-export const MobileNavigation_Header_Logo: string;
-export const MobileNavigation_PrimaryRoute: string;
-export const MobileNavigation_RoutesList: string;
-export const MobileNavigation_Trigger: string;
+export declare const dark: string;
+export declare const mobileNavigationBackdrop: string;
+export declare const mobileNavigationChildRoutes: string;
+export declare const mobileNavigationDrawer: string;
+export declare const mobileNavigationHeader: string;
+export declare const mobileNavigationHeaderLogo: string;
+export declare const mobileNavigationPrimaryRoute: string;
+export declare const mobileNavigationRoutesList: string;

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, User } from 'lucide-react';
 
+import { Button } from '../Button';
 import { AppNavigation, AppNavigationProps } from './AppNavigation';
 
 const meta: Meta<typeof AppNavigation> = {
@@ -44,7 +45,7 @@ const defaultProps: AppNavigationProps = {
     },
   ],
   secondaryControls: (
-    <button>Click me</button>
+    <Button icon={<User />} variant="secondary" rounded />
   ),
   secondaryRoutes: [
     {

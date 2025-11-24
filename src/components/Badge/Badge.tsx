@@ -24,7 +24,7 @@ export const Badge = forwardRef<unknown, BadgeProps>(({
 }, ref) => cloneElement(children, {
   ...props,
   ref,
-  className: clsx(children.props.className, className, styles.Badge),
+  className: clsx(children.props.className, className, styles.badge),
   style: {
     ...children.props.style,
     '--badge-value': `"${value ?? ''}"`,

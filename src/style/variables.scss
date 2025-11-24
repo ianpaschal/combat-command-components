@@ -1,0 +1,181 @@
+/* YELLOW */
+@import "@radix-ui/colors/amber-alpha.css";
+@import "@radix-ui/colors/amber-dark-alpha.css";
+@import "@radix-ui/colors/amber-dark.css";
+@import "@radix-ui/colors/amber.css";
+
+/* BLACK */
+@import "@radix-ui/colors/black-alpha.css";
+
+/* BLUE */
+@import "@radix-ui/colors/blue-alpha.css";
+@import "@radix-ui/colors/blue-dark-alpha.css";
+@import "@radix-ui/colors/blue-dark.css";
+@import "@radix-ui/colors/blue.css";
+
+/* GREEN */
+@import "@radix-ui/colors/grass-alpha.css";
+@import "@radix-ui/colors/grass-dark-alpha.css";
+@import "@radix-ui/colors/grass-dark.css";
+@import "@radix-ui/colors/grass.css";
+
+/* neutral */
+@import "@radix-ui/colors/gray-alpha.css";
+@import "@radix-ui/colors/gray-dark-alpha.css";
+@import "@radix-ui/colors/gray-dark.css";
+@import "@radix-ui/colors/gray.css";
+
+/* RED */
+@import "@radix-ui/colors/tomato-alpha.css";
+@import "@radix-ui/colors/tomato-dark-alpha.css";
+@import "@radix-ui/colors/tomato-dark.css";
+@import "@radix-ui/colors/tomato.css";
+
+/* FONTS */
+@import "@fontsource/figtree/300.css";
+@import "@fontsource/figtree/400.css";
+@import "@fontsource/figtree/500.css";
+@import "@fontsource/figtree/600.css";
+@import "@fontsource/figtree/700.css";
+
+:root {
+  // Define color mappings for intents
+  $intent-colors: (
+    "neutral": "gray",
+    "danger": "tomato",
+    "warning": "amber",
+    "info": "blue",
+    "success": "grass"
+  );
+
+  // True Defaults
+  --default-bg: white;
+  --page-bg: var(--gray-2);
+  --border-width: 1px;
+  --default-border: var(--border-width) solid var(--passive-neutral-border);
+
+  // App Bar
+  --app-bar-height: 4rem;
+  --app-bar-logo-size: 2.5rem;
+
+  // Modals (Dialogs & Drawers)
+  --modal-padding: 1rem;
+  --modal-margin: 0.5rem;
+  --modal-backdrop-bg: var(--black-a8);
+  --modal-backdrop-nested-bg: var(--black-a4);
+
+  // Corners
+  --border-radius-normal: 0.375rem;
+  --border-radius-tight: 0.25rem;
+  --border-radius-wide: 0.5rem;
+  --border-radius-round: 100%;
+
+  // Typography
+  --font-size-large: 1.125rem;
+  --font-size-normal: 1rem;
+  --font-size-small: 0.875rem;
+  --line-height-large: 1.375rem;
+  --line-height-normal: 1.25rem;
+  --line-height-small: 1.125rem;
+
+  /*
+   * COLOR SYSTEM
+   *
+   * The color system is made up of a combination of two different attributes: variant and intent.
+   *
+   * Variants:
+   * - Static
+   * - Primary
+   * - Secondary
+   * - Outlined
+   * - Ghost
+   * NOTE: Static should only be used on non-interactive UI elements. The rest are interactive.
+   *
+   * Intents:
+   * - neutral
+   * - Danger
+   * - Warning
+   * - Info
+   * - Success
+   * NOTE: Some intents do double-duty: 'danger' is also 'error'.
+   *
+   * NAMING: --{type}-{intent}-{property}-{state}
+  */
+
+  // ---- STATIC ----
+  @each $intent, $color in $intent-colors {
+    @if $intent == "neutral" {
+      --passive-neutral-bg: var(--default-bg);
+      --passive-neutral-border: var(--gray-4);
+      --passive-neutral-text: var(--gray-12);
+    } @else {
+      --passive-#{$intent}-bg: var(--#{$color}-1);
+      --passive-#{$intent}-border: var(--#{$color}-9);
+      --passive-#{$intent}-text: var(--#{$color}-11);
+    }
+  }
+
+  --passive-muted-bg: var(--default-bg);
+  --passive-muted-border: var(--gray-3);
+  --passive-muted-text: var(--gray-11);
+
+  // ---- PRIMARY ----
+  @each $intent, $color in $intent-colors {
+    @if $intent == "neutral" {
+      --primary-#{$intent}-bg-active: var(--#{$color}-10);
+      --primary-#{$intent}-bg-hover: var(--#{$color}-11);
+      --primary-#{$intent}-bg: var(--#{$color}-12);
+    } @else {
+      --primary-#{$intent}-bg-active: var(--#{$color}-7);
+      --primary-#{$intent}-bg-hover: var(--#{$color}-8);
+      --primary-#{$intent}-bg: var(--#{$color}-9);
+    }
+
+    --primary-#{$intent}-text: var(--#{$color}-1);
+  }
+
+  // ---- SECONDARY ----
+  @each $intent, $color in $intent-colors {
+    --secondary-#{$intent}-bg-active: var(--#{$color}-5);
+    --secondary-#{$intent}-bg-hover: var(--#{$color}-4);
+    --secondary-#{$intent}-bg: var(--#{$color}-3);
+    --secondary-#{$intent}-text: var(--#{$color}-11);
+  }
+
+  // ---- OUTLINED ----
+  @each $intent, $color in $intent-colors {
+    --outlined-#{$intent}-bg-active: var(--#{$color}-3);
+    --outlined-#{$intent}-bg-hover: var(--#{$color}-2);
+    --outlined-#{$intent}-bg: var(--default-bg);
+    --outlined-#{$intent}-border-active: var(--#{$color}-8);
+    --outlined-#{$intent}-border-hover: var(--#{$color}-7);
+    --outlined-#{$intent}-border: var(--#{$color}-6);
+    --outlined-#{$intent}-text: var(--#{$color}-11);
+  }
+
+  // ---- GHOST ----
+  @each $intent, $color in $intent-colors {
+    --ghost-#{$intent}-bg-active: var(--#{$color}-a3);
+    --ghost-#{$intent}-bg-hover: var(--#{$color}-a2);
+    --ghost-#{$intent}-bg: transparent;
+    --ghost-#{$intent}-text: var(--#{$color}-11);
+  }
+}
+
+.dark {
+  --default-bg: var(--gray-2);
+  --page-bg: var(--gray-1);
+}
+
+@media (width >= 480px) {
+  :root {
+    --font-size-large: 1rem;
+    --font-size-normal: 0.875rem;
+    --font-size-small: 0.75rem;
+    --line-height-large: 1.25rem;
+    --line-height-normal: 1.125rem;
+    --line-height-small: 1rem;
+    --modal-padding: 1.5rem;
+    --modal-margin: 1rem;
+  }
+}

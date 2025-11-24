@@ -4,6 +4,7 @@ import clsx from 'clsx';
 
 import { DesktopNavigation } from './components/DesktopNavigation';
 import { MobileNavigation } from './components/MobileNavigation';
+import { getStyleClassNames } from '../../utils/getStyleClassNames';
 import { AppLogo } from '../AppLogo';
 import { Route, SecondaryRoute } from './AppNavigation.types';
 
@@ -28,12 +29,12 @@ export const AppNavigation = ({
   secondaryControls,
   secondaryRoutes,
 }: AppNavigationProps): JSX.Element => createPortal((
-  <div className={clsx(styles.AppNavigation, className)}>
-    <div className={styles.AppNavigation_Content} style={{ maxWidth }} data-layout={mobile ? 'mobile' : 'desktop'}>
-      <div className={styles.AppNavigation_Logo}>
+  <div className={clsx(getStyleClassNames({ border: 'bottom' }), styles.appNavigation, className)}>
+    <div className={styles.appNavigationContent} style={{ maxWidth }} data-layout={mobile ? 'mobile' : 'desktop'}>
+      <div className={styles.appNavigationLogo}>
         {logo ?? <AppLogo />}
       </div>
-      <div className={styles.AppNavigation_Navigation}>
+      <div className={styles.appNavigationNavigation}>
         {mobile ? (
           <MobileNavigation routes={routes} secondaryRoutes={secondaryRoutes} />
         ) : (
@@ -41,7 +42,7 @@ export const AppNavigation = ({
         )}
       </div>
       {secondaryControls && (
-        <div className={styles.AppNavigation_SecondaryControls}>
+        <div className={styles.appNavigationSecondaryControls}>
           {secondaryControls}
         </div>
       )}

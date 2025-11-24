@@ -1,0 +1,61 @@
+@mixin common($size: 2.5rem, $padding: 0.75rem, $collapsePadding: false) {
+  // Ensure hit-box is at least 40px
+  @if $size < 2.5rem {
+    &::before {
+      --offset: calc((40px - $size) / -2); // Negative
+
+      content: "";
+
+      position: absolute;
+      top: var(--offset);
+      right: var(--offset);
+      bottom: var(--offset);
+      left: var(--offset);
+    }
+  }
+
+  box-sizing: border-box;
+  min-width: $size;
+  height: $size;
+  max-height: $size;
+  padding: 0 $padding;
+
+  &.collapse-padding {
+    margin: 0 calc($padding * -1);
+  }
+
+  &.square {
+    align-items: center;
+    justify-content: center;
+    width: $size;
+    padding: 0;
+  }
+
+  &.rounded {
+    border-radius: calc($size / 2);
+  }
+
+  .icon {
+    display: block;
+    flex-shrink: 0;
+    width: calc($size * 0.4);
+    height: calc($size * 0.4);
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.size-small {
+  @include common($size: 2rem, $padding: 0.5rem);
+}
+
+.size-normal {
+  @include common($size: 2.5rem, $padding: 0.75rem);
+}
+
+.size-large {
+  @include common($size: 3rem, $padding: 1rem);
+}

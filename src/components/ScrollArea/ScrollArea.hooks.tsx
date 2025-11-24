@@ -125,7 +125,7 @@ export const useScrollIndicators = (config: IndicatorConfig = {}): UseScrollIndi
     updateIndicators: updateIndicatorVisibility,
     indicators: Object.keys(defaultState).map((key): ReactElement => (
       <div
-        className={styles.ScrollArea_Indicator}
+        className={styles.scrollAreaIndicator}
         key={key}
         data-side={key}
         data-visible={config[key as IndicatorSide]?.visible ?? visible[key as IndicatorSide]}

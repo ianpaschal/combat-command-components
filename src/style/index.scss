@@ -1,4 +1,4 @@
-@import "./variables.css";
+@use "./variables";
 
 * {
   box-sizing: border-box;
@@ -17,7 +17,7 @@ body {
 
   font-size: 16px;
   line-height: 1.5rem;
-  color: var(--text-color-default);
+  color: var(--text-color-neutral);
 
   background-color: var(--page-bg);
 }

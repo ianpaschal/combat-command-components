@@ -1,26 +1,16 @@
-@use "../../../../style/borders";
-@use "../../../../style/corners";
 @use "../../../../style/flex";
 @use "../../../../style/shadows";
-@use "../../../../style/sizes";
 @use "../../../../style/text";
-@use "../../../../style/variants";
 
-.MobileNavigation {
-  &_Trigger {
-    @include corners.round;
-    @include sizes.large;
-    @include variants.ghost;
-  }
-
-  &_Backdrop {
+.mobile-navigation {
+  &-backdrop {
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
 
-    background-color: var(--background-color-backdrop);
+    background-color: var(--modal-backdrop-bg);
 
     transition: opacity 0.3s ease;
 
@@ -30,7 +20,7 @@
     }
   }
 
-  &_Drawer {
+  &-drawer {
     @include shadows.elevated;
 
     position: fixed;
@@ -45,7 +35,7 @@
     width: 20rem;
     max-width: calc(100vw - 2rem);
 
-    background-color: var(--background-color-default);
+    background-color: var(--passive-neutral-bg);
 
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -59,37 +49,32 @@
     }
   }
 
-  &_Header {
-    @include borders.normal($side: bottom);
+  &-header {
     @include flex.row;
 
     justify-content: space-between;
     height: var(--app-bar-height);
     padding: 0 1rem;
 
-    &_Logo {
+    &-logo {
       width: var(--app-bar-logo-size);
       height: var(--app-bar-logo-size);
     }
-
-    &_Close {
-      @include corners.round;
-      @include variants.ghost;
-      @include sizes.large;
-    }
   }
 
-  &_RoutesList {
+  &-routes-list {
     @include flex.column($gap: 0.5rem);
 
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
-  &_PrimaryRoute {
-    @include text.ui($bold: true);
-  }
+  &-child-routes {
+    @include flex.column($gap: 0.25rem);
 
-  &_ChildRoutes {
     padding-left: 1rem;
+  }
+
+  &-primary-route {
+    @include flex.row($gap: 0.5rem);
   }
 }

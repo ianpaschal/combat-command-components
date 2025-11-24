@@ -1,0 +1,153 @@
+@use "./variables";
+@use "./text";
+
+$intents: "neutral", "danger", "warning", "info", "success";
+$sides: "top", "right", "bottom", "left";
+
+@mixin common {
+  @include text.ui;
+
+  cursor: pointer;
+  user-select: none;
+
+  text-decoration: none; // For applying variants to links
+
+  transition-timing-function: ease-in-out;
+  transition-duration: 250ms;
+  transition-property: color, background-color border;
+
+  &:disabled {
+    opacity: 0.4;
+  }
+}
+
+@mixin primary($intent: "neutral") {
+  @include common;
+
+  border: none;
+  color: var(--primary-#{$intent}-text);
+  background-color: var(--primary-#{$intent}-bg);
+
+  &:not(:disabled):hover {
+    background-color: var(--primary-#{$intent}-bg-hover);
+  }
+
+  &:not(:disabled):active {
+    background-color: var(--primary-#{$intent}-bg-active);
+  }
+}
+
+.primary {
+  @include primary;
+
+  @each $intent in $intents {
+    &.#{$intent} {
+      @include primary($intent);
+    }
+  }
+}
+
+@mixin secondary($intent: "neutral") {
+  @include common;
+
+  border: none;
+  color: var(--secondary-#{$intent}-text);
+  background-color: var(--secondary-#{$intent}-bg);
+
+  &:not(:disabled):hover {
+    background-color: var(--secondary-#{$intent}-bg-hover);
+  }
+
+  &:not(:disabled):active {
+    background-color: var(--secondary-#{$intent}-bg-active);
+  }
+}
+
+.secondary {
+  @include secondary;
+
+  @each $intent in $intents {
+    &.#{$intent} {
+      @include secondary($intent);
+    }
+  }
+}
+
+@mixin outlined($intent: "neutral") {
+  @include common;
+
+  border-color: var(--outlined-#{$intent}-border);
+  border-style: solid;
+  border-width: var(--border-width);
+
+  color: var(--outlined-#{$intent}-text);
+
+  background-color: var(--outlined-#{$intent}-bg);
+
+  &:not(:disabled):hover {
+    border-color: var(--outlined-#{$intent}-border-hover);
+    background-color: var(--outlined-#{$intent}-bg-hover);
+  }
+
+  &:not(:disabled):active {
+    border-color: var(--outlined-#{$intent}-border-active);
+    background-color: var(--outlined-#{$intent}-bg-active);
+  }
+}
+
+.outlined {
+  @include outlined;
+
+  @each $intent in $intents {
+    &.#{$intent} {
+      @include outlined($intent);
+    }
+  }
+}
+
+@mixin ghost($intent: "neutral") {
+  @include common;
+
+  border: none;
+  color: var(--ghost-#{$intent}-text);
+  background-color: var(--ghost-#{$intent}-bg);
+
+  &:not(:disabled):hover {
+    background-color: var(--ghost-#{$intent}-bg-hover);
+  }
+
+  &:not(:disabled):active {
+    background-color: var(--ghost-#{$intent}-bg-active);
+  }
+}
+
+.ghost {
+  @include ghost;
+
+  @each $intent in $intents {
+    &.#{$intent} {
+      @include ghost($intent);
+    }
+  }
+}
+
+@mixin passive($intent: "neutral") {
+  @include text.ui;
+
+  color: var(--passive-#{$intent}-text);
+  background-color: var(--passive-#{$intent}-bg);
+}
+
+.passive {
+  @include passive;
+
+  @each $intent in $intents {
+    &.#{$intent} {
+      @include passive($intent);
+    }
+
+    &.muted {
+      @include passive("muted");
+    }
+  }
+}
