@@ -30,13 +30,6 @@ const meta: Meta<typeof Badge> = {
       description: 'The intent (color) for the badge.',
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-        <Story />
-      </div>
-    ),
-  ],
 };
 
 export default meta;

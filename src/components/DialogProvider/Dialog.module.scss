@@ -28,7 +28,6 @@
   }
 
   &-popup {
-    @include corners.wide;
     @include shadows.elevated;
 
     position: fixed;

@@ -10,6 +10,7 @@ import styles from './DesktopNavigation.module.scss';
 
 const linkClassName = clsx(getStyleClassNames({
   variant: 'ghost',
+  corners: 'normal',
   size: 'normal',
 }), styles.desktopNavigationPrimaryRoute);
 
@@ -79,7 +80,7 @@ export const DesktopNavigation = ({
           collisionPadding={{ top: 5, bottom: 5, left: 20, right: 20 }}
           collisionAvoidance={{ side: 'none' }}
         >
-          <NavigationMenu.Popup className={clsx(getStyleClassNames({ variant: 'passive' }), styles.desktopNavigationPopup)}>
+          <NavigationMenu.Popup className={clsx(getStyleClassNames({ variant: 'passive', corners: 'normal', border: true }), styles.desktopNavigationPopup)}>
             <NavigationMenu.Arrow className={styles.desktopNavigationPopupArrow}>
               <svg width="20" height="10" viewBox="0 0 20 10" fill="none">
                 <path

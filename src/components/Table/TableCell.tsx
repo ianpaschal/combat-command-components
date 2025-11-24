@@ -1,13 +1,13 @@
 import { isValidElement, ReactElement } from 'react';
 import clsx from 'clsx';
 
+import { getStyleClassNames } from '../../utils/getStyleClassNames';
 import {
   CellPosition,
   ColumnDef,
   RowData,
 } from './Table.types';
 
-import variants from '../../style/variants.module.scss';
 import styles from './Table.module.scss';
 
 export interface TableCellProps<T extends RowData> {
@@ -43,11 +43,10 @@ export const TableCell = <T extends RowData>({
 
   return (
     <div
-      className={clsx([
-        isHeader ? variants.staticNeutral : variants.staticMuted,
-        styles.tableCell,
-        column.className,
-      ])}
+      className={clsx(getStyleClassNames({
+        intent: isHeader ? 'neutral' : 'muted',
+        border: 'bottom',
+      }), styles.tableCell, column.className)}
       data-column-first={position?.column?.includes('first')}
       data-column-last={position?.column?.includes('last')}
       data-header={isHeader}

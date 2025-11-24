@@ -14,6 +14,7 @@ import styles from './MobileNavigation.module.scss';
 const linkClassName = clsx(getStyleClassNames({
   variant: 'ghost',
   size: 'normal',
+  corners: 'normal',
   collapsePadding: true,
 }), styles.mobileNavigationPrimaryRoute);
 
@@ -35,7 +36,7 @@ export const MobileNavigation = ({
       <Dialog.Portal>
         <Dialog.Backdrop className={styles.mobileNavigationBackdrop} />
         <Dialog.Popup className={styles.mobileNavigationDrawer}>
-          <div className={styles.mobileNavigationHeader}>
+          <div className={clsx(getStyleClassNames({ border: 'bottom' }), styles.mobileNavigationHeader)}>
             <AppLogo className={styles.mobileNavigationHeaderLogo} />
             <Dialog.Close render={(props) => (
               <Button {...props} icon={<X />} size="large" variant="ghost" rounded />

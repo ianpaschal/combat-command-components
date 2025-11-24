@@ -1,10 +1,7 @@
-@use "../../style/borders";
-@use "../../style/corners";
 @use "../../style/flex";
 @use "../../style/shadows";
 
 .app-navigation {
-  // @include borders.normal($side: bottom);
   @include shadows.surface;
 
   position: fixed;
@@ -17,7 +14,7 @@
   width: 100vw;
   height: var(--app-bar-height);
 
-  background-color: var(--passive-neutral-bg);
+  background-color: var(--default-bg);
 
   &-content {
     display: grid;

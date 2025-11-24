@@ -10,8 +10,6 @@ $sides: "top", "right", "bottom", "left";
   cursor: pointer;
   user-select: none;
 
-  border-radius: var(--border-radius-normal);
-
   text-decoration: none; // For applying variants to links
 
   transition-timing-function: ease-in-out;
@@ -133,17 +131,10 @@ $sides: "top", "right", "bottom", "left";
   }
 }
 
-// TODO: Maybe move elsewhere?
 @mixin passive($intent: "neutral") {
   @include text.ui;
 
-  border-color: var(--passive-#{$intent}-border);
-  border-style: solid;
-  border-width: var(--border-width);
-  border-radius: var(--border-radius-normal);
-
   color: var(--passive-#{$intent}-text);
-
   background-color: var(--passive-#{$intent}-bg);
 }
 

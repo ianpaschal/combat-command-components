@@ -34,12 +34,8 @@
   &-cell {
     display: flex;
     align-items: center;
-
     min-width: 1.5rem;
     padding: var(--user-cell-padding-y) var(--user-cell-padding-x);
-    border-style: none;
-    border-bottom-style: solid;
-    border-radius: 0;
 
     &[data-header="true"] {
       position: sticky;

@@ -27,6 +27,35 @@ type GetStyleClassNamesConfig = {
 export const getStyleClassNames = (config: GetStyleClassNamesConfig): string[] => {
   const classNames: Set<string> = new Set();
 
+  if (config.intent && !config.variant) {
+    classNames.add(variants.passive);
+    classNames.add(variants[config.intent]);
+  }
+
+  if (config.variant) {
+    classNames.add(variants[config.variant]);
+    classNames.add(variants[config.intent ?? 'neutral']);
+  }
+
+  if (config.border) {
+    if (typeof config.border === 'string') {
+      const key = camelKey(['border', config.border]) as keyof typeof borders;
+      classNames.add(borders[key]);
+    } else {
+      classNames.add(borders.border);
+    }
+    classNames.add(variants[config.intent ?? 'neutral']);
+  }
+
+  if (config.corners) {
+    if (typeof config.corners === 'string') {
+      const key = camelKey(['corners', config.corners]) as keyof typeof corners;
+      classNames.add(corners[key]);
+    } else {
+      classNames.add(corners.corners);
+    }
+  }
+
   if (config.size) {
     const key = camelKey(['size', config.size]) as keyof typeof sizes;
     classNames.add(sizes[key]);
@@ -41,30 +70,6 @@ export const getStyleClassNames = (config: GetStyleClassNamesConfig): string[] =
 
     if (config.collapsePadding) {
       classNames.add(sizes.collapsePadding);
-    }
-  }
-
-  if (config.variant) {
-    classNames.add(variants[config.variant]);
-    classNames.add(variants[config.intent ?? 'neutral']);
-  } else {
-    if (config.border) {
-      if (typeof config.border === 'string') {
-        const key = camelKey(['border', config.border]) as keyof typeof borders;
-        classNames.add(borders[key]);
-      } else {
-        classNames.add(borders.border);
-      }
-      classNames.add(variants[config.intent ?? 'neutral']);
-    }
-
-    if (config.corners) {
-      if (typeof config.corners === 'string') {
-        const key = camelKey(['corners', config.corners]) as keyof typeof corners;
-        classNames.add(corners[key]);
-      } else {
-        classNames.add(corners.corners);
-      }
     }
   }
 

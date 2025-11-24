@@ -49,6 +49,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       size,
       variant,
       collapsePadding,
+      corners: 'normal',
       rounded,
       square: icon && !text,
     }), styles.button, className)}

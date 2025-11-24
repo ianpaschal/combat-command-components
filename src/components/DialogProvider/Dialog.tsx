@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
 import { Dialog as BaseDialog } from '@base-ui-components/react/dialog';
+import clsx from 'clsx';
 import { X } from 'lucide-react';
 
+import { getStyleClassNames } from '../../utils/getStyleClassNames';
 import { Button, ButtonProps } from '../Button';
 import { ScrollArea } from '../ScrollArea';
 import { useDialogs } from './DialogProvider.hooks';
@@ -59,7 +61,7 @@ export const Dialog = ({
     >
       <BaseDialog.Portal>
         <BaseDialog.Backdrop className={styles.dialogBackdrop} />
-        <BaseDialog.Popup className={styles.dialogPopup}>
+        <BaseDialog.Popup className={clsx(getStyleClassNames({ corners: 'wide' }), styles.dialogPopup)}>
           <div className={styles.dialogHeader}>
             <BaseDialog.Title>
               {title}
@@ -94,6 +96,6 @@ export const Dialog = ({
           )}
         </BaseDialog.Popup>
       </BaseDialog.Portal>
-    </BaseDialog.Root>
+    </BaseDialog.Root >
   );
 };
