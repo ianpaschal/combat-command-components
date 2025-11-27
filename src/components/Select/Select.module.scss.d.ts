@@ -1,0 +1,12 @@
+export declare const dark: string;
+export declare const selectArrow: string;
+export declare const selectCheckIn: string;
+export declare const selectIcon: string;
+export declare const selectItem: string;
+export declare const selectItemIndicator: string;
+export declare const selectItemText: string;
+export declare const selectPopup: string;
+export declare const selectPopupFadeIn: string;
+export declare const selectPositioner: string;
+export declare const selectTrigger: string;
+export declare const selectValue: string;
