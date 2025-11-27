@@ -57,10 +57,10 @@ export const Dialog = ({
       open={open}
       onOpenChange={(open) => handleOpenChange(id, open)}
       onOpenChangeComplete={handleOpenChangeComplete}
-      disablePointerDismissal={preventCancel}
+      disablePointerDismissal={true}
     >
       <BaseDialog.Portal>
-        <BaseDialog.Backdrop className={styles.dialogBackdrop} />
+        <BaseDialog.Backdrop className={styles.dialogBackdrop} onClick={() => !preventCancel && handleOpenChange(id, false)} />
         <BaseDialog.Popup className={clsx(getStyleClassNames({ corners: 'wide' }), styles.dialogPopup)}>
           <div className={styles.dialogHeader}>
             <BaseDialog.Title>
