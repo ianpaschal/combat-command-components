@@ -14,7 +14,23 @@ $sides: "top", "right", "bottom", "left";
 
   transition-timing-function: ease-in-out;
   transition-duration: 250ms;
-  transition-property: color, background-color border;
+  transition-property: color, background-color, border, box-shadow;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  @each $intent in $intents {
+    &.#{$intent} {
+      &:focus-visible {
+        box-shadow: 0 0 0 var(--focus-width) var(--focus-#{$intent}-outline);
+      }
+
+      &[data-popup-open] {
+        box-shadow: 0 0 0 var(--focus-width) var(--focus-#{$intent}-outline);
+      }
+    }
+  }
 
   &:disabled {
     opacity: 0.4;

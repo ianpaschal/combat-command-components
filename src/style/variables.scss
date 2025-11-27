@@ -7,6 +7,10 @@
 /* BLACK */
 @import "@radix-ui/colors/black-alpha.css";
 
+/* INDIGO */
+@import "@radix-ui/colors/indigo-alpha.css";
+@import "@radix-ui/colors/indigo-dark-alpha.css";
+
 /* BLUE */
 @import "@radix-ui/colors/blue-alpha.css";
 @import "@radix-ui/colors/blue-dark-alpha.css";
@@ -131,6 +135,7 @@
       --primary-#{$intent}-bg: var(--#{$color}-9);
     }
 
+    --primary-#{$intent}-focus: var(--#{$color}-a5);
     --primary-#{$intent}-text: var(--#{$color}-1);
   }
 
@@ -139,6 +144,7 @@
     --secondary-#{$intent}-bg-active: var(--#{$color}-5);
     --secondary-#{$intent}-bg-hover: var(--#{$color}-4);
     --secondary-#{$intent}-bg: var(--#{$color}-3);
+    --secondary-#{$intent}-focus: var(--#{$color}-a5);
     --secondary-#{$intent}-text: var(--#{$color}-11);
   }
 
@@ -150,6 +156,7 @@
     --outlined-#{$intent}-border-active: var(--#{$color}-8);
     --outlined-#{$intent}-border-hover: var(--#{$color}-7);
     --outlined-#{$intent}-border: var(--#{$color}-6);
+    --outlined-#{$intent}-focus: var(--#{$color}-a5);
     --outlined-#{$intent}-text: var(--#{$color}-11);
   }
 
@@ -158,8 +165,19 @@
     --ghost-#{$intent}-bg-active: var(--#{$color}-a3);
     --ghost-#{$intent}-bg-hover: var(--#{$color}-a2);
     --ghost-#{$intent}-bg: transparent;
+    --ghost-#{$intent}-focus: var(--#{$color}-a5);
     --ghost-#{$intent}-text: var(--#{$color}-11);
   }
+
+  @each $intent, $color in $intent-colors {
+    @if $intent == "neutral" {
+      --focus-#{$intent}-outline: var(--blue-a7);
+    } @else {
+      --focus-#{$intent}-outline: var(--#{$color}-a7);
+    }
+  }
+
+  --focus-width: 3px;
 }
 
 .dark {
