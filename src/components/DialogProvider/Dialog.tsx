@@ -6,18 +6,19 @@ import { X } from 'lucide-react';
 import { getStyleClassNames } from '../../utils/getStyleClassNames';
 import { Button, ButtonProps } from '../Button';
 import { ScrollArea } from '../ScrollArea';
-import { useDialogs } from './DialogProvider.hooks';
+import { useDialogManager } from './DialogProvider.hooks';
 
 import styles from './Dialog.module.scss';
 
 export type DialogProps = {
   actions?: ButtonProps[];
-  content: ReactNode;
+  content?: ReactNode;
   disablePadding?: boolean;
   id: string;
   onCancel?: () => void;
   open: boolean;
   preventCancel?: boolean;
+  renderContent?: () => ReactNode;
   title: string;
 };
 
@@ -34,9 +35,10 @@ export const Dialog = ({
   onCancel,
   open,
   preventCancel = false,
+  renderContent,
   title,
 }: DialogPropsWithNested): JSX.Element => {
-  const { close, remove } = useDialogs();
+  const { close, remove } = useDialogManager();
   const handleOpenChange = (id: string, open: boolean): void => {
     if (!open) {
       if (onCancel) {
@@ -74,7 +76,7 @@ export const Dialog = ({
           </div>
           <ScrollArea className={styles.dialogScrollArea} indicators={{ top: { border: true }, bottom: { border: true } }}>
             <div className={styles.dialogContent} data-padding={!disablePadding}>
-              {content}
+              {renderContent ? renderContent() : content}
             </div>
           </ScrollArea>
           <div className={styles.dialogFooter}>

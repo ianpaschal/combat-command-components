@@ -6,5 +6,7 @@ export {
   type DialogProviderProps,
 } from './DialogProvider';
 export {
+  useDialogManager,
   useDialogProvider,
-} from './DialogProvider.context';
+  useDialogsState,
+} from './DialogProvider.hooks';

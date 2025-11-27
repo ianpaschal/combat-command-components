@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
 import { DialogProvider } from './DialogProvider';
-import { useDialogs } from './DialogProvider.hooks';
+import { useDialogManager } from './DialogProvider.hooks';
 
 interface StoryArgs {
   title: string;
@@ -13,14 +13,14 @@ interface StoryArgs {
 }
 
 const BasicDialogWrapper = (args: StoryArgs): JSX.Element => {
-  const { open } = useDialogs();
+  const { open } = useDialogManager();
   return (
     <Button text="Click Me" onClick={() => open(args)} />
   );
 };
 
 const NestedDialogStory = (args: StoryArgs): JSX.Element => {
-  const { open, close } = useDialogs();
+  const { open, close } = useDialogManager();
   const [id, setId] = useState<string>('');
   const handleClick = (): void => {
     setId(open({

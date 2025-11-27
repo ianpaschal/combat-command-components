@@ -24,7 +24,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build",
     "prelint": "tsc --noEmit",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -72,6 +72,8 @@
     "@base-ui-components/react": "^1.0.0-beta.6",
     "@fontsource/figtree": "^5.2.10",
     "@radix-ui/colors": "^3.0.0",
+    "@tanstack/react-store": "^0.8.0",
+    "@tanstack/store": "^0.8.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.548.0",
     "radix-ui": "^1.4.3"
