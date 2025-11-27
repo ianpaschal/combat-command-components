@@ -1,0 +1,17 @@
+@use "../../style/text";
+@use "../../style/flex";
+@use "../../style/shadows";
+
+.input {
+  &-icon {
+    display: block;
+  }
+
+  &[data-icon-position="start"] {
+    padding-left: 5rem;
+  }
+
+  &[data-icon-position="end"] {
+    padding-right: 5rem;
+  }
+}
