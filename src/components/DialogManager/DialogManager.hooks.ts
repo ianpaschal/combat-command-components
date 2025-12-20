@@ -2,11 +2,11 @@ import { useContext } from 'react';
 import { useStore } from '@tanstack/react-store';
 
 import { DialogProps } from './Dialog';
-import { DialogStoreContext } from './DialogProvider.context';
-import { DialogManager } from './DialogProvider.store';
+import { dialogManagerContext } from './DialogManager.context';
+import { DialogStore } from './DialogManager.store';
 
-export const useDialogManager = (): DialogManager => {
-  const context = useContext(DialogStoreContext);
+export const useDialogManager = (): DialogStore => {
+  const context = useContext(dialogManagerContext);
   if (!context) {
     throw new Error('useDialogManager() must be used within a <DialogProvider/>!');
   }
@@ -14,14 +14,14 @@ export const useDialogManager = (): DialogManager => {
 };
 
 export const useDialogsState = (): DialogProps[] => {
-  const context = useContext(DialogStoreContext);
+  const context = useContext(dialogManagerContext);
   if (!context) {
     throw new Error('useDialogsState() must be used within a <DialogProvider/>!');
   }
-  return useStore(context.store, (state) => state);
+  return useStore(context.store);
 };
 
 /**
  * @deprecated
  */
-export const useDialogProvider: () => DialogManager = useDialogManager;
+export const useDialogProvider: () => DialogStore = useDialogManager;

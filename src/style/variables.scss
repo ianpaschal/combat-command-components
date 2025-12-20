@@ -42,70 +42,39 @@
 @import "@fontsource/figtree/600.css";
 @import "@fontsource/figtree/700.css";
 
-:root {
-  // Define color mappings for intents
-  $intent-colors: (
-    "neutral": "gray",
-    "danger": "tomato",
-    "warning": "amber",
-    "info": "blue",
-    "success": "grass"
-  );
+// Define color mappings for intents
+$intent-colors: (
+  "neutral": "gray",
+  "danger": "tomato",
+  "warning": "amber",
+  "info": "blue",
+  "success": "grass"
+);
 
-  // True Defaults
-  --default-bg: white;
-  --page-bg: var(--gray-2);
-  --border-width: 1px;
-  --default-border: var(--border-width) solid var(--passive-neutral-border);
-
-  // App Bar
-  --app-bar-height: 4rem;
-  --app-bar-logo-size: 2.5rem;
-
-  // Modals (Dialogs & Drawers)
-  --modal-padding: 1rem;
-  --modal-margin: 0.5rem;
-  --modal-backdrop-bg: var(--black-a8);
-  --modal-backdrop-nested-bg: var(--black-a4);
-
-  // Corners
-  --border-radius-normal: 0.375rem;
-  --border-radius-tight: 0.25rem;
-  --border-radius-wide: 0.5rem;
-  --border-radius-round: 100%;
-
-  // Typography
-  --font-size-large: 1.125rem;
-  --font-size-normal: 1rem;
-  --font-size-small: 0.875rem;
-  --line-height-large: 1.75rem;
-  --line-height-normal: 1.5rem;
-  --line-height-small: 1.25rem;
-
-  /*
-   * COLOR SYSTEM
-   *
-   * The color system is made up of a combination of two different attributes: variant and intent.
-   *
-   * Variants:
-   * - Static
-   * - Primary
-   * - Secondary
-   * - Outlined
-   * - Ghost
-   * NOTE: Static should only be used on non-interactive UI elements. The rest are interactive.
-   *
-   * Intents:
-   * - neutral
-   * - Danger
-   * - Warning
-   * - Info
-   * - Success
-   * NOTE: Some intents do double-duty: 'danger' is also 'error'.
-   *
-   * NAMING: --{type}-{intent}-{property}-{state}
-  */
-
+/*
+ * COLOR SYSTEM MIXIN
+ *
+ * The color system is made up of a combination of two different attributes: variant and intent.
+ *
+ * Variants:
+ * - Static
+ * - Primary
+ * - Secondary
+ * - Outlined
+ * - Ghost
+ * NOTE: Static should only be used on non-interactive UI elements. The rest are interactive.
+ *
+ * Intents:
+ * - neutral
+ * - Danger
+ * - Warning
+ * - Info
+ * - Success
+ * NOTE: Some intents do double-duty: 'danger' is also 'error'.
+ *
+ * NAMING: --{type}-{intent}-{property}-{state}
+*/
+@mixin color-variants($primary-text-index: 1) {
   // ---- STATIC ----
   @each $intent, $color in $intent-colors {
     @if $intent == "neutral" {
@@ -129,14 +98,15 @@
       --primary-#{$intent}-bg-active: var(--#{$color}-10);
       --primary-#{$intent}-bg-hover: var(--#{$color}-11);
       --primary-#{$intent}-bg: var(--#{$color}-12);
+      --primary-#{$intent}-text: var(--#{$color}-1);
     } @else {
       --primary-#{$intent}-bg-active: var(--#{$color}-7);
       --primary-#{$intent}-bg-hover: var(--#{$color}-8);
       --primary-#{$intent}-bg: var(--#{$color}-9);
+      --primary-#{$intent}-text: var(--#{$color}-#{$primary-text-index});
     }
 
     --primary-#{$intent}-focus: var(--#{$color}-a5);
-    --primary-#{$intent}-text: var(--#{$color}-1);
   }
 
   // ---- SECONDARY ----
@@ -169,6 +139,7 @@
     --ghost-#{$intent}-text: var(--#{$color}-11);
   }
 
+  // ---- FOCUS ----
   @each $intent, $color in $intent-colors {
     @if $intent == "neutral" {
       --focus-#{$intent}-outline: var(--blue-a7);
@@ -176,13 +147,56 @@
       --focus-#{$intent}-outline: var(--#{$color}-a7);
     }
   }
+}
 
+:root {
+  // True Defaults
+  --default-bg: white;
+  --page-bg: var(--gray-2);
+  --scroll-indicator-shadow: var(--black-a1);
+  --border-width: 1px;
+  --default-border: var(--border-width) solid var(--passive-neutral-border);
+
+  // App Bar
+  --app-bar-height: 4rem;
+  --app-bar-logo-size: 2.5rem;
+
+  // Modals (Dialogs & Drawers)
+  --modal-padding: 1rem;
+  --modal-margin: 0.5rem;
+  --modal-backdrop-bg: var(--black-a8);
+  --modal-backdrop-nested-bg: var(--black-a4);
+
+  // Corners
+  --border-radius-normal: 0.375rem;
+  --border-radius-tight: 0.25rem;
+  --border-radius-wide: 0.5rem;
+  --border-radius-round: 100%;
+
+  // Typography
+  --font-size-large: 1.125rem;
+  --font-size-normal: 1rem;
+  --font-size-small: 0.875rem;
+  --line-height-large: 1.75rem;
+  --line-height-normal: 1.5rem;
+  --line-height-small: 1.25rem;
+
+  // Focus
   --focus-width: 3px;
+
+  // Apply color variants
+  @include color-variants;
 }
 
 .dark {
   --default-bg: var(--gray-2);
   --page-bg: var(--gray-1);
+  --scroll-indicator-shadow: var(--black-a5);
+  --modal-backdrop-bg: var(--black-a10);
+  --modal-backdrop-nested-bg: var(--black-a7);
+
+  // Re-apply color variants with dark mode Radix colors
+  @include color-variants($primary-text-index: 12);
 }
 
 @media (width >= 480px) {

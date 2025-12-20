@@ -2,11 +2,9 @@
 @use "../../style/variables";
 @use "../../style/flex";
 
-@import "@radix-ui/colors/black-alpha.css";
-
 $scrollbar-size: 1rem;
 $scrollbar-padding: 0.25rem;
-$indicator-gradient-start-color: var(--black-a1);
+$indicator-gradient-start-color: var(--scroll-indicator-shadow);
 $indicator-gradient-end-color: rgb(0 0 0 / 0%);
 
 .scroll-area {
@@ -39,7 +37,7 @@ $indicator-gradient-end-color: rgb(0 0 0 / 0%);
       background-image: linear-gradient(to bottom, $indicator-gradient-start-color, $indicator-gradient-end-color);
 
       &[data-bordered="true"] {
-        border-top: var(--default-border);
+        border-top: var(--passive-neutral-border);
       }
     }
 
@@ -50,7 +48,7 @@ $indicator-gradient-end-color: rgb(0 0 0 / 0%);
       background-image: linear-gradient(to top, $indicator-gradient-start-color, $indicator-gradient-end-color);
 
       &[data-bordered="true"] {
-        border-bottom: var(--default-border);
+        border-bottom: var(--passive-neutral-border);
       }
     }
 
@@ -61,7 +59,7 @@ $indicator-gradient-end-color: rgb(0 0 0 / 0%);
       background-image: linear-gradient(to right, $indicator-gradient-start-color, $indicator-gradient-end-color);
 
       &[data-bordered="true"] {
-        border-left: var(--default-border);
+        border-left: var(--passive-neutral-border);
       }
     }
 
@@ -72,7 +70,7 @@ $indicator-gradient-end-color: rgb(0 0 0 / 0%);
       background-image: linear-gradient(to left, $indicator-gradient-start-color, $indicator-gradient-end-color);
 
       &[data-bordered="true"] {
-        border-right: var(--default-border);
+        border-right: var(--passive-neutral-border);
       }
     }
   }

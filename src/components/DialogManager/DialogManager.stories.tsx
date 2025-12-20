@@ -2,8 +2,9 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../Button';
-import { DialogProvider } from './DialogProvider';
-import { useDialogManager } from './DialogProvider.hooks';
+import { DialogContext } from './Dialog.context';
+import { DialogManager } from './DialogManager';
+import { useDialogManager } from './DialogManager.hooks';
 
 interface StoryArgs {
   title: string;
@@ -19,7 +20,7 @@ const BasicDialogWrapper = (args: StoryArgs): JSX.Element => {
   );
 };
 
-const NestedDialogStory = (args: StoryArgs): JSX.Element => {
+const NestedConfirmationStory = (args: StoryArgs): JSX.Element => {
   const { open, close } = useDialogManager();
   const [id, setId] = useState<string>('');
   const handleClick = (): void => {
@@ -40,6 +41,44 @@ const NestedDialogStory = (args: StoryArgs): JSX.Element => {
               },
             ],
           }),
+        },
+      ],
+    }));
+  };
+  return (
+    <Button text="Click Me" onClick={handleClick} />
+  );
+};
+
+const DirtyConfirmationStory = (args: StoryArgs): JSX.Element => {
+  const { open, close } = useDialogManager();
+  const [id, setId] = useState<string>('');
+  const handleClick = (): void => {
+    setId(open({
+      ...args,
+      renderContent: (props: DialogContext) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'start' }}>
+          <span>This dialog is currently: <strong>{props.dirty ? 'dirty' : 'clean'}</strong>.</span>
+          <Button text={props.dirty ? 'Set Clean' : 'Set Dirty'} onClick={() => props.setDirty(!props.dirty)} />
+          <span>You can also set it programmatically with the useDialog hook.</span>
+        </div>
+      ),
+      onCancel: (dirty) => dirty ? open({
+        title: 'Discard Changes?',
+        content: 'This cannot be undone.',
+        actions: [
+          {
+            text: 'Confirm',
+            intent: 'danger',
+            onClick: () => close(id),
+          },
+        ],
+      }) : close(id),
+      actions: [
+        {
+          text: 'Save',
+          intent: 'neutral',
+          onClick: () => close(id),
         },
       ],
     }));
@@ -91,9 +130,9 @@ export const Default: Story = {
     disablePadding: false,
   },
   render: (args) => (
-    <DialogProvider>
+    <DialogManager>
       <BasicDialogWrapper {...args} />
-    </DialogProvider>
+    </DialogManager>
   ),
 };
 
@@ -106,9 +145,9 @@ export const PreventCancel: Story = {
     disablePadding: false,
   },
   render: (args) => (
-    <DialogProvider>
+    <DialogManager>
       <BasicDialogWrapper {...args} />
-    </DialogProvider>
+    </DialogManager>
   ),
 };
 
@@ -121,9 +160,23 @@ export const NestedConfirmation: Story = {
     disablePadding: false,
   },
   render: (args) => (
-    <DialogProvider>
-      <NestedDialogStory {...args} />
-    </DialogProvider>
+    <DialogManager>
+      <NestedConfirmationStory {...args} />
+    </DialogManager>
+  ),
+};
+
+export const DirtyConfirmation: Story = {
+  name: 'Dirty Confirmation',
+  args: {
+    title: 'Root Dialog',
+    content: 'This dialog will span a nested dialog when you click "Delete".',
+    disablePadding: false,
+  },
+  render: (args) => (
+    <DialogManager>
+      <DirtyConfirmationStory {...args} />
+    </DialogManager>
   ),
 };
 
@@ -180,8 +233,8 @@ export const LongContent: Story = {
     disablePadding: false,
   },
   render: (args) => (
-    <DialogProvider>
-      <NestedDialogStory {...args} />
-    </DialogProvider>
+    <DialogManager>
+      <BasicDialogWrapper {...args} />
+    </DialogManager>
   ),
 };

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { NavigationMenu } from '@base-ui-components/react/navigation-menu';
+import { NavigationMenu } from '@base-ui/react/navigation-menu';
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
 
