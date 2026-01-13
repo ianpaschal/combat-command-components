@@ -113,7 +113,12 @@ export const Dialog = (props: DialogPropsWithNested): JSX.Element => {
               )} />
             )}
             {actions?.length ? actions.map((action, i) => (
-              <Button key={`action_${i}`} {...action} onClick={() => action.onClick ? action.onClick(id) : undefined} />
+              <Button
+                {...action}
+                key={`action_${i}`}
+                tabIndex={0}
+                onClick={() => action.onClick ? action.onClick(id) : undefined}
+              />
             )) : (
               <BaseDialog.Close render={(props) => (
                 <Button {...props} text="Confirm" />
