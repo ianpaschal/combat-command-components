@@ -64,10 +64,10 @@ export const useGridStyle = <T extends RowData>(
     const baseWidth = typeof c.width === 'number' ? `${c.width}px` : c.width ?? 'auto';
     if (baseWidth && isValidCSSCalcValue(baseWidth)) {
       if (isFirst) {
-        return `calc(var(--table-padding-left, 0px) + ${baseWidth})`;
+        return `calc(var(--user-table-padding-left, 0px) + ${baseWidth})`;
       }
       if (isLast) {
-        return `calc(var(--table-padding-right, 0px) + ${baseWidth})`;
+        return `calc(var(--user-table-padding-right, 0px) + ${baseWidth})`;
       }
     }
     return baseWidth;
