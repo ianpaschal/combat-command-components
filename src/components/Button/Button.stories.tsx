@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Mail, Plus } from 'lucide-react';
 
+import { ButtonStoryWrapper } from './stories/ButtonStoryWrapper';
 import { Button } from './Button';
-import { ButtonStoryWrapper } from './ButtonStoryWrapper';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',

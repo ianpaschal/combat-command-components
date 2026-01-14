@@ -32,7 +32,9 @@ $sides: "top", "right", "bottom", "left";
     }
   }
 
-  &:disabled {
+  &:disabled,
+  &[data-disabled] {
+    cursor: not-allowed;
     opacity: 0.4;
   }
 }
@@ -44,11 +46,11 @@ $sides: "top", "right", "bottom", "left";
   color: var(--primary-#{$intent}-text);
   background-color: var(--primary-#{$intent}-bg);
 
-  &:not(:disabled):hover {
+  &:not(:disabled, [data-disabled]):hover {
     background-color: var(--primary-#{$intent}-bg-hover);
   }
 
-  &:not(:disabled):active {
+  &:not(:disabled, [data-disabled]):active {
     background-color: var(--primary-#{$intent}-bg-active);
   }
 }
@@ -70,11 +72,11 @@ $sides: "top", "right", "bottom", "left";
   color: var(--secondary-#{$intent}-text);
   background-color: var(--secondary-#{$intent}-bg);
 
-  &:not(:disabled):hover {
+  &:not(:disabled, [data-disabled]):hover {
     background-color: var(--secondary-#{$intent}-bg-hover);
   }
 
-  &:not(:disabled):active {
+  &:not(:disabled, [data-disabled]):active {
     background-color: var(--secondary-#{$intent}-bg-active);
   }
 }
@@ -100,12 +102,12 @@ $sides: "top", "right", "bottom", "left";
 
   background-color: var(--outlined-#{$intent}-bg);
 
-  &:not(:disabled):hover {
+  &:not(:disabled, [data-disabled]):hover {
     border-color: var(--outlined-#{$intent}-border-hover);
     background-color: var(--outlined-#{$intent}-bg-hover);
   }
 
-  &:not(:disabled):active {
+  &:not(:disabled, [data-disabled]):active {
     border-color: var(--outlined-#{$intent}-border-active);
     background-color: var(--outlined-#{$intent}-bg-active);
   }
@@ -128,11 +130,11 @@ $sides: "top", "right", "bottom", "left";
   color: var(--ghost-#{$intent}-text);
   background-color: var(--ghost-#{$intent}-bg);
 
-  &:not(:disabled):hover {
+  &:not(:disabled, [data-disabled]):hover {
     background-color: var(--ghost-#{$intent}-bg-hover);
   }
 
-  &:not(:disabled):active {
+  &:not(:disabled, [data-disabled]):active {
     background-color: var(--ghost-#{$intent}-bg-active);
   }
 }

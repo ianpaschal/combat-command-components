@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from './Button';
+import { Button, ButtonProps } from '../Button';
 
 import styles from './ButtonStoryWrapper.module.scss';
 
@@ -14,7 +14,7 @@ export const ButtonStoryWrapper = (
         Variant
       </h2>
       {VARIANTS.map((variant) => (
-        <span className={styles.buttonStoryWrapperLabel}>
+        <span key={variant} className={styles.buttonStoryWrapperLabel}>
           {variant}
         </span>
       ))}
@@ -24,7 +24,7 @@ export const ButtonStoryWrapper = (
         Intent
       </h2>
       {INTENTS.map((intent) => (
-        <span className={styles.buttonStoryWrapperLabel}>
+        <span key={intent} className={styles.buttonStoryWrapperLabel}>
           {intent}
         </span>
       ))}
@@ -32,7 +32,7 @@ export const ButtonStoryWrapper = (
     <div className={styles.buttonStoryWrapperButtons}>
       {INTENTS.map((intent) => (
         VARIANTS.map((variant) => (
-          <Button {...props} variant={variant} intent={intent} />
+          <Button key={`${intent}_${variant}`} {...props} variant={variant} intent={intent} />
         ))
       ))}
     </div>

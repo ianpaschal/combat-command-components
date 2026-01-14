@@ -1,0 +1,170 @@
+@use "../../style/flex";
+@use "../../style/variables";
+
+.select {
+  --icon-size: 1.25rem;
+  --min-height: 2.5rem;
+
+  @include flex.row($gap: 0);
+
+  &-trigger {
+    @include flex.row($gap: 0.5rem);
+
+    user-select: none;
+    width: 100%;
+    min-height: var(--min-height);
+    padding: calc(0.5rem - var(--border-width)) calc(0.75rem - var(--border-width));
+
+    &[data-clearable="true"] {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &-icon {
+      @include flex.centered;
+
+      margin-left: auto;
+
+      svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+  }
+
+  &-clear {
+    align-self: stretch;
+
+    height: auto;
+    max-height: 100%;
+    border-left: none !important;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &-popup {
+    position: relative;
+    transform-origin: var(--transform-origin);
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+    min-width: var(--anchor-width);
+
+    // TODO: Animations
+    // transition: transform 150ms, opacity 150ms;
+
+    // &[data-starting-style],
+    // &[data-ending-style] {
+    //   transform: scale(0.9);
+    //   opacity: 0;
+    // }
+
+    &[data-side="none"] {
+      transform: none;
+      min-width: calc(var(--anchor-width) + 1rem);
+      opacity: 1;
+      transition: none;
+    }
+  }
+
+  &-list {
+    padding: calc(0.5rem - var(--border-width));
+  }
+
+  &-item {
+    cursor: default;
+    user-select: none;
+
+    display: grid;
+    grid-template-areas: "indicator content";
+    grid-template-columns: 1.5rem 1fr;
+    grid-template-rows: 1fr;
+    gap: 0.5rem;
+    align-items: center;
+
+    min-height: 2.5rem;
+
+    &-indicator {
+      @include flex.centered;
+
+      grid-area: indicator;
+      align-self: center;
+      justify-self: end;
+
+      svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+
+    &-content {
+      grid-area: content;
+    }
+  }
+
+  &-scroll-arrow {
+    cursor: default;
+
+    position: absolute;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 2rem;
+
+    color: var(--outlined-neutral-text);
+    text-align: center;
+
+    background-color: var(--passive-neutral-bg);
+
+    &::before {
+      content: "";
+
+      position: absolute;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    &[data-direction="up"] {
+      top: 0;
+      right: 0;
+      left: 0;
+      border-bottom: var(--default-border);
+
+      &[data-side="none"] {
+        &::before {
+          top: -100%;
+        }
+      }
+    }
+
+    &[data-direction="down"] {
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-top: var(--default-border);
+
+      &[data-side="none"] {
+        &::before {
+          bottom: -100%;
+        }
+      }
+    }
+  }
+}
+
+.positioner {
+  user-select: none;
+  z-index: 1;
+  outline: none;
+}
