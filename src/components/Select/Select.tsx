@@ -1,6 +1,7 @@
 import {
   ElementRef,
   forwardRef,
+  InputHTMLAttributes,
   MouseEvent,
   ReactNode,
   useEffect,
@@ -31,11 +32,18 @@ export type SelectOption = {
   disabled?: boolean;
 };
 
-export interface SelectProps {
-  className?: string;
+export interface SelectProps extends Omit<
+  InputHTMLAttributes<HTMLSelectElement>,
+  'defaultValue' |
+  'multiple' |
+  'onChange' |
+  'placeholder' |
+  'value'
+> {
   clearable?: boolean;
   defaultValue?: SelectValue | null;
   disabled?: boolean;
+  multiple?: false;
   onChange?: (value: SelectValue | null) => void;
   options: SelectOption[];
   placeholder?: ReactNode;
@@ -47,10 +55,12 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
   clearable = false,
   defaultValue = null,
   disabled = false,
+  id,
   onChange,
   options,
   placeholder = 'Select...',
   value: controlledValue,
+  ...props
 }, ref): JSX.Element => {
 
   // Internal state (for uncontrolled usage):
@@ -80,12 +90,14 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
   return (
     <div className={styles.select}>
       <BaseSelect.Root<SelectOption>
+        {...props}
         value={selectedOption}
         onValueChange={handleValueChange}
         disabled={disabled}
       >
         <BaseSelect.Trigger
           ref={ref}
+          id={id}
           className={clsx(styles.selectTrigger, getStyleClassNames({
             corners: 'normal',
             intent: 'neutral',
