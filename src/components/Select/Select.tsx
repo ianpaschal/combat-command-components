@@ -162,7 +162,7 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
             variant: 'outlined',
           }))}
           icon={<X />} onClick={handleClear}
-          disabled={disabled || value === null}
+          disabled={disabled || !value}
           tabIndex={0}
         />
       )}
