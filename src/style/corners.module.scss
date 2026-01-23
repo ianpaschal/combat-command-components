@@ -1,20 +1,24 @@
-.corners {
-  border-radius: 0.375rem;
+@use "./layers";
 
-  &-tight {
-    border-radius: 0.25rem;
-  }
-
-  &-normal {
+@layer variants {
+  .corners {
     border-radius: 0.375rem;
-  }
 
-  &-wide {
-    border-radius: 0.5rem;
-  }
+    &-tight {
+      border-radius: 0.25rem;
+    }
 
-  &-round {
-    aspect-ratio: 1;
-    border-radius: 100%;
+    &-normal {
+      border-radius: 0.375rem;
+    }
+
+    &-wide {
+      border-radius: 0.5rem;
+    }
+
+    &-round {
+      aspect-ratio: 1;
+      border-radius: 100%;
+    }
   }
 }

@@ -1,3 +1,4 @@
+@use "./layers";
 @use "./variables";
 
 $intents: "neutral", "muted", "danger", "warning", "info", "success";
@@ -15,21 +16,23 @@ $sides: "top", "right", "bottom", "left";
   }
 }
 
-.border {
-  @include common;
+@layer variants {
+  .border {
+    @include common;
 
-  @each $intent in $intents {
-    &.#{$intent} {
-      border-color: var(--passive-#{$intent}-border);
+    @each $intent in $intents {
+      &.#{$intent} {
+        border-color: var(--passive-#{$intent}-border);
+      }
     }
-  }
 
-  @each $side in $sides {
-    &-#{$side} {
-      @include common;
+    @each $side in $sides {
+      &-#{$side} {
+        @include common;
 
-      border-style: none;
-      border-#{$side}-style: solid;
+        border-style: none;
+        border-#{$side}-style: solid;
+      }
     }
   }
 }

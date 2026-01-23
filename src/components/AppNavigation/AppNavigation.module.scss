@@ -1,60 +1,63 @@
+@use "../../style/layers";
 @use "../../style/flex";
 @use "../../style/shadows";
 
-.app-navigation {
-  @include shadows.surface;
+@layer components {
+  .app-navigation {
+    @include shadows.surface;
 
-  position: fixed;
-  top: 0;
-  left: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
 
-  overflow: hidden;
+    overflow: hidden;
 
-  box-sizing: border-box;
-  width: 100vw;
-  height: var(--app-bar-height);
+    box-sizing: border-box;
+    width: 100vw;
+    height: var(--app-bar-height);
 
-  background-color: var(--default-bg);
+    background-color: var(--default-bg);
 
-  &-content {
-    display: grid;
-    gap: 1.5rem;
-    align-items: center;
+    &-content {
+      display: grid;
+      gap: 1.5rem;
+      align-items: center;
 
-    margin: 0 auto;
-    padding: 0.75rem 1rem calc(0.75rem - var(--border-width));
+      margin: 0 auto;
+      padding: 0.75rem 1rem calc(0.75rem - var(--border-width));
 
-    &[data-layout="mobile"] {
-      grid-template-areas: "navigation logo secondary";
-      grid-template-columns: 1fr var(--app-bar-logo-size) 1fr;
-      grid-template-rows: 2.5rem;
+      &[data-layout="mobile"] {
+        grid-template-areas: "navigation logo secondary";
+        grid-template-columns: 1fr var(--app-bar-logo-size) 1fr;
+        grid-template-rows: 2.5rem;
+      }
+
+      &[data-layout="desktop"] {
+        grid-template-areas: "logo navigation secondary";
+        grid-template-columns: var(--app-bar-logo-size) 1fr auto;
+        grid-template-rows: 2.5rem;
+      }
     }
 
-    &[data-layout="desktop"] {
-      grid-template-areas: "logo navigation secondary";
-      grid-template-columns: var(--app-bar-logo-size) 1fr auto;
-      grid-template-rows: 2.5rem;
+    &-logo {
+      grid-area: logo;
+      width: var(--app-bar-logo-size);
+      height: var(--app-bar-logo-size);
     }
-  }
 
-  &-logo {
-    grid-area: logo;
-    width: var(--app-bar-logo-size);
-    height: var(--app-bar-logo-size);
-  }
+    &-navigation {
+      display: flex;
+      grid-area: navigation;
+      flex-direction: row;
+      align-items: center;
+    }
 
-  &-navigation {
-    display: flex;
-    grid-area: navigation;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  &-secondary-controls {
-    display: flex;
-    grid-area: secondary;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
+    &-secondary-controls {
+      display: flex;
+      grid-area: secondary;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+    }
   }
 }

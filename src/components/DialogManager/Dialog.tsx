@@ -33,21 +33,20 @@ export interface DialogPropsWithNested extends DialogProps {
   nested?: DialogProps[];
 }
 
-export const Dialog = (props: DialogPropsWithNested): JSX.Element => {
-  const {
-    actions,
-    cancelText,
-    content,
-    dirty,
-    disablePadding = false,
-    id,
-    nested,
-    onCancel,
-    open: isOpen,
-    preventCancel = false,
-    renderContent,
-    title,
-  } = props;
+export const Dialog = ({
+  actions,
+  cancelText,
+  content,
+  dirty,
+  disablePadding = false,
+  id,
+  nested,
+  onCancel,
+  open: isOpen,
+  preventCancel = false,
+  renderContent,
+  title,
+}: DialogPropsWithNested): JSX.Element => {
   const { remove, setDirty, setOpen } = useDialogManager();
 
   const handleOpenChange = (open: boolean): void => {
@@ -95,7 +94,7 @@ export const Dialog = (props: DialogPropsWithNested): JSX.Element => {
             </BaseDialog.Title>
             {!preventCancel && (
               <BaseDialog.Close render={(props) => (
-                <Button {...props} icon={<X />} variant="ghost" />
+                <Button {...props} className={styles.dialogHeaderClose} icon={<X />} variant="ghost" />
               )} />
             )}
           </div>

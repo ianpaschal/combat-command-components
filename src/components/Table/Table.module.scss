@@ -1,3 +1,4 @@
+@use "../../style/layers";
 @use "../../style/flex";
 @use "../../style/text";
 @use "../../style/variables";
@@ -9,100 +10,102 @@
   white-space: nowrap;
 }
 
-.table {
-  // User can override these with a CSS class in order to adjust spacing:
-  --user-cell-padding: var(--cell-padding, 0.5rem);
-  --user-cell-padding-x: var(--cell-padding-x, var(--user-cell-padding));
-  --user-cell-padding-y: var(--cell-padding-y, var(--user-cell-padding));
-  --user-table-padding: var(--table-padding, var(--user-cell-padding-x));
-  --user-table-padding-left: var(--table-padding-left, var(--user-table-padding));
-  --user-table-padding-right: var(--table-padding-right, var(--user-table-padding));
+@layer components {
+  .table {
+    // User can override these with a CSS class in order to adjust spacing:
+    --user-cell-padding: var(--cell-padding, 0.5rem);
+    --user-cell-padding-x: var(--cell-padding-x, var(--user-cell-padding));
+    --user-cell-padding-y: var(--cell-padding-y, var(--user-cell-padding));
+    --user-table-padding: var(--table-padding, var(--user-cell-padding-x));
+    --user-table-padding-left: var(--table-padding-left, var(--user-table-padding));
+    --user-table-padding-right: var(--table-padding-right, var(--user-table-padding));
 
-  position: relative;
+    position: relative;
 
-  overflow: hidden; // Radix handles scroll
+    overflow: hidden; // Radix handles scroll
 
-  min-height: 0;
-  max-height: 100%;
+    min-height: 0;
+    max-height: 100%;
 
-  font-size: var(--font-size-normal);
+    font-size: var(--font-size-normal);
 
-  &-content {
-    display: grid;
-  }
-
-  &-cell {
-    display: flex;
-    align-items: center;
-    min-width: 1.5rem;
-    padding: var(--user-cell-padding-y) var(--user-cell-padding-x);
-
-    &[data-header="true"] {
-      position: sticky;
-      z-index: 1;
-      top: 0;
+    &-content {
+      display: grid;
     }
 
-    &[data-row-last="true"] {
-      border-bottom: none;
-    }
-
-    &[data-column-first="true"] {
-      padding-left: var(--user-table-padding-left);
-    }
-
-    &[data-column-last="true"] {
-      padding-right: var(--user-table-padding-right);
-    }
-
-    &[data-x-align="left"] {
-      justify-content: start;
-    }
-
-    &[data-x-align="center"] {
-      justify-content: center;
-    }
-
-    &[data-x-align="right"] {
-      justify-content: end;
-    }
-
-    &[data-y-align="top"] {
-      align-items: start;
-    }
-
-    &[data-y-align="center"] {
+    &-cell {
+      display: flex;
       align-items: center;
+      min-width: 1.5rem;
+      padding: var(--user-cell-padding-y) var(--user-cell-padding-x);
+
+      &[data-header="true"] {
+        position: sticky;
+        z-index: 1;
+        top: 0;
+      }
+
+      &[data-row-last="true"] {
+        border-bottom: none;
+      }
+
+      &[data-column-first="true"] {
+        padding-left: var(--user-table-padding-left);
+      }
+
+      &[data-column-last="true"] {
+        padding-right: var(--user-table-padding-right);
+      }
+
+      &[data-x-align="left"] {
+        justify-content: start;
+      }
+
+      &[data-x-align="center"] {
+        justify-content: center;
+      }
+
+      &[data-x-align="right"] {
+        justify-content: end;
+      }
+
+      &[data-y-align="top"] {
+        align-items: start;
+      }
+
+      &[data-y-align="center"] {
+        align-items: center;
+      }
+
+      &[data-y-align="bottom"] {
+        align-items: end;
+      }
+
+      span,
+      h3 {
+        @include text.single-line;
+      }
     }
 
-    &[data-y-align="bottom"] {
-      align-items: end;
-    }
+    &-scroll-indicator {
+      pointer-events: none;
+      content: "";
 
-    span,
-    h3 {
-      @include text.single-line;
-    }
-  }
+      position: absolute;
+      top: 100%;
+      right: 0;
+      left: 0;
 
-  &-scroll-indicator {
-    pointer-events: none;
-    content: "";
+      height: 0.75rem;
 
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
+      opacity: 0;
+      background-image: linear-gradient(to bottom, var(--black-a1), rgb(0 0 0 / 0%));
 
-    height: 0.75rem;
+      transition: opacity 500ms ease-in-out;
 
-    opacity: 0;
-    background-image: linear-gradient(to bottom, var(--black-a1), rgb(0 0 0 / 0%));
-
-    transition: opacity 500ms ease-in-out;
-
-    &[data-visible="true"] {
-      opacity: 1;
+      &[data-visible="true"] {
+        opacity: 1;
+      }
     }
   }
 }

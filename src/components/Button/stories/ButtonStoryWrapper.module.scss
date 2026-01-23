@@ -1,80 +1,84 @@
-.button-story-wrapper {
-  --outer-spacing: 3rem;
-  --inner-spacing: 1rem;
+@use "../../../style/layers";
 
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  grid-template-rows: 1fr auto 1fr;
-  gap: var(--outer-spacing);
+@layer components {
+  .button-story-wrapper {
+    --outer-spacing: 3rem;
+    --inner-spacing: 1rem;
 
-  &-labels-x {
     display: grid;
-    grid-column: 2/3;
-    grid-row: 1/2;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 1fr auto;
-    gap: var(--inner-spacing);
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: 1fr auto 1fr;
+    gap: var(--outer-spacing);
 
-    h2 {
-      grid-column: 1/-1;
+    &-labels-x {
+      display: grid;
+      grid-column: 2/3;
       grid-row: 1/2;
-      text-align: center;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr auto;
+      gap: var(--inner-spacing);
+
+      h2 {
+        grid-column: 1/-1;
+        grid-row: 1/2;
+        text-align: center;
+      }
     }
-  }
 
-  &-labels-y {
-    display: grid;
-    grid-column: 1/2;
-    grid-row: 2/3;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: repeat(5, 1fr);
-    gap: var(--inner-spacing);
-
-    h2 {
-      transform: rotate(180deg);
-
-      display: flex;
+    &-labels-y {
+      display: grid;
       grid-column: 1/2;
-      grid-row: 1/-1;
-      align-items: center;
-      justify-content: center;
+      grid-row: 2/3;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: repeat(5, 1fr);
+      gap: var(--inner-spacing);
 
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      white-space: nowrap;
+      h2 {
+        transform: rotate(180deg);
+
+        display: flex;
+        grid-column: 1/2;
+        grid-row: 1/-1;
+        align-items: center;
+        justify-content: center;
+
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        white-space: nowrap;
+      }
     }
-  }
 
-  &-label-header {
-    position: relative;
-  }
+    &-label-header {
+      position: relative;
+    }
 
-  &-label {
-    display: block;
-    align-self: center;
-    justify-self: center;
-
-    padding: 0.125rem 0.5rem;
-    border-radius: 0.25rem;
-
-    font-family: Menlo, Courier, monospace;
-    font-size: 0.625rem;
-    text-align: center;
-
-    background-color: var(--secondary-neutral-bg);
-  }
-
-  &-buttons {
-    display: grid;
-    grid-column: 2/3;
-    grid-row: 2/3;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    gap: var(--inner-spacing);
-
-    button {
+    &-label {
+      display: block;
       align-self: center;
       justify-self: center;
+
+      padding: 0.125rem 0.5rem;
+      border-radius: 0.25rem;
+
+      font-family: Menlo, Courier, monospace;
+      font-size: 0.625rem;
+      text-align: center;
+
+      background-color: var(--secondary-neutral-bg);
+    }
+
+    &-buttons {
+      display: grid;
+      grid-column: 2/3;
+      grid-row: 2/3;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      gap: var(--inner-spacing);
+
+      button {
+        align-self: center;
+        justify-self: center;
+      }
     }
   }
 }

@@ -1,200 +1,205 @@
+@use "../../../../style/layers";
 @use "../../../../style/shadows";
 @use "../../../../style/text";
 @use "../../../../style/flex";
 @use "../../../../style/variables";
 
-.desktop-navigation {
-  flex-grow: 1;
-  min-width: max-content;
+@layer components {
+  .desktop-navigation {
+    flex-grow: 1;
+    min-width: max-content;
 
-  &-routes {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &-primary-routes {
-    @include flex.row($gap: 0.5rem);
-
-    // Reset because Base-UI makes this a list:
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  &-secondary-routes {
-    @include flex.row($gap: 0.5rem);
-  }
-
-  &-primary-route {
-    @include flex.row($gap: 0.5rem);
-
-    &-icon {
-      display: block;
-      width: 1rem;
-      height: 1rem;
-      transition: transform 0.2s ease;
-
-      svg {
-        width: 100%;
-        height: 100%;
-      }
-
-      &[data-popup-open] {
-        transform: rotate(180deg);
-      }
-    }
-  }
-
-  &-child-routes {
-    @include flex.column($gap: 0.25rem);
-
-    box-sizing: border-box;
-    width: max-content;
-    min-width: fit-content;
-    padding: 0.5rem;
-
-    transition:
-      opacity calc(var(--duration) * 0.5) ease,
-      transform var(--duration) var(--easing);
-
-    &[data-starting-style],
-    &[data-ending-style] {
-      opacity: 0;
-    }
-
-    &[data-starting-style] {
-      &[data-activation-direction="left"] {
-        transform: translateX(-50%);
-      }
-
-      &[data-activation-direction="right"] {
-        transform: translateX(50%);
-      }
-    }
-
-    &[data-ending-style] {
-      &[data-activation-direction="left"] {
-        transform: translateX(50%);
-      }
-
-      &[data-activation-direction="right"] {
-        transform: translateX(-50%);
-      }
-    }
-  }
-
-  &-viewport {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-  }
-
-  &-positioner {
-    --easing: cubic-bezier(0.22, 1, 0.36, 1);
-    --duration: 0.35s;
-
-    width: var(--positioner-width);
-    max-width: var(--available-width);
-    height: var(--positioner-height);
-
-    transition-timing-function: var(--easing);
-    transition-duration: var(--duration);
-    transition-property: top, left, right, bottom;
-
-    &::before {
-      content: "";
-      position: absolute;
-    }
-
-    &[data-side="top"]::before {
-      right: 0;
-      bottom: -10px;
-      left: 0;
-      height: 10px;
-    }
-
-    &[data-side="bottom"]::before {
-      top: -10px;
-      right: 0;
-      left: 0;
-      height: 10px;
-    }
-
-    &[data-side="left"]::before {
-      top: 0;
-      right: -10px;
-      bottom: 0;
-      width: 10px;
-    }
-
-    &[data-side="right"]::before {
-      top: 0;
-      bottom: 0;
-      left: -10px;
-      width: 10px;
-    }
-
-    &[data-instant] {
-      transition: none;
-    }
-  }
-
-  &-popup {
-    @include shadows.elevated;
-
-    position: relative;
-    transform-origin: var(--transform-origin);
-
-    box-sizing: border-box;
-    width: min-content;
-    height: var(--popup-height);
-
-    transition-timing-function: var(--easing);
-    transition-duration: var(--duration);
-    transition-property: opacity, transform, width, height;
-
-    &[data-starting-style],
-    &[data-ending-style] {
-      transform: scale(0.9);
-      opacity: 0;
-    }
-
-    &[data-ending-style] {
-      transition-timing-function: ease;
-      transition-duration: 0.15s;
-    }
-
-    &-arrow {
+    &-routes {
       display: flex;
-      transition: left calc(var(--duration)) var(--easing);
+      justify-content: space-between;
+    }
 
-      &[data-side="top"] {
-        bottom: -8px;
-        rotate: 180deg;
+    &-primary-routes {
+      @include flex.row($gap: 0.5rem);
+
+      // Reset because Base-UI makes this a list:
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    &-secondary-routes {
+      @include flex.row($gap: 0.5rem);
+    }
+
+    &-primary-route {
+      @include flex.row($gap: 0.5rem);
+
+      color: inherit !important;
+
+      &-icon {
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        transition: transform 0.2s ease;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+
+        &[data-popup-open] {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    &-child-routes {
+      @include flex.column($gap: 0.25rem);
+
+      box-sizing: border-box;
+      width: max-content;
+      min-width: fit-content;
+      padding: 0.5rem;
+
+      transition:
+        opacity calc(var(--duration) * 0.5) ease,
+        transform var(--duration) var(--easing);
+
+      &[data-starting-style],
+      &[data-ending-style] {
+        opacity: 0;
       }
 
-      &[data-side="bottom"] {
-        top: -8px;
-        rotate: 0deg;
+      &[data-starting-style] {
+        &[data-activation-direction="left"] {
+          transform: translateX(-50%);
+        }
+
+        &[data-activation-direction="right"] {
+          transform: translateX(50%);
+        }
       }
 
-      &[data-side="left"] {
-        right: -13px;
-        rotate: 90deg;
+      &[data-ending-style] {
+        &[data-activation-direction="left"] {
+          transform: translateX(50%);
+        }
+
+        &[data-activation-direction="right"] {
+          transform: translateX(-50%);
+        }
+      }
+    }
+
+    &-viewport {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
+
+    &-positioner {
+      --easing: cubic-bezier(0.22, 1, 0.36, 1);
+      --duration: 0.35s;
+
+      width: var(--positioner-width);
+      max-width: var(--available-width);
+      height: var(--positioner-height);
+
+      transition-timing-function: var(--easing);
+      transition-duration: var(--duration);
+      transition-property: top, left, right, bottom;
+
+      &::before {
+        content: "";
+        position: absolute;
       }
 
-      &[data-side="right"] {
-        left: -13px;
-        rotate: -90deg;
+      &[data-side="top"]::before {
+        right: 0;
+        bottom: -10px;
+        left: 0;
+        height: 10px;
       }
 
-      &-fill {
-        fill: var(--passive-neutral-bg);
+      &[data-side="bottom"]::before {
+        top: -10px;
+        right: 0;
+        left: 0;
+        height: 10px;
       }
 
-      &-stroke {
-        fill: var(--passive-neutral-border);
+      &[data-side="left"]::before {
+        top: 0;
+        right: -10px;
+        bottom: 0;
+        width: 10px;
+      }
+
+      &[data-side="right"]::before {
+        top: 0;
+        bottom: 0;
+        left: -10px;
+        width: 10px;
+      }
+
+      &[data-instant] {
+        transition: none;
+      }
+    }
+
+    &-popup {
+      @include shadows.elevated;
+
+      position: relative;
+      transform-origin: var(--transform-origin);
+
+      box-sizing: border-box;
+      width: min-content;
+      height: var(--popup-height);
+
+      transition-timing-function: var(--easing);
+      transition-duration: var(--duration);
+      transition-property: opacity, transform, width, height;
+
+      &[data-starting-style],
+      &[data-ending-style] {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+
+      &[data-ending-style] {
+        transition-timing-function: ease;
+        transition-duration: 0.15s;
+      }
+
+      &-arrow {
+        display: flex;
+        transition: left calc(var(--duration)) var(--easing);
+
+        &[data-side="top"] {
+          bottom: -8px;
+          rotate: 180deg;
+        }
+
+        &[data-side="bottom"] {
+          top: -8px;
+          rotate: 0deg;
+        }
+
+        &[data-side="left"] {
+          right: -13px;
+          rotate: 90deg;
+        }
+
+        &[data-side="right"] {
+          left: -13px;
+          rotate: -90deg;
+        }
+
+        &-fill {
+          fill: var(--passive-neutral-bg);
+        }
+
+        &-stroke {
+          fill: var(--passive-neutral-border);
+        }
       }
     }
   }

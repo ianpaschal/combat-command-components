@@ -1,0 +1,5 @@
+// This file declares CSS layer order.
+// Import it in any .scss file that uses @layer to ensure the layer order is defined before usage.
+// SCSS's @use only emits this once in the final CSS output, so it's safe to import in every component.
+
+@layer base, variants, components;

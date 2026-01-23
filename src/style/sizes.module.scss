@@ -1,3 +1,5 @@
+@use "./layers";
+
 @mixin common($size: 2.5rem, $padding: 0.75rem, $collapsePadding: false) {
   // Ensure hit-box is at least 40px
   @if $size < 2.5rem {
@@ -48,14 +50,16 @@
   }
 }
 
-.size-small {
-  @include common($size: 2rem, $padding: 0.5rem);
-}
+@layer variants {
+  .size-small {
+    @include common($size: 2rem, $padding: 0.5rem);
+  }
 
-.size-normal {
-  @include common($size: 2.5rem, $padding: 0.75rem);
-}
+  .size-normal {
+    @include common($size: 2.5rem, $padding: 0.75rem);
+  }
 
-.size-large {
-  @include common($size: 3rem, $padding: 1rem);
+  .size-large {
+    @include common($size: 3rem, $padding: 1rem);
+  }
 }

@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Dialog } from '@base-ui/react/dialog';
 import clsx from 'clsx';
 import { Menu, X } from 'lucide-react';
@@ -27,6 +27,7 @@ export const MobileNavigation = ({
   routes,
   secondaryRoutes = [],
 }: MobileNavigationProps): JSX.Element => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -46,17 +47,22 @@ export const MobileNavigation = ({
             {routes.map((route) => (
               <Fragment key={route.path}>
                 <Dialog.Close nativeButton={false} render={(props) => (
-                  <Link {...props} to={route.path} className={linkClassName}>
+                  <button {...props} onClick={() => navigate(route.path)} className={linkClassName}>
+                    {route.icon}
                     {route.title}
-                  </Link>
+                  </button>
                 )} />
                 {route.children && route.children.length > 0 && (
                   <div className={clsx(styles.mobileNavigationChildRoutes)}>
                     {route.children.map((childRoute) => (
                       <Dialog.Close key={childRoute.path} nativeButton={false} render={(props) => (
-                        <Link {...props} to={childRoute.path} className={linkClassName}>
+                        <button
+                          {...props}
+                          className={linkClassName}
+                          onClick={() => navigate(childRoute.path)}
+                        >
                           {childRoute.title}
-                        </Link>
+                        </button>
                       )} />
                     ))}
                   </div>
@@ -65,10 +71,10 @@ export const MobileNavigation = ({
             ))}
             {secondaryRoutes.map((route) => (
               <Dialog.Close key={route.path} nativeButton={false} render={(props) => (
-                <Link {...props} to={route.path} className={linkClassName}>
+                <button {...props} onClick={() => navigate(route.path)} className={linkClassName}>
                   {route.icon}
                   {route.title}
-                </Link>
+                </button>
               )} />
             ))}
           </nav>

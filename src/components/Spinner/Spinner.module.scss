@@ -1,21 +1,25 @@
-.spinner {
-  transform-origin: center center;
+@use "../../style/layers";
 
-  box-sizing: border-box;
-  border-color: currentcolor;
-  border-style: solid;
-  border-top-color: transparent;
-  border-radius: 50%;
+@layer components {
+  .spinner {
+    transform-origin: center center;
 
-  animation: spin 1s linear infinite;
-}
+    box-sizing: border-box;
+    border-color: currentcolor;
+    border-style: solid;
+    border-top-color: transparent;
+    border-radius: 50%;
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
+    animation: spin 1s linear infinite;
   }
 
-  100% {
-    transform: rotate(360deg);
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
   }
 }

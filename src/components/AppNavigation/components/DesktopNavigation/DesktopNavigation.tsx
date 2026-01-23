@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { NavigationMenu } from '@base-ui/react/navigation-menu';
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
@@ -41,18 +41,23 @@ export const DesktopNavigation = ({
                   <NavigationMenu.Content className={styles.desktopNavigationChildRoutes}>
                     {route.children.map((childRoute) => (
                       <NavigationMenu.Link key={childRoute.path} render={(props) => (
-                        <Link {...props} to={childRoute.path} className={linkClassName}>
+                        <button
+                          {...props}
+                          className={linkClassName}
+                          onClick={() => navigate(childRoute.path)}
+                        >
                           {childRoute.title}
-                        </Link>
+                        </button>
                       )} />
                     ))}
                   </NavigationMenu.Content>
                 </>
               ) : (
-                <NavigationMenu.Link render={() => (
-                  <Link to={route.path} className={linkClassName}>
+                <NavigationMenu.Link render={(props) => (
+                  <button {...props} onClick={() => navigate(route.path)} className={linkClassName}>
+                    {route.icon}
                     {route.title}
-                  </Link>
+                  </button>
                 )} />
               )}
             </NavigationMenu.Item>
@@ -61,14 +66,14 @@ export const DesktopNavigation = ({
         {secondaryRoutes.length > 0 && (
           <div className={styles.desktopNavigationSecondaryRoutes}>
             {secondaryRoutes.map((route) => (
-              <Link key={route.path} to={route.path} className={linkClassName}>
+              <button onClick={() => navigate(route.path)} className={linkClassName}>
                 {route.icon && (
                   <span className={styles.desktopNavigationPrimaryRouteIcon}>
                     {route.icon}
                   </span>
                 )}
                 {route.title}
-              </Link>
+              </button>
             ))}
           </div>
         )}

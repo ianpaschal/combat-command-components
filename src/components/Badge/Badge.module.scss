@@ -1,57 +1,60 @@
+@use "../../style/layers";
 @use "../../style/text";
 
-.Badge {
-  position: relative;
+@layer components {
+  .Badge {
+    position: relative;
 
-  &[data-badge-visible]::after {
-    --size: 1.25rem;
-    --content-size: 0.75rem;
-    --padding-y: calc((var(--size) - var(--content-size)) / 2);
-    --padding-x: calc(var(--padding-y) + 0.125rem);
+    &[data-badge-visible]::after {
+      --size: 1.25rem;
+      --content-size: 0.75rem;
+      --padding-y: calc((var(--size) - var(--content-size)) / 2);
+      --padding-x: calc(var(--padding-y) + 0.125rem);
 
-    @include text.shared;
+      @include text.shared;
 
-    content: var(--badge-value);
+      content: var(--badge-value);
 
-    position: absolute;
-    top: calc(var(--size) / -2);
-    right: calc(var(--size) / -2);
+      position: absolute;
+      top: calc(var(--size) / -2);
+      right: calc(var(--size) / -2);
 
-    box-sizing: border-box;
-    min-width: var(--size);
-    height: var(--size);
-    padding: var(--padding-y) var(--padding-x);
-    padding-left: calc(var(--padding-x) + 1px);
-    border-radius: calc(var(--size) / 2);
+      box-sizing: border-box;
+      min-width: var(--size);
+      height: var(--size);
+      padding: var(--padding-y) var(--padding-x);
+      padding-left: calc(var(--padding-x) + 1px);
+      border-radius: calc(var(--size) / 2);
 
-    font-size: var(--content-size);
-    font-weight: 500;
-    line-height: var(--content-size);
-    text-align: center;
-  }
+      font-size: var(--content-size);
+      font-weight: 500;
+      line-height: var(--content-size);
+      text-align: center;
+    }
 
-  &[data-badge-intent="default"]::after {
-    color: var(--primary-default-text);
-    background: var(--primary-default-bg);
-  }
+    &[data-badge-intent="default"]::after {
+      color: var(--primary-default-text);
+      background: var(--primary-default-bg);
+    }
 
-  &[data-badge-intent="danger"]::after {
-    color: var(--primary-danger-text);
-    background: var(--primary-danger-bg);
-  }
+    &[data-badge-intent="danger"]::after {
+      color: var(--primary-danger-text);
+      background: var(--primary-danger-bg);
+    }
 
-  &[data-badge-intent="warning"]::after {
-    color: var(--primary-warning-text);
-    background: var(--primary-warning-bg);
-  }
+    &[data-badge-intent="warning"]::after {
+      color: var(--primary-warning-text);
+      background: var(--primary-warning-bg);
+    }
 
-  &[data-badge-intent="success"]::after {
-    color: var(--primary-success-text);
-    background: var(--primary-success-bg);
-  }
+    &[data-badge-intent="success"]::after {
+      color: var(--primary-success-text);
+      background: var(--primary-success-bg);
+    }
 
-  &[data-badge-intent="info"]::after {
-    color: var(--primary-info-text);
-    background: var(--primary-info-bg);
+    &[data-badge-intent="info"]::after {
+      color: var(--primary-info-text);
+      background: var(--primary-info-bg);
+    }
   }
 }

@@ -1,3 +1,4 @@
+@use "./layers";
 @use "./variables";
 @use "./text";
 
@@ -55,16 +56,6 @@ $sides: "top", "right", "bottom", "left";
   }
 }
 
-.primary {
-  @include primary;
-
-  @each $intent in $intents {
-    &.#{$intent} {
-      @include primary($intent);
-    }
-  }
-}
-
 @mixin secondary($intent: "neutral") {
   @include common;
 
@@ -78,16 +69,6 @@ $sides: "top", "right", "bottom", "left";
 
   &:not(:disabled, [data-disabled]):active {
     background-color: var(--secondary-#{$intent}-bg-active);
-  }
-}
-
-.secondary {
-  @include secondary;
-
-  @each $intent in $intents {
-    &.#{$intent} {
-      @include secondary($intent);
-    }
   }
 }
 
@@ -113,16 +94,6 @@ $sides: "top", "right", "bottom", "left";
   }
 }
 
-.outlined {
-  @include outlined;
-
-  @each $intent in $intents {
-    &.#{$intent} {
-      @include outlined($intent);
-    }
-  }
-}
-
 @mixin ghost($intent: "neutral") {
   @include common;
 
@@ -139,16 +110,6 @@ $sides: "top", "right", "bottom", "left";
   }
 }
 
-.ghost {
-  @include ghost;
-
-  @each $intent in $intents {
-    &.#{$intent} {
-      @include ghost($intent);
-    }
-  }
-}
-
 @mixin passive($intent: "neutral") {
   @include text.ui;
 
@@ -156,16 +117,58 @@ $sides: "top", "right", "bottom", "left";
   background-color: var(--passive-#{$intent}-bg);
 }
 
-.passive {
-  @include passive;
+@layer variants {
+  .primary {
+    @include primary;
 
-  @each $intent in $intents {
-    &.#{$intent} {
-      @include passive($intent);
+    @each $intent in $intents {
+      &.#{$intent} {
+        @include primary($intent);
+      }
     }
+  }
 
-    &.muted {
-      @include passive("muted");
+  .secondary {
+    @include secondary;
+
+    @each $intent in $intents {
+      &.#{$intent} {
+        @include secondary($intent);
+      }
+    }
+  }
+
+  .outlined {
+    @include outlined;
+
+    @each $intent in $intents {
+      &.#{$intent} {
+        @include outlined($intent);
+      }
+    }
+  }
+
+  .ghost {
+    @include ghost;
+
+    @each $intent in $intents {
+      &.#{$intent} {
+        @include ghost($intent);
+      }
+    }
+  }
+
+  .passive {
+    @include passive;
+
+    @each $intent in $intents {
+      &.#{$intent} {
+        @include passive($intent);
+      }
+
+      &.muted {
+        @include passive("muted");
+      }
     }
   }
 }

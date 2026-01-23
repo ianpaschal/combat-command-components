@@ -1,80 +1,85 @@
+@use "../../../../style/layers";
 @use "../../../../style/flex";
 @use "../../../../style/shadows";
 @use "../../../../style/text";
 
-.mobile-navigation {
-  &-backdrop {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+@layer components {
+  .mobile-navigation {
+    &-backdrop {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
 
-    background-color: var(--modal-backdrop-bg);
+      background-color: var(--modal-backdrop-bg);
 
-    transition: opacity 0.3s ease;
+      transition: opacity 0.3s ease;
 
-    &[data-starting-style],
-    &[data-ending-style] {
-      opacity: 0;
-    }
-  }
-
-  &-drawer {
-    @include shadows.elevated;
-
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    bottom: 0;
-    left: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    width: 20rem;
-    max-width: calc(100vw - 2rem);
-
-    background-color: var(--passive-neutral-bg);
-
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    &[data-starting-style],
-    &[data-ending-style] {
-      transform: translateX(-100%);
+      &[data-starting-style],
+      &[data-ending-style] {
+        opacity: 0;
+      }
     }
 
-    @media (width <= 480px) {
-      width: calc(100vw - 1rem);
+    &-drawer {
+      @include shadows.elevated;
+
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      bottom: 0;
+      left: 0;
+
+      display: flex;
+      flex-direction: column;
+
+      width: 20rem;
+      max-width: calc(100vw - 2rem);
+
+      background-color: var(--passive-neutral-bg);
+
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+      &[data-starting-style],
+      &[data-ending-style] {
+        transform: translateX(-100%);
+      }
+
+      @media (width <= 480px) {
+        width: calc(100vw - 1rem);
+      }
     }
-  }
 
-  &-header {
-    @include flex.row;
+    &-header {
+      @include flex.row;
 
-    justify-content: space-between;
-    height: var(--app-bar-height);
-    padding: 0 1rem;
+      justify-content: space-between;
+      height: var(--app-bar-height);
+      padding: 0 1rem;
 
-    &-logo {
-      width: var(--app-bar-logo-size);
-      height: var(--app-bar-logo-size);
+      &-logo {
+        width: var(--app-bar-logo-size);
+        height: var(--app-bar-logo-size);
+      }
     }
-  }
 
-  &-routes-list {
-    @include flex.column($gap: 0.5rem);
+    &-routes-list {
+      @include flex.column($gap: 0.5rem);
 
-    padding: 1.5rem;
-  }
+      padding: 1.5rem;
+    }
 
-  &-child-routes {
-    @include flex.column($gap: 0.25rem);
+    &-child-routes {
+      @include flex.column($gap: 0.25rem);
 
-    padding-left: 1rem;
-  }
+      padding-left: 1rem;
+    }
 
-  &-primary-route {
-    @include flex.row($gap: 0.5rem);
+    &-primary-route {
+      @include flex.row($gap: 0.5rem);
+
+      color: inherit !important;
+    }
   }
 }

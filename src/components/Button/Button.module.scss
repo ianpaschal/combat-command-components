@@ -1,21 +1,24 @@
+@use "../../style/layers";
 @use "../../style/flex";
 
-.button {
-  @include flex.row($xAlign: center, $gap: 0.5rem);
+@layer components {
+  .button {
+    @include flex.row($xAlign: center, $gap: 0.5rem);
 
-  position: relative;
-  flex-shrink: 0;
-  box-sizing: border-box;
-  white-space: nowrap;
+    position: relative;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    white-space: nowrap;
 
-  &[data-reverse="true"] {
-    flex-direction: row-reverse;
-  }
+    &[data-reverse="true"] {
+      flex-direction: row-reverse;
+    }
 
-  // This is a bit hacky, but dramatically improves how the buttons render on Safari:
-  &[data-safari="true"] {
-    span {
-      transform: translateY(1px);
+    // This is a bit hacky, but dramatically improves how the buttons render on Safari:
+    &[data-safari="true"] {
+      span {
+        transform: translateY(1px);
+      }
     }
   }
 }
