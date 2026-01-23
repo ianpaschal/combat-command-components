@@ -6,6 +6,8 @@ export * from './components/Badge';
 export * from './components/Button';
 export * from './components/DialogManager';
 export * from './components/InputText';
+export * from './components/Radio';
+export * from './components/RatioBar';
 export * from './components/Select';
 export * from './components/Spinner';
 export * from './components/Table';

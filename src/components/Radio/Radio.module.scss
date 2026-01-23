@@ -1,0 +1,65 @@
+@use "../../style/layers";
+@use "../../style/flex";
+@use "../../style/variables";
+
+@layer components {
+  .radio {
+    @include flex.column($gap: 0.5rem);
+
+    &-item {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+
+      &-control {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        box-sizing: border-box;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin: 0;
+        padding: 0;
+        border-radius: 100%;
+
+        background-color: transparent;
+        outline: 0;
+
+        &[data-checked] {
+          border-color: var(--primary-neutral-bg);
+          border-width: 6px;
+
+          &:hover {
+            border-color: var(--primary-neutral-bg-hover);
+          }
+        }
+
+        // &:focus-visible {
+        //   outline: 2px solid teal;
+        //   outline-offset: 2px;
+        // }
+      }
+
+      &-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::before {
+          content: "";
+
+          width: 0.5rem;
+          height: 0.5rem;
+          border-radius: 100%;
+
+          background-color: pink;
+        }
+
+        &[data-unchecked] {
+          display: none;
+        }
+      }
+    }
+  }
+}
