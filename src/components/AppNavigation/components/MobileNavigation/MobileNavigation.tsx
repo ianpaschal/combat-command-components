@@ -1,5 +1,4 @@
 import { Fragment, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Dialog } from '@base-ui/react/dialog';
 import clsx from 'clsx';
 import { Menu, X } from 'lucide-react';
@@ -8,6 +7,7 @@ import { getStyleClassNames } from '../../../../utils/getStyleClassNames';
 import { AppLogo } from '../../../AppLogo';
 import { Button } from '../../../Button';
 import { Route, SecondaryRoute } from '../../AppNavigation.types';
+import { useAppNavigate } from '../../AppNavigation.hooks';
 
 import styles from './MobileNavigation.module.scss';
 
@@ -27,7 +27,7 @@ export const MobileNavigation = ({
   routes,
   secondaryRoutes = [],
 }: MobileNavigationProps): JSX.Element => {
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>

@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router-dom';
 import { NavigationMenu } from '@base-ui/react/navigation-menu';
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
 
 import { getStyleClassNames } from '../../../../utils/getStyleClassNames';
 import { Route, SecondaryRoute } from '../../AppNavigation.types';
+import { useAppNavigate } from '../../AppNavigation.hooks';
 
 import styles from './DesktopNavigation.module.scss';
 
@@ -23,7 +23,7 @@ export const DesktopNavigation = ({
   routes,
   secondaryRoutes = [],
 }: NavigationProps): JSX.Element => {
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   return (
     <NavigationMenu.Root className={styles.desktopNavigation}>
       <div className={styles.desktopNavigationRoutes}>
