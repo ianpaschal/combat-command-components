@@ -66,7 +66,7 @@ export const DesktopNavigation = ({
         {secondaryRoutes.length > 0 && (
           <div className={styles.desktopNavigationSecondaryRoutes}>
             {secondaryRoutes.map((route) => (
-              <button onClick={() => navigate(route.path)} className={linkClassName}>
+              <button key={route.path} onClick={() => navigate(route.path)} className={linkClassName}>
                 {route.icon && (
                   <span className={styles.desktopNavigationPrimaryRouteIcon}>
                     {route.icon}
