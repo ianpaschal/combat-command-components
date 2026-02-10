@@ -113,7 +113,7 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
           </BaseSelect.Icon>
         </BaseSelect.Trigger>
         <BaseSelect.Portal>
-          <BaseSelect.Positioner className={styles.positioner} sideOffset={8} collisionPadding={8}>
+          <BaseSelect.Positioner className={styles.positioner} sideOffset={8}>
             <BaseSelect.Popup
               className={clsx(styles.selectPopup, getStyleClassNames({
                 border: true,

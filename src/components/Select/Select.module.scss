@@ -9,8 +9,6 @@
 
     @include flex.row($gap: 0);
 
-    width: 100%;
-
     &-trigger {
       @include flex.row($gap: 0.5rem);
 
@@ -54,7 +52,6 @@
 
       box-sizing: border-box;
       min-width: var(--anchor-width);
-      max-height: var(--available-height, 80vh);
 
       // TODO: Animations
       // transition: transform 150ms, opacity 150ms;
@@ -74,8 +71,6 @@
     }
 
     &-list {
-      overflow-y: auto;
-      max-height: inherit;
       padding: calc(0.5rem - var(--border-width));
     }
 
