@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
 
 import { getStyleClassNames } from '../../../../utils/getStyleClassNames';
-import { Route, SecondaryRoute } from '../../AppNavigation.types';
 import { useAppNavigate } from '../../AppNavigation.hooks';
+import { Route, SecondaryRoute } from '../../AppNavigation.types';
 
 import styles from './DesktopNavigation.module.scss';
 

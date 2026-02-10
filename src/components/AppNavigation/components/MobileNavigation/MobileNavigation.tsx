@@ -6,8 +6,8 @@ import { Menu, X } from 'lucide-react';
 import { getStyleClassNames } from '../../../../utils/getStyleClassNames';
 import { AppLogo } from '../../../AppLogo';
 import { Button } from '../../../Button';
-import { Route, SecondaryRoute } from '../../AppNavigation.types';
 import { useAppNavigate } from '../../AppNavigation.hooks';
+import { Route, SecondaryRoute } from '../../AppNavigation.types';
 
 import styles from './MobileNavigation.module.scss';
 
