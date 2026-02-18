@@ -23,7 +23,7 @@ const SIDE_TO_SWIPE_DIRECTION: Record<DrawerSide, DrawerRootProps['swipeDirectio
   bottom: 'down',
   left: 'left',
   right: 'right',
-} as const;
+};
 
 export interface DrawerProps {
   children: ReactNode;
