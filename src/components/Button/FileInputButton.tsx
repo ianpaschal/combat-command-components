@@ -4,7 +4,7 @@ import { Button, ButtonProps } from './Button';
 
 export interface FileInputButtonProps extends Omit<ButtonProps, 'onChange' | 'onClick'> {
   accept?: string[];
-  onChange?: (files: FileList) => void;
+  onChange?: (files: File[]) => void;
 }
 
 export const FileInputButton = ({
@@ -17,8 +17,9 @@ export const FileInputButton = ({
     if (!event.target.files || event.target.files.length === 0) {
       return;
     }
-    onChange?.(event.target.files);
+    const files = Array.from(event.target.files);
     event.target.value = '';
+    onChange?.(files);
   };
   return (
     <>

@@ -11,7 +11,7 @@
 
       min-height: 100dvh;
 
-      opacity: calc(1 * (1 - var(--drawer-swipe-progress)));
+      opacity: calc(1 - var(--drawer-swipe-progress));
       background-color: var(--modal-backdrop-bg);
 
       transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
