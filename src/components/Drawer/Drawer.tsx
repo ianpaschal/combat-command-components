@@ -56,6 +56,8 @@ export const Drawer = ({
   const handleOpenChange = (nextOpen: boolean): void => {
     if (!nextOpen) {
       onClose?.(dirty);
+    } else {
+      setDirty(false);
     }
   };
 
