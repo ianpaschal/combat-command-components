@@ -1,8 +1,13 @@
-import { ReactNode, useLayoutEffect } from 'react';
+import {
+  CSSProperties,
+  ReactNode,
+  useLayoutEffect,
+} from 'react';
 import { Dialog as BaseDialog } from '@base-ui/react/dialog';
 import clsx from 'clsx';
 import { X } from 'lucide-react';
 
+import { getCssVariable } from '../../utils/getCssVariable';
 import { getStyleClassNames } from '../../utils/getStyleClassNames';
 import { Button, ButtonProps } from '../Button';
 import { ScrollArea } from '../ScrollArea';
@@ -22,6 +27,7 @@ export type DialogProps = {
   dirty: boolean;
   disablePadding?: boolean;
   id: string;
+  maxWidth?: CSSProperties['maxWidth'];
   onCancel?: (dirty: boolean) => void;
   open: boolean;
   preventCancel?: boolean;
@@ -40,6 +46,7 @@ export const Dialog = ({
   dirty,
   disablePadding = false,
   id,
+  maxWidth,
   nested,
   onCancel,
   open: isOpen,
@@ -87,7 +94,10 @@ export const Dialog = ({
     >
       <BaseDialog.Portal>
         <BaseDialog.Backdrop className={styles.dialogBackdrop} onClick={() => !preventCancel && handleOpenChange(false)} />
-        <BaseDialog.Popup className={clsx(getStyleClassNames({ corners: 'wide' }), styles.dialogPopup)}>
+        <BaseDialog.Popup
+          className={clsx(getStyleClassNames({ corners: 'wide' }), styles.dialogPopup)}
+          style={getCssVariable('--dialog-max-width', maxWidth)}
+        >
           <div className={styles.dialogHeader}>
             <BaseDialog.Title>
               {title}

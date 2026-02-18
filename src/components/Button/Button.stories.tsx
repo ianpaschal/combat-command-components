@@ -1,8 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Mail, Plus } from 'lucide-react';
+import {
+  Mail,
+  Plus,
+  Upload,
+} from 'lucide-react';
 
 import { ButtonStoryWrapper } from './stories/ButtonStoryWrapper';
 import { Button } from './Button';
+import { FileInputButton } from './FileInputButton';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
@@ -146,4 +151,22 @@ export const VisualComparison: Story = {
     },
   },
   render: (args) => <ButtonStoryWrapper {...args} />,
+};
+
+export const FileInput: StoryObj<typeof FileInputButton> = {
+  name: 'File Input',
+  args: {
+    accept: ['.pdf', '.png', '.jpg'],
+    collapsePadding: false,
+    disabled: false,
+    icon: <Upload />,
+    iconPosition: 'start',
+    intent: 'neutral',
+    loading: false,
+    rounded: false,
+    size: 'normal',
+    text: 'Upload File',
+    variant: 'primary',
+  },
+  render: (args) => <FileInputButton {...args} />,
 };
