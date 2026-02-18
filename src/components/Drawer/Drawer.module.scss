@@ -92,6 +92,7 @@
 
       &[data-swiping] {
         user-select: none;
+        transition-duration: 0ms;
       }
 
       &[data-ending-style] {
