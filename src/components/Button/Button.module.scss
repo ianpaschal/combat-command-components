@@ -16,7 +16,7 @@
 
     // This is a bit hacky, but dramatically improves how the buttons render on Safari:
     &[data-safari="true"] {
-      span {
+      span, label {
         transform: translateY(1px);
       }
     }

@@ -1,0 +1,11 @@
+export declare const dark: string;
+export declare const drawerBackdrop: string;
+export declare const drawerContent: string;
+export declare const drawerHandle: string;
+export declare const drawerHandleIndicator: string;
+export declare const drawerHeader: string;
+export declare const drawerHeaderClose: string;
+export declare const drawerInner: string;
+export declare const drawerPopup: string;
+export declare const drawerScrollArea: string;
+export declare const drawerViewport: string;
