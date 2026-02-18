@@ -61,11 +61,11 @@ export const Drawer = ({
     }
   };
 
-  const contextValue: DrawerContext = {
+  const contextValue = useMemo<DrawerContext>(() => ({
     close: () => actionsRef.current?.close(),
     dirty,
     setDirty,
-  };
+  }), [dirty, setDirty]);
 
   return (
     <BaseDrawer.Root
