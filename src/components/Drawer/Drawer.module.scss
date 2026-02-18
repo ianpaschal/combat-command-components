@@ -34,10 +34,6 @@
       @supports (-webkit-touch-callout: none) {
         position: absolute;
       }
-
-      .dark & {
-        opacity: calc(0.7 * (1 - var(--drawer-swipe-progress)));
-      }
     }
 
     &-viewport {
@@ -86,8 +82,7 @@
       display: grid;
       grid-template-areas: "header" "body";
       grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: auto auto 1fr;
-
+      grid-template-rows: auto 1fr;
 
       box-sizing: border-box;
 

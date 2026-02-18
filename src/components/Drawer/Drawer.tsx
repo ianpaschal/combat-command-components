@@ -2,6 +2,7 @@ import {
   CSSProperties,
   ReactElement,
   ReactNode,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -61,7 +62,7 @@ export const Drawer = ({
     }
   };
 
-  const contextValue = useMemo<DrawerContext>(() => ({
+  const context = useMemo<DrawerContext>(() => ({
     close: () => actionsRef.current?.close(),
     dirty,
     setDirty,
@@ -90,7 +91,7 @@ export const Drawer = ({
                   <Button {...props} className={styles.drawerHeaderClose} icon={<X />} variant="ghost" />
                 )} />
               </div>
-              <DrawerContextProvider value={contextValue}>
+              <DrawerContextProvider value={context}>
                 <ScrollArea className={styles.drawerScrollArea} indicators={{ top: { border: true }, bottom: { border: true } }}>
                   <div className={styles.drawerContent} data-padding={!disablePadding}>
                     {children}

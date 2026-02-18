@@ -18,6 +18,7 @@ export const FileInputButton = ({
       return;
     }
     onChange?.(event.target.files);
+    event.target.value = '';
   };
   return (
     <>
