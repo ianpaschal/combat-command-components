@@ -2,7 +2,7 @@ import { ChangeEvent, useRef } from 'react';
 
 import { Button, ButtonProps } from './Button';
 
-export interface FileInputButtonProps extends Omit<ButtonProps, 'onChange'> {
+export interface FileInputButtonProps extends Omit<ButtonProps, 'onChange' | 'onClick'> {
   accept?: string[];
   onChange?: (files: FileList) => void;
 }
