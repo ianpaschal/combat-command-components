@@ -4,11 +4,13 @@ import { Button, ButtonProps } from './Button';
 
 export interface FileInputButtonProps extends Omit<ButtonProps, 'onChange' | 'onClick'> {
   accept?: string[];
+  multiple?: boolean;
   onChange?: (files: File[]) => void;
 }
 
 export const FileInputButton = ({
   accept = [],
+  multiple = false,
   onChange,
   ...props
 }: FileInputButtonProps): JSX.Element => {
@@ -28,6 +30,7 @@ export const FileInputButton = ({
         ref={ref}
         type="file"
         accept={accept.join(',')}
+        multiple={multiple}
         onChange={handleChange}
         style={{ display: 'none' }}
       />

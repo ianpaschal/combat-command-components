@@ -172,7 +172,7 @@
         inset: 0 0 auto;
 
         margin-top: calc(-1 * var(--bleed));
-        padding-top: calc(var(--modal-padding) + var(--bleed));
+        padding-top: var(--bleed);
         padding-bottom: var(--modal-padding);
         border-radius: 0 0 var(--border-radius-wide) var(--border-radius-wide);
 
