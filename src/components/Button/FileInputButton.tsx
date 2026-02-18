@@ -13,7 +13,7 @@ export const FileInputButton = ({
   ...props
 }: FileInputButtonProps): JSX.Element => {
   const ref = useRef<HTMLInputElement>(null);
-  const handleChange = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     if (!event.target.files || event.target.files.length === 0) {
       return;
     }
