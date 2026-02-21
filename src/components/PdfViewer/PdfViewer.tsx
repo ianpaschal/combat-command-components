@@ -20,16 +20,18 @@ pdfjs.GlobalWorkerOptions.workerSrc = DEFAULT_WORKER_SRC;
 export interface PdfViewerProps extends Partial<PdfViewerConfig> {
   className?: string;
   file: string | File | ArrayBuffer | null;
-  showControls?: boolean;
+  fileName?: string;
   loading?: boolean;
+  showControls?: boolean;
   workerSrc?: string;
 }
 
 export const PdfViewer = ({
   className,
   file,
-  showControls = true,
+  fileName,
   loading = false,
+  showControls = true,
   workerSrc,
   ...restConfig
 }: PdfViewerProps): JSX.Element => {
@@ -60,7 +62,7 @@ export const PdfViewer = ({
               </div>
             )}
           >
-            {viewer.state.numPages && Array.from({ length: viewer.state.numPages }, (_, i) => (
+            {viewer.state.numPages !== null && Array.from({ length: viewer.state.numPages }, (_, i) => (
               <div key={`page_${i + 1}`} data-page-number={i + 1}>
                 <Page
                   pageNumber={i + 1}
@@ -73,8 +75,10 @@ export const PdfViewer = ({
           </Document>
         </div>
       )}
-      {showControls && (
+      {showControls && !loading && (
         <PdfViewerControls
+          file={file}
+          fileName={fileName}
           state={viewer.state}
           config={viewer.config}
           controls={viewer.controls}
