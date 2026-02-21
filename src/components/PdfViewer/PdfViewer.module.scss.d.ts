@@ -1,0 +1,9 @@
+export declare const pdfViewer: string;
+export declare const pdfViewerContent: string;
+export declare const pdfViewerControls: string;
+export declare const pdfViewerLoading: string;
+export declare const pdfViewerPageInfo: string;
+export declare const pdfViewerSeparator: string;
+export declare const pdfViewerZoomInfo: string;
+export declare const reactPdfDocument: string;
+export declare const reactPdfPage: string;
