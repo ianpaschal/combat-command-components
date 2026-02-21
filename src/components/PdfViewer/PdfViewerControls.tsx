@@ -16,6 +16,7 @@ import {
   PdfViewerControlHandlers,
   PdfViewerState,
 } from './PdfViewer.types';
+import { download } from './PdfViewer.utils';
 
 import styles from './PdfViewerControls.module.scss';
 
@@ -31,45 +32,10 @@ export const PdfViewerControls = ({
   config,
   controls,
   file,
-  fileName = 'document',
+  fileName,
   state,
 }: PdfViewerControlsProps): JSX.Element => {
-  const handleDownload = useCallback(async () => {
-    if (!file) {
-      return;
-    }
-
-    let url: string | undefined;
-    try {
-      let blob: Blob;
-      if (file instanceof File) {
-        blob = file;
-      } else if (file instanceof ArrayBuffer) {
-        blob = new Blob([file], { type: 'application/pdf' });
-      } else {
-        const response = await fetch(file);
-        if (!response.ok) {
-          throw new Error(`Download failed: ${response.status} ${response.statusText}`);
-        }
-        blob = await response.blob();
-      }
-
-      url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${fileName}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (error) {
-      console.error('[PdfViewer] Failed to download file:', error);
-    } finally {
-      if (url) {
-        window.URL.revokeObjectURL(url);
-      }
-    }
-  }, [file, fileName]);
-
+  const handleDownload = useCallback(() => download(file, fileName), [file, fileName]);
   return (
     <div className={clsx(styles.pdfViewerControls, ...getStyleClassNames({
       border: 'top',
