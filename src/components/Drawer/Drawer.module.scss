@@ -228,7 +228,12 @@
     &-content {
       @include text.ui;
 
-      padding: 0 var(--modal-padding) var(--modal-padding);
+      display: flex;
+      grid-area: body;
+      flex-direction: column;
+
+      min-height: 0;
+      padding: 0 var(--modal-padding);
 
       &[data-padding="false"] {
         padding: 0;

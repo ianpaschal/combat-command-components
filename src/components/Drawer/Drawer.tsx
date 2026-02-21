@@ -30,6 +30,7 @@ export interface DrawerProps {
   children: ReactNode;
   className?: string;
   disablePadding?: boolean;
+  disableScroll?: boolean;
   maxSize?: CSSProperties['maxWidth'];
   onClose?: (dirty: boolean) => void;
   onOpenChangeComplete?: (open: boolean) => void;
@@ -43,6 +44,7 @@ export const Drawer = ({
   children,
   className,
   disablePadding = false,
+  disableScroll = false,
   maxSize,
   onClose,
   onOpenChangeComplete,
@@ -92,11 +94,20 @@ export const Drawer = ({
                 )} />
               </div>
               <DrawerContextProvider value={context}>
-                <ScrollArea className={styles.drawerScrollArea} indicators={{ top: { border: true }, bottom: { border: true } }}>
+                {disableScroll ? (
                   <div className={styles.drawerContent} data-padding={!disablePadding}>
                     {children}
                   </div>
-                </ScrollArea>
+                ) : (
+                  <ScrollArea
+                    className={styles.drawerScrollArea}
+                    indicators={{ top: { border: true }, bottom: { border: true } }}
+                  >
+                    <div className={styles.drawerContent} data-padding={!disablePadding}>
+                      {children}
+                    </div>
+                  </ScrollArea>
+                )}
               </DrawerContextProvider>
             </BaseDrawer.Content>
             <div className={styles.drawerHandle}>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { longContent } from '../../fixtures';
@@ -9,7 +9,7 @@ import { useDialogManager } from './DialogManager.hooks';
 
 interface StoryArgs {
   title: string;
-  content: string;
+  content: ReactNode;
   maxWidth?: string | number;
   preventCancel?: boolean;
   disablePadding?: boolean;

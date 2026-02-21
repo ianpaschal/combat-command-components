@@ -26,6 +26,7 @@ export type DialogProps = {
   content?: ReactNode;
   dirty: boolean;
   disablePadding?: boolean;
+  disableScroll?: boolean;
   id: string;
   maxWidth?: CSSProperties['maxWidth'];
   onCancel?: (dirty: boolean) => void;
@@ -45,6 +46,7 @@ export const Dialog = ({
   content,
   dirty,
   disablePadding = false,
+  disableScroll = false,
   id,
   maxWidth,
   nested,
@@ -109,11 +111,20 @@ export const Dialog = ({
             )}
           </div>
           <DialogContextProvider value={contextValue}>
-            <ScrollArea className={styles.dialogScrollArea} indicators={{ top: { border: true }, bottom: { border: true } }}>
+            {disableScroll ? (
               <div className={styles.dialogContent} data-padding={!disablePadding}>
                 {renderContent ? renderContent(contextValue) : content}
               </div>
-            </ScrollArea>
+            ) : (
+              <ScrollArea
+                className={styles.dialogScrollArea}
+                indicators={{ top: { border: true }, bottom: { border: true } }}
+              >
+                <div className={styles.dialogContent} data-padding={!disablePadding}>
+                  {renderContent ? renderContent(contextValue) : content}
+                </div>
+              </ScrollArea>
+            )}
           </DialogContextProvider>
           <div className={styles.dialogFooter}>
             {!preventCancel && (
