@@ -54,13 +54,25 @@
 @layer variants {
   .size-small {
     @include common($size: 2rem, $padding: 0.5rem);
+
+    .icon svg {
+      stroke-width: 2.5;
+    }
   }
 
   .size-normal {
     @include common($size: 2.5rem, $padding: 0.75rem);
+
+    .icon svg {
+      stroke-width: 2.25;
+    }
   }
 
   .size-large {
     @include common($size: 3rem, $padding: 1rem);
+
+    .icon svg {
+      stroke-width: 2;
+    }
   }
 }
