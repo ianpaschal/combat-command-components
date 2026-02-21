@@ -54,7 +54,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       square: icon && !text,
     }), styles.button, className)}
     data-reverse={iconPosition === 'end'}
-    data-safari={/^((?!chrome|android).)*safari/i.test(navigator.userAgent)}
     {...props}
   >
     {icon && !loading && (
