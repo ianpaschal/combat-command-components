@@ -30,8 +30,8 @@ $sides: "top", "right", "bottom", "left";
       &-#{$side} {
         @include common;
 
-        border-style: none;
         border-#{$side}-style: solid;
+        border-#{$side}-width: var(--border-width);
       }
     }
   }
