@@ -6,6 +6,7 @@
   .pdf-viewer-controls {
     @include flex.row($gap: 0.5rem, $xAlign: center);
 
+    flex-shrink: 0;
     padding: 0.5rem 1rem;
     background-color: var(--default-bg);
 
@@ -15,6 +16,7 @@
 
       user-select: none;
       text-align: center;
+      white-space: nowrap;
     }
 
     &-separator {
