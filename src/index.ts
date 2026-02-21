@@ -11,5 +11,6 @@ export * from './components/Radio';
 export * from './components/RatioBar';
 export * from './components/Select';
 export * from './components/Spinner';
+export * from './components/PdfViewer';
 export * from './components/Table';
 export * from './utils/getStyleClassNames';

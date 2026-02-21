@@ -80,7 +80,7 @@ $intent-colors: (
     @if $intent == "neutral" {
       --passive-neutral-bg: var(--default-bg);
       --passive-neutral-border: var(--gray-4);
-      --passive-neutral-text: var(--gray-12);
+      --passive-neutral-text: var(--gray-11);
     } @else {
       --passive-#{$intent}-bg: var(--#{$color}-1);
       --passive-#{$intent}-border: var(--#{$color}-9);
