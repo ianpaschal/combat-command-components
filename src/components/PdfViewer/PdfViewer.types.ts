@@ -1,6 +1,6 @@
 export interface PdfViewerConfig {
   initialPage: number;
-  initialScale: number;
+  initialScale?: number;
   minScale: number;
   maxScale: number;
   scaleStep: number;

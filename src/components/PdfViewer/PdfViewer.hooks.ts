@@ -15,7 +15,7 @@ import {
 interface UsePdfViewerReturn {
   ref: RefObject<HTMLDivElement>;
   onLoadError: () => void;
-  onLoadSuccess: (pdf: { numPages: number }) => void;
+  onLoadSuccess: (pdf: { numPages: number; getPage: (n: number) => Promise<{ getViewport: (opts: { scale: number }) => { width: number } }> }) => void;
   state: PdfViewerState;
   config: PdfViewerConfig;
   controls: PdfViewerControlHandlers;
@@ -23,7 +23,6 @@ interface UsePdfViewerReturn {
 
 export const DEFAULT_CONFIG: PdfViewerConfig = {
   initialPage: 1,
-  initialScale: 1,
   minScale: 0.25,
   maxScale: 4,
   scaleStep: 0.25,
@@ -39,7 +38,8 @@ export const usePdfViewer = (
   const ref = useRef<HTMLDivElement>(null);
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(config.initialPage);
-  const [scale, setScale] = useState(config.initialScale);
+  const [scale, setScale] = useState(config.initialScale ?? 1);
+  const fitWidthScaleRef = useRef<number>(1);
   const isScrollingTo = useRef(false);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -66,10 +66,30 @@ export const usePdfViewer = (
     setNumPages(null);
   }, []);
 
-  const onLoadSuccess = useCallback((pdf: { numPages: number }) => {
+  const computeFitWidthScale = useCallback((pageWidth: number) => {
+    const container = ref.current;
+    if (!container) {
+      return 1;
+    }
+    // Account for 1rem padding on each side of .react-pdf__Document and the vertical scrollbar
+    const rem = parseFloat(getComputedStyle(container).fontSize);
+    const availableWidth = container.clientWidth - rem * 2 - (container.offsetWidth - container.clientWidth || 16);
+    return Math.max(config.minScale, Math.min(config.maxScale, availableWidth / pageWidth));
+  }, [config.minScale, config.maxScale]);
+
+  const onLoadSuccess = useCallback((pdf: { numPages: number; getPage: (n: number) => Promise<{ getViewport: (opts: { scale: number }) => { width: number } }> }) => {
     setNumPages(pdf.numPages);
     setPageNumber(config.initialPage);
-  }, [config.initialPage]);
+
+    if (config.initialScale === undefined) {
+      pdf.getPage(1).then((page) => {
+        const viewport = page.getViewport({ scale: 1 });
+        const fitScale = computeFitWidthScale(viewport.width);
+        fitWidthScaleRef.current = fitScale;
+        setScale(fitScale);
+      });
+    }
+  }, [config.initialPage, config.initialScale, computeFitWidthScale]);
 
   const goToPage = useCallback((page: number) => {
     if (numPages === null) {
@@ -140,7 +160,7 @@ export const usePdfViewer = (
   }, [config.minScale, config.scaleStep]);
 
   const zoomReset = useCallback(() => {
-    setScale(config.initialScale);
+    setScale(config.initialScale ?? fitWidthScaleRef.current);
   }, [config.initialScale]);
 
   const clampedSetScale = useCallback((value: number) => {
