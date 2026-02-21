@@ -4,21 +4,11 @@
 $intents: "neutral", "muted", "danger", "warning", "info", "success";
 $sides: "top", "right", "bottom", "left";
 
-@mixin common {
-  border-color: var(--passive-neutral-border);
-  border-style: solid;
-  border-width: var(--border-width);
-
-  @each $intent in $intents {
-    &.#{$intent} {
-      border-color: var(--passive-#{$intent}-border);
-    }
-  }
-}
-
 @layer variants {
   .border {
-    @include common;
+    border-color: var(--passive-neutral-border);
+    border-style: solid;
+    border-width: var(--border-width);
 
     @each $intent in $intents {
       &.#{$intent} {
@@ -28,10 +18,15 @@ $sides: "top", "right", "bottom", "left";
 
     @each $side in $sides {
       &-#{$side} {
-        @include common;
-
+        border-#{$side}-color: var(--passive-neutral-border);
         border-#{$side}-style: solid;
         border-#{$side}-width: var(--border-width);
+
+        @each $intent in $intents {
+          &.#{$intent} {
+            border-#{$side}-color: var(--passive-#{$intent}-border);
+          }
+        }
       }
     }
   }
