@@ -1,6 +1,6 @@
 {
   "name": "@ianpaschal/combat-command-components",
-  "version": "1.10.3",
+  "version": "1.10.4",
   "description": "A minimal React component library",
   "license": "MIT",
   "type": "module",
