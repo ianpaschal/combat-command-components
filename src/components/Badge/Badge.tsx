@@ -11,7 +11,7 @@ import styles from './Badge.module.scss';
 export type BadgeProps = {
   children: ReactElement;
   className?: string;
-  value?: number | string;
+  value?: number | string | null;
   intent?: 'default' | 'danger' | 'info' | 'success' | 'warning';
 };
 
