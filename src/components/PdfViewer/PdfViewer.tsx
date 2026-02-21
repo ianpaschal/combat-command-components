@@ -57,7 +57,7 @@ export const PdfViewer = ({
               </div>
             )}
             error={(
-              <div className={styles.pdfViewerLoading}>
+              <div className={styles.pdfViewerError}>
                 Failed to load PDF file.
               </div>
             )}

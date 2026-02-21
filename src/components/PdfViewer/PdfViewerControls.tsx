@@ -39,24 +39,35 @@ export const PdfViewerControls = ({
       return;
     }
 
-    let blob: Blob;
-    if (file instanceof File) {
-      blob = file;
-    } else if (file instanceof ArrayBuffer) {
-      blob = new Blob([file], { type: 'application/pdf' });
-    } else {
-      const response = await fetch(file);
-      blob = await response.blob();
-    }
+    let url: string | undefined;
+    try {
+      let blob: Blob;
+      if (file instanceof File) {
+        blob = file;
+      } else if (file instanceof ArrayBuffer) {
+        blob = new Blob([file], { type: 'application/pdf' });
+      } else {
+        const response = await fetch(file);
+        if (!response.ok) {
+          throw new Error(`Download failed: ${response.status} ${response.statusText}`);
+        }
+        blob = await response.blob();
+      }
 
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${fileName}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.URL.revokeObjectURL(url);
+      url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${fileName}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('[PdfViewer] Failed to download file:', error);
+    } finally {
+      if (url) {
+        window.URL.revokeObjectURL(url);
+      }
+    }
   }, [file, fileName]);
 
   return (
@@ -72,7 +83,7 @@ export const PdfViewerControls = ({
         onClick={controls.goToPreviousPage}
       />
       <span className={styles.pdfViewerControlsPageInfo}>
-        {state.numPages ? `${state.pageNumber} / ${state.numPages}` : '-'}
+        {state.numPages !== null ? `${state.pageNumber} / ${state.numPages}` : '-'}
       </span>
       <Button
         aria-label="Next page"

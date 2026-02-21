@@ -16,6 +16,13 @@ const meta: Meta<typeof PdfViewer> = {
     layout: 'fullscreen',
   },
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     className: { table: { disable: true } },
     file: {
@@ -76,13 +83,6 @@ export const Default: Story = {
     scaleStep: 0.25,
     showControls: true,
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-        <Story />
-      </div>
-    ),
-  ],
 };
 
 export const NoControls: Story = {
@@ -97,13 +97,6 @@ export const NoControls: Story = {
     scaleStep: 0.25,
     showControls: false,
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-        <Story />
-      </div>
-    ),
-  ],
 };
 
 const FileUploadStory = (): JSX.Element => {
@@ -117,35 +110,33 @@ const FileUploadStory = (): JSX.Element => {
     }
   }, []);
 
+  if (file) {
+    return <PdfViewer file={file} />;
+  }
+
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {!file ? (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flex: 1,
-          gap: '1rem',
-        }}>
-          <p style={{ color: 'var(--gray-11)' }}>Select a PDF file to preview</p>
-          <input
-            ref={inputRef}
-            type="file"
-            accept=".pdf"
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-          />
-          <Button
-            text="Choose PDF"
-            icon={<Upload />}
-            variant="outlined"
-            onClick={() => inputRef.current?.click()}
-          />
-        </div>
-      ) : (
-        <PdfViewer file={file} />
-      )}
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
+      gap: '1rem',
+    }}>
+      <p style={{ color: 'var(--gray-11)' }}>Select a PDF file to preview</p>
+      <input
+        ref={inputRef}
+        type="file"
+        accept=".pdf"
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+      />
+      <Button
+        text="Choose PDF"
+        icon={<Upload />}
+        variant="outlined"
+        onClick={() => inputRef.current?.click()}
+      />
     </div>
   );
 };
