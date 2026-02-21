@@ -14,6 +14,7 @@ import {
 
 interface UsePdfViewerReturn {
   ref: RefObject<HTMLDivElement>;
+  onLoadError: () => void;
   onLoadSuccess: (pdf: { numPages: number }) => void;
   state: PdfViewerState;
   config: PdfViewerConfig;
@@ -59,6 +60,10 @@ export const usePdfViewer = (
     scrollTimeoutRef.current = setTimeout(() => {
       isScrollingTo.current = false;
     }, 500);
+  }, []);
+
+  const onLoadError = useCallback(() => {
+    setNumPages(null);
   }, []);
 
   const onLoadSuccess = useCallback((pdf: { numPages: number }) => {
@@ -144,6 +149,7 @@ export const usePdfViewer = (
 
   return {
     ref,
+    onLoadError,
     onLoadSuccess,
     state: {
       numPages,

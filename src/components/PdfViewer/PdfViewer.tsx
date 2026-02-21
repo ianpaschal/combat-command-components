@@ -50,6 +50,7 @@ export const PdfViewer = ({
         <div ref={viewer.ref} className={styles.pdfViewerContent}>
           <Document
             file={file}
+            onLoadError={viewer.onLoadError}
             onLoadSuccess={viewer.onLoadSuccess}
             loading={(
               <div className={styles.pdfViewerLoading}>
