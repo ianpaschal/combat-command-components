@@ -29,7 +29,10 @@
     "prelint": "tsc --noEmit",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:scss": "stylelint '**/*.scss'",
-    "gen:scss": "typed-scss-modules src"
+    "gen:scss": "typed-scss-modules src",
+    "release:patch": "npm version patch --no-commit-hooks && npm run build && npm publish",
+    "release:minor": "npm version minor --no-commit-hooks && npm run build && npm publish",
+    "release:major": "npm version major --no-commit-hooks && npm run build && npm publish"
   },
   "devDependencies": {
     "@storybook/react-vite": "^10.0.8",
