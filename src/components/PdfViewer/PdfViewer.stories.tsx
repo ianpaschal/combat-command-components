@@ -23,35 +23,35 @@ const meta: Meta<typeof PdfViewer> = {
       description: 'The PDF file source. Can be a URL string, File object, or ArrayBuffer.',
       table: { category: 'Content' },
     },
-    initialPage: {
-      control: 'number',
-      description: 'The initial page number to display.',
-      table: { category: 'Navigation' },
-    },
-    initialScale: {
-      control: { type: 'range', min: 0.25, max: 4, step: 0.25 },
-      description: 'The initial zoom scale.',
-      table: { category: 'Zoom' },
-    },
-    minScale: {
-      control: { type: 'range', min: 0.1, max: 1, step: 0.05 },
-      description: 'Minimum zoom scale.',
-      table: { category: 'Zoom' },
-    },
-    maxScale: {
-      control: { type: 'range', min: 1, max: 10, step: 0.5 },
-      description: 'Maximum zoom scale.',
-      table: { category: 'Zoom' },
-    },
-    scaleStep: {
-      control: { type: 'range', min: 0.1, max: 1, step: 0.05 },
-      description: 'Zoom increment per step.',
-      table: { category: 'Zoom' },
-    },
     showControls: {
       control: 'boolean',
       description: 'Whether to show the navigation and zoom controls toolbar.',
       table: { category: 'Appearance' },
+    },
+    initialPage: {
+      control: 'number',
+      description: 'The initial page number to display. Only takes effect on remount.',
+      table: { category: 'Configuration' },
+    },
+    initialScale: {
+      control: { type: 'range', min: 0.25, max: 4, step: 0.25 },
+      description: 'The initial zoom scale. Only takes effect on remount.',
+      table: { category: 'Configuration' },
+    },
+    minScale: {
+      control: { type: 'range', min: 0.1, max: 1, step: 0.05 },
+      description: 'Minimum zoom scale. Takes effect on next zoom action.',
+      table: { category: 'Configuration' },
+    },
+    maxScale: {
+      control: { type: 'range', min: 1, max: 10, step: 0.5 },
+      description: 'Maximum zoom scale. Takes effect on next zoom action.',
+      table: { category: 'Configuration' },
+    },
+    scaleStep: {
+      control: { type: 'range', min: 0.1, max: 1, step: 0.05 },
+      description: 'Zoom increment per step. Takes effect on next zoom action.',
+      table: { category: 'Configuration' },
     },
   },
 };
@@ -141,4 +141,12 @@ const FileUploadStory = (): JSX.Element => {
 export const FileUpload: Story = {
   name: 'File Upload',
   render: () => <FileUploadStory />,
+  argTypes: {
+    initialPage: { table: { disable: true } },
+    initialScale: { table: { disable: true } },
+    minScale: { table: { disable: true } },
+    maxScale: { table: { disable: true } },
+    scaleStep: { table: { disable: true } },
+    showControls: { table: { disable: true } },
+  },
 };

@@ -6,44 +6,43 @@ import {
   useState,
 } from 'react';
 
-interface UsePdfViewerOptions {
-  initialPage?: number;
-  initialScale?: number;
-  minScale?: number;
-  maxScale?: number;
-  scaleStep?: number;
-}
+import {
+  PdfViewerConfig,
+  PdfViewerControlHandlers,
+  PdfViewerState,
+} from './PdfViewer.types';
 
 interface UsePdfViewerReturn {
-  containerRef: RefObject<HTMLDivElement>;
-  numPages: number | null;
-  pageNumber: number;
-  scale: number;
-  onDocumentLoadSuccess: (pdf: { numPages: number }) => void;
-  goToPage: (page: number) => void;
-  goToPreviousPage: () => void;
-  goToNextPage: () => void;
-  zoomIn: () => void;
-  zoomOut: () => void;
-  resetZoom: () => void;
-  setScale: (scale: number) => void;
+  ref: RefObject<HTMLDivElement>;
+  onLoadSuccess: (pdf: { numPages: number }) => void;
+  state: PdfViewerState;
+  config: PdfViewerConfig;
+  controls: PdfViewerControlHandlers;
 }
 
-export const usePdfViewer = ({
-  initialPage = 1,
-  initialScale = 1,
-  minScale = 0.25,
-  maxScale = 4,
-  scaleStep = 0.25,
-}: UsePdfViewerOptions = {}): UsePdfViewerReturn => {
-  const containerRef = useRef<HTMLDivElement>(null);
+export const DEFAULT_CONFIG: PdfViewerConfig = {
+  initialPage: 1,
+  initialScale: 1,
+  minScale: 0.25,
+  maxScale: 4,
+  scaleStep: 0.25,
+};
+
+export const usePdfViewer = (
+  customConfig?: Partial<PdfViewerConfig>,
+): UsePdfViewerReturn => {
+  const config = {
+    ...DEFAULT_CONFIG,
+    ...(customConfig ?? {}),
+  };
+  const ref = useRef<HTMLDivElement>(null);
   const [numPages, setNumPages] = useState<number | null>(null);
-  const [pageNumber, setPageNumber] = useState(initialPage);
-  const [scale, setScale] = useState(initialScale);
+  const [pageNumber, setPageNumber] = useState(config.initialPage);
+  const [scale, setScale] = useState(config.initialScale);
   const isScrollingTo = useRef(false);
 
   const scrollToPage = useCallback((page: number) => {
-    const container = containerRef.current;
+    const container = ref.current;
     if (!container) {
       return;
     }
@@ -58,10 +57,10 @@ export const usePdfViewer = ({
     }, 500);
   }, []);
 
-  const onDocumentLoadSuccess = useCallback((pdf: { numPages: number }) => {
+  const onLoadSuccess = useCallback((pdf: { numPages: number }) => {
     setNumPages(pdf.numPages);
-    setPageNumber(initialPage);
-  }, [initialPage]);
+    setPageNumber(config.initialPage);
+  }, [config.initialPage]);
 
   const goToPage = useCallback((page: number) => {
     if (numPages === null) {
@@ -93,7 +92,7 @@ export const usePdfViewer = ({
 
   // Track visible page on scroll
   useEffect(() => {
-    const container = containerRef.current;
+    const container = ref.current;
     if (!container || !numPages) {
       return;
     }
@@ -124,29 +123,34 @@ export const usePdfViewer = ({
   }, [numPages]);
 
   const zoomIn = useCallback(() => {
-    setScale((prev) => Math.min(maxScale, prev + scaleStep));
-  }, [maxScale, scaleStep]);
+    setScale((prev) => Math.min(config.maxScale, prev + config.scaleStep));
+  }, [config.maxScale, config.scaleStep]);
 
   const zoomOut = useCallback(() => {
-    setScale((prev) => Math.max(minScale, prev - scaleStep));
-  }, [minScale, scaleStep]);
+    setScale((prev) => Math.max(config.minScale, prev - config.scaleStep));
+  }, [config.minScale, config.scaleStep]);
 
-  const resetZoom = useCallback(() => {
-    setScale(initialScale);
-  }, [initialScale]);
+  const zoomReset = useCallback(() => {
+    setScale(config.initialScale);
+  }, [config.initialScale]);
 
   return {
-    containerRef,
-    numPages,
-    pageNumber,
-    scale,
-    onDocumentLoadSuccess,
-    goToPage,
-    goToPreviousPage,
-    goToNextPage,
-    zoomIn,
-    zoomOut,
-    resetZoom,
-    setScale,
+    ref,
+    onLoadSuccess,
+    state: {
+      numPages,
+      pageNumber,
+      scale,
+    },
+    config,
+    controls: {
+      goToPage,
+      goToPreviousPage,
+      goToNextPage,
+      zoomIn,
+      zoomOut,
+      zoomReset,
+      setScale,
+    },
   };
 };

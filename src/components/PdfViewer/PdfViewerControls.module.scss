@@ -1,0 +1,27 @@
+@use "../../style/layers";
+@use "../../style/flex";
+@use "../../style/text";
+
+@layer components {
+  .pdf-viewer-controls {
+    @include flex.row($gap: 0.5rem, $xAlign: center);
+
+    padding: 0.5rem 1rem;
+    background-color: var(--default-bg);
+
+    &-page-info,
+    &-zoom-info {
+      @include text.ui;
+
+      user-select: none;
+      text-align: center;
+    }
+
+    &-separator {
+      width: var(--border-width);
+      height: 1.25rem;
+      margin: 0 0.25rem;
+      background-color: var(--passive-neutral-border);
+    }
+  }
+}
