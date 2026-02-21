@@ -17,7 +17,7 @@ export interface PdfViewerControlHandlers {
   goToNextPage: () => void;
   zoomIn: () => void;
   zoomOut: () => void;
-  zoomReset: () => void;
+  zoomToFit: () => void;
   goToPage: (page: number) => void;
   setScale: (scale: number) => void;
 }

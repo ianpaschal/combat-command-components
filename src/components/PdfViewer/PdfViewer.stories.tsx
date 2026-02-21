@@ -25,9 +25,15 @@ const meta: Meta<typeof PdfViewer> = {
   ],
   argTypes: {
     className: { table: { disable: true } },
+    workerSrc: { table: { disable: true } },
     file: {
       control: false,
       description: 'The PDF file source. Can be a URL string, File object, or ArrayBuffer.',
+      table: { category: 'Content' },
+    },
+    fileName: {
+      control: 'text',
+      description: 'The file name used when downloading the PDF.',
       table: { category: 'Content' },
     },
     loading: {

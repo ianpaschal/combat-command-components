@@ -4,9 +4,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Download,
+  Maximize,
   Minus,
   Plus,
-  RotateCcw,
 } from 'lucide-react';
 
 import { getStyleClassNames } from '../../utils/getStyleClassNames';
@@ -81,10 +81,10 @@ export const PdfViewerControls = ({
       />
       <Button
         aria-label="Reset zoom"
-        icon={<RotateCcw />}
+        icon={<Maximize />}
         variant="ghost"
         size="small"
-        onClick={controls.zoomReset}
+        onClick={controls.zoomToFit}
       />
       <div className={styles.pdfViewerControlsSeparator} />
       <Button

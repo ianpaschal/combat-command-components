@@ -119,13 +119,9 @@ $indicator-gradient-end-color: rgb(0 0 0 / 0%);
 
     &-thumb {
       position: relative;
-
       flex: 1;
-
       border-radius: calc(($scrollbar-size - (2 * $scrollbar-padding)) / 2);
-
-      opacity: 0.25;
-      background: var(--text-color-default);
+      background: var(--gray-a8);
 
       /* increase target size for touch devices https://www.w3.org/WAI/WCAG21/Understanding/target-size.html */
       &::before {

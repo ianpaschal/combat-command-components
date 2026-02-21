@@ -5,6 +5,7 @@ import {
 } from 'react-pdf';
 import clsx from 'clsx';
 
+import { ScrollArea } from '../ScrollArea';
 import { Spinner } from '../Spinner';
 import { usePdfViewer } from './PdfViewer.hooks';
 import { PdfViewerConfig } from './PdfViewer.types';
@@ -40,41 +41,39 @@ export const PdfViewer = ({
   }
   const viewer = usePdfViewer(restConfig);
   return (
-    <div className={clsx(styles.pdfViewer, className)}>
-      {loading ? (
+    <div ref={viewer.containerRef} className={clsx(styles.pdfViewer, className)}>
+      {(loading || viewer.state.numPages === null) && (
         <div className={styles.pdfViewerLoading}>
           <Spinner size={64} />
         </div>
-      ) : (
-
-        <div ref={viewer.ref} className={styles.pdfViewerContent}>
-          <Document
-            file={file}
-            onLoadError={viewer.onLoadError}
-            onLoadSuccess={viewer.onLoadSuccess}
-            loading={(
-              <div className={styles.pdfViewerLoading}>
-                <Spinner size={64} />
-              </div>
-            )}
-            error={(
-              <div className={styles.pdfViewerError}>
-                Failed to load PDF file.
-              </div>
-            )}
-          >
-            {viewer.state.numPages !== null && Array.from({ length: viewer.state.numPages }, (_, i) => (
-              <div key={`page_${i + 1}`} data-page-number={i + 1}>
-                <Page
-                  pageNumber={i + 1}
-                  scale={viewer.state.scale}
-                  renderTextLayer
-                  renderAnnotationLayer
-                />
-              </div>
-            ))}
-          </Document>
-        </div>
+      )}
+      {!loading && (
+        <ScrollArea className={styles.pdfViewerContent} onScroll={viewer.onScroll}>
+          <div ref={viewer.ref} className={styles.pdfViewerContentInner}>
+            <Document
+              file={file}
+              onLoadError={viewer.onLoadError}
+              onLoadSuccess={viewer.onLoadSuccess}
+              loading={<></>}
+              error={(
+                <div className={styles.pdfViewerError}>
+                  Failed to load PDF file.
+                </div>
+              )}
+            >
+              {viewer.state.numPages !== null && Array.from({ length: viewer.state.numPages }, (_, i) => (
+                <div key={`page_${i + 1}`} data-page-number={i + 1}>
+                  <Page
+                    pageNumber={i + 1}
+                    scale={viewer.state.scale}
+                    renderTextLayer
+                    renderAnnotationLayer
+                  />
+                </div>
+              ))}
+            </Document>
+          </div>
+        </ScrollArea>
       )}
       {showControls && !loading && (
         <PdfViewerControls

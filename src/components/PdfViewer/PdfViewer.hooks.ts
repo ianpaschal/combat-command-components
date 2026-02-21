@@ -13,9 +13,11 @@ import {
 } from './PdfViewer.types';
 
 interface UsePdfViewerReturn {
+  containerRef: RefObject<HTMLDivElement>;
   ref: RefObject<HTMLDivElement>;
   onLoadError: () => void;
   onLoadSuccess: (pdf: { numPages: number; getPage: (n: number) => Promise<{ getViewport: (opts: { scale: number }) => { width: number } }> }) => void;
+  onScroll: () => void;
   state: PdfViewerState;
   config: PdfViewerConfig;
   controls: PdfViewerControlHandlers;
@@ -35,11 +37,12 @@ export const usePdfViewer = (
     ...DEFAULT_CONFIG,
     ...(customConfig ?? {}),
   };
+  const containerRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLDivElement>(null);
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(config.initialPage);
   const [scale, setScale] = useState(config.initialScale ?? 1);
-  const fitWidthScaleRef = useRef<number>(1);
+  const pdfPageWidthRef = useRef<number | null>(null);
   const isScrollingTo = useRef(false);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -67,13 +70,13 @@ export const usePdfViewer = (
   }, []);
 
   const computeFitWidthScale = useCallback((pageWidth: number) => {
-    const container = ref.current;
+    const container = containerRef.current;
     if (!container) {
       return 1;
     }
-    // Account for 1rem padding on each side of .react-pdf__Document and the vertical scrollbar
+    // Account for 1rem padding on each side of .react-pdf__Document
     const rem = parseFloat(getComputedStyle(container).fontSize);
-    const availableWidth = container.clientWidth - rem * 2 - (container.offsetWidth - container.clientWidth || 16);
+    const availableWidth = container.clientWidth - rem * 2;
     return Math.max(config.minScale, Math.min(config.maxScale, availableWidth / pageWidth));
   }, [config.minScale, config.maxScale]);
 
@@ -81,14 +84,13 @@ export const usePdfViewer = (
     setNumPages(pdf.numPages);
     setPageNumber(config.initialPage);
 
-    if (config.initialScale === undefined) {
-      pdf.getPage(1).then((page) => {
-        const viewport = page.getViewport({ scale: 1 });
-        const fitScale = computeFitWidthScale(viewport.width);
-        fitWidthScaleRef.current = fitScale;
-        setScale(fitScale);
-      });
-    }
+    pdf.getPage(1).then((page) => {
+      const viewport = page.getViewport({ scale: 1 });
+      pdfPageWidthRef.current = viewport.width;
+      if (config.initialScale === undefined) {
+        setScale(computeFitWidthScale(viewport.width));
+      }
+    });
   }, [config.initialPage, config.initialScale, computeFitWidthScale]);
 
   const goToPage = useCallback((page: number) => {
@@ -119,58 +121,59 @@ export const usePdfViewer = (
   }, [numPages, pageNumber, scrollToPage]);
 
   // Track visible page on scroll
-  useEffect(() => {
+  const onScroll = useCallback(() => {
     const container = ref.current;
-    if (!container || !numPages) {
+    if (!container || !numPages || isScrollingTo.current) {
       return;
     }
+    const pages = container.querySelectorAll('[data-page-number]');
+    const containerRect = container.getBoundingClientRect();
+    const containerMid = container.scrollTop + container.clientHeight / 3;
 
-    const handleScroll = (): void => {
-      if (isScrollingTo.current) {
-        return;
+    let closestPage = 1;
+    let closestDist = Infinity;
+    pages.forEach((el) => {
+      const pageRect = el.getBoundingClientRect();
+      const pageTop = (pageRect.top - containerRect.top) + container.scrollTop;
+      const dist = Math.abs(pageTop - containerMid);
+      if (dist < closestDist) {
+        closestDist = dist;
+        closestPage = Number(el.getAttribute('data-page-number'));
       }
-      const pages = container.querySelectorAll('[data-page-number]');
-      const containerRect = container.getBoundingClientRect();
-      const containerMid = container.scrollTop + container.clientHeight / 3;
-
-      let closestPage = 1;
-      let closestDist = Infinity;
-      pages.forEach((el) => {
-        const pageRect = el.getBoundingClientRect();
-        const pageTop = (pageRect.top - containerRect.top) + container.scrollTop;
-        const dist = Math.abs(pageTop - containerMid);
-        if (dist < closestDist) {
-          closestDist = dist;
-          closestPage = Number(el.getAttribute('data-page-number'));
-        }
-      });
-      setPageNumber(closestPage);
-    };
-
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    return () => container.removeEventListener('scroll', handleScroll);
+    });
+    setPageNumber(closestPage);
   }, [numPages]);
 
   const zoomIn = useCallback(() => {
-    setScale((prev) => Math.min(config.maxScale, prev + config.scaleStep));
+    setScale((prev) => {
+      const nextStop = (Math.floor(prev / config.scaleStep) + 1) * config.scaleStep;
+      return Math.min(config.maxScale, nextStop);
+    });
   }, [config.maxScale, config.scaleStep]);
 
   const zoomOut = useCallback(() => {
-    setScale((prev) => Math.max(config.minScale, prev - config.scaleStep));
+    setScale((prev) => {
+      const prevStop = (Math.ceil(prev / config.scaleStep) - 1) * config.scaleStep;
+      return Math.max(config.minScale, prevStop);
+    });
   }, [config.minScale, config.scaleStep]);
 
-  const zoomReset = useCallback(() => {
-    setScale(config.initialScale ?? fitWidthScaleRef.current);
-  }, [config.initialScale]);
+  const zoomToFit = useCallback(() => {
+    if (pdfPageWidthRef.current !== null) {
+      setScale(computeFitWidthScale(pdfPageWidthRef.current));
+    }
+  }, [computeFitWidthScale]);
 
   const clampedSetScale = useCallback((value: number) => {
     setScale(Math.min(config.maxScale, Math.max(config.minScale, value)));
   }, [config.minScale, config.maxScale]);
 
   return {
+    containerRef,
     ref,
     onLoadError,
     onLoadSuccess,
+    onScroll,
     state: {
       numPages,
       pageNumber,
@@ -183,7 +186,7 @@ export const usePdfViewer = (
       goToNextPage,
       zoomIn,
       zoomOut,
-      zoomReset,
+      zoomToFit,
       setScale: clampedSetScale,
     },
   };
