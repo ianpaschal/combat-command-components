@@ -39,6 +39,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   rounded,
   size = 'normal',
   text,
+  type = 'button',
   variant = 'primary',
   ...props
 }, ref): JSX.Element => (
@@ -53,6 +54,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       rounded,
       square: icon && !text,
     }), styles.button, className)}
+    type={type}
     data-reverse={iconPosition === 'end'}
     {...props}
   >
