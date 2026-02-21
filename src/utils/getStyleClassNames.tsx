@@ -13,6 +13,8 @@ const camelKey = (keys: string[]) => keys.map((key, i) => (
   i === 0 ? key : key.charAt(0).toUpperCase() + key.slice(1)
 )).join('');
 
+type Side = 'top' | 'bottom' | 'left' | 'right';
+
 type GetStyleClassNamesConfig = {
   intent?: ElementIntent;
   variant?: ElementVariant;
@@ -20,7 +22,7 @@ type GetStyleClassNamesConfig = {
   collapsePadding?: boolean;
   rounded?: boolean;
   square?: boolean;
-  border?: boolean | 'top' | 'bottom' | 'left' | 'right';
+  border?: boolean | Side | Side[];
   corners?: boolean | 'tight' | 'normal' | 'wide';
 };
 
@@ -38,7 +40,12 @@ export const getStyleClassNames = (config: GetStyleClassNamesConfig): string[] =
   }
 
   if (config.border) {
-    if (typeof config.border === 'string') {
+    if (Array.isArray(config.border)) {
+      for (const side of config.border) {
+        const key = camelKey(['border', side]) as keyof typeof borders;
+        classNames.add(borders[key]);
+      }
+    } else if (typeof config.border === 'string') {
       const key = camelKey(['border', config.border]) as keyof typeof borders;
       classNames.add(borders[key]);
     } else {
