@@ -23,6 +23,11 @@ const meta: Meta<typeof PdfViewer> = {
       description: 'The PDF file source. Can be a URL string, File object, or ArrayBuffer.',
       table: { category: 'Content' },
     },
+    loading: {
+      control: 'boolean',
+      description: 'Whether to show a loading spinner instead of the PDF content.',
+      table: { category: 'Appearance' },
+    },
     showControls: {
       control: 'boolean',
       description: 'Whether to show the navigation and zoom controls toolbar.',
@@ -65,8 +70,9 @@ export const Default: Story = {
     file: '/sample.pdf',
     initialPage: 1,
     initialScale: 1,
-    minScale: 0.25,
+    loading: false,
     maxScale: 4,
+    minScale: 0.25,
     scaleStep: 0.25,
     showControls: true,
   },
@@ -83,6 +89,12 @@ export const NoControls: Story = {
   name: 'No Controls',
   args: {
     file: '/sample.pdf',
+    initialPage: 1,
+    initialScale: 1,
+    loading: false,
+    maxScale: 4,
+    minScale: 0.25,
+    scaleStep: 0.25,
     showControls: false,
   },
   decorators: [
@@ -147,6 +159,7 @@ export const FileUpload: Story = {
     minScale: { table: { disable: true } },
     maxScale: { table: { disable: true } },
     scaleStep: { table: { disable: true } },
+    loading: { table: { disable: true } },
     showControls: { table: { disable: true } },
   },
 };

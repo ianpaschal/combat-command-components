@@ -32,6 +32,7 @@ export const PdfViewerControls = ({
     border: 'top',
   }))}>
     <Button
+      aria-label="Previous page"
       icon={<ChevronLeft />}
       variant="ghost"
       size="small"
@@ -42,6 +43,7 @@ export const PdfViewerControls = ({
       {state.numPages ? `${state.pageNumber} / ${state.numPages}` : '-'}
     </span>
     <Button
+      aria-label="Next page"
       icon={<ChevronRight />}
       variant="ghost"
       size="small"
@@ -50,6 +52,7 @@ export const PdfViewerControls = ({
     />
     <div className={styles.pdfViewerControlsSeparator} />
     <Button
+      aria-label="Zoom out"
       icon={<Minus />}
       variant="ghost"
       size="small"
@@ -60,6 +63,7 @@ export const PdfViewerControls = ({
       {Math.round(state.scale * 100)}%
     </span>
     <Button
+      aria-label="Zoom in"
       icon={<Plus />}
       variant="ghost"
       size="small"
@@ -67,6 +71,7 @@ export const PdfViewerControls = ({
       onClick={controls.zoomIn}
     />
     <Button
+      aria-label="Reset zoom"
       icon={<RotateCcw />}
       variant="ghost"
       size="small"

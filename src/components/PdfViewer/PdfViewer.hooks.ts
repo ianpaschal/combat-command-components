@@ -40,6 +40,9 @@ export const usePdfViewer = (
   const [pageNumber, setPageNumber] = useState(config.initialPage);
   const [scale, setScale] = useState(config.initialScale);
   const isScrollingTo = useRef(false);
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => () => clearTimeout(scrollTimeoutRef.current), []);
 
   const scrollToPage = useCallback((page: number) => {
     const container = ref.current;
@@ -50,10 +53,11 @@ export const usePdfViewer = (
     if (!pageEl) {
       return;
     }
+    clearTimeout(scrollTimeoutRef.current);
     isScrollingTo.current = true;
     pageEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(() => {
-      isScrollingTo.current = false; 
+    scrollTimeoutRef.current = setTimeout(() => {
+      isScrollingTo.current = false;
     }, 500);
   }, []);
 
@@ -72,23 +76,22 @@ export const usePdfViewer = (
   }, [numPages, scrollToPage]);
 
   const goToPreviousPage = useCallback(() => {
-    setPageNumber((prev) => {
-      const next = Math.max(1, prev - 1);
-      scrollToPage(next);
-      return next;
-    });
-  }, [scrollToPage]);
+    if (numPages === null) {
+      return;
+    }
+    const next = Math.max(1, pageNumber - 1);
+    setPageNumber(next);
+    scrollToPage(next);
+  }, [numPages, pageNumber, scrollToPage]);
 
   const goToNextPage = useCallback(() => {
     if (numPages === null) {
       return;
     }
-    setPageNumber((prev) => {
-      const next = Math.min(numPages, prev + 1);
-      scrollToPage(next);
-      return next;
-    });
-  }, [numPages, scrollToPage]);
+    const next = Math.min(numPages, pageNumber + 1);
+    setPageNumber(next);
+    scrollToPage(next);
+  }, [numPages, pageNumber, scrollToPage]);
 
   // Track visible page on scroll
   useEffect(() => {
@@ -102,13 +105,14 @@ export const usePdfViewer = (
         return;
       }
       const pages = container.querySelectorAll('[data-page-number]');
-      const containerTop = container.scrollTop;
-      const containerMid = containerTop + container.clientHeight / 3;
+      const containerRect = container.getBoundingClientRect();
+      const containerMid = container.scrollTop + container.clientHeight / 3;
 
       let closestPage = 1;
       let closestDist = Infinity;
       pages.forEach((el) => {
-        const pageTop = (el as HTMLElement).offsetTop;
+        const pageRect = el.getBoundingClientRect();
+        const pageTop = (pageRect.top - containerRect.top) + container.scrollTop;
         const dist = Math.abs(pageTop - containerMid);
         if (dist < closestDist) {
           closestDist = dist;
@@ -134,6 +138,10 @@ export const usePdfViewer = (
     setScale(config.initialScale);
   }, [config.initialScale]);
 
+  const clampedSetScale = useCallback((value: number) => {
+    setScale(Math.min(config.maxScale, Math.max(config.minScale, value)));
+  }, [config.minScale, config.maxScale]);
+
   return {
     ref,
     onLoadSuccess,
@@ -150,7 +158,7 @@ export const usePdfViewer = (
       zoomIn,
       zoomOut,
       zoomReset,
-      setScale,
+      setScale: clampedSetScale,
     },
   };
 };
