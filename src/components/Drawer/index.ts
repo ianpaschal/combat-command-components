@@ -8,3 +8,4 @@ export {
   DrawerContextProvider,
 } from './Drawer.context';
 export { useDrawer } from './Drawer.hooks';
+export { DrawerProvider } from './DrawerProvider';

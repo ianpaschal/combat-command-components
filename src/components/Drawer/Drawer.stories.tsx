@@ -5,6 +5,7 @@ import { longContent } from '../../fixtures';
 import { Button } from '../Button';
 import { Drawer, DrawerProps } from './Drawer';
 import { useDrawer } from './Drawer.hooks';
+import { DrawerProvider } from './DrawerProvider';
 
 const meta: Meta<DrawerProps> = {
   title: 'Components/Drawer',
@@ -29,9 +30,14 @@ const meta: Meta<DrawerProps> = {
       description: 'Whether to disable horizontal padding on the content area.',
       table: { category: 'Appearance' },
     },
+    fullSize: {
+      control: 'boolean',
+      description: 'Expands the drawer to its maximum size. When false (default), the drawer shrinks to fit its content.',
+      table: { category: 'Appearance' },
+    },
     maxSize: {
       control: 'number',
-      description: 'Maximum size of the drawer (width for left/right, height for top/bottom).',
+      description: 'Caps the maximum size of the drawer (width for left/right, height for top/bottom).',
       table: { category: 'Appearance' },
     },
     side: {
@@ -139,5 +145,53 @@ export const MaxSize: Story = {
   },
   render: (args) => (
     <Drawer {...args} trigger={<Button text="Open Drawer" />} />
+  ),
+};
+
+export const FullSize: Story = {
+  name: 'Full Size',
+  args: {
+    title: 'Full Size Drawer',
+    children: 'This drawer expands to its maximum size.',
+    side: 'bottom',
+    fullSize: true,
+    disablePadding: false,
+  },
+  render: (args) => (
+    <Drawer {...args} trigger={<Button text="Open Drawer" />} />
+  ),
+};
+
+const NestedDrawerContent = (): JSX.Element => {
+  const [nestedOpen, setNestedOpen] = useState(false);
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'start' }}>
+      <span>This is the first drawer. Open a nested drawer from here.</span>
+      <Button text="Open Nested Drawer" onClick={() => setNestedOpen(true)} />
+      <Drawer
+        title="Nested Drawer"
+        open={nestedOpen}
+        onClose={() => setNestedOpen(false)}
+        side="bottom"
+      >
+        <span>This is a nested drawer. The parent drawer should be scaled back and overlayed.</span>
+      </Drawer>
+    </div>
+  );
+};
+
+export const Nested: Story = {
+  name: 'Nested',
+  args: {
+    title: 'Parent Drawer',
+    side: 'bottom',
+    disablePadding: false,
+  },
+  render: (args) => (
+    <DrawerProvider>
+      <Drawer {...args} trigger={<Button text="Open Drawer" />}>
+        <NestedDrawerContent />
+      </Drawer>
+    </DrawerProvider>
   ),
 };

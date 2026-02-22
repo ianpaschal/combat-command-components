@@ -31,6 +31,7 @@ export interface DrawerProps {
   className?: string;
   disablePadding?: boolean;
   disableScroll?: boolean;
+  fullSize?: boolean;
   maxSize?: CSSProperties['maxWidth'];
   onClose?: (dirty: boolean) => void;
   onOpenChangeComplete?: (open: boolean) => void;
@@ -45,6 +46,7 @@ export const Drawer = ({
   className,
   disablePadding = false,
   disableScroll = false,
+  fullSize = false,
   maxSize,
   onClose,
   onOpenChangeComplete,
@@ -84,6 +86,7 @@ export const Drawer = ({
         <BaseDrawer.Viewport className={styles.drawerViewport}>
           <BaseDrawer.Popup
             className={clsx(styles.drawerPopup, className)}
+            data-full-size={fullSize || undefined}
             style={getCssVariable(side === 'left' || side === 'right' ? '--drawer-max-width' : '--drawer-max-height', maxSize)}
           >
             <BaseDrawer.Content className={styles.drawerInner}>
