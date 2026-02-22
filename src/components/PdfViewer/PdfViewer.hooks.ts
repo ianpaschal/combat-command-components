@@ -77,7 +77,9 @@ export const usePdfViewer = (
     // Account for 1rem padding on each side of .react-pdf__Document
     const rem = parseFloat(getComputedStyle(container).fontSize);
     const availableWidth = container.clientWidth - rem * 2;
-    return Math.max(config.minScale, Math.min(config.maxScale, availableWidth / pageWidth));
+    // Floor to nearest pixel to avoid sub-pixel overflow triggering horizontal scroll
+    const scale = Math.floor(availableWidth) / pageWidth;
+    return Math.max(config.minScale, Math.min(config.maxScale, scale));
   }, [config.minScale, config.maxScale]);
 
   const onLoadSuccess = useCallback((pdf: { numPages: number; getPage: (n: number) => Promise<{ getViewport: (opts: { scale: number }) => { width: number } }> }) => {
