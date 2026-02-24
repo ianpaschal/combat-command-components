@@ -74,11 +74,10 @@ export const usePdfViewer = (
     if (!container) {
       return 1;
     }
-    // Account for 1rem padding on each side of .react-pdf__Document
-    const rem = parseFloat(getComputedStyle(container).fontSize);
-    const availableWidth = container.clientWidth - rem * 2;
-    // Floor to nearest pixel to avoid sub-pixel overflow triggering horizontal scroll
-    const scale = Math.floor(availableWidth) / pageWidth;
+    const inner = ref.current;
+    const padding = inner ? parseFloat(getComputedStyle(inner).paddingLeft) : 0;
+    const availableWidth = Math.floor(container.clientWidth - padding * 2);
+    const scale = availableWidth / pageWidth;
     return Math.max(config.minScale, Math.min(config.maxScale, scale));
   }, [config.minScale, config.maxScale]);
 

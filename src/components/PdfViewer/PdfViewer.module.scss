@@ -19,6 +19,7 @@
 
       &-inner {
         min-height: 100%;
+        padding: 1rem;
       }
 
       .react-pdf__Document {
@@ -28,7 +29,6 @@
 
         min-width: fit-content;
         min-height: 100%;
-        padding: 1rem;
 
         > * {
           margin-inline: auto;
