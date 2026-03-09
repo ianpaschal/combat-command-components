@@ -7,6 +7,7 @@ export * from './components/Button';
 export * from './components/Card';
 export * from './components/DialogManager';
 export * from './components/Drawer';
+export * from './components/Hero';
 export * from './components/InputText';
 export * from './components/PdfViewer';
 export * from './components/Radio';
