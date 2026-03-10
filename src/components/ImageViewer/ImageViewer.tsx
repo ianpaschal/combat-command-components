@@ -18,19 +18,19 @@ export const ImageViewer = ({
   loading: forceLoading = false,
   url,
 }: ImageViewerProps): JSX.Element => {
-  const [loaded, setLoaded] = useState(false);
-  const loading = forceLoading || !loaded;
+  const [loading, setLoading] = useState(true);
+  const showLoading = forceLoading || loading;
   return (
     <div className={clsx(styles.imageViewer, className)}>
-      {loading && (
+      {showLoading && (
         <Spinner size={32} />
       )}
       <img
+        className={styles.imageViewerImage}
         src={url}
         alt={alt}
-        className={styles.imageViewerImage}
-        style={{ opacity: loading ? 0 : 1 }}
-        onLoad={() => setLoaded(true)}
+        style={{ opacity: showLoading ? 0 : 1 }}
+        onLoad={() => setLoading(false)}
       />
     </div>
   );
