@@ -20,6 +20,7 @@ const meta: Meta<typeof AppNavigation> = {
 };
 
 const defaultProps: AppNavigationProps = {
+  onNavigate: (path) => console.log('navigate', path),
   routes: [
     {
       title: 'Overview',
@@ -71,4 +72,19 @@ export const Mobile: Story = {
     ...defaultProps,
     mobile: true,
   },
+};
+
+export const Scrollable: Story = {
+  args: {
+    ...defaultProps,
+    mobile: false,
+  },
+  decorators: [
+    (Story) => (
+      <div>
+        <Story />
+        <div style={{ paddingTop: 'var(--app-bar-height)', height: '300vh', background: 'linear-gradient(to bottom, var(--gray-2), var(--gray-4))' }} />
+      </div>
+    ),
+  ],
 };

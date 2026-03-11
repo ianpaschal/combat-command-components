@@ -15,15 +15,17 @@ const linkClassName = clsx(getStyleClassNames({
 }), styles.desktopNavigationPrimaryRoute);
 
 interface NavigationProps {
+  onNavigate: (path: string) => void;
   routes: Route[];
   secondaryRoutes?: SecondaryRoute[];
 }
 
 export const DesktopNavigation = ({
+  onNavigate,
   routes,
   secondaryRoutes = [],
 }: NavigationProps): JSX.Element => {
-  const navigate = useAppNavigate();
+  const navigate = useAppNavigate(onNavigate);
   return (
     <NavigationMenu.Root className={styles.desktopNavigation}>
       <div className={styles.desktopNavigationRoutes}>
@@ -32,7 +34,7 @@ export const DesktopNavigation = ({
             <NavigationMenu.Item key={route.path}>
               {route.children && route.children.length > 0 ? (
                 <>
-                  <NavigationMenu.Trigger className={linkClassName} onClick={() => navigate(route.path)}>
+                  <NavigationMenu.Trigger className={linkClassName}>
                     {route.title}
                     <NavigationMenu.Icon className={styles.desktopNavigationPrimaryRouteIcon}>
                       <ChevronDown />

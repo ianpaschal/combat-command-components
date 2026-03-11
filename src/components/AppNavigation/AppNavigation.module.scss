@@ -4,17 +4,20 @@
 
 @layer components {
   .app-navigation {
+    --bleed: 100dvh;
+
     @include shadows.surface;
 
     position: fixed;
-    top: 0;
+    top: calc(-1 * var(--bleed));
     left: 0;
 
     overflow: hidden;
 
     box-sizing: border-box;
     width: 100vw;
-    height: var(--app-bar-height);
+    height: calc(var(--app-bar-height) + var(--bleed));
+    padding-top: var(--bleed);
 
     background-color: var(--default-bg);
 
@@ -23,8 +26,9 @@
       gap: 1.5rem;
       align-items: center;
 
+      box-sizing: border-box;
       margin: 0 auto;
-      padding: 0.75rem 1rem calc(0.75rem - var(--border-width));
+      padding: 0.75rem var(--modal-margin) calc(0.75rem - var(--border-width));
 
       &[data-layout="mobile"] {
         grid-template-areas: "navigation logo secondary";

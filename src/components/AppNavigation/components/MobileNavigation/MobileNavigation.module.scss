@@ -54,6 +54,7 @@
     &-header {
       @include flex.row;
 
+      flex-shrink: 0;
       justify-content: space-between;
       height: var(--app-bar-height);
       padding: 0 1rem;

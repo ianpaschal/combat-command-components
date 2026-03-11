@@ -30,8 +30,6 @@
     &-primary-route {
       @include flex.row($gap: 0.5rem);
 
-      color: inherit !important;
-
       &-icon {
         display: block;
         width: 1rem;
