@@ -5,11 +5,9 @@
   .card {
     @include shadows.surface;
 
+    padding: var(--modal-padding);
     border: var(--default-border);
     border-radius: var(--border-radius-normal);
-
-    padding: var(--modal-padding);
-
     background-color: var(--default-bg);
 
     &[data-disable-padding] {
