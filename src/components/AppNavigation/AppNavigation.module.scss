@@ -4,17 +4,21 @@
 
 @layer components {
   .app-navigation {
+    --bleed: 100dvh;
+    --indicator-thickness: 0.25rem;
+
     @include shadows.surface;
 
     position: fixed;
-    top: 0;
+    top: calc(-1 * var(--bleed));
     left: 0;
 
     overflow: hidden;
 
     box-sizing: border-box;
     width: 100vw;
-    height: var(--app-bar-height);
+    height: calc(var(--app-bar-height) + var(--bleed));
+    padding-top: var(--bleed);
 
     background-color: var(--default-bg);
 
@@ -23,33 +27,29 @@
       gap: 1.5rem;
       align-items: center;
 
+      box-sizing: border-box;
       margin: 0 auto;
-      padding: 0.75rem 1rem calc(0.75rem - var(--border-width));
+      padding: 0.75rem var(--modal-margin) calc(0.75rem - var(--border-width));
 
       &[data-layout="mobile"] {
         grid-template-areas: "navigation logo secondary";
-        grid-template-columns: 1fr var(--app-bar-logo-size) 1fr;
+        grid-template-columns: 1fr auto 1fr;
         grid-template-rows: 2.5rem;
       }
 
       &[data-layout="desktop"] {
         grid-template-areas: "logo navigation secondary";
-        grid-template-columns: var(--app-bar-logo-size) 1fr auto;
+        grid-template-columns: auto 1fr auto;
         grid-template-rows: 2.5rem;
       }
     }
 
     &-logo {
       grid-area: logo;
-      width: var(--app-bar-logo-size);
-      height: var(--app-bar-logo-size);
     }
 
     &-navigation {
-      display: flex;
       grid-area: navigation;
-      flex-direction: row;
-      align-items: center;
     }
 
     &-secondary-controls {

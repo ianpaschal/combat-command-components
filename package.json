@@ -39,6 +39,7 @@
     "release:major": "npm version major --no-commit-hooks && npm run build && npm publish"
   },
   "devDependencies": {
+    "@storybook/addon-docs": "^10.3.1",
     "@storybook/builder-vite": "^10.2.15",
     "@storybook/react-vite": "^10.2.15",
     "@stylistic/eslint-plugin-js": "^2.13.0",

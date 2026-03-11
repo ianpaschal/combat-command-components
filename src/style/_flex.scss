@@ -31,10 +31,11 @@
   }
 }
 
-@mixin column($gap: 1rem, $xAlign: none, $yAlign: top) {
+@mixin column($gap: none, $xAlign: none, $yAlign: top) {
   display: flex;
   flex-direction: column;
   gap: $gap;
+  align-items: stretch;
 
   @if $xAlign == left {
     align-items: start;

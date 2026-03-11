@@ -32,9 +32,9 @@
       text-align: center;
     }
 
-    &[data-badge-intent="default"]::after {
-      color: var(--primary-default-text);
-      background: var(--primary-default-bg);
+    &[data-badge-intent="neutral"]::after {
+      color: var(--primary-neutral-text);
+      background: var(--primary-neutral-bg);
     }
 
     &[data-badge-intent="danger"]::after {

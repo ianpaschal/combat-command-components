@@ -13,6 +13,9 @@
     height: 100%;
 
     &-viewport {
+      flex: 1;
+      min-width: 0;
+
       &::before,
       &::after {
         pointer-events: none;

@@ -1,24 +1,19 @@
-import clsx from 'clsx';
-
-import styles from './AppLogo.module.scss';
-
-export interface AppLogoProps {
+export interface CombatCommandLogoProps {
   className?: string;
-  onClick?: () => void;
+  size?: number;
 }
 
-export const AppLogo = ({
+export const CombatCommandLogo = ({
   className,
-  onClick,
-}: AppLogoProps): JSX.Element => (
+  size = 40,
+}: CombatCommandLogoProps): JSX.Element => (
   <svg
-    id="_0"
-    data-name="0"
-    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    height={size}
     viewBox="0 0 40 40"
-    className={clsx(styles.appLogo, className)}
-    style={onClick ? { cursor: 'pointer' } : undefined}
-    onClick={() => onClick?.()}
+    width={size}
+    fill="#000000"
+    xmlns="http://www.w3.org/2000/svg"
   >
     <path d="M7,15.717A44,44,0,0,0,20,6.209a44,44,0,0,0,13,9.508V11.228A40,40,0,0,1,20,0,40,40,0,0,1,7,11.228Z" />
     <path d="M7,17.925A46.013,46.013,0,0,0,20,9.059a46.013,46.013,0,0,0,13,8.866v4.358a50,50,0,0,1-13-7.846A50,50,0,0,1,7,22.283Z" />
