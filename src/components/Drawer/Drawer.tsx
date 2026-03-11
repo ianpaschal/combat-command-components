@@ -10,7 +10,7 @@ import { DrawerPreview as BaseDrawer, DrawerRootProps } from '@base-ui/react/dra
 import clsx from 'clsx';
 import { X } from 'lucide-react';
 
-import { getCssVariable } from '../../utils/getCssVariable';
+import { getCssValue } from '../../utils/getCssValue';
 import { Button } from '../Button';
 import { ScrollArea } from '../ScrollArea';
 import { DrawerContext, DrawerContextProvider } from './Drawer.context';
@@ -87,7 +87,10 @@ export const Drawer = ({
           <BaseDrawer.Popup
             className={clsx(styles.drawerPopup, className)}
             data-full-size={fullSize || undefined}
-            style={getCssVariable(side === 'left' || side === 'right' ? '--drawer-max-width' : '--drawer-max-height', maxSize)}
+            style={{
+              '--drawer-max-width': ['left', 'right'].includes(side) ? getCssValue(maxSize) : undefined,
+              '--drawer-max-height': ['top', 'bottom'].includes(side) ? getCssValue(maxSize) : undefined,
+            } as CSSProperties}
           >
             <BaseDrawer.Content className={styles.drawerInner}>
               <div className={styles.drawerHeader}>
