@@ -116,10 +116,7 @@ export const Dialog = ({
                 {renderContent ? renderContent(contextValue) : content}
               </div>
             ) : (
-              <ScrollArea
-                className={styles.dialogScrollArea}
-                indicators={{ top: { border: true }, bottom: { border: true } }}
-              >
+              <ScrollArea className={styles.dialogScrollArea}>
                 <div className={styles.dialogContent} data-padding={!disablePadding}>
                   {renderContent ? renderContent(contextValue) : content}
                 </div>

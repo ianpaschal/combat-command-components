@@ -22,8 +22,9 @@
 
     position: relative;
 
-    overflow: hidden; // Radix handles scroll
+    overflow: hidden; // base-ui handles scroll
 
+    width: fit-content;
     min-height: 0;
     max-height: 100%;
 

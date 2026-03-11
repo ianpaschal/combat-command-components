@@ -102,10 +102,7 @@ export const Drawer = ({
                     {children}
                   </div>
                 ) : (
-                  <ScrollArea
-                    className={styles.drawerScrollArea}
-                    indicators={{ top: { border: true }, bottom: { border: true } }}
-                  >
+                  <ScrollArea className={styles.drawerScrollArea}>
                     <div className={styles.drawerContent} data-padding={!disablePadding}>
                       {children}
                     </div>
