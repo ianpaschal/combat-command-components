@@ -1,6 +1,9 @@
 export declare const dark: string;
 export declare const desktopNavigation: string;
 export declare const desktopNavigationChildRoutes: string;
+export declare const desktopNavigationNestedLink: string;
+export declare const desktopNavigationNestedList: string;
+export declare const desktopNavigationNestedRoot: string;
 export declare const desktopNavigationPopup: string;
 export declare const desktopNavigationPopupArrow: string;
 export declare const desktopNavigationPopupArrowFill: string;

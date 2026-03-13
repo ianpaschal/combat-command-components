@@ -1,0 +1,44 @@
+@use "../../../../style/layers";
+@use "../../../../style/flex";
+
+@layer components {
+  .mobile-route {
+    display: grid;
+    grid-template-areas: "indicator content";
+    grid-template-columns: 0.25rem 1fr;
+    flex-grow: 1;
+    gap: 0.5rem;
+    align-items: center;
+
+    padding-left: 0.5rem;
+
+    &-indicator {
+      grid-area: indicator;
+
+      width: 0.25rem;
+      height: 1.25rem;
+      border-radius: 0.125rem;
+
+      opacity: 0;
+      background-color: var(--gray-12);
+
+      transition: opacity 150ms ease-out;
+
+      &[data-active="true"] {
+        opacity: 1;
+      }
+    }
+
+    &-title {
+      @include flex.row;
+
+      grid-area: content;
+      gap: 0.5rem;
+
+      svg {
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+  }
+}

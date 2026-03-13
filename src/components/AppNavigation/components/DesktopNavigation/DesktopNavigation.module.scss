@@ -1,6 +1,5 @@
 @use "../../../../style/layers";
 @use "../../../../style/shadows";
-@use "../../../../style/text";
 @use "../../../../style/flex";
 @use "../../../../style/variables";
 
@@ -28,7 +27,26 @@
     }
 
     &-primary-route {
+      position: relative;
+
       @include flex.row($gap: 0.5rem);
+
+      font-weight: 500;
+      color: var(--gray-12);
+
+      &[data-active]::after {
+        content: "";
+
+        position: absolute;
+        right: 0.5rem;
+        bottom: 0;
+        left: 0.5rem;
+
+        height: 0.25rem;
+        border-radius: 9999px;
+
+        background-color: var(--gray-12);
+      }
 
       &-icon {
         display: block;
@@ -45,6 +63,32 @@
           transform: rotate(180deg);
         }
       }
+    }
+
+    &-nested-root {
+      width: 100%;
+    }
+
+    &-nested-list {
+      @include flex.column($gap: 0.25rem);
+
+      // Reset because Base-UI makes this a list:
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    &-nested-link {
+      align-items: flex-start;
+      justify-content: space-between;
+
+      width: 100%;
+      max-width: 12rem;
+      height: auto;
+      min-height: 2.5rem;
+      max-height: none;
+      padding-top: 0.625rem;
+      padding-bottom: 0.625rem;
     }
 
     &-child-routes {
