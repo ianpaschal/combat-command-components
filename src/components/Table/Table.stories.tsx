@@ -32,7 +32,6 @@ const meta: Meta<typeof Table> = {
   parameters: {
     layout: 'padded',
   },
-  tags: ['autodocs'],
   argTypes: {
     className: { table: { disable: true } },
     columns: { table: { disable: true } },
