@@ -11,7 +11,9 @@ const preview: Preview = {
         const bg: string | undefined = parameters.bodyBackground;
         if (bg) {
           document.body.style.backgroundColor = bg;
-          return () => { document.body.style.backgroundColor = ''; };
+          return () => {
+            document.body.style.backgroundColor = '';
+          };
         }
       }, [parameters.bodyBackground]);
       return <Story />;
