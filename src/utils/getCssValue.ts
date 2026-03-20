@@ -2,5 +2,8 @@ export const getCssValue = (value: string | number | undefined): string | undefi
   if (value == null) {
     return undefined; 
   }
-  return typeof value === 'number' ? `${value}px` : value;
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? `${value}px` : undefined;
+  }
+  return value;
 };

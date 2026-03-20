@@ -37,7 +37,7 @@ export interface DrawerProps {
   onOpenChangeComplete?: (open: boolean) => void;
   open?: boolean;
   side?: DrawerSide;
-  title?: string;
+  title: string;
   trigger?: ReactElement;
 }
 

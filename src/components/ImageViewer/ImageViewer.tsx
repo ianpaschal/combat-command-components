@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { Spinner } from '../Spinner';
@@ -19,6 +19,7 @@ export const ImageViewer = ({
   url,
 }: ImageViewerProps): JSX.Element => {
   const [loading, setLoading] = useState(true);
+  useEffect(() => { setLoading(true); }, [url]);
   const showLoading = forceLoading || loading;
   return (
     <div className={clsx(styles.imageViewer, className)}>
@@ -31,6 +32,7 @@ export const ImageViewer = ({
         alt={alt}
         style={{ opacity: showLoading ? 0 : 1 }}
         onLoad={() => setLoading(false)}
+        onError={() => setLoading(false)}
       />
     </div>
   );

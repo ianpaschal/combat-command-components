@@ -31,7 +31,7 @@
   }
 }
 
-@mixin column($gap: none, $xAlign: none, $yAlign: top) {
+@mixin column($gap: 0, $xAlign: none, $yAlign: top) {
   display: flex;
   flex-direction: column;
   gap: $gap;

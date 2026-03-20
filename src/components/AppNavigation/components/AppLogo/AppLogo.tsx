@@ -9,7 +9,7 @@ import { useNavigationContext } from '../../AppNavigation.context';
 
 import styles from './AppLogo.module.scss';
 
-export interface AppLogoProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title'> {
+export interface AppLogoProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title' | 'onClick'> {
   className?: string;
   path?: string;
 }
@@ -18,14 +18,12 @@ export const AppLogo = ({
   children,
   className,
   disabled,
-  onClick,
   path,
   ...props
 }: AppLogoProps): ReactElement => {
   const { navigate } = useNavigationContext();
   const handleClick = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
-    onClick?.(e);
     if (path) {
       navigate(path);
     }

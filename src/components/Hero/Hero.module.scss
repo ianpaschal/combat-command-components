@@ -61,5 +61,22 @@
         }
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none !important;
+
+      &-content {
+        > * {
+          animation: none !important;
+          animation-delay: 0s !important;
+        }
+
+        @for $i from 1 through 8 {
+          > *:nth-child(#{$i}) {
+            animation-delay: 0s !important;
+          }
+        }
+      }
+    }
   }
 }

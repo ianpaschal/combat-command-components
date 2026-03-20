@@ -12,7 +12,7 @@ export const CombatCommandLogo = ({
     height={size}
     viewBox="0 0 40 40"
     width={size}
-    fill="#000000"
+    fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path d="M7,15.717A44,44,0,0,0,20,6.209a44,44,0,0,0,13,9.508V11.228A40,40,0,0,1,20,0,40,40,0,0,1,7,11.228Z" />

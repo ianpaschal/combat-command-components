@@ -3,9 +3,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { longContent } from '../../fixtures';
 import { ScrollArea } from './ScrollArea';
 
-const meta: Meta<typeof ScrollArea> = {
+type StoryArgs = { topOffset: number; bottomOffset: number };
+
+const meta: Meta<StoryArgs> = {
   title: 'Components/ScrollArea',
-  component: ScrollArea,
   parameters: {
     layout: 'centered',
   },
@@ -17,13 +18,16 @@ const meta: Meta<typeof ScrollArea> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<StoryArgs>;
 
 export const Default: Story = {
   name: 'Default',
-  args: { topOffset: 0, bottomOffset: 0 },
+  args: {
+    topOffset: 0,
+    bottomOffset: 0,
+  },
   render: ({ topOffset, bottomOffset }) => (
-    <ScrollArea style={{ height: 300, width: 400 }} topOffset={topOffset} bottomOffset={bottomOffset}>
+    <ScrollArea style={{ height: 300, width: 400 }} offset={{ top: topOffset, bottom: bottomOffset }}>
       {longContent}
     </ScrollArea>
   ),

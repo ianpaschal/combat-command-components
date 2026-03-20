@@ -72,3 +72,5 @@ export const Radio = forwardRef<RadioGroupRef, RadioProps>(({
     ))}
   </RadioGroup>
 ));
+
+Radio.displayName = 'Radio';

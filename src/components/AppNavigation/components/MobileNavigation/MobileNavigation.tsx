@@ -34,7 +34,14 @@ export const MobileNavigation = ({
   return (
     <Dialog.Root open={!!state} onOpenChange={handleOpenChange}>
       <Dialog.Trigger render={(props) => (
-        <Button {...props} icon={<Menu />} size="large" variant="ghost" rounded />
+        <Button
+          {...props}
+          aria-label="Open navigation menu"
+          icon={<Menu />}
+          rounded
+          size="large"
+          variant="ghost"
+        />
       )} />
       <Dialog.Portal>
         <Dialog.Backdrop className={styles.mobileNavigationBackdrop} />
@@ -44,7 +51,14 @@ export const MobileNavigation = ({
               {logo}
             </AppLogo>
             <Dialog.Close render={(props) => (
-              <Button {...props} icon={<X />} size="large" variant="ghost" rounded />
+              <Button
+                {...props}
+                aria-label="Close navigation menu"
+                icon={<X />}
+                rounded
+                size="large"
+                variant="ghost"
+              />
             )} />
           </div>
           <ScrollArea className={styles.mobileNavigationScrollArea}>

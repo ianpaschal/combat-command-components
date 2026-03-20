@@ -29,6 +29,8 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
       ...style,
       '--scroll-area-offset-top': getCssValue(offset?.top),
       '--scroll-area-offset-bottom': getCssValue(offset?.bottom),
+      '--scroll-area-offset-left': getCssValue(offset?.left),
+      '--scroll-area-offset-right': getCssValue(offset?.right),
     } as CSSProperties}
     {...props}
   >
@@ -46,3 +48,5 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
     <BaseScrollArea.Corner />
   </BaseScrollArea.Root>
 ));
+
+ScrollArea.displayName = 'ScrollArea';

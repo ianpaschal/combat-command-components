@@ -5,7 +5,7 @@ The `<AppNavigation/>` component renders a fixed navigation bar into a portal ta
 On **desktop**, the bar renders across the top.
 Hovering a route that has children (indicated with an arrow) reveals a dropdown of sub-routes.
 On **mobile**, the bar switches to a drawer.
-Routes with children have a button on the right (with an arrow) which can be used expand it's sub-routes.
+Routes with children have a button on the right (with an arrow) which can be used expand its sub-routes.
 An indicator is shown beside routes whose path matches the value of the `location` prop.
 A secondary, lighter indicator is shown besides the parent routes.
 

@@ -46,7 +46,7 @@ export const MobileRouteList = ({
           </Accordion.Panel>
         </Accordion.Item>
       ) : (
-        <RouteItem route={route} />
+        <RouteItem key={route.path} route={route} />
       ))}
     </Accordion.Root>
   );

@@ -13,6 +13,7 @@
     height: 100%;
 
     &-viewport {
+      position: relative;
       flex: 1;
       min-width: 0;
 
@@ -35,7 +36,7 @@
         --scroll-area-overflow-y-start: inherit;
 
         top: var(--scroll-area-offset-top, 0);
-        height: min(16px, var(--scroll-area-overflow-y-start));
+        height: min(16px, var(--scroll-area-overflow-y-start, 16px));
         background: linear-gradient(to bottom, var(--scroll-indicator-shadow), transparent);
       }
 
