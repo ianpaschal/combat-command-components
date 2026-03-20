@@ -21,7 +21,7 @@ const meta: Meta<typeof Badge> = {
     intent: {
       control: 'radio',
       options: [
-        'default',
+        'neutral',
         'danger',
         'warning',
         'success',

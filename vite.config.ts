@@ -31,10 +31,16 @@ export default defineConfig({
       external: [
         'react',
         'react-dom',
-        'react-router-dom',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
         'react-pdf',
         'pdfjs-dist',
       ],
+      output: {
+        preserveModules: true,
+        preserveModulesRoot: 'src',
+        entryFileNames: '[name].js',
+      },
     },
   },
 });

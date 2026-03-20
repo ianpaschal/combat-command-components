@@ -1,5 +1,3 @@
-# Table
-
 The `<Table />` component is a minimalist, scrollable table to provide a level of organization above what simple stack/list would.
 
 This component behaves like a table embedded in a document, rather than a spreadsheet.

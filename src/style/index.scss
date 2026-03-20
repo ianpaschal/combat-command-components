@@ -2,21 +2,9 @@
 @use "./layers";
 
 @layer base {
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Figtree, sans-serif;
-  }
-
   html,
   body {
-    position: absolute;
-    inset: 0;
-
-    overflow: hidden;
-    overscroll-behavior: none;
-
+    font-family: Figtree, sans-serif;
     font-size: 16px;
     line-height: 1.5rem;
     color: var(--passive-neutral-text);
@@ -47,36 +35,22 @@
   h1,
   h2,
   h3 {
+    margin: 0;
     font-weight: 500;
+    color: var(--gray-12);
+    letter-spacing: 0.25px;
   }
 
   p,
   li {
+    margin: 0;
     font-weight: 300;
     color: var(--passive-muted-text);
+    letter-spacing: 0.25px;
   }
 
   a {
     font-weight: 400;
-  }
-
-  @media (width >= 480px) {
-    h1 {
-      font-size: 1.25rem;
-      line-height: 1.5rem;
-    }
-
-    h2 {
-      font-size: 1rem;
-      line-height: 1.25rem;
-    }
-
-    h3,
-    a,
-    p,
-    li {
-      font-size: 0.875rem;
-      line-height: 1.25rem;
-    }
+    letter-spacing: 0.25px;
   }
 }

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 import { ScrollArea } from '../ScrollArea';
-import { useGridStyle, useScrollIndicator } from './Table.hooks';
+import { useGridStyle, useScrollbarOffset } from './Table.hooks';
 import { ColumnDef, RowData } from './Table.types';
 import { getPosition } from './Table.utils';
 import { TableCell } from './TableCell';
@@ -19,15 +19,10 @@ export const Table = <T extends RowData>({
   columns,
   rows,
 }: TableProps<T>): JSX.Element => {
-  const { ref, updateIndicators, visible } = useScrollIndicator();
+  const [ref, offset] = useScrollbarOffset();
   const style = useGridStyle(columns);
   return (
-    <ScrollArea
-      className={clsx(styles.table, className)}
-      ref={ref}
-      onScroll={updateIndicators}
-      indicators={{ top: { visible: false } }}
-    >
+    <ScrollArea className={clsx(styles.table, className)} ref={ref} offset={{ top: offset }} >
       <div className={styles.tableContent} style={style}>
         {columns.map((c, i) => (
           <TableCell
@@ -36,7 +31,6 @@ export const Table = <T extends RowData>({
             position={{
               column: getPosition([i, columns.length]),
             }}
-            showScrollIndicator={visible}
           />
         ))}
         {rows.map((r, i) => (

@@ -1,0 +1,34 @@
+@use "../../style/layers";
+
+@layer components {
+  .image-viewer {
+    position: relative;
+
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+
+    background-color: var(--gray-12);
+
+    &-image {
+      position: absolute;
+      inset: 0;
+
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+      object-position: center;
+
+      transition: opacity 500ms ease;
+    }
+  }
+}

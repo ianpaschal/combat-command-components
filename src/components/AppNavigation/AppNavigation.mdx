@@ -1,0 +1,11 @@
+import { Meta, Title, Canvas, Markdown, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as AppNavigationStories from './AppNavigation.stories';
+import Readme from './README.md?raw';
+
+<Meta of={AppNavigationStories} />
+<Title />
+<Canvas of={AppNavigationStories.Desktop} />
+<Markdown>{Readme}</Markdown>
+### Props
+<Controls of={AppNavigationStories.Desktop} />
+<Stories />

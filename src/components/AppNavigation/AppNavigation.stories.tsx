@@ -1,25 +1,104 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import clsx from 'clsx';
 import { HelpCircle, User } from 'lucide-react';
 
+import { getStyleClassNames } from '../../utils/getStyleClassNames';
 import { Button } from '../Button';
+import { CombatCommandLogo } from '../CombatCommandLogo';
 import { AppNavigation, AppNavigationProps } from './AppNavigation';
 
 const meta: Meta<typeof AppNavigation> = {
   title: 'Components/AppNavigation',
   component: AppNavigation,
   parameters: {
-    layout: 'fullscreen',
-  },
-  tags: ['autodocs'],
-  argTypes: {
-    mobile: {
-      control: 'boolean',
-      description: 'Whether to show mobile navigation (drawer) or desktop navigation.',
+    layout: 'centered',
+    bodyBackground: 'var(--page-bg)',
+    docs: {
+      story: { inline: false, height: '20rem' },
     },
   },
+  argTypes: {
+    location: {
+      table: { disable: true },
+    },
+    maxWidth: {
+      control: 'number',
+      description: 'Constrains the inner content width.',
+    },
+    mobile: {
+      control: 'boolean',
+      description: 'Switches between desktop (dropdown) and mobile (drawer) layouts.',
+    },
+    portalTarget: {
+      table: { disable: true },
+    },
+    secondaryControls: {
+      table: { disable: true },
+    },
+    logo: {
+      table: { disable: true },
+    },
+    logoPath: {
+      control: 'text',
+      description: 'Path navigated to when the logo is clicked.',
+    },
+    onNavigate: {
+      table: { disable: true },
+    },
+    routes: {
+      description: 'Primary navigation routes.',
+    },
+    secondaryRoutes: {
+      description: 'Icon-only routes rendered alongside secondary controls (e.g. a help link).',
+    },
+    className: {
+      description: 'Additional class applied to the nav bar element.',
+    },
+  },
+  decorators: [
+    (Story, { args }) => {
+      const [location, setLocation] = useState(args.location ?? '/overview');
+      const [portalTarget, setPortalTarget] = useState<Element | null>(null);
+      return (
+        <div ref={setPortalTarget} style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+          alignItems: 'center',
+        }}>
+          {portalTarget && (
+            <Story args={{
+              ...args,
+              location,
+              portalTarget,
+              onNavigate: setLocation,
+            }} />
+          )}
+          <h3 style={{ textAlign: 'center' }}>Current Location</h3>
+          <span className={clsx(...getStyleClassNames({
+            variant: 'passive',
+            corners: 'tight',
+            border: true,
+          }))} style={{
+            fontFamily: 'monospace',
+            fontSize: '0.75rem',
+            padding: '0.25rem 0.5rem',
+            textAlign: 'center',
+          }}>
+            {location}
+          </span>
+        </div>
+      );
+    },
+  ],
 };
 
 const defaultProps: AppNavigationProps = {
+  logo: <CombatCommandLogo />,
+  logoPath: '/',
+  location: '/overview',
+  onNavigate: (path) => path,
   routes: [
     {
       title: 'Overview',
@@ -28,6 +107,15 @@ const defaultProps: AppNavigationProps = {
         { title: 'Quick Start', path: '/overview/quick-start' },
         { title: 'Accessibility', path: '/overview/accessibility' },
         { title: 'Releases', path: '/overview/releases' },
+        {
+          title: 'Components',
+          path: '/overview/components',
+          children: [
+            { title: 'Button', path: '/overview/components/button' },
+            { title: 'Input', path: '/overview/components/input' },
+            { title: 'Select', path: '/overview/components/select' },
+          ],
+        },
       ],
     },
     {
@@ -35,8 +123,15 @@ const defaultProps: AppNavigationProps = {
       path: '/handbook',
       children: [
         { title: 'Styling', path: '/handbook/styling' },
-        { title: 'Animation', path: '/handbook/animation' },
-        { title: 'Composition', path: '/handbook/composition' },
+        {
+          title: 'Advanced',
+          path: '/handbook/advanced',
+          children: [
+            { title: 'Animation', path: '/handbook/advanced/animation' },
+            { title: 'Composition', path: '/handbook/advanced/composition' },
+            { title: 'Server Rendering', path: '/handbook/advanced/ssr' },
+          ],
+        },
       ],
     },
     {

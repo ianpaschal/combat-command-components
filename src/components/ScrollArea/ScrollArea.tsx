@@ -1,57 +1,52 @@
 import {
   ComponentPropsWithoutRef,
-  ElementRef,
+  CSSProperties,
   forwardRef,
-  UIEvent,
 } from 'react';
+import { ScrollArea as BaseScrollArea } from '@base-ui/react/scroll-area';
 import clsx from 'clsx';
-import { ScrollArea as RadixScrollArea } from 'radix-ui';
 
-import { useScrollIndicators } from './ScrollArea.hooks';
-import { IndicatorConfig } from './ScrollArea.types';
+import { getCssValue } from '../../utils/getCssValue';
 
 import styles from './ScrollArea.module.scss';
 
-type ScrollAreaRef = ElementRef<typeof RadixScrollArea.Root>;
-
-type ScrollAreaProps = ComponentPropsWithoutRef<typeof RadixScrollArea.Root> & {
-  indicators?: IndicatorConfig;
+type ScrollAreaProps = ComponentPropsWithoutRef<'div'> & {
+  offset?: Partial<Record<'top' | 'bottom' | 'left' | 'right', string | number | undefined>>;
 };
 
-export const ScrollArea = forwardRef<ScrollAreaRef, ScrollAreaProps>(({
+export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
   className,
   children,
-  indicators: indicatorConfig,
   onScroll,
+  offset,
+  style,
   ...props
-}, ref) => {
-  const { ref: viewportRef, updateIndicators, indicators } = useScrollIndicators(indicatorConfig);
-  const handleScroll = (e: UIEvent<HTMLDivElement>): void => {
-    updateIndicators(e);
-    if (onScroll) {
-      onScroll(e);
-    }
-  };
-  return (
-    <RadixScrollArea.Root
-      className={clsx(styles.scrollAreaRoot, className)}
-      ref={ref}
-      type="scroll"
-
-      scrollHideDelay={1000}
-      {...props}
-    >
-      <RadixScrollArea.Viewport className={styles.scrollAreaViewport} ref={viewportRef} onScroll={handleScroll}>
+}, ref) => (
+  <BaseScrollArea.Root
+    className={clsx(styles.scrollArea, className)}
+    ref={ref}
+    style={{
+      ...style,
+      '--scroll-area-offset-top': getCssValue(offset?.top),
+      '--scroll-area-offset-bottom': getCssValue(offset?.bottom),
+      '--scroll-area-offset-left': getCssValue(offset?.left),
+      '--scroll-area-offset-right': getCssValue(offset?.right),
+    } as CSSProperties}
+    {...props}
+  >
+    <BaseScrollArea.Viewport className={styles.scrollAreaViewport} onScroll={onScroll}>
+      <BaseScrollArea.Content>
         {children}
-      </RadixScrollArea.Viewport>
-      {indicators}
-      <RadixScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="vertical">
-        <RadixScrollArea.Thumb className={styles.scrollAreaThumb} />
-      </RadixScrollArea.Scrollbar>
-      <RadixScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="horizontal">
-        <RadixScrollArea.Thumb className={styles.scrollAreaThumb} />
-      </RadixScrollArea.Scrollbar>
-      <RadixScrollArea.Corner />
-    </RadixScrollArea.Root>
-  );
-});
+      </BaseScrollArea.Content>
+    </BaseScrollArea.Viewport>
+    <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="vertical">
+      <BaseScrollArea.Thumb className={styles.scrollAreaThumb} />
+    </BaseScrollArea.Scrollbar>
+    <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="horizontal">
+      <BaseScrollArea.Thumb className={styles.scrollAreaThumb} />
+    </BaseScrollArea.Scrollbar>
+    <BaseScrollArea.Corner />
+  </BaseScrollArea.Root>
+));
+
+ScrollArea.displayName = 'ScrollArea';

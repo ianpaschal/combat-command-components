@@ -1,58 +1,35 @@
 import {
   CSSProperties,
-  ElementRef,
   RefObject,
-  UIEvent,
-  UIEventHandler,
-  useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
-import { ScrollArea } from 'radix-ui';
 
 import { ColumnDef, RowData } from './Table.types';
 import { isValidCSSCalcValue } from './Table.utils';
 
-/**
- * Return type for useScrollIndicators() hook.
- */
-type UseScrollIndicatorsReturn = {
-  ref: RefObject<HTMLDivElement>;
-  updateIndicators: UIEventHandler<HTMLDivElement>;
-  visible: boolean;
-};
+export const useScrollbarOffset = (): [RefObject<HTMLDivElement>, number] => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = useState<number>(0);
 
-export const useScrollIndicator = (): UseScrollIndicatorsReturn => {
-  const ref = useRef<ElementRef<typeof ScrollArea.Viewport>>(null);
-
-  const [visible, setVisible] = useState<boolean>(false);
-
-  const updateIndicatorVisibility = (e?: UIEvent) => {
-    const scrollElement = e?.currentTarget || ref.current;
-    if (!scrollElement) {
-      return;
-    }
-    setVisible(scrollElement.scrollTop > 0);
-  };
-
-  // Set initial visibility
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!ref.current) {
       return;
     }
-    const observer = new ResizeObserver(() => {
-      updateIndicatorVisibility();
-    });
-    observer.observe(ref.current);
+    const root = ref.current;
+    const headerCell = root.querySelector<HTMLElement>('[data-header="true"]');
+    if (!headerCell) {
+      return;
+    }
+    setOffset(headerCell.clientHeight);
+    const observer = new ResizeObserver(() => setOffset(headerCell.clientHeight));
+    observer.observe(headerCell);
     return () => observer.disconnect();
   }, []);
 
-  return {
-    ref,
-    updateIndicators: updateIndicatorVisibility,
-    visible,
-  };
+  return [ref, offset];
 };
 
 export const useGridStyle = <T extends RowData>(

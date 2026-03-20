@@ -1,0 +1,17 @@
+@use "../../style/layers";
+@use "../../style/shadows";
+
+@layer components {
+  .card {
+    @include shadows.surface;
+
+    padding: var(--modal-padding);
+    border: var(--default-border);
+    border-radius: var(--border-radius-normal);
+    background-color: var(--default-bg);
+
+    &[data-disable-padding] {
+      padding: 0;
+    }
+  }
+}

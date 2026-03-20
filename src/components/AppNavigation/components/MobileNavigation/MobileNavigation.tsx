@@ -1,83 +1,72 @@
-import { Fragment, useState } from 'react';
+import { ReactNode } from 'react';
 import { Dialog } from '@base-ui/react/dialog';
 import clsx from 'clsx';
 import { Menu, X } from 'lucide-react';
 
 import { getStyleClassNames } from '../../../../utils/getStyleClassNames';
-import { AppLogo } from '../../../AppLogo';
 import { Button } from '../../../Button';
-import { useAppNavigate } from '../../AppNavigation.hooks';
-import { Route, SecondaryRoute } from '../../AppNavigation.types';
+import { ScrollArea } from '../../../ScrollArea';
+import { useNavigationContext } from '../../AppNavigation.context';
+import { Route } from '../../AppNavigation.types';
+import { locationToAncestorPaths } from '../../AppNavigation.utils';
+import { AppLogo } from '../AppLogo';
+import { MobileRouteList } from '../MobileRouteList/';
 
 import styles from './MobileNavigation.module.scss';
 
-const linkClassName = clsx(getStyleClassNames({
-  variant: 'ghost',
-  size: 'normal',
-  corners: 'normal',
-  collapsePadding: true,
-}), styles.mobileNavigationPrimaryRoute);
-
 interface MobileNavigationProps {
+  logo?: ReactNode;
+  logoPath?: string;
   routes: Route[];
-  secondaryRoutes?: SecondaryRoute[];
+  secondaryRoutes?: Route[];
 }
 
 export const MobileNavigation = ({
+  logo,
+  logoPath,
   routes,
   secondaryRoutes = [],
 }: MobileNavigationProps): JSX.Element => {
-  const navigate = useAppNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const { location, state, setState } = useNavigationContext();
+  const handleOpenChange = (open: boolean): void => {
+    setState(open ? locationToAncestorPaths(location).slice(0, -1) : null);
+  };
   return (
-    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Root open={!!state} onOpenChange={handleOpenChange}>
       <Dialog.Trigger render={(props) => (
-        <Button {...props} icon={<Menu />} size="large" variant="ghost" rounded />
+        <Button
+          {...props}
+          aria-label="Open navigation menu"
+          icon={<Menu />}
+          rounded
+          size="large"
+          variant="ghost"
+        />
       )} />
       <Dialog.Portal>
         <Dialog.Backdrop className={styles.mobileNavigationBackdrop} />
         <Dialog.Popup className={styles.mobileNavigationDrawer}>
           <div className={clsx(getStyleClassNames({ border: 'bottom' }), styles.mobileNavigationHeader)}>
-            <AppLogo className={styles.mobileNavigationHeaderLogo} />
+            <AppLogo path={logoPath}>
+              {logo}
+            </AppLogo>
             <Dialog.Close render={(props) => (
-              <Button {...props} icon={<X />} size="large" variant="ghost" rounded />
+              <Button
+                {...props}
+                aria-label="Close navigation menu"
+                icon={<X />}
+                rounded
+                size="large"
+                variant="ghost"
+              />
             )} />
           </div>
-          <nav className={styles.mobileNavigationRoutesList}>
-            {routes.map((route) => (
-              <Fragment key={route.path}>
-                <Dialog.Close nativeButton={false} render={(props) => (
-                  <button {...props} onClick={() => navigate(route.path)} className={linkClassName}>
-                    {route.icon}
-                    {route.title}
-                  </button>
-                )} />
-                {route.children && route.children.length > 0 && (
-                  <div className={clsx(styles.mobileNavigationChildRoutes)}>
-                    {route.children.map((childRoute) => (
-                      <Dialog.Close key={childRoute.path} nativeButton={false} render={(props) => (
-                        <button
-                          {...props}
-                          className={linkClassName}
-                          onClick={() => navigate(childRoute.path)}
-                        >
-                          {childRoute.title}
-                        </button>
-                      )} />
-                    ))}
-                  </div>
-                )}
-              </Fragment>
-            ))}
-            {secondaryRoutes.map((route) => (
-              <Dialog.Close key={route.path} nativeButton={false} render={(props) => (
-                <button {...props} onClick={() => navigate(route.path)} className={linkClassName}>
-                  {route.icon}
-                  {route.title}
-                </button>
-              )} />
-            ))}
-          </nav>
+          <ScrollArea className={styles.mobileNavigationScrollArea}>
+            <nav className={styles.mobileNavigationRoutesList}>
+              <MobileRouteList routes={routes} />
+              <MobileRouteList routes={secondaryRoutes} />
+            </nav>
+          </ScrollArea>
         </Dialog.Popup>
       </Dialog.Portal>
     </Dialog.Root>

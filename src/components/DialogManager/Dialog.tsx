@@ -7,7 +7,7 @@ import { Dialog as BaseDialog } from '@base-ui/react/dialog';
 import clsx from 'clsx';
 import { X } from 'lucide-react';
 
-import { getCssVariable } from '../../utils/getCssVariable';
+import { getCssValue } from '../../utils/getCssValue';
 import { getStyleClassNames } from '../../utils/getStyleClassNames';
 import { Button, ButtonProps } from '../Button';
 import { ScrollArea } from '../ScrollArea';
@@ -98,7 +98,7 @@ export const Dialog = ({
         <BaseDialog.Backdrop className={styles.dialogBackdrop} onClick={() => !preventCancel && handleOpenChange(false)} />
         <BaseDialog.Popup
           className={clsx(getStyleClassNames({ corners: 'wide' }), styles.dialogPopup)}
-          style={getCssVariable('--dialog-max-width', maxWidth)}
+          style={{ '--dialog-max-width': getCssValue(maxWidth) } as CSSProperties}
         >
           <div className={styles.dialogHeader}>
             <BaseDialog.Title>
@@ -116,10 +116,7 @@ export const Dialog = ({
                 {renderContent ? renderContent(contextValue) : content}
               </div>
             ) : (
-              <ScrollArea
-                className={styles.dialogScrollArea}
-                indicators={{ top: { border: true }, bottom: { border: true } }}
-              >
+              <ScrollArea className={styles.dialogScrollArea}>
                 <div className={styles.dialogContent} data-padding={!disablePadding}>
                   {renderContent ? renderContent(contextValue) : content}
                 </div>

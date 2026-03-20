@@ -6,19 +6,21 @@ import {
 } from 'react';
 import clsx from 'clsx';
 
+import { ElementIntent } from '../../types';
+
 import styles from './Badge.module.scss';
 
 export type BadgeProps = {
   children: ReactElement;
   className?: string;
   value?: number | string | null;
-  intent?: 'default' | 'danger' | 'info' | 'success' | 'warning';
+  intent?: ElementIntent;
 };
 
 export const Badge = forwardRef<unknown, BadgeProps>(({
   children,
   className,
-  intent = 'default',
+  intent = 'neutral',
   value,
   ...props
 }, ref) => cloneElement(children, {

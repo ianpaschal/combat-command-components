@@ -89,5 +89,5 @@ npm run gen:scss
 The code in this repository is licensed under the MIT License.
 See `LICENSE` for details.
 
-> **NOTE:** Although the _code_ in this repository is licensed under the MIT License, "Combat Command" and associated logos are trademarks of Combat Command and may not be used without permission.
-> The <AppLogo/> component exists as a means to render the Combat Command logo according to brand guidelines _when/where permitted_.
+> **NOTE:** "Combat Command" and the Combat Command logo are trademarks of Ian Paschal and are not licensed under the MIT License. Use of these trademarks requires prior written permission.
+> The `<AppLogo/>` component exists as a means to render the Combat Command logo according to brand guidelines _when/where permitted_.

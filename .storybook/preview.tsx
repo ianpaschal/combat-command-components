@@ -1,10 +1,24 @@
-import { BrowserRouter } from 'react-router-dom';
+import { useEffect } from 'react';
 import type { Preview } from '@storybook/react';
 
 import '../src/style/index.scss';
 import './preview.css';
 
 const preview: Preview = {
+  decorators: [
+    (Story, { parameters }) => {
+      useEffect(() => {
+        const bg: string | undefined = parameters.bodyBackground;
+        if (bg) {
+          document.body.style.backgroundColor = bg;
+          return () => {
+            document.body.style.backgroundColor = '';
+          };
+        }
+      }, [parameters.bodyBackground]);
+      return <Story />;
+    },
+  ],
   parameters: {
     controls: {
       matchers: {
@@ -13,13 +27,6 @@ const preview: Preview = {
       },
     },
   },
-  decorators: [
-    (Story) => (
-      <BrowserRouter>
-        <Story />
-      </BrowserRouter>
-    ),
-  ],
 };
 
 export default preview;
