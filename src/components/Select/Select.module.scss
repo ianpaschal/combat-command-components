@@ -10,7 +10,7 @@
     @include flex.row($gap: 0);
 
     &-trigger {
-      @include flex.row($gap: 0.5rem);
+      @include flex.row($gap: 0.5rem, $yAlign: center);
 
       user-select: none;
       width: 100%;

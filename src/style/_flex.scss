@@ -1,10 +1,11 @@
 /**
  * These mixins exist primarily to avoid constant repetition.
  */
-@mixin row($gap: 1rem, $xAlign: left, $yAlign: center) {
+@mixin row($gap: 0, $xAlign: left, $yAlign: none) {
   display: flex;
   flex-direction: row;
   gap: $gap;
+  align-items: stretch;
 
   @if $xAlign == left {
     justify-content: start;

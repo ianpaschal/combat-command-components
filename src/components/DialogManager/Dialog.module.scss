@@ -104,7 +104,7 @@
     }
 
     &-footer {
-      @include flex.row($xAlign: right);
+      @include flex.row($xAlign: right, $gap: 1rem);
 
       grid-area: footer;
       padding: 0 var(--modal-padding);

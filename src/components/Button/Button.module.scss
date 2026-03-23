@@ -3,7 +3,7 @@
 
 @layer components {
   .button {
-    @include flex.row($xAlign: center, $gap: 0.5rem);
+    @include flex.row($xAlign: center, $yAlign: center, $gap: 0.5rem);
 
     position: relative;
     flex-shrink: 0;
