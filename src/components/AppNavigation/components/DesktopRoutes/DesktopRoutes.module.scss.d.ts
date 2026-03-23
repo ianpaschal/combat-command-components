@@ -1,0 +1,14 @@
+export declare const dark: string;
+export declare const desktopRoutes: string;
+export declare const desktopRoutesChildren: string;
+export declare const desktopRoutesChildrenIcon: string;
+export declare const desktopRoutesNestedLink: string;
+export declare const desktopRoutesNestedRoot: string;
+export declare const desktopRoutesPopup: string;
+export declare const desktopRoutesPopupArrow: string;
+export declare const desktopRoutesPopupArrowFill: string;
+export declare const desktopRoutesPopupArrowStroke: string;
+export declare const desktopRoutesPositioner: string;
+export declare const desktopRoutesRoutes: string;
+export declare const desktopRoutesSecondaryRoutes: string;
+export declare const desktopRoutesViewport: string;

@@ -1,35 +1,40 @@
 @use "../../../../style/layers";
 @use "../../../../style/shadows";
 @use "../../../../style/flex";
-@use "../../../../style/variables";
 
 @layer components {
-  .desktop-route-list {
-    flex-grow: 1;
-    min-width: max-content;
+  .desktop-routes {
+    width: 100%;
+
+    &[data-depth="0"] {
+      flex-grow: 1;
+      min-width: max-content;
+    }
 
     &-routes {
       display: flex;
-      justify-content: space-between;
-    }
-
-    &-primary-routes {
-      @include flex.row($gap: 0.5rem);
+      flex-direction: column;
+      gap: 0.25rem;
 
       // Reset because Base-UI makes this a list:
       margin: 0;
       padding: 0;
+
       list-style: none;
+
+      &[data-depth="0"] {
+        flex-direction: row;
+        gap: 0.5rem;
+      }
     }
 
-    &-secondary-routes {
-      @include flex.row($gap: 0.5rem);
-    }
-
-    &-primary-route-icon {
+    &-children-icon {
       display: block;
+
       width: 1rem;
       height: 1rem;
+      margin-left: auto;
+
       transition: transform 0.2s ease;
 
       svg {
@@ -42,38 +47,15 @@
       }
     }
 
-    &-nested-root {
-      width: 100%;
-    }
-
-    &-nested-list {
-      @include flex.column($gap: 0.25rem);
-
-      // Reset because Base-UI makes this a list:
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    &-nested-link {
-      align-items: flex-start;
-      justify-content: space-between;
-
-      width: 100%;
-      max-width: 12rem;
-      height: auto;
-      min-height: 2.5rem;
-      max-height: none;
-      padding-top: 0.625rem;
-      padding-bottom: 0.625rem;
-    }
-
-    &-child-routes {
-      @include flex.column($gap: 0.25rem);
+    &-children {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
 
       box-sizing: border-box;
       width: max-content;
-      min-width: fit-content;
+      min-width: 10rem;
+      max-width: 16rem;
       padding: 0.5rem;
 
       transition:

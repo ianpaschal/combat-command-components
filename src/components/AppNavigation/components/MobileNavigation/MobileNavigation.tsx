@@ -10,7 +10,7 @@ import { useNavigationContext } from '../../AppNavigation.context';
 import { Route } from '../../AppNavigation.types';
 import { locationToAncestorPaths } from '../../AppNavigation.utils';
 import { AppLogo } from '../AppLogo';
-import { MobileRouteList } from '../MobileRouteList/';
+import { MobileRoutes } from '../MobileRoutes';
 
 import styles from './MobileNavigation.module.scss';
 
@@ -63,8 +63,8 @@ export const MobileNavigation = ({
           </div>
           <ScrollArea className={styles.mobileNavigationScrollArea}>
             <nav className={styles.mobileNavigationRoutesList}>
-              <MobileRouteList routes={routes} />
-              <MobileRouteList routes={secondaryRoutes} />
+              <MobileRoutes routes={routes} />
+              <MobileRoutes routes={secondaryRoutes} />
             </nav>
           </ScrollArea>
         </Dialog.Popup>

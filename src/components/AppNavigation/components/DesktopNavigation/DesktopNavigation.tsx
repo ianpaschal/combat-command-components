@@ -1,5 +1,5 @@
 import { Route } from '../../AppNavigation.types';
-import { DesktopRouteList } from '../DesktopRouteList/DesktopRouteList';
+import { DesktopRoutes } from '../DesktopRoutes';
 
 import styles from './DesktopNavigation.module.scss';
 
@@ -13,7 +13,7 @@ export const DesktopNavigation = ({
   secondaryRoutes = [],
 }: NavigationProps): JSX.Element => (
   <div className={styles.desktopNavigation}>
-    <DesktopRouteList className={styles.desktopNavigationPrimaryRoutes} routes={routes} />
-    <DesktopRouteList className={styles.desktopNavigationSecondaryRoutes} routes={secondaryRoutes} />
+    <DesktopRoutes className={styles.desktopNavigationPrimaryRoutes} routes={routes} />
+    <DesktopRoutes className={styles.desktopNavigationSecondaryRoutes} routes={secondaryRoutes} />
   </div>
 );
