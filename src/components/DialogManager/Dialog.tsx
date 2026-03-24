@@ -27,6 +27,8 @@ export type DialogProps = {
   dirty: boolean;
   disablePadding?: boolean;
   disableScroll?: boolean;
+  fullHeight?: boolean;
+  fullWidth?: boolean;
   id: string;
   maxWidth?: CSSProperties['maxWidth'];
   onCancel?: (dirty: boolean) => void;
@@ -47,6 +49,8 @@ export const Dialog = ({
   dirty,
   disablePadding = false,
   disableScroll = false,
+  fullHeight = false,
+  fullWidth = false,
   id,
   maxWidth,
   nested,
@@ -98,7 +102,9 @@ export const Dialog = ({
         <BaseDialog.Backdrop className={styles.dialogBackdrop} onClick={() => !preventCancel && handleOpenChange(false)} />
         <BaseDialog.Popup
           className={clsx(getStyleClassNames({ corners: 'wide' }), styles.dialogPopup)}
-          style={{ '--dialog-max-width': getCssValue(maxWidth) } as CSSProperties}
+          style={{ '--dialog-user-max-width': getCssValue(maxWidth) } as CSSProperties}
+          data-full-width={fullWidth || undefined}
+          data-full-height={fullHeight || undefined}
         >
           <div className={styles.dialogHeader}>
             <BaseDialog.Title>

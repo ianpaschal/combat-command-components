@@ -10,6 +10,8 @@ import { useDialogManager } from './DialogManager.hooks';
 interface StoryArgs {
   title: string;
   content: ReactNode;
+  fullHeight?: boolean;
+  fullWidth?: boolean;
   maxWidth?: string | number;
   preventCancel?: boolean;
   disablePadding?: boolean;
@@ -112,6 +114,16 @@ const meta: Meta<StoryArgs> = {
       description: 'Whether the dialog can be cancelled by clicking outside or the X button.',
       table: { category: 'Behavior' },
     },
+    fullWidth: {
+      control: 'boolean',
+      description: 'Whether the dialog should expand to the full available width.',
+      table: { category: 'Appearance' },
+    },
+    fullHeight: {
+      control: 'boolean',
+      description: 'Whether the dialog should expand to the full available height.',
+      table: { category: 'Appearance' },
+    },
     maxWidth: {
       control: 'number',
       description: 'The maximum width of the dialog in pixels.',
@@ -133,6 +145,8 @@ export const Default: Story = {
   args: {
     title: 'Example Dialog',
     content: 'This is a default dialog with no custom actions. You can close it by clicking the X button, clicking outside, or using the default action buttons.',
+    fullHeight: false,
+    fullWidth: false,
     maxWidth: 480,
     preventCancel: false,
     disablePadding: false,

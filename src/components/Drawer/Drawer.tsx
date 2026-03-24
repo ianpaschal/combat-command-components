@@ -88,8 +88,8 @@ export const Drawer = ({
             className={clsx(styles.drawerPopup, className)}
             data-full-size={fullSize || undefined}
             style={{
-              '--drawer-max-width': ['left', 'right'].includes(side) ? getCssValue(maxSize) : undefined,
-              '--drawer-max-height': ['top', 'bottom'].includes(side) ? getCssValue(maxSize) : undefined,
+              '--drawer-user-max-width': ['left', 'right'].includes(side) ? getCssValue(maxSize) : undefined,
+              '--drawer-user-max-height': ['top', 'bottom'].includes(side) ? getCssValue(maxSize) : undefined,
             } as CSSProperties}
           >
             <BaseDrawer.Content className={styles.drawerInner}>
