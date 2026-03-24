@@ -15,6 +15,7 @@ export const getPosition = (
 
 // Type guard for calc-compatible CSS values
 export function isValidCSSCalcValue(value: string): boolean {
+
   // Empty strings are invalid
   if (value.trim() === '') {
     return false;

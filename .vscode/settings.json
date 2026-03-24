@@ -1,13 +1,3 @@
 {
-  "cSpell.words": [
-    "autodocs",
-    "Figtree",
-    "vmax",
-    "vmin"
-  ],
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.fixAll.stylelint": "explicit"
-  },
-  "stylelint.validate": ["css", "scss"]
+  "eslint.useFlatConfig": true
 }

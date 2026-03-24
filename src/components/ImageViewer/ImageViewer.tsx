@@ -19,7 +19,9 @@ export const ImageViewer = ({
   url,
 }: ImageViewerProps): JSX.Element => {
   const [loading, setLoading] = useState(true);
-  useEffect(() => { setLoading(true); }, [url]);
+  useEffect(() => {
+    setLoading(true);
+  }, [url]);
   const showLoading = forceLoading || loading;
   return (
     <div className={clsx(styles.imageViewer, className)}>
