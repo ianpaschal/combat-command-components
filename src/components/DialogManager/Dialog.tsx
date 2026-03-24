@@ -23,6 +23,7 @@ export type DialogAction = Omit<ButtonProps, 'onClick'> & {
 export type DialogProps = {
   actions?: DialogAction[];
   cancelText?: string;
+  confirmText?: string;
   content?: ReactNode;
   dirty: boolean;
   disablePadding?: boolean;
@@ -45,6 +46,7 @@ export interface DialogPropsWithNested extends DialogProps {
 export const Dialog = ({
   actions,
   cancelText,
+  confirmText,
   content,
   dirty,
   disablePadding = false,
@@ -144,7 +146,7 @@ export const Dialog = ({
               />
             )) : (
               <BaseDialog.Close render={(props) => (
-                <Button {...props} text="Confirm" />
+                <Button {...props} text={confirmText ?? 'Confirm'} />
               )} />
             )}
           </div>

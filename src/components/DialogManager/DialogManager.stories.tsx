@@ -10,6 +10,8 @@ import { useDialogManager } from './DialogManager.hooks';
 interface StoryArgs {
   title: string;
   content: ReactNode;
+  cancelText?: string;
+  confirmText?: string;
   fullHeight?: boolean;
   fullWidth?: boolean;
   maxWidth?: string | number;
@@ -107,6 +109,16 @@ const meta: Meta<StoryArgs> = {
     content: {
       control: 'text',
       description: 'The content of the dialog.',
+      table: { category: 'Content' },
+    },
+    cancelText: {
+      control: 'text',
+      description: 'Override the label for the cancel button.',
+      table: { category: 'Content' },
+    },
+    confirmText: {
+      control: 'text',
+      description: 'Override the label for the confirm button.',
       table: { category: 'Content' },
     },
     preventCancel: {
