@@ -41,6 +41,7 @@
   "devDependencies": {
     "@ianpaschal/eslint-config": "file:../eslint-config",
     "@storybook/addon-docs": "^10.2.15",
+    "@storybook/addon-themes": "^10.3.3",
     "@storybook/builder-vite": "^10.2.15",
     "@storybook/react-vite": "^10.2.15",
     "@stylistic/stylelint-config": "^3.0.1",

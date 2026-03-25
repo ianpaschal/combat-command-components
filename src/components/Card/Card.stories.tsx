@@ -7,6 +7,7 @@ const meta: Meta<typeof Card> = {
   component: Card,
   parameters: {
     layout: 'centered',
+    bodyBackground: 'var(--page-bg)',
   },
   tags: ['autodocs'],
   argTypes: {

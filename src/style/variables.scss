@@ -78,17 +78,17 @@ $intent-colors: (
   // ---- STATIC ----
   @each $intent, $color in $intent-colors {
     @if $intent == "neutral" {
-      --passive-neutral-bg: var(--default-bg);
+      --passive-neutral-bg: transparent;
       --passive-neutral-border: var(--gray-4);
       --passive-neutral-text: var(--gray-11);
     } @else {
-      --passive-#{$intent}-bg: var(--#{$color}-2);
+      --passive-#{$intent}-bg: var(--#{$color}-2a);
       --passive-#{$intent}-border: var(--#{$color}-9);
       --passive-#{$intent}-text: var(--#{$color}-11);
     }
   }
 
-  --passive-muted-bg: var(--default-bg);
+  --passive-muted-bg: transparent;
   --passive-muted-border: var(--gray-3);
   --passive-muted-text: var(--gray-11);
 
@@ -197,6 +197,9 @@ $intent-colors: (
 
   // Re-apply color variants with dark mode Radix colors
   @include color-variants($primary-text-index: 12);
+
+  // Re-apply dark mode color to stale default border
+  --default-border: var(--border-width) solid var(--passive-neutral-border);
 }
 
 @media (width >= 480px) {
