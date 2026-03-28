@@ -1,33 +1,38 @@
-import { useEffect } from 'react';
 import type { Preview } from '@storybook/react';
-import { withThemeByClassName } from '@storybook/addon-themes';
+import { ThemeProvider, light, dark, midnight, Theme } from '../src/components/ThemeProvider';
 
 import '../src/style/index.scss';
 import './preview.css';
 
+const themes: Record<string, Theme> = { light, dark, midnight };
+
 const preview: Preview = {
+  globalTypes: {
+    theme: {
+      description: 'Global theme for components',
+      defaultValue: 'light',
+      toolbar: {
+        title: 'Theme',
+        icon: 'paintbrush',
+        items: Object.entries(themes).map(([value, { displayName }]) => ({ value, title: displayName })),
+        dynamicTitle: true,
+      },
+    },
+  },
   decorators: [
-    withThemeByClassName({
-      themes: { light: '', dark: 'dark' },
-      defaultTheme: 'light',
-    }),
-    (Story, { parameters, viewMode }) => {
-      useEffect(() => {
-        if (viewMode !== 'story') return;
-        const bg: string | undefined = parameters.bodyBackground;
-        if (bg) {
-          document.body.style.backgroundColor = bg;
-          return () => {
-            document.body.style.backgroundColor = '';
-          };
-        }
-      }, [parameters.bodyBackground, viewMode]);
-      return <Story />;
+    (Story, context) => {
+      const themeName = (context.globals.theme as string) ?? 'light';
+      const theme = themes[themeName] ?? themes.light;
+      const bodyBackground = context.parameters.bodyBackground as string | undefined;
+      return (
+        <ThemeProvider theme={theme}>
+          {bodyBackground && <style>{`body { background-color: ${bodyBackground}; }`}</style>}
+          <Story />
+        </ThemeProvider>
+      );
     },
   ],
   parameters: {
-    bodyBackground: 'var(--default-bg)',
-
     controls: {
       matchers: {
         color: /(background|color)$/i,

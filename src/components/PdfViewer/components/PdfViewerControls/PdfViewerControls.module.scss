@@ -1,15 +1,14 @@
-@use "../../style/layers";
-@use "../../style/flex";
-@use "../../style/text";
+@use "../../../../style/layers";
+@use "../../../../style/flex";
+@use "../../../../style/text";
 
 @layer components {
   .pdf-viewer-controls {
-    @include flex.row($gap: 0.5rem, $xAlign: center);
+    @include flex.row($gap: 0.5rem, $xAlign: center, $yAlign: center);
 
     user-select: none;
     flex-shrink: 0;
     padding: 0.5rem 1rem;
-    background-color: var(--default-bg);
 
     &-page-info,
     &-zoom-info {
@@ -23,7 +22,7 @@
       width: var(--border-width);
       height: 1.25rem;
       margin: 0 0.25rem;
-      background-color: var(--passive-neutral-border);
+      background-color: var(--color-card-border);
     }
   }
 }

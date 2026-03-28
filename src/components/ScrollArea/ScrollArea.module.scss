@@ -64,7 +64,6 @@
       border-radius: calc(var(--size) / 2);
 
       opacity: 0;
-      background-color: var(--gray-a3);
 
       transition: opacity 150ms;
 
@@ -100,7 +99,6 @@
       position: relative;
       flex: 1;
       border-radius: calc(var(--size) / 2);
-      background: var(--gray-a8);
 
       /* increase target size for touch devices https://www.w3.org/WAI/WCAG21/Understanding/target-size.html */
       &::before {

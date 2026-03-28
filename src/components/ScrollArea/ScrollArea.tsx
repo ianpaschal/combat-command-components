@@ -7,6 +7,7 @@ import { ScrollArea as BaseScrollArea } from '@base-ui/react/scroll-area';
 import clsx from 'clsx';
 
 import { getCssValue } from '../../utils/getCssValue';
+import { getStyleClassNames } from '../../utils/getStyleClassNames';
 
 import styles from './ScrollArea.module.scss';
 
@@ -40,10 +41,10 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
       </BaseScrollArea.Content>
     </BaseScrollArea.Viewport>
     <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="vertical">
-      <BaseScrollArea.Thumb className={styles.scrollAreaThumb} />
+      <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'neutral' }), styles.scrollAreaThumb)} />
     </BaseScrollArea.Scrollbar>
     <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="horizontal">
-      <BaseScrollArea.Thumb className={styles.scrollAreaThumb} />
+      <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'neutral' }), styles.scrollAreaThumb)} />
     </BaseScrollArea.Scrollbar>
     <BaseScrollArea.Corner />
   </BaseScrollArea.Root>

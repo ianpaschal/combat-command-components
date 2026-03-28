@@ -1,7 +1,7 @@
 import { ComponentPropsWithoutRef, forwardRef } from 'react';
 import clsx from 'clsx';
 
-import { getStyleClassNames } from '../../../../utils/getStyleClassNames';
+import { sx } from '../../../../utils';
 import { useNavigationContext } from '../../AppNavigation.context';
 import { Route } from '../../AppNavigation.types';
 
@@ -31,10 +31,11 @@ export const RouteItem = forwardRef<HTMLAnchorElement, RouteItemProps>(({
       ref={ref}
       href={route.path}
       {...rest}
-      className={clsx(getStyleClassNames({
-        variant: 'ghost',
-        size: !primary ? 'normal' : undefined,
+      className={clsx(sx({
         corners: 'normal',
+        intent: isActive ? 'accent' : 'neutral',
+        size: !primary ? 'normal' : undefined,
+        variant: 'ghost',
       }), styles.routeItem, className)}
       onClick={handleClick}
       data-primary={primary}

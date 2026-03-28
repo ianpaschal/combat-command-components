@@ -12,6 +12,8 @@
       "ignoreAtRules": ["if", "else"]
     }],
     "@stylistic/no-eol-whitespace": [true],
+    "@stylistic/color-hex-case": "upper",
+    "color-hex-length": "long",
     "at-rule-empty-line-before": ["always", {
       "except": ["blockless-after-same-name-blockless", "first-nested"],
       "ignore": ["after-comment"],

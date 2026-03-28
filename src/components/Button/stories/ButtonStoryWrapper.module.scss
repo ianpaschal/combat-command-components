@@ -14,7 +14,7 @@
       display: grid;
       grid-column: 2/3;
       grid-row: 1/2;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       grid-template-rows: 1fr auto;
       gap: var(--inner-spacing);
 
@@ -30,7 +30,7 @@
       grid-column: 1/2;
       grid-row: 2/3;
       grid-template-columns: 1fr auto;
-      grid-template-rows: repeat(5, 1fr);
+      grid-template-rows: repeat(6, 1fr);
       gap: var(--inner-spacing);
 
       h2 {
@@ -63,16 +63,14 @@
       font-family: Menlo, Courier, monospace;
       font-size: 0.625rem;
       text-align: center;
-
-      background-color: var(--secondary-neutral-bg);
     }
 
     &-buttons {
       display: grid;
       grid-column: 2/3;
       grid-row: 2/3;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(5, 1fr);
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(6, 1fr);
       gap: var(--inner-spacing);
 
       button {

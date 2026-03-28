@@ -7,12 +7,16 @@ const meta: Meta<typeof Card> = {
   component: Card,
   parameters: {
     layout: 'centered',
-    bodyBackground: 'var(--page-bg)',
+    bodyBackground: 'var(--color-page-bg)',
   },
   tags: ['autodocs'],
   argTypes: {
     className: { table: { disable: true } },
     children: { table: { disable: true } },
+    elevation: {
+      control: { type: 'select' },
+      options: [1, 2, 3, 4, 5],
+    },
   },
 };
 

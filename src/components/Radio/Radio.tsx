@@ -56,16 +56,15 @@ export const Radio = forwardRef<RadioGroupRef, RadioProps>(({
     onValueChange={(value) => onChange?.(value as RadioValue)}
     {...props}
   >
-    {options.map(({ value, label }) => (
-      <label className={clsx(getStyleClassNames({
-        variant: 'passive',
-        intent: 'muted',
-      }), styles.radioItem)} key={value} aria-disabled={props.disabled}>
+    {options.map(({ value: v, label }) => (
+      <label className={styles.radioItem} key={v} aria-disabled={props.disabled}>
         <BaseRadio.Root
           className={clsx(getStyleClassNames({
-            variant: 'outlined',
+            variant: 'ghost',
+            intent: v === value ? 'accent' : 'neutral',
+            border: true,
           }), styles.radioItemControl)}
-          value={value}
+          value={v}
         />
         {label}
       </label>

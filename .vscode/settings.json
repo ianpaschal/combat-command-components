@@ -1,3 +1,7 @@
 {
-  "eslint.useFlatConfig": true
+  "eslint.useFlatConfig": true,
+  "cSpell.words": [
+    "colorjs",
+    "oklch"
+  ]
 }

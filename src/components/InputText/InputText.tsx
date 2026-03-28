@@ -33,7 +33,9 @@ export const InputText = forwardRef<HTMLInputElement, InputTextProps>(({
       ref={ref}
       className={clsx(getStyleClassNames({
         corners: 'normal',
-        variant: 'outlined',
+        variant: 'ghost',
+        border: true,
+        size: 'normal',
       }))}
       data-has-icon={icon ?? undefined}
       disabled={loading || disabled}

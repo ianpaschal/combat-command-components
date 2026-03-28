@@ -51,6 +51,11 @@ const meta: Meta<typeof Button> = {
       description: 'The size of the button.',
       table: { category: 'Appearance' },
     },
+    border: {
+      control: 'boolean',
+      description: 'Whether the button has a visible border.',
+      table: { category: 'Appearance' },
+    },
     rounded: {
       control: 'boolean',
       description: 'Whether the button has rounded ends.',
@@ -80,6 +85,7 @@ type Story = StoryObj<typeof meta>;
 export const Text: Story = {
   name: 'Text',
   args: {
+    border: false,
     collapsePadding: false,
     disabled: false,
     icon: undefined,
@@ -89,13 +95,14 @@ export const Text: Story = {
     rounded: false,
     size: 'normal',
     text: 'Add Item',
-    variant: 'primary',
+    variant: 'solid',
   },
 };
 
 export const TextIcon: Story = {
   name: 'Text & Icon',
   args: {
+    border: false,
     collapsePadding: false,
     disabled: false,
     icon: <Plus />,
@@ -105,13 +112,14 @@ export const TextIcon: Story = {
     rounded: false,
     size: 'normal',
     text: 'Add Item',
-    variant: 'primary',
+    variant: 'solid',
   },
 };
 
 export const Icon: Story = {
   name: 'Icon',
   args: {
+    border: false,
     collapsePadding: false,
     disabled: false,
     icon: <Mail />,
@@ -120,7 +128,7 @@ export const Icon: Story = {
     loading: false,
     rounded: false,
     size: 'normal',
-    variant: 'primary',
+    variant: 'solid',
   },
 };
 
@@ -166,7 +174,7 @@ export const FileInput: StoryObj<typeof FileInputButton> = {
     rounded: false,
     size: 'normal',
     text: 'Upload File',
-    variant: 'primary',
+    variant: 'solid',
   },
   render: (args) => <FileInputButton {...args} />,
 };

@@ -1,4 +1,3 @@
-export declare const dark: string;
 export declare const drawerBackdrop: string;
 export declare const drawerContent: string;
 export declare const drawerHandle: string;

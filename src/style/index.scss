@@ -6,10 +6,12 @@
   body {
     font-family: Figtree, sans-serif;
     font-size: 16px;
+    font-weight: 300;
     line-height: 1.5rem;
-    color: var(--passive-neutral-text);
+    color: var(--color-body-text);
+    letter-spacing: 0.5px;
 
-    background-color: var(--page-bg);
+    background-color: var(--color-page-bg);
   }
 
   // Sizes
@@ -37,7 +39,7 @@
   h3 {
     margin: 0;
     font-weight: 500;
-    color: var(--gray-12);
+    color: var(--color-header-text);
     letter-spacing: 0.25px;
   }
 
@@ -45,7 +47,6 @@
   li {
     margin: 0;
     font-weight: 300;
-    color: var(--passive-muted-text);
     letter-spacing: 0.25px;
   }
 

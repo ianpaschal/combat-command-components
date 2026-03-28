@@ -17,6 +17,7 @@ import sizes from '../../style/sizes.module.scss';
 import styles from './Button.module.scss';
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title' | 'children'> {
+  border?: boolean;
   className?: string;
   collapsePadding?: boolean;
   icon?: ReactElement;
@@ -30,6 +31,7 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
+  border = false,
   className,
   collapsePadding,
   icon,
@@ -40,19 +42,20 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   size = 'normal',
   text,
   type = 'button',
-  variant = 'primary',
+  variant = 'solid',
   ...props
 }, ref): JSX.Element => (
   <button
     ref={ref}
     className={clsx(getStyleClassNames({
-      intent,
-      size,
-      variant,
+      border,
       collapsePadding,
       corners: 'normal',
+      intent,
       rounded,
+      size,
       square: icon && !text,
+      variant,
     }), styles.button, className)}
     type={type}
     data-reverse={iconPosition === 'end'}

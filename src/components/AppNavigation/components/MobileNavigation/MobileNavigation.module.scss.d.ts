@@ -1,4 +1,3 @@
-export declare const dark: string;
 export declare const mobileNavigationBackdrop: string;
 export declare const mobileNavigationDrawer: string;
 export declare const mobileNavigationHeader: string;

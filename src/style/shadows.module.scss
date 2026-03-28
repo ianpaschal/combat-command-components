@@ -1,0 +1,32 @@
+@use "sass:math";
+@use "./layers";
+
+@function lerp($start, $end, $t) {
+  @return $start + ($end - $start) * $t;
+}
+
+// Elevation levels 1–5, interpolated between surface (1) and elevated (5).
+// Shadow geometry is computed at build time; opacity uses --shadow-strength at runtime.
+@layer components {
+  @for $level from 1 through 5 {
+    $t: math.div($level - 1, 4);
+
+    // Primary shadow: 0 1px 2px 0px → 0 10px 38px -10px, opacity ×1 → ×7
+    $y1: lerp(1px, 10px, $t);
+    $blur1: lerp(2px, 38px, $t);
+    $spread1: lerp(0px, -10px, $t);
+    $mul1: lerp(1, 7, $t);
+
+    // Secondary shadow: transparent → 0 10px 20px -15px, opacity ×0 → ×4
+    $y2: lerp(1px, 10px, $t);
+    $blur2: lerp(2px, 20px, $t);
+    $spread2: lerp(0px, -15px, $t);
+    $mul2: lerp(0, 4, $t);
+
+    .elevation#{$level} {
+      box-shadow:
+        0 #{$y1} #{$blur1} #{$spread1} rgb(0 0 0 / min(0.9, calc(var(--shadow-strength) * #{$mul1}))),
+        0 #{$y2} #{$blur2} #{$spread2} rgb(0 0 0 / min(0.75, calc(var(--shadow-strength) * #{$mul2})));
+    }
+  }
+}

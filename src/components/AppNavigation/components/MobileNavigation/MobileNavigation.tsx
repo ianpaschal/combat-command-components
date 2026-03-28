@@ -3,7 +3,7 @@ import { Dialog } from '@base-ui/react/dialog';
 import clsx from 'clsx';
 import { Menu, X } from 'lucide-react';
 
-import { getStyleClassNames } from '../../../../utils/getStyleClassNames';
+import { getStyleClassNames, sx } from '../../../../utils';
 import { Button } from '../../../Button';
 import { ScrollArea } from '../../../ScrollArea';
 import { useNavigationContext } from '../../AppNavigation.context';
@@ -45,8 +45,11 @@ export const MobileNavigation = ({
       )} />
       <Dialog.Portal>
         <Dialog.Backdrop className={styles.mobileNavigationBackdrop} />
-        <Dialog.Popup className={styles.mobileNavigationDrawer}>
-          <div className={clsx(getStyleClassNames({ border: 'bottom' }), styles.mobileNavigationHeader)}>
+        <Dialog.Popup className={clsx(sx({ elevation: 5, variant: 'surface' }), styles.mobileNavigationDrawer)}>
+          <div className={clsx(...getStyleClassNames({
+            variant: 'surface',
+            border: 'bottom',
+          }), styles.mobileNavigationHeader)}>
             <AppLogo path={logoPath}>
               {logo}
             </AppLogo>

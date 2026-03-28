@@ -103,7 +103,11 @@ export const Dialog = ({
       <BaseDialog.Portal>
         <BaseDialog.Backdrop className={styles.dialogBackdrop} onClick={() => !preventCancel && handleOpenChange(false)} />
         <BaseDialog.Popup
-          className={clsx(getStyleClassNames({ corners: 'wide' }), styles.dialogPopup)}
+          className={clsx(getStyleClassNames({
+            corners: 'wide',
+            variant: 'surface',
+            border: true,
+          }), styles.dialogPopup)}
           style={{ '--dialog-user-max-width': getCssValue(maxWidth) } as CSSProperties}
           data-full-width={fullWidth || undefined}
           data-full-height={fullHeight || undefined}
@@ -114,7 +118,7 @@ export const Dialog = ({
             </BaseDialog.Title>
             {!preventCancel && (
               <BaseDialog.Close render={(props) => (
-                <Button {...props} className={styles.dialogHeaderClose} icon={<X />} variant="ghost" />
+                <Button {...props} className={styles.dialogHeaderClose} icon={<X />} variant="ghost" intent="neutral" />
               )} />
             )}
           </div>
@@ -134,7 +138,7 @@ export const Dialog = ({
           <div className={styles.dialogFooter}>
             {!preventCancel && (
               <BaseDialog.Close render={(props) => (
-                <Button {...props} text={cancelText ?? 'Cancel'} variant="secondary" />
+                <Button {...props} text={cancelText ?? 'Cancel'} variant="shaded" intent="neutral" />
               )} />
             )}
             {actions?.length ? actions.map((action, i) => (
@@ -146,7 +150,7 @@ export const Dialog = ({
               />
             )) : (
               <BaseDialog.Close render={(props) => (
-                <Button {...props} text={confirmText ?? 'Confirm'} />
+                <Button {...props} text={confirmText ?? 'Confirm'} intent="accent" />
               )} />
             )}
           </div>

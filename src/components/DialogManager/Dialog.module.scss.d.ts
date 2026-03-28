@@ -1,4 +1,3 @@
-export declare const dark: string;
 export declare const dialogBackdrop: string;
 export declare const dialogContent: string;
 export declare const dialogFooter: string;

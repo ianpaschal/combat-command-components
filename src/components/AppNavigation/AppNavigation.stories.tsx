@@ -13,7 +13,7 @@ const meta: Meta<typeof AppNavigation> = {
   component: AppNavigation,
   parameters: {
     layout: 'centered',
-    bodyBackground: 'var(--page-bg)',
+    bodyBackground: 'var(--color-page-bg)',
     docs: {
       story: { inline: false, height: '20rem' },
     },
@@ -77,7 +77,7 @@ const meta: Meta<typeof AppNavigation> = {
           )}
           <h3 style={{ textAlign: 'center' }}>Current Location</h3>
           <span className={clsx(...getStyleClassNames({
-            variant: 'passive',
+            variant: 'surface',
             corners: 'tight',
             border: true,
           }))} style={{
@@ -140,7 +140,7 @@ const defaultProps: AppNavigationProps = {
     },
   ],
   secondaryControls: (
-    <Button icon={<User />} variant="secondary" rounded />
+    <Button icon={<User />} variant="shaded" rounded />
   ),
   secondaryRoutes: [
     {

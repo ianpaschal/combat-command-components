@@ -13,9 +13,9 @@
 
     padding: 0.75rem 0.5rem;
 
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1rem;
-    color: var(--gray-12);
+    text-decoration: none;
 
     &[data-primary="true"] {
       grid-template-areas:
@@ -37,7 +37,7 @@
       border-radius: 0.125rem;
 
       opacity: 0;
-      background-color: var(--gray-12);
+      background-color: var(--solid-accent-bg);
 
       transition: opacity 150ms ease-out, background-color 150ms ease-out;
 
@@ -46,8 +46,7 @@
       }
 
       &[data-visible="child"] {
-        opacity: 1;
-        background-color: var(--gray-3);
+        opacity: 0.25;
       }
     }
 
