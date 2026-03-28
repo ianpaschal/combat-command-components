@@ -1,7 +1,6 @@
 export {
   Drawer,
   type DrawerProps,
-  type DrawerSide,
 } from './Drawer';
 export {
   type DrawerContext,

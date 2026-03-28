@@ -2,7 +2,7 @@
 @use "../../style/text";
 
 @layer components {
-  .Badge {
+  .badge {
     position: relative;
 
     &[data-badge-visible]::after {

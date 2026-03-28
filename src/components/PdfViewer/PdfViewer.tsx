@@ -5,11 +5,11 @@ import {
 } from 'react-pdf';
 import clsx from 'clsx';
 
+import { PdfViewerControls } from './components/PdfViewerControls';
 import { ScrollArea } from '../ScrollArea';
 import { Spinner } from '../Spinner';
 import { usePdfViewer } from './PdfViewer.hooks';
 import { PdfViewerConfig } from './PdfViewer.types';
-import { PdfViewerControls } from './components/PdfViewerControls/PdfViewerControls';
 
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';

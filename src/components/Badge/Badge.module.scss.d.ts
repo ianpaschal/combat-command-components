@@ -1,1 +1,1 @@
-export declare const Badge: string;
+export declare const badge: string;
