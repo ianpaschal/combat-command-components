@@ -101,7 +101,8 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
           className={clsx(styles.selectTrigger, getStyleClassNames({
             corners: 'normal',
             intent: 'neutral',
-            variant: 'outlined',
+            variant: 'ghost',
+            border: true,
           }), className)}
           data-clearable={clearable}
         >
@@ -115,21 +116,25 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
         <BaseSelect.Portal>
           <BaseSelect.Positioner className={styles.positioner} sideOffset={8} collisionPadding={8}>
             <BaseSelect.Popup
-              className={clsx(styles.selectPopup, getStyleClassNames({
+              className={clsx(styles.selectPopup, ...getStyleClassNames({
                 border: true,
                 corners: 'normal',
+                elevation: 5,
                 intent: 'neutral',
-                variant: 'passive',
+                variant: 'surface',
               }))}
               tabIndex={-1}
             >
-              <BaseSelect.ScrollUpArrow className={styles.selectScrollArrow}>
+              <BaseSelect.ScrollUpArrow className={clsx(...getStyleClassNames({
+                border: 'bottom',
+                variant: 'surface',
+              }), styles.selectScrollArrow)}>
                 <ChevronUp />
               </BaseSelect.ScrollUpArrow>
               <BaseSelect.List className={styles.selectList}>
                 {options.map((option) => (
                   <BaseSelect.Item
-                    className={clsx(styles.selectItem, getStyleClassNames({
+                    className={clsx(styles.selectItem, ...getStyleClassNames({
                       intent: 'neutral',
                       variant: 'ghost',
                       corners: 'normal',
@@ -147,7 +152,10 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
                   </BaseSelect.Item>
                 ))}
               </BaseSelect.List>
-              <BaseSelect.ScrollDownArrow className={styles.selectScrollArrow}>
+              <BaseSelect.ScrollDownArrow className={clsx(...getStyleClassNames({
+                border: 'top',
+                variant: 'surface',
+              }), styles.selectScrollArrow)}>
                 <ChevronDown />
               </BaseSelect.ScrollDownArrow>
             </BaseSelect.Popup>
@@ -159,7 +167,8 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
           className={clsx(styles.selectClear, getStyleClassNames({
             corners: 'normal',
             intent: 'neutral',
-            variant: 'outlined',
+            variant: 'ghost',
+            border: true,
           }))}
           icon={<X />} onClick={handleClear}
           disabled={disabled || !value}

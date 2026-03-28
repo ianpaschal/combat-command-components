@@ -66,7 +66,6 @@
 
       &-indicator {
         border-radius: 0.125rem;
-        background-color: var(--gray-a6);
       }
     }
 
@@ -86,8 +85,8 @@
       grid-template-rows: auto 1fr;
 
       box-sizing: border-box;
+      padding-top: var(--modal-padding);
 
-      background-color: var(--default-bg);
       outline: none;
 
       transition: transform 450ms cubic-bezier(0.32, 0.72, 0, 1), scale 150ms;
@@ -118,7 +117,7 @@
       // Shared (Left & Right)
       &[data-swipe-direction="left"],
       &[data-swipe-direction="right"] {
-        --drawer-usable-width: calc(100dvw - var(--modal-margin));
+        --drawer-usable-width: calc(100dvw - var(--page-padding));
         --drawer-max-width: calc(min(var(--drawer-user-max-width, 100dvw), var(--drawer-usable-width)) + var(--bleed));
 
         transform: translateX(var(--drawer-swipe-movement-x));
@@ -177,7 +176,7 @@
       // Shared (Top & Bottom)
       &[data-swipe-direction="up"],
       &[data-swipe-direction="down"] {
-        --drawer-usable-height: calc(100dvw - var(--modal-margin));
+        --drawer-usable-height: calc(100dvh - var(--page-padding));
         /* stylelint-disable-next-line @stylistic/max-line-length */
         --drawer-max-height: calc(min(var(--drawer-user-max-height, 100dvh), var(--drawer-usable-height)) + var(--bleed));
 
@@ -246,7 +245,7 @@
 
       grid-area: header;
       justify-content: space-between;
-      padding: var(--modal-padding) var(--modal-padding) 1rem;
+      padding: 0 var(--modal-padding) 1rem;
 
       &-close {
         margin: -0.25rem;

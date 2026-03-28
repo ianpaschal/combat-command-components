@@ -20,8 +20,6 @@
     height: calc(var(--app-bar-height) + var(--bleed));
     padding-top: var(--bleed);
 
-    background-color: var(--default-bg);
-
     &-content {
       display: grid;
       gap: 1.5rem;
@@ -29,7 +27,7 @@
 
       box-sizing: border-box;
       margin: 0 auto;
-      padding: 0.75rem var(--modal-margin) calc(0.75rem - var(--border-width));
+      padding: 0.75rem var(--page-padding) calc(0.75rem - var(--border-width));
 
       &[data-layout="mobile"] {
         grid-template-areas: "navigation logo secondary";

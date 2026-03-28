@@ -1,171 +1,228 @@
-/* YELLOW */
-@import "@radix-ui/colors/amber-alpha.css";
-@import "@radix-ui/colors/amber.css";
-@import "@radix-ui/colors/amber-dark-alpha.css";
-@import "@radix-ui/colors/amber-dark.css";
-
-/* BLACK */
-@import "@radix-ui/colors/black-alpha.css";
-
-/* INDIGO */
-@import "@radix-ui/colors/indigo-alpha.css";
-@import "@radix-ui/colors/indigo-dark-alpha.css";
-
-/* BLUE */
-@import "@radix-ui/colors/blue-alpha.css";
-@import "@radix-ui/colors/blue.css";
-@import "@radix-ui/colors/blue-dark-alpha.css";
-@import "@radix-ui/colors/blue-dark.css";
-
-/* GREEN */
-@import "@radix-ui/colors/grass-alpha.css";
-@import "@radix-ui/colors/grass.css";
-@import "@radix-ui/colors/grass-dark-alpha.css";
-@import "@radix-ui/colors/grass-dark.css";
-
-/* neutral */
-@import "@radix-ui/colors/gray-alpha.css";
-@import "@radix-ui/colors/gray.css";
-@import "@radix-ui/colors/gray-dark-alpha.css";
-@import "@radix-ui/colors/gray-dark.css";
-
-/* RED */
-@import "@radix-ui/colors/tomato-alpha.css";
-@import "@radix-ui/colors/tomato.css";
-@import "@radix-ui/colors/tomato-dark-alpha.css";
-@import "@radix-ui/colors/tomato-dark.css";
-
-/* FONTS */
 @import "@fontsource/figtree/300.css";
 @import "@fontsource/figtree/400.css";
 @import "@fontsource/figtree/500.css";
 @import "@fontsource/figtree/600.css";
 @import "@fontsource/figtree/700.css";
 
-// Define color mappings for intents
-$intent-colors: (
-  "neutral": "gray",
-  "danger": "tomato",
-  "warning": "amber",
-  "info": "blue",
-  "success": "grass"
-);
-
-/*
- * COLOR SYSTEM MIXIN
- *
- * The color system is made up of a combination of two different attributes: variant and intent.
- *
- * Variants:
- * - Static
- * - Primary
- * - Secondary
- * - Outlined
- * - Ghost
- * NOTE: Static should only be used on non-interactive UI elements. The rest are interactive.
- *
- * Intents:
- * - neutral
- * - Danger
- * - Warning
- * - Info
- * - Success
- * NOTE: Some intents do double-duty: 'danger' is also 'error'.
- *
- * NAMING: --{type}-{intent}-{property}-{state}
-*/
-@mixin color-variants($primary-text-index: 1) {
-  // ---- STATIC ----
-  @each $intent, $color in $intent-colors {
-    @if $intent == "neutral" {
-      --passive-neutral-bg: transparent;
-      --passive-neutral-border: var(--gray-4);
-      --passive-neutral-text: var(--gray-11);
-    } @else {
-      --passive-#{$intent}-bg: var(--#{$color}-2a);
-      --passive-#{$intent}-border: var(--#{$color}-9);
-      --passive-#{$intent}-text: var(--#{$color}-11);
-    }
-  }
-
-  --passive-muted-bg: transparent;
-  --passive-muted-border: var(--gray-3);
-  --passive-muted-text: var(--gray-11);
-
-  // ---- PRIMARY ----
-  @each $intent, $color in $intent-colors {
-    @if $intent == "neutral" {
-      --primary-#{$intent}-bg-active: var(--#{$color}-10);
-      --primary-#{$intent}-bg-hover: var(--#{$color}-11);
-      --primary-#{$intent}-bg: var(--#{$color}-12);
-      --primary-#{$intent}-text: var(--#{$color}-1);
-    } @else {
-      --primary-#{$intent}-bg-active: var(--#{$color}-7);
-      --primary-#{$intent}-bg-hover: var(--#{$color}-8);
-      --primary-#{$intent}-bg: var(--#{$color}-9);
-      --primary-#{$intent}-text: var(--#{$color}-#{$primary-text-index});
-    }
-
-    --primary-#{$intent}-focus: var(--#{$color}-a5);
-  }
-
-  // ---- SECONDARY ----
-  @each $intent, $color in $intent-colors {
-    --secondary-#{$intent}-bg-active: var(--#{$color}-5);
-    --secondary-#{$intent}-bg-hover: var(--#{$color}-4);
-    --secondary-#{$intent}-bg: var(--#{$color}-3);
-    --secondary-#{$intent}-focus: var(--#{$color}-a5);
-    --secondary-#{$intent}-text: var(--#{$color}-11);
-  }
-
-  // ---- OUTLINED ----
-  @each $intent, $color in $intent-colors {
-    --outlined-#{$intent}-bg-active: var(--#{$color}-3);
-    --outlined-#{$intent}-bg-hover: var(--#{$color}-2);
-    --outlined-#{$intent}-bg: var(--default-bg);
-    --outlined-#{$intent}-border-active: var(--#{$color}-8);
-    --outlined-#{$intent}-border-hover: var(--#{$color}-7);
-    --outlined-#{$intent}-border: var(--#{$color}-6);
-    --outlined-#{$intent}-focus: var(--#{$color}-a5);
-    --outlined-#{$intent}-text: var(--#{$color}-11);
-  }
-
-  // ---- GHOST ----
-  @each $intent, $color in $intent-colors {
-    --ghost-#{$intent}-bg-active: var(--#{$color}-a3);
-    --ghost-#{$intent}-bg-hover: var(--#{$color}-a2);
-    --ghost-#{$intent}-bg: transparent;
-    --ghost-#{$intent}-focus: var(--#{$color}-a5);
-    --ghost-#{$intent}-text: var(--#{$color}-11);
-  }
-
-  // ---- FOCUS ----
-  @each $intent, $color in $intent-colors {
-    @if $intent == "neutral" {
-      --focus-#{$intent}-outline: var(--blue-a7);
-    } @else {
-      --focus-#{$intent}-outline: var(--#{$color}-a7);
-    }
-  }
-}
-
 :root {
-  // True Defaults
-  --default-bg: white;
-  --page-bg: var(--gray-2);
-  --scroll-indicator-shadow: var(--black-a1);
-  --border-width: 1px;
-  --default-border: var(--border-width) solid var(--passive-neutral-border);
+  // -----------------------------------------------------------------------------------------------
+  // Theme default variables (can be overridden by <ThemeProvider/>).
+  // Re-generate with: `npm run gen:theme-defaults`
+  // DO NOT EDIT BY HAND!
+  // -----------------------------------------------------------------------------------------------
 
-  // App Bar
+  // @generated-start
+
+  --overlay-strength: 0.45;
+  --shadow-strength: 0.05;
+  --color-header-text: #202020;
+  --color-ui-text: #646464;
+  --color-body-text: #646464;
+  --color-page-bg: #F9F9F9;
+  --color-card-bg: #FFFFFF;
+  --color-card-border: #E8E8E8;
+  --solid-accent-bg: #202020;
+  --solid-accent-bg-hover: #656565;
+  --solid-accent-bg-active: #9D9D9D;
+  --solid-accent-text: #FFFFFF;
+  --solid-accent-text-hover: #FFFFFF;
+  --solid-accent-text-active: #FFFFFF;
+  --solid-accent-border: #202020;
+  --solid-accent-border-hover: #656565;
+  --solid-accent-border-active: #9D9D9D;
+  --solid-accent-focus-outline: #0090FFA6;
+  --shaded-accent-bg: #20202029;
+  --shaded-accent-bg-hover: #20202050;
+  --shaded-accent-bg-active: #20202076;
+  --shaded-accent-text: #202020;
+  --shaded-accent-text-hover: #202020;
+  --shaded-accent-text-active: #202020;
+  --shaded-accent-border: #2020205C;
+  --shaded-accent-border-hover: #2020208F;
+  --shaded-accent-border-active: #202020C2;
+  --shaded-accent-focus-outline: #0090FF8C;
+  --ghost-accent-bg: transparent;
+  --ghost-accent-bg-hover: #20202010;
+  --ghost-accent-bg-active: #20202029;
+  --ghost-accent-text: #202020;
+  --ghost-accent-text-hover: #202020;
+  --ghost-accent-text-active: #202020;
+  --ghost-accent-border: #20202029;
+  --ghost-accent-border-hover: #20202043;
+  --ghost-accent-border-active: #2020205C;
+  --ghost-accent-focus-outline: #0090FF73;
+  --solid-neutral-bg: #202020;
+  --solid-neutral-bg-hover: #656565;
+  --solid-neutral-bg-active: #9D9D9D;
+  --solid-neutral-text: #FFFFFF;
+  --solid-neutral-text-hover: #FFFFFF;
+  --solid-neutral-text-active: #FFFFFF;
+  --solid-neutral-border: #202020;
+  --solid-neutral-border-hover: #656565;
+  --solid-neutral-border-active: #9D9D9D;
+  --solid-neutral-focus-outline: #0090FFA6;
+  --shaded-neutral-bg: #20202029;
+  --shaded-neutral-bg-hover: #20202050;
+  --shaded-neutral-bg-active: #20202076;
+  --shaded-neutral-text: #202020;
+  --shaded-neutral-text-hover: #202020;
+  --shaded-neutral-text-active: #202020;
+  --shaded-neutral-border: #2020205C;
+  --shaded-neutral-border-hover: #2020208F;
+  --shaded-neutral-border-active: #202020C2;
+  --shaded-neutral-focus-outline: #0090FF8C;
+  --ghost-neutral-bg: transparent;
+  --ghost-neutral-bg-hover: #20202010;
+  --ghost-neutral-bg-active: #20202029;
+  --ghost-neutral-text: #202020;
+  --ghost-neutral-text-hover: #202020;
+  --ghost-neutral-text-active: #202020;
+  --ghost-neutral-border: #20202029;
+  --ghost-neutral-border-hover: #20202043;
+  --ghost-neutral-border-active: #2020205C;
+  --ghost-neutral-focus-outline: #0090FF73;
+  --solid-danger-bg: #E54D2E;
+  --solid-danger-bg-hover: #B61900;
+  --solid-danger-bg-active: #920000;
+  --solid-danger-text: #FFFFFF;
+  --solid-danger-text-hover: #FFFFFF;
+  --solid-danger-text-active: #FFFFFF;
+  --solid-danger-border: #E54D2E;
+  --solid-danger-border-hover: #B61900;
+  --solid-danger-border-active: #920000;
+  --solid-danger-focus-outline: #0090FFA6;
+  --shaded-danger-bg: #E54D2E2E;
+  --shaded-danger-bg-hover: #E54D2E54;
+  --shaded-danger-bg-active: #E54D2E7B;
+  --shaded-danger-text: #E54D2E;
+  --shaded-danger-text-hover: #E54D2E;
+  --shaded-danger-text-active: #E54D2E;
+  --shaded-danger-border: #E54D2E61;
+  --shaded-danger-border-hover: #E54D2E94;
+  --shaded-danger-border-active: #E54D2EC7;
+  --shaded-danger-focus-outline: #0090FF8C;
+  --ghost-danger-bg: transparent;
+  --ghost-danger-bg-hover: #E54D2E15;
+  --ghost-danger-bg-active: #E54D2E2E;
+  --ghost-danger-text: #E54D2E;
+  --ghost-danger-text-hover: #E54D2E;
+  --ghost-danger-text-active: #E54D2E;
+  --ghost-danger-border: #E54D2E2E;
+  --ghost-danger-border-hover: #E54D2E48;
+  --ghost-danger-border-active: #E54D2E61;
+  --ghost-danger-focus-outline: #0090FF73;
+  --solid-warning-bg: #FFC53D;
+  --solid-warning-bg-hover: #EEB423;
+  --solid-warning-bg-active: #E2A900;
+  --solid-warning-text: #FFFFFF;
+  --solid-warning-text-hover: #FFFFFF;
+  --solid-warning-text-active: #FFFFFF;
+  --solid-warning-border: #FFC53D;
+  --solid-warning-border-hover: #EEB423;
+  --solid-warning-border-active: #E2A900;
+  --solid-warning-focus-outline: #0090FFA6;
+  --shaded-warning-bg: #FFC53D31;
+  --shaded-warning-bg-hover: #FFC53D57;
+  --shaded-warning-bg-active: #FFC53D7E;
+  --shaded-warning-text: #FFC53D;
+  --shaded-warning-text-hover: #FFC53D;
+  --shaded-warning-text-active: #FFC53D;
+  --shaded-warning-border: #FFC53D64;
+  --shaded-warning-border-hover: #FFC53D97;
+  --shaded-warning-border-active: #FFC53DCA;
+  --shaded-warning-focus-outline: #0090FF8C;
+  --ghost-warning-bg: transparent;
+  --ghost-warning-bg-hover: #FFC53D18;
+  --ghost-warning-bg-active: #FFC53D31;
+  --ghost-warning-text: #FFC53D;
+  --ghost-warning-text-hover: #FFC53D;
+  --ghost-warning-text-active: #FFC53D;
+  --ghost-warning-border: #FFC53D31;
+  --ghost-warning-border-hover: #FFC53D4B;
+  --ghost-warning-border-active: #FFC53D64;
+  --ghost-warning-focus-outline: #0090FF73;
+  --solid-success-bg: #46A758;
+  --solid-success-bg-hover: #168134;
+  --solid-success-bg-active: #006718;
+  --solid-success-text: #FFFFFF;
+  --solid-success-text-hover: #FFFFFF;
+  --solid-success-text-active: #FFFFFF;
+  --solid-success-border: #46A758;
+  --solid-success-border-hover: #168134;
+  --solid-success-border-active: #006718;
+  --solid-success-focus-outline: #0090FFA6;
+  --shaded-success-bg: #46A7582F;
+  --shaded-success-bg-hover: #46A75855;
+  --shaded-success-bg-active: #46A7587B;
+  --shaded-success-text: #46A758;
+  --shaded-success-text-hover: #46A758;
+  --shaded-success-text-active: #46A758;
+  --shaded-success-border: #46A75862;
+  --shaded-success-border-hover: #46A75895;
+  --shaded-success-border-active: #46A758C8;
+  --shaded-success-focus-outline: #0090FF8C;
+  --ghost-success-bg: transparent;
+  --ghost-success-bg-hover: #46A75815;
+  --ghost-success-bg-active: #46A7582F;
+  --ghost-success-text: #46A758;
+  --ghost-success-text-hover: #46A758;
+  --ghost-success-text-active: #46A758;
+  --ghost-success-border: #46A7582F;
+  --ghost-success-border-hover: #46A75848;
+  --ghost-success-border-active: #46A75862;
+  --ghost-success-focus-outline: #0090FF73;
+  --solid-info-bg: #0090FF;
+  --solid-info-bg-hover: #0069D4;
+  --solid-info-bg-active: #0050AB;
+  --solid-info-text: #FFFFFF;
+  --solid-info-text-hover: #FFFFFF;
+  --solid-info-text-active: #FFFFFF;
+  --solid-info-border: #0090FF;
+  --solid-info-border-hover: #0069D4;
+  --solid-info-border-active: #0050AB;
+  --solid-info-focus-outline: #0090FFA6;
+  --shaded-info-bg: #0090FF2F;
+  --shaded-info-bg-hover: #0090FF55;
+  --shaded-info-bg-active: #0090FF7B;
+  --shaded-info-text: #0090FF;
+  --shaded-info-text-hover: #0090FF;
+  --shaded-info-text-active: #0090FF;
+  --shaded-info-border: #0090FF62;
+  --shaded-info-border-hover: #0090FF95;
+  --shaded-info-border-active: #0090FFC8;
+  --shaded-info-focus-outline: #0090FF8C;
+  --ghost-info-bg: transparent;
+  --ghost-info-bg-hover: #0090FF15;
+  --ghost-info-bg-active: #0090FF2F;
+  --ghost-info-text: #0090FF;
+  --ghost-info-text-hover: #0090FF;
+  --ghost-info-text-active: #0090FF;
+  --ghost-info-border: #0090FF2F;
+  --ghost-info-border-hover: #0090FF48;
+  --ghost-info-border-active: #0090FF62;
+  --ghost-info-focus-outline: #0090FF73;
+
+  // @generated-end
+
+  // -----------------------------------------------------------------------------------------------
+  // COMPUTED THEME VALUES & NON-CONFIGURABLE VALUES
+  // -----------------------------------------------------------------------------------------------
+
+  --scroll-indicator-shadow: rgb(0 0 0 / calc(var(--shadow-strength) * 0.8));
+  --modal-backdrop-bg: rgb(0 0 0 / var(--overlay-strength));
+  --modal-backdrop-nested-bg: rgb(0 0 0 / calc(var(--overlay-strength) * 0.5));
+
+  // Borders & Focus
+  --border-width: 1px;
+  --focus-width: 3px;
+
+  // App Bar Sizes
   --app-bar-height: 4rem;
   --app-bar-logo-size: 2.5rem;
 
-  // Modals (Dialogs & Drawers)
+  // Spacing
   --modal-padding: 1rem;
-  --modal-margin: 0.5rem;
-  --modal-backdrop-bg: var(--black-a8);
-  --modal-backdrop-nested-bg: var(--black-a4);
+  --page-padding: 0.5rem;
 
   // Corners
   --border-radius-normal: 0.375rem;
@@ -180,26 +237,6 @@ $intent-colors: (
   --line-height-large: 1.75rem;
   --line-height-normal: 1.5rem;
   --line-height-small: 1.25rem;
-
-  // Focus
-  --focus-width: 3px;
-
-  // Apply color variants
-  @include color-variants;
-}
-
-.dark {
-  --default-bg: var(--gray-2);
-  --page-bg: var(--gray-1);
-  --scroll-indicator-shadow: var(--black-a5);
-  --modal-backdrop-bg: var(--black-a10);
-  --modal-backdrop-nested-bg: var(--black-a7);
-
-  // Re-apply color variants with dark mode Radix colors
-  @include color-variants($primary-text-index: 12);
-
-  // Re-apply dark mode color to stale default border
-  --default-border: var(--border-width) solid var(--passive-neutral-border);
 }
 
 @media (width >= 480px) {
@@ -211,6 +248,6 @@ $intent-colors: (
     --line-height-normal: 1.25rem;
     --line-height-small: 1rem;
     --modal-padding: 1.5rem;
-    --modal-margin: 1rem;
+    --page-padding: 1rem;
   }
 }

@@ -16,9 +16,7 @@ export const ControlledValueStory = (props: SelectProps): JSX.Element => {
         onChange={setValue}
         {...props}
       />
-      <div style={{ fontSize: 14, color: '#666' }}>
-        Current value: <strong>{value ?? 'null'}</strong>
-      </div>
+      <span>Current value: <strong>{value ?? 'null'}</strong></span>
       <div style={{ display: 'flex', gap: 8 }}>
         <Button text="Set to Cherry" onClick={() => setValue('cherry')} />
         <Button text="Clear" onClick={() => setValue(null)} />

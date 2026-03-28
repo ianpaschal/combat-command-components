@@ -1,6 +1,4 @@
 @use "../../../../style/layers";
-@use "../../../../style/shadows";
-@use "../../../../style/flex";
 
 @layer components {
   .desktop-routes {
@@ -146,8 +144,6 @@
     }
 
     &-popup {
-      @include shadows.elevated;
-
       position: relative;
       transform-origin: var(--transform-origin);
 
@@ -195,11 +191,11 @@
         }
 
         &-fill {
-          fill: var(--passive-neutral-bg);
+          fill: var(--color-card-bg);
         }
 
         &-stroke {
-          fill: var(--passive-neutral-border);
+          fill: var(--color-card-border);
         }
       }
     }

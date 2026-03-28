@@ -1,11 +1,3 @@
-export declare const dark: string;
 export declare const desktopNavigation: string;
-export declare const desktopNavigationChildRoutes: string;
-export declare const desktopNavigationPopup: string;
-export declare const desktopNavigationPopupArrow: string;
-export declare const desktopNavigationPopupArrowFill: string;
-export declare const desktopNavigationPopupArrowStroke: string;
-export declare const desktopNavigationPositioner: string;
 export declare const desktopNavigationPrimaryRoutes: string;
 export declare const desktopNavigationSecondaryRoutes: string;
-export declare const desktopNavigationViewport: string;

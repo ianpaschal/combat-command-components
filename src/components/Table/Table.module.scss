@@ -36,8 +36,13 @@
     &-cell {
       display: flex;
       align-items: center;
+
       min-width: 1.5rem;
       padding: var(--user-cell-padding-y) var(--user-cell-padding-x);
+
+      color: var(--color-ui-text);
+
+      background-color: var(--color-card-bg);
 
       &[data-header="true"] {
         position: sticky;

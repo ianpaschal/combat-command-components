@@ -1,4 +1,3 @@
-export declare const dark: string;
 export declare const scrollArea: string;
 export declare const scrollAreaScrollbar: string;
 export declare const scrollAreaThumb: string;

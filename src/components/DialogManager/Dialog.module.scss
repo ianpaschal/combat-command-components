@@ -31,8 +31,8 @@
     }
 
     &-popup {
-      --dialog-usable-height: calc(100dvh - (2 * var(--modal-margin)));
-      --dialog-usable-width: calc(100dvw - (2 * var(--modal-margin)));
+      --dialog-usable-height: calc(100dvh - (2 * var(--page-padding)));
+      --dialog-usable-width: calc(100dvw - (2 * var(--page-padding)));
       --dialog-max-height: min(var(--dialog-user-max-height, 100dvh), var(--dialog-usable-height));
       --dialog-max-width: min(var(--dialog-user-max-width, 100dvw), var(--dialog-usable-width));
 
@@ -52,13 +52,10 @@
 
       box-sizing: border-box;
       width: max-content;
-      min-width: min(calc(100vw - (2 * var(--modal-margin))), 24rem);
+      min-width: min(calc(100dvw - (2 * var(--page-padding))), 24rem);
       max-width: var(--dialog-max-width);
       max-height: var(--dialog-max-height);
       padding: var(--modal-padding) 0;
-      border-radius: var(--border-radius-wide);
-
-      background-color: var(--default-bg);
 
       transition: all 150ms;
 

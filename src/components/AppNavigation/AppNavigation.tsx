@@ -53,7 +53,10 @@ export const AppNavigation = ({
     setState(null); // Close all navigation accordions, menus, etc.
   }, [onNavigate]);
   return createPortal((
-    <div className={clsx(getStyleClassNames({ border: 'bottom' }), styles.appNavigation, className)}>
+    <div className={clsx(styles.appNavigation, ...getStyleClassNames({
+      variant: 'surface',
+      border: 'bottom',
+    }), className)}>
       <div className={styles.appNavigationContent} style={{ maxWidth }} data-layout={mobile ? 'mobile' : 'desktop'}>
         <NavigationProvider value={{ navigate, location, state, setState }}>
           <AppLogo className={styles.appNavigationLogo} path={logoPath}>

@@ -1,15 +1,19 @@
 @use "../../style/layers";
 @use "../../style/flex";
 @use "../../style/variables";
+@use "../../style/text";
 
 @layer components {
   .radio {
     @include flex.column($gap: 0.5rem);
 
     &-item {
+      @include text.ui;
+
       display: flex;
       gap: 0.5rem;
       align-items: center;
+      color: var(--color-ui-text);
 
       &-control {
         display: flex;
@@ -27,11 +31,11 @@
         outline: 0;
 
         &[data-checked] {
-          border-color: var(--primary-neutral-bg);
+          border-color: var(--solid-accent-bg);
           border-width: 6px;
 
           &:hover {
-            border-color: var(--primary-neutral-bg-hover);
+            border-color: var(--solid-accent-border-hover);
           }
         }
 

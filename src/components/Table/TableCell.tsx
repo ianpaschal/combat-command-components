@@ -44,7 +44,7 @@ export const TableCell = <T extends RowData>({
   return (
     <div
       className={clsx(getStyleClassNames({
-        intent: isHeader ? 'neutral' : 'muted',
+        variant: isHeader ? 'ghost' : 'surface',
         border: 'bottom',
       }), styles.tableCell, column.className)}
       data-column-first={position?.column?.includes('first')}

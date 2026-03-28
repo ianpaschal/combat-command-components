@@ -1,4 +1,3 @@
-export declare const dark: string;
 export declare const positioner: string;
 export declare const select: string;
 export declare const selectClear: string;

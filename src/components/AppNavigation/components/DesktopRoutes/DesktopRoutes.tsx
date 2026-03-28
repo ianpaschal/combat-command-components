@@ -3,7 +3,7 @@ import { NavigationMenu } from '@base-ui/react/navigation-menu';
 import clsx from 'clsx';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 
-import { getStyleClassNames } from '../../../../utils/getStyleClassNames';
+import { sx } from '../../../../utils';
 import { useNavigationContext } from '../../AppNavigation.context';
 import { Route } from '../../AppNavigation.types';
 import { RouteItem } from '../RouteItem';
@@ -65,10 +65,11 @@ export const DesktopRoutes = ({
             : { sideOffset: 10, collisionPadding: { top: 5, bottom: 5, left: 20, right: 20 }, collisionAvoidance: { side: 'none' as const } }
           )}
         >
-          <NavigationMenu.Popup className={clsx(getStyleClassNames({
-            variant: 'passive',
-            corners: 'normal',
+          <NavigationMenu.Popup className={clsx(sx({
             border: true,
+            corners: 'normal',
+            elevation: 5,
+            variant: 'surface',
           }), styles.desktopRoutesPopup)}>
             {!depth && (
               <NavigationMenu.Arrow className={styles.desktopRoutesPopupArrow}>

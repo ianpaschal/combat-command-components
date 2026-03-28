@@ -129,7 +129,7 @@ const FileUploadStory = (): JSX.Element => {
       flex: 1,
       gap: '1rem',
     }}>
-      <p style={{ color: 'var(--gray-11)' }}>Select a PDF file to preview</p>
+      <p>Select a PDF file to preview</p>
       <input
         ref={inputRef}
         type="file"
@@ -140,7 +140,7 @@ const FileUploadStory = (): JSX.Element => {
       <Button
         text="Choose PDF"
         icon={<Upload />}
-        variant="outlined"
+        variant="solid"
         onClick={() => inputRef.current?.click()}
       />
     </div>

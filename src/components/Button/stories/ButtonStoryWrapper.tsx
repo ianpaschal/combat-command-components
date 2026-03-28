@@ -1,9 +1,12 @@
+import clsx from 'clsx';
+
+import { getStyleClassNames } from '../../../utils/getStyleClassNames';
 import { Button, ButtonProps } from '../Button';
 
 import styles from './ButtonStoryWrapper.module.scss';
 
-const VARIANTS = ['primary', 'secondary', 'outlined', 'ghost'] as const;
-const INTENTS = ['neutral', 'danger', 'warning', 'success', 'info'] as const;
+const VARIANTS = ['solid', 'shaded', 'ghost'] as const;
+const INTENTS = ['accent', 'neutral', 'danger', 'warning', 'success', 'info'] as const;
 
 export const ButtonStoryWrapper = (
   props: ButtonProps,
@@ -14,7 +17,9 @@ export const ButtonStoryWrapper = (
         Variant
       </h2>
       {VARIANTS.map((variant) => (
-        <span key={variant} className={styles.buttonStoryWrapperLabel}>
+        <span key={variant} className={clsx(...getStyleClassNames({
+          variant: 'shaded',
+        }), styles.buttonStoryWrapperLabel)}>
           {variant}
         </span>
       ))}
@@ -24,7 +29,9 @@ export const ButtonStoryWrapper = (
         Intent
       </h2>
       {INTENTS.map((intent) => (
-        <span key={intent} className={styles.buttonStoryWrapperLabel}>
+        <span key={intent} className={clsx(...getStyleClassNames({
+          variant: 'shaded',
+        }), styles.buttonStoryWrapperLabel)}>
           {intent}
         </span>
       ))}

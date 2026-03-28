@@ -9,14 +9,14 @@ import {
   Plus,
 } from 'lucide-react';
 
-import { getStyleClassNames } from '../../utils/getStyleClassNames';
-import { Button } from '../Button';
+import { getStyleClassNames } from '../../../../utils/getStyleClassNames';
+import { Button } from '../../../Button';
 import {
   PdfViewerConfig,
   PdfViewerControlHandlers,
   PdfViewerState,
-} from './PdfViewer.types';
-import { download } from './PdfViewer.utils';
+} from '../../PdfViewer.types';
+import { download } from '../../PdfViewer.utils';
 
 import styles from './PdfViewerControls.module.scss';
 
@@ -37,9 +37,10 @@ export const PdfViewerControls = ({
 }: PdfViewerControlsProps): JSX.Element => {
   const handleDownload = useCallback(() => download(file, fileName), [file, fileName]);
   return (
-    <div className={clsx(styles.pdfViewerControls, ...getStyleClassNames({
+    <div className={clsx(getStyleClassNames({
       border: 'top',
-    }))}>
+      variant: 'surface',
+    }), styles.pdfViewerControls)}>
       <Button
         aria-label="Previous page"
         icon={<ChevronLeft />}

@@ -1,11 +1,14 @@
 import {
+  ElementElevation,
   ElementIntent,
   ElementSize,
   ElementVariant,
+  Side,
 } from '../types';
 
 import borders from '../style/borders.module.scss';
 import corners from '../style/corners.module.scss';
+import shadows from '../style/shadows.module.scss';
 import sizes from '../style/sizes.module.scss';
 import variants from '../style/variants.module.scss';
 
@@ -13,12 +16,11 @@ const camelKey = (keys: string[]) => keys.map((key, i) => (
   i === 0 ? key : key.charAt(0).toUpperCase() + key.slice(1)
 )).join('');
 
-type Side = 'top' | 'bottom' | 'left' | 'right';
-
 type GetStyleClassNamesConfig = {
   intent?: ElementIntent;
   variant?: ElementVariant;
   size?: ElementSize;
+  elevation?: ElementElevation;
   collapsePadding?: boolean;
   rounded?: boolean;
   square?: boolean;
@@ -30,16 +32,22 @@ export const getStyleClassNames = (config: GetStyleClassNamesConfig): string[] =
   const classNames: Set<string> = new Set();
 
   if (config.intent && !config.variant) {
-    classNames.add(variants.passive);
+    classNames.add(variants.ghost);
     classNames.add(variants[config.intent]);
   }
 
   if (config.variant) {
     classNames.add(variants[config.variant]);
-    classNames.add(variants[config.intent ?? 'neutral']);
+    if (config.intent) {
+      classNames.add(variants[config.intent]);
+    } else {
+      if (config.variant !== 'surface') {
+        classNames.add(variants.neutral);
+      }
+    }
   }
 
-  if (config.border) {
+  if (config.border && !(config.variant === 'solid')) {
     if (Array.isArray(config.border)) {
       for (const side of config.border) {
         const key = camelKey(['border', side]) as keyof typeof borders;
@@ -80,5 +88,12 @@ export const getStyleClassNames = (config: GetStyleClassNamesConfig): string[] =
     }
   }
 
+  if (config.elevation) {
+    const key = `elevation${config.elevation}` as keyof typeof shadows;
+    classNames.add(shadows[key]);
+  }
+
   return Array.from(classNames);
 };
+
+export const sx = getStyleClassNames;

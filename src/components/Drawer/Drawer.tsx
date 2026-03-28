@@ -10,16 +10,15 @@ import { DrawerPreview as BaseDrawer, DrawerRootProps } from '@base-ui/react/dra
 import clsx from 'clsx';
 import { X } from 'lucide-react';
 
-import { getCssValue } from '../../utils/getCssValue';
+import { Side } from '../../types';
+import { getCssValue, sx } from '../../utils';
 import { Button } from '../Button';
 import { ScrollArea } from '../ScrollArea';
 import { DrawerContext, DrawerContextProvider } from './Drawer.context';
 
 import styles from './Drawer.module.scss';
 
-export type DrawerSide = 'top' | 'bottom' | 'left' | 'right';
-
-const SIDE_TO_SWIPE_DIRECTION: Record<DrawerSide, DrawerRootProps['swipeDirection']> = {
+const SIDE_TO_SWIPE_DIRECTION: Record<Side, DrawerRootProps['swipeDirection']> = {
   top: 'up',
   bottom: 'down',
   left: 'left',
@@ -36,8 +35,8 @@ export interface DrawerProps {
   onClose?: (dirty: boolean) => void;
   onOpenChangeComplete?: (open: boolean) => void;
   open?: boolean;
-  side?: DrawerSide;
-  title: string;
+  side?: Side;
+  title?: string;
   trigger?: ReactElement;
 }
 
@@ -85,7 +84,7 @@ export const Drawer = ({
         <BaseDrawer.Backdrop className={styles.drawerBackdrop} />
         <BaseDrawer.Viewport className={styles.drawerViewport}>
           <BaseDrawer.Popup
-            className={clsx(styles.drawerPopup, className)}
+            className={clsx(sx({ variant: 'surface', border: true }), styles.drawerPopup, className)}
             data-full-size={fullSize || undefined}
             style={{
               '--drawer-user-max-width': ['left', 'right'].includes(side) ? getCssValue(maxSize) : undefined,
@@ -93,12 +92,14 @@ export const Drawer = ({
             } as CSSProperties}
           >
             <BaseDrawer.Content className={styles.drawerInner}>
-              <div className={styles.drawerHeader}>
-                <BaseDrawer.Title>{title}</BaseDrawer.Title>
-                <BaseDrawer.Close render={(props) => (
-                  <Button {...props} className={styles.drawerHeaderClose} icon={<X />} variant="ghost" />
-                )} />
-              </div>
+              {title && (
+                <div className={styles.drawerHeader}>
+                  <BaseDrawer.Title>{title}</BaseDrawer.Title>
+                  <BaseDrawer.Close render={(props) => (
+                    <Button {...props} className={styles.drawerHeaderClose} icon={<X />} variant="ghost" />
+                  )} />
+                </div>
+              )}
               <DrawerContextProvider value={context}>
                 {disableScroll ? (
                   <div className={styles.drawerContent} data-padding={!disablePadding}>
@@ -114,7 +115,7 @@ export const Drawer = ({
               </DrawerContextProvider>
             </BaseDrawer.Content>
             <div className={styles.drawerHandle}>
-              <div className={styles.drawerHandleIndicator} />
+              <div className={clsx(sx({ variant: 'shaded' }), styles.drawerHandleIndicator)} />
             </div>
           </BaseDrawer.Popup>
         </BaseDrawer.Viewport>

@@ -39,7 +39,7 @@ export const WithNumber: Story = {
   args: {
     value: '5',
     intent: 'danger',
-    children: <Button icon={<Mail />} variant="secondary" />,
+    children: <Button icon={<Mail />} variant="shaded" />,
   },
 };
 

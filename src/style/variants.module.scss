@@ -2,20 +2,22 @@
 @use "./variables";
 @use "./text";
 
-$intents: "neutral", "danger", "warning", "info", "success";
+$intents: "accent", "neutral", "danger", "warning", "info", "success";
 $sides: "top", "right", "bottom", "left";
 
 @mixin common {
-  @include text.ui;
-
-  cursor: pointer;
-  user-select: none;
-
-  text-decoration: none; // For applying variants to links
+  border-color: transparent;
+  border-width: var(--border-width);
 
   transition-timing-function: ease-in-out;
   transition-duration: 250ms;
   transition-property: color, background-color, border, box-shadow;
+}
+
+@mixin interactive($variant: "solid") {
+  @include text.ui;
+
+  text-decoration: none; // For applying variants to links
 
   &:focus-visible {
     outline: none;
@@ -24,7 +26,7 @@ $sides: "top", "right", "bottom", "left";
   @each $intent in $intents {
     &.#{$intent} {
       &:focus-visible {
-        box-shadow: 0 0 0 var(--focus-width) var(--focus-#{$intent}-outline);
+        box-shadow: 0 0 0 var(--focus-width) var(--#{$variant}-#{$intent}-focus-outline);
       }
     }
   }
@@ -36,110 +38,106 @@ $sides: "top", "right", "bottom", "left";
   }
 }
 
-@mixin primary($intent: "neutral") {
+@mixin solid($intent: "neutral") {
   @include common;
+  @include interactive("solid");
 
-  border: none;
-  color: var(--primary-#{$intent}-text);
-  background-color: var(--primary-#{$intent}-bg);
+  --variant-border: var(--solid-#{$intent}-bg);
 
-  &:not(:disabled, [data-disabled]):hover {
-    background-color: var(--primary-#{$intent}-bg-hover);
-  }
+  color: var(--solid-#{$intent}-text);
+  background-color: var(--solid-#{$intent}-bg);
 
-  &:not(:disabled, [data-disabled]):active {
-    background-color: var(--primary-#{$intent}-bg-active);
+  &:where(button, input, select, textarea, a, [role="button"], [role="option"]):not(:disabled, [data-disabled]) {
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      color: var(--solid-#{$intent}-text-hover);
+      background-color: var(--solid-#{$intent}-bg-hover);
+    }
+
+    &:active {
+      color: var(--solid-#{$intent}-text-active);
+      background-color: var(--solid-#{$intent}-bg-active);
+    }
   }
 }
 
-@mixin secondary($intent: "neutral") {
+@mixin shaded($intent: "neutral") {
   @include common;
+  @include interactive("shaded");
 
-  border: none;
-  color: var(--secondary-#{$intent}-text);
-  background-color: var(--secondary-#{$intent}-bg);
+  --variant-border: var(--shaded-#{$intent}-border);
 
-  &:not(:disabled, [data-disabled]):hover {
-    background-color: var(--secondary-#{$intent}-bg-hover);
-  }
+  color: var(--shaded-#{$intent}-text);
+  background-color: var(--shaded-#{$intent}-bg);
 
-  &:not(:disabled, [data-disabled]):active {
-    background-color: var(--secondary-#{$intent}-bg-active);
-  }
-}
+  &:where(button, input, select, textarea, a, [role="button"], [role="option"]):not(:disabled, [data-disabled]) {
+    cursor: pointer;
+    user-select: none;
 
-@mixin outlined($intent: "neutral") {
-  @include common;
+    &:hover {
+      --variant-border: var(--shaded-#{$intent}-border-hover);
 
-  border-color: var(--outlined-#{$intent}-border);
-  border-style: solid;
-  border-width: var(--border-width);
+      color: var(--shaded-#{$intent}-text-hover);
+      background-color: var(--shaded-#{$intent}-bg-hover);
+    }
 
-  color: var(--outlined-#{$intent}-text);
+    &:active {
+      --variant-border: var(--shaded-#{$intent}-border-active);
 
-  background-color: var(--outlined-#{$intent}-bg);
-
-  &:not(:disabled, [data-disabled]):hover {
-    border-color: var(--outlined-#{$intent}-border-hover);
-    background-color: var(--outlined-#{$intent}-bg-hover);
-  }
-
-  &:not(:disabled, [data-disabled]):active {
-    border-color: var(--outlined-#{$intent}-border-active);
-    background-color: var(--outlined-#{$intent}-bg-active);
+      color: var(--shaded-#{$intent}-text-active);
+      background-color: var(--shaded-#{$intent}-bg-active);
+    }
   }
 }
 
 @mixin ghost($intent: "neutral") {
   @include common;
+  @include interactive("ghost");
 
-  border: none;
+  --variant-border: var(--ghost-#{$intent}-border);
+
   color: var(--ghost-#{$intent}-text);
   background-color: var(--ghost-#{$intent}-bg);
 
-  &:not(:disabled, [data-disabled]):hover {
-    background-color: var(--ghost-#{$intent}-bg-hover);
+  &:where(button, input, select, textarea, a, [role="button"], [role="option"]):not(:disabled, [data-disabled]) {
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      --variant-border: var(--ghost-#{$intent}-border-hover);
+
+      color: var(--ghost-#{$intent}-text-hover);
+      background-color: var(--ghost-#{$intent}-bg-hover);
+    }
+
+    &:active {
+      --variant-border: var(--ghost-#{$intent}-border-active);
+
+      color: var(--ghost-#{$intent}-text-active);
+      background-color: var(--ghost-#{$intent}-bg-active);
+    }
   }
-
-  &:not(:disabled, [data-disabled]):active {
-    background-color: var(--ghost-#{$intent}-bg-active);
-  }
-}
-
-@mixin passive($intent: "neutral") {
-  @include text.ui;
-
-  color: var(--passive-#{$intent}-text);
-  background-color: var(--passive-#{$intent}-bg);
 }
 
 @layer variants {
-  .primary {
-    @include primary;
+  .solid {
+    @include solid;
 
     @each $intent in $intents {
       &.#{$intent} {
-        @include primary($intent);
+        @include solid($intent);
       }
     }
   }
 
-  .secondary {
-    @include secondary;
+  .shaded {
+    @include shaded;
 
     @each $intent in $intents {
       &.#{$intent} {
-        @include secondary($intent);
-      }
-    }
-  }
-
-  .outlined {
-    @include outlined;
-
-    @each $intent in $intents {
-      &.#{$intent} {
-        @include outlined($intent);
+        @include shaded($intent);
       }
     }
   }
@@ -154,17 +152,12 @@ $sides: "top", "right", "bottom", "left";
     }
   }
 
-  .passive {
-    @include passive;
+  .surface {
+    @include common;
 
-    @each $intent in $intents {
-      &.#{$intent} {
-        @include passive($intent);
-      }
+    --variant-border: var(--color-card-border);
 
-      &.muted {
-        @include passive("muted");
-      }
-    }
+    border-color: var(--color-card-border);
+    background-color: var(--color-card-bg);
   }
 }
