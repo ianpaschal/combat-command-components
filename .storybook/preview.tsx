@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/react';
-import { ThemeProvider, light, dark, midnight, Theme } from '../src/components/ThemeProvider';
+import { ThemeProvider, light, dark, midnight } from '../src/components/ThemeProvider';
+import type { Theme } from '../src/components/ThemeProvider';
 
 import '../src/style/index.scss';
 import './preview.css';
