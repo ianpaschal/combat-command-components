@@ -22,6 +22,10 @@ if (startIdx === -1 || endIdx === -1) {
   throw new Error('Could not find @generated-start / @generated-end markers in variables.scss');
 }
 
+if (endIdx <= startIdx) {
+  throw new Error(`Marker order invalid in variables.scss: ${END_MARKER} (${endIdx}) must appear after ${START_MARKER} (${startIdx})`);
+}
+
 writeFileSync(filePath, [
   content.slice(0, startIdx + START_MARKER.length),
   generated,
