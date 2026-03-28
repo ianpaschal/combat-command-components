@@ -85,6 +85,7 @@
       grid-template-rows: auto 1fr;
 
       box-sizing: border-box;
+      padding-top: var(--modal-padding);
 
       outline: none;
 
@@ -244,7 +245,7 @@
 
       grid-area: header;
       justify-content: space-between;
-      padding: var(--modal-padding) var(--modal-padding) 1rem;
+      padding: 0 var(--modal-padding) 1rem;
 
       &-close {
         margin: -0.25rem;

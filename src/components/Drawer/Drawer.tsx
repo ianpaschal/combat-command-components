@@ -36,7 +36,7 @@ export interface DrawerProps {
   onOpenChangeComplete?: (open: boolean) => void;
   open?: boolean;
   side?: Side;
-  title: string;
+  title?: string;
   trigger?: ReactElement;
 }
 
@@ -92,12 +92,14 @@ export const Drawer = ({
             } as CSSProperties}
           >
             <BaseDrawer.Content className={styles.drawerInner}>
-              <div className={styles.drawerHeader}>
-                <BaseDrawer.Title>{title}</BaseDrawer.Title>
-                <BaseDrawer.Close render={(props) => (
-                  <Button {...props} className={styles.drawerHeaderClose} icon={<X />} variant="ghost" />
-                )} />
-              </div>
+              {title && (
+                <div className={styles.drawerHeader}>
+                  <BaseDrawer.Title>{title}</BaseDrawer.Title>
+                  <BaseDrawer.Close render={(props) => (
+                    <Button {...props} className={styles.drawerHeaderClose} icon={<X />} variant="ghost" />
+                  )} />
+                </div>
+              )}
               <DrawerContextProvider value={context}>
                 {disableScroll ? (
                   <div className={styles.drawerContent} data-padding={!disablePadding}>
