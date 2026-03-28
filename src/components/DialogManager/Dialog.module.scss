@@ -52,7 +52,7 @@
 
       box-sizing: border-box;
       width: max-content;
-      min-width: min(calc(100vw - (2 * var(--page-padding))), 24rem);
+      min-width: min(calc(100dvw - (2 * var(--page-padding))), 24rem);
       max-width: var(--dialog-max-width);
       max-height: var(--dialog-max-height);
       padding: var(--modal-padding) 0;
