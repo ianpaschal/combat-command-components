@@ -1,17 +1,15 @@
-import { ElementIntent } from '../../types';
-
-export type IntentColors = {
-  bg: string;
-  text: string;
-  focus: string;
-};
+import { ThemeColor } from '../../types';
 
 export type Theme = {
-  key: string;
   displayName: string;
+  dark: boolean;
   overlayStrength: number;
   shadowStrength: number;
-  intents: Record<ElementIntent, IntentColors>;
+  colors: Record<ThemeColor, {
+    bg: string;
+    text: string;
+    focus: string;
+  }>;
   surface: {
     page: {
       bg: string;
@@ -25,5 +23,6 @@ export type Theme = {
     header: string;
     body: string;
     ui: string;
+    muted: string;
   };
 };

@@ -51,7 +51,7 @@
       gap: 0.25rem;
 
       box-sizing: border-box;
-      width: max-content;
+      width: 100%;
       min-width: 10rem;
       max-width: 16rem;
       padding: 0.5rem;
@@ -151,6 +151,9 @@
       width: min-content;
       height: var(--popup-height);
 
+      outline: var(--border-width) solid var(--color-card-border);
+      outline-offset: -1px;
+
       transition-timing-function: var(--easing);
       transition-duration: var(--duration);
       transition-property: opacity, transform, width, height;
@@ -164,39 +167,6 @@
       &[data-ending-style] {
         transition-timing-function: ease;
         transition-duration: 0.15s;
-      }
-
-      &-arrow {
-        display: flex;
-        transition: left calc(var(--duration)) var(--easing);
-
-        &[data-side="top"] {
-          bottom: -8px;
-          rotate: 180deg;
-        }
-
-        &[data-side="bottom"] {
-          top: -8px;
-          rotate: 0deg;
-        }
-
-        &[data-side="left"] {
-          right: -13px;
-          rotate: 90deg;
-        }
-
-        &[data-side="right"] {
-          left: -13px;
-          rotate: -90deg;
-        }
-
-        &-fill {
-          fill: var(--color-card-bg);
-        }
-
-        &-stroke {
-          fill: var(--color-card-border);
-        }
       }
     }
   }

@@ -1,26 +1,44 @@
-import { ReactNode, useMemo } from 'react';
-import deepmerge from 'deepmerge';
+import {
+  ReactNode,
+  useMemo,
+  useState,
+} from 'react';
+import { useStore } from '@tanstack/react-store';
 
-import { light } from './themes/light';
-import { DeepPartial } from '../../types';
 import { ThemeContextProvider } from './ThemeProvider.context';
-import { useThemeVars } from './ThemeProvider.hooks';
-import { Theme } from './ThemeProvider.types';
+import {
+  SYSTEM_THEME_KEY,
+  useResolvedTheme,
+  useThemeVars,
+} from './ThemeProvider.hooks';
+import { themeStore } from './ThemeProvider.store';
 
 export interface ThemeProviderProps {
-  theme?: DeepPartial<Theme>;
+  theme?: string;
   children: ReactNode;
 }
 
-export function ThemeProvider({
-  theme = {},
+export const ThemeProvider = ({
+  theme: forcedTheme,
   children,
-}: ThemeProviderProps) {
-  const merged = useMemo(() => deepmerge(light, theme as Theme), [theme]);
-  useThemeVars(merged);
+}: ThemeProviderProps) => {
+  const [key, setKey] = useState(SYSTEM_THEME_KEY);
+  const activeKey = forcedTheme ?? key;
+  const theme = useResolvedTheme(activeKey);
+  const registry = useStore(themeStore);
+  const options = useMemo(() => [
+    { value: SYSTEM_THEME_KEY, label: 'System' },
+    ...Object.entries(registry).map(([k, { displayName }]) => ({
+      value: k,
+      label: displayName,
+    })),
+  ], [registry]);
+
+  useThemeVars(theme);
+
   return (
-    <ThemeContextProvider value={merged}>
+    <ThemeContextProvider value={{ key: activeKey, theme, options, setTheme: setKey }}>
       {children}
     </ThemeContextProvider>
   );
-}
+};

@@ -20,11 +20,6 @@ const meta: Meta<typeof Select> = {
   tags: ['autodocs'],
   argTypes: {
     className: { table: { disable: true } },
-    clearable: {
-      control: 'boolean',
-      description: 'Enable clear button.',
-      table: { category: 'Behavior' },
-    },
     defaultValue: { table: { disable: true } },
     disabled: {
       control: 'boolean',
@@ -42,7 +37,6 @@ type Story = StoryObj<typeof meta>;
 export const Text: Story = {
   name: 'Text',
   args: {
-    clearable: true,
     disabled: false,
     options: [
       { value: 'apple', label: 'Apple' },
@@ -58,7 +52,6 @@ export const Text: Story = {
 export const Numeric: Story = {
   name: 'Numeric',
   args: {
-    clearable: true,
     disabled: false,
     options: [
       { value: 1, label: 'Critical' },
@@ -74,7 +67,6 @@ export const Numeric: Story = {
 export const CustomItemComponents: Story = {
   name: 'Custom Item Components',
   args: {
-    clearable: true,
     disabled: false,
     options: [
       {
@@ -101,7 +93,6 @@ export const ControlledValue: Story = {
     placeholder: { table: { disable: true } },
   },
   args: {
-    clearable: false,
     disabled: false,
     options: [
       { value: 'apple', label: 'Apple' },
@@ -117,7 +108,6 @@ export const ControlledValue: Story = {
 export const ManyItems: Story = {
   name: 'Many (200+) Items',
   args: {
-    clearable: true,
     disabled: false,
     options: Array.from({ length: 200 }, (_, i) => ({
       value: i + 1,

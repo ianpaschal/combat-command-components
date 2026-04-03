@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { DrawerPreview as BaseDrawer } from '@base-ui/react/drawer';
+import { Drawer as BaseDrawer } from '@base-ui/react/drawer';
 
 interface DrawerProviderProps {
   children: ReactNode;

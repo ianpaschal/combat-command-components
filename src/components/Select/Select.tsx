@@ -2,10 +2,7 @@ import {
   ElementRef,
   forwardRef,
   InputHTMLAttributes,
-  MouseEvent,
   ReactNode,
-  useEffect,
-  useState,
 } from 'react';
 import { Select as BaseSelect } from '@base-ui/react/select';
 import clsx from 'clsx';
@@ -14,11 +11,9 @@ import {
   ChevronDown,
   ChevronsUpDown,
   ChevronUp,
-  X,
 } from 'lucide-react';
 
-import { getStyleClassNames } from '../../utils/getStyleClassNames';
-import { Button } from '../Button';
+import { getStyleClassNames, sx } from '../../utils/getStyleClassNames';
 
 import styles from './Select.module.scss';
 
@@ -40,7 +35,6 @@ export interface SelectProps extends Omit<
   'placeholder' |
   'value'
 > {
-  clearable?: boolean;
   defaultValue?: SelectValue | null;
   disabled?: boolean;
   multiple?: false;
@@ -52,131 +46,88 @@ export interface SelectProps extends Omit<
 
 export const Select = forwardRef<SelectRef, SelectProps>(({
   className,
-  clearable = false,
-  defaultValue = null,
-  disabled = false,
   id,
   onChange,
   options,
   placeholder = 'Select...',
-  value: controlledValue,
+  value,
   ...props
-}, ref): JSX.Element => {
-
-  // Internal state (for uncontrolled usage):
-  const [value, setValue] = useState<SelectValue | null>(controlledValue ?? defaultValue ?? null);
-
-  // Sync controlled value to internal state:
-  useEffect(() => {
-    if (controlledValue !== undefined) {
-      setValue(controlledValue);
-    }
-  }, [controlledValue]);
-
-  const selectedOption = options.find((opt) => opt.value === value) ?? null;
-
-  const handleValueChange = (option: SelectOption | null): void => {
-    const newValue = option?.value ?? null;
-    setValue(newValue);
-    onChange?.(newValue);
-  };
-
-  const handleClear = (e: MouseEvent): void => {
-    e.preventDefault();
-    setValue(null);
-    onChange?.(null);
-  };
-
-  return (
-    <div className={styles.select}>
-      <BaseSelect.Root<SelectOption>
-        {...props}
-        value={selectedOption}
-        onValueChange={handleValueChange}
-        disabled={disabled}
+}, ref): JSX.Element => (
+  <BaseSelect.Root<SelectValue | null> {...props} value={value} onValueChange={onChange}>
+    <BaseSelect.Trigger
+      ref={ref}
+      id={id}
+      className={clsx(styles.selectTrigger, getStyleClassNames({
+        corners: 'normal',
+        intent: 'secondary',
+        variant: 'ghost',
+        border: true,
+      }), className)}
+    >
+      <BaseSelect.Value>
+        {(val: SelectValue | null) => {
+          const opt = options.find((o) => o.value === val) ?? null;
+          return opt?.label ?? opt?.value ?? placeholder;
+        }}
+      </BaseSelect.Value>
+      <BaseSelect.Icon className={styles.selectTriggerIcon}>
+        <ChevronsUpDown />
+      </BaseSelect.Icon>
+    </BaseSelect.Trigger>
+    <BaseSelect.Portal>
+      <BaseSelect.Positioner
+        className={styles.positioner}
+        sideOffset={8}
+        collisionPadding={8}
+        alignItemWithTrigger={false} // See: https://github.com/mui/base-ui/issues/1922
       >
-        <BaseSelect.Trigger
-          ref={ref}
-          id={id}
-          className={clsx(styles.selectTrigger, getStyleClassNames({
-            corners: 'normal',
-            intent: 'neutral',
-            variant: 'ghost',
+        <BaseSelect.Popup
+          className={sx({
             border: true,
-          }), className)}
-          data-clearable={clearable}
+            corners: 'normal',
+            elevation: 5,
+            intent: 'secondary',
+            variant: 'surface',
+          }, styles.selectPopup)}
+          tabIndex={-1}
         >
-          <BaseSelect.Value>
-            {(option: SelectOption | null) => option?.label ?? option?.value ?? placeholder}
-          </BaseSelect.Value>
-          <BaseSelect.Icon className={styles.selectTriggerIcon}>
-            <ChevronsUpDown />
-          </BaseSelect.Icon>
-        </BaseSelect.Trigger>
-        <BaseSelect.Portal>
-          <BaseSelect.Positioner className={styles.positioner} sideOffset={8} collisionPadding={8}>
-            <BaseSelect.Popup
-              className={clsx(styles.selectPopup, ...getStyleClassNames({
-                border: true,
-                corners: 'normal',
-                elevation: 5,
-                intent: 'neutral',
-                variant: 'surface',
-              }))}
-              tabIndex={-1}
-            >
-              <BaseSelect.ScrollUpArrow className={clsx(...getStyleClassNames({
-                border: 'bottom',
-                variant: 'surface',
-              }), styles.selectScrollArrow)}>
-                <ChevronUp />
-              </BaseSelect.ScrollUpArrow>
-              <BaseSelect.List className={styles.selectList}>
-                {options.map((option) => (
-                  <BaseSelect.Item
-                    className={clsx(styles.selectItem, ...getStyleClassNames({
-                      intent: 'neutral',
-                      variant: 'ghost',
-                      corners: 'normal',
-                    }))}
-                    key={option.value}
-                    value={option}
-                    disabled={option.disabled}
-                  >
-                    <BaseSelect.ItemIndicator className={styles.selectItemIndicator}>
-                      <Check />
-                    </BaseSelect.ItemIndicator>
-                    <BaseSelect.ItemText className={styles.selectItemContent}>
-                      {option.label}
-                    </BaseSelect.ItemText>
-                  </BaseSelect.Item>
-                ))}
-              </BaseSelect.List>
-              <BaseSelect.ScrollDownArrow className={clsx(...getStyleClassNames({
-                border: 'top',
-                variant: 'surface',
-              }), styles.selectScrollArrow)}>
-                <ChevronDown />
-              </BaseSelect.ScrollDownArrow>
-            </BaseSelect.Popup>
-          </BaseSelect.Positioner>
-        </BaseSelect.Portal>
-      </BaseSelect.Root>
-      {clearable && (
-        <Button
-          className={clsx(styles.selectClear, getStyleClassNames({
-            corners: 'normal',
-            intent: 'neutral',
-            variant: 'ghost',
-            border: true,
-          }))}
-          icon={<X />} onClick={handleClear}
-          disabled={disabled || !value}
-          tabIndex={0}
-        />
-      )}
-    </div>
-  );
-});
+          <BaseSelect.ScrollUpArrow className={clsx(...getStyleClassNames({
+            border: 'bottom',
+            variant: 'surface',
+          }), styles.selectScrollArrow)}>
+            <ChevronUp />
+          </BaseSelect.ScrollUpArrow>
+          <BaseSelect.List className={styles.selectList}>
+            {options.map((option) => (
+              <BaseSelect.Item
+                className={clsx(styles.selectItem, ...getStyleClassNames({
+                  intent: 'secondary',
+                  variant: 'ghost',
+                  corners: 'normal',
+                }))}
+                key={option.value}
+                value={option.value}
+                disabled={option.disabled}
+              >
+                <BaseSelect.ItemIndicator className={styles.selectItemIndicator}>
+                  <Check />
+                </BaseSelect.ItemIndicator>
+                <BaseSelect.ItemText className={styles.selectItemContent}>
+                  {option.label}
+                </BaseSelect.ItemText>
+              </BaseSelect.Item>
+            ))}
+          </BaseSelect.List>
+          <BaseSelect.ScrollDownArrow className={clsx(...getStyleClassNames({
+            border: 'top',
+            variant: 'surface',
+          }), styles.selectScrollArrow)}>
+            <ChevronDown />
+          </BaseSelect.ScrollDownArrow>
+        </BaseSelect.Popup>
+      </BaseSelect.Positioner>
+    </BaseSelect.Portal>
+  </BaseSelect.Root >
+));
 
 Select.displayName = 'Select';

@@ -83,7 +83,7 @@ const DirtyConfirmationStory = (args: StoryArgs): JSX.Element => {
       actions: [
         {
           text: 'Save',
-          intent: 'neutral',
+          intent: 'secondary',
           onClick: () => close(id),
         },
       ],

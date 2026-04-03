@@ -1,3 +1,5 @@
+import clsx, { ClassValue } from 'clsx';
+
 import {
   ElementElevation,
   ElementIntent,
@@ -42,7 +44,7 @@ export const getStyleClassNames = (config: GetStyleClassNamesConfig): string[] =
       classNames.add(variants[config.intent]);
     } else {
       if (config.variant !== 'surface') {
-        classNames.add(variants.neutral);
+        classNames.add(variants.secondary);
       }
     }
   }
@@ -59,7 +61,7 @@ export const getStyleClassNames = (config: GetStyleClassNamesConfig): string[] =
     } else {
       classNames.add(borders.border);
     }
-    classNames.add(variants[config.intent ?? 'neutral']);
+    classNames.add(variants[config.intent ?? 'secondary']);
   }
 
   if (config.corners) {
@@ -96,4 +98,7 @@ export const getStyleClassNames = (config: GetStyleClassNamesConfig): string[] =
   return Array.from(classNames);
 };
 
-export const sx = getStyleClassNames;
+export const sx = (
+  style: GetStyleClassNamesConfig,
+  ...args: ClassValue[]
+): string => clsx(getStyleClassNames(style), ...args);

@@ -1,0 +1,39 @@
+@use "../../../../style/layers";
+@use "../../../../style/flex";
+@use "../../../../style/text";
+
+@layer components {
+  .date-time-picker {
+    --padding: calc(1rem - var(--border-width));
+
+    @include flex.column;
+
+    &-calendar {
+      margin: 0 auto;
+      padding: var(--padding);
+    }
+
+    &-separator {
+      height: 1px;
+      background-color: var(--color-card-border);
+    }
+
+    &-time {
+      @include flex.row($gap: 0.5rem, $yAlign: center);
+
+      margin: 0 auto;
+      padding: var(--padding);
+
+      &-icon {
+        flex-shrink: 0;
+        width: 1rem;
+        height: 1rem;
+        margin-right: 0.25rem;
+      }
+
+      &-separator {
+        @include text.ui;
+      }
+    }
+  }
+}

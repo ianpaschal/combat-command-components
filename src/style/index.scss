@@ -8,8 +8,8 @@
     font-size: 16px;
     font-weight: 300;
     line-height: 1.5rem;
-    color: var(--color-body-text);
-    letter-spacing: 0.5px;
+    color: var(--color-text-body);
+    letter-spacing: 0.25px;
 
     background-color: var(--color-page-bg);
   }
@@ -39,19 +39,16 @@
   h3 {
     margin: 0;
     font-weight: 500;
-    color: var(--color-header-text);
-    letter-spacing: 0.25px;
+    color: var(--color-text-header);
   }
 
   p,
   li {
     margin: 0;
     font-weight: 300;
-    letter-spacing: 0.25px;
   }
 
   a {
     font-weight: 400;
-    letter-spacing: 0.25px;
   }
 }

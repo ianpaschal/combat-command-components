@@ -10,10 +10,13 @@
     &-item {
       @include text.ui;
 
+      cursor: pointer;
+
       display: flex;
       gap: 0.5rem;
       align-items: center;
-      color: var(--color-ui-text);
+
+      color: var(--color-text-ui);
 
       &-control {
         display: flex;
@@ -31,11 +34,11 @@
         outline: 0;
 
         &[data-checked] {
-          border-color: var(--solid-accent-bg);
+          border-color: var(--color-solid-primary-bg);
           border-width: 6px;
 
           &:hover {
-            border-color: var(--solid-accent-border-hover);
+            border-color: var(--color-solid-primary-border-hover);
           }
         }
 

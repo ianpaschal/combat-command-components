@@ -29,32 +29,39 @@
       font-size: var(--content-size);
       font-weight: 500;
       line-height: var(--content-size);
+      color: var(--badge-color-text);
       text-align: center;
+
+      background: var(--badge-color-bg);
     }
 
-    &[data-badge-intent="neutral"]::after {
-      color: var(--primary-neutral-text);
-      background: var(--primary-neutral-bg);
-    }
+    // &[data-badge-intent="primary"]::after {
 
-    &[data-badge-intent="danger"]::after {
-      color: var(--primary-danger-text);
-      background: var(--primary-danger-bg);
-    }
+    // }
 
-    &[data-badge-intent="warning"]::after {
-      color: var(--primary-warning-text);
-      background: var(--primary-warning-bg);
-    }
+    // &[data-badge-intent="secondary"]::after {
+    //   color: var(--color-solid-secondary-text);
+    //   background: var(--color-solid-secondary-bg);
+    // }
 
-    &[data-badge-intent="success"]::after {
-      color: var(--primary-success-text);
-      background: var(--primary-success-bg);
-    }
+    // &[data-badge-intent="danger"]::after {
+    //   color: var(--color-solid-danger-text);
+    //   background: var(--color-solid-danger-bg);
+    // }
 
-    &[data-badge-intent="info"]::after {
-      color: var(--primary-info-text);
-      background: var(--primary-info-bg);
-    }
+    // &[data-badge-intent="warning"]::after {
+    //   color: var(--color-solid-warning-text);
+    //   background: var(--color-solid-warning-bg);
+    // }
+
+    // &[data-badge-intent="success"]::after {
+    //   color: var(--color-solid-success-text);
+    //   background: var(--color-solid-success-bg);
+    // }
+
+    // &[data-badge-intent="info"]::after {
+    //   color: var(--color-solid-info-text);
+    //   background: var(--color-solid-info-bg);
+    // }
   }
 }

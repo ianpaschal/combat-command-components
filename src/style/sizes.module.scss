@@ -1,6 +1,6 @@
 @use "./layers";
 
-@mixin common($size: 2.5rem, $padding: 0.75rem, $collapsePadding: false) {
+@mixin common($size: 2.5rem, $padding: 0.75rem) {
   // Ensure hit-box is at least 40px
   @if $size < 2.5rem {
     &::before {
@@ -18,9 +18,8 @@
 
   box-sizing: border-box;
   min-width: $size;
-  height: $size;
-  max-height: $size;
-  padding: 0 $padding;
+  min-height: $size;
+  padding: calc(#{$padding} - var(--border-width)); // Assume always used with variants (1px border, even if invisible)
 
   &.collapse-padding {
     margin: 0 calc($padding * -1);
@@ -56,7 +55,7 @@
     @include common($size: 2rem, $padding: 0.5rem);
 
     .icon svg {
-      stroke-width: 2.5;
+      stroke-width: 2;
     }
   }
 
@@ -64,7 +63,7 @@
     @include common($size: 2.5rem, $padding: 0.75rem);
 
     .icon svg {
-      stroke-width: 2.25;
+      stroke-width: 2;
     }
   }
 

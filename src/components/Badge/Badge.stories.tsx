@@ -18,16 +18,17 @@ const meta: Meta<typeof Badge> = {
       control: 'text',
       description: 'The value to display (number or string).',
     },
-    intent: {
+    color: {
       control: 'radio',
       options: [
+        'accent',
         'neutral',
-        'danger',
-        'warning',
-        'success',
-        'info',
+        'red',
+        'yellow',
+        'green',
+        'blue',
       ],
-      description: 'The intent (color) for the badge.',
+      description: 'The color for the badge.',
     },
   },
 };
@@ -38,7 +39,7 @@ type Story = StoryObj<typeof meta>;
 export const WithNumber: Story = {
   args: {
     value: '5',
-    intent: 'danger',
+    color: 'red',
     children: <Button icon={<Mail />} variant="shaded" />,
   },
 };
@@ -46,7 +47,7 @@ export const WithNumber: Story = {
 export const WithText: Story = {
   args: {
     value: 'New',
-    intent: 'info',
-    children: <Button text="Notifications" />,
+    color: 'blue',
+    children: <Button text="Notifications" variant="shaded" />,
   },
 };
