@@ -5,7 +5,7 @@ import { getStyleClassNames } from '../../utils/getStyleClassNames';
 
 import styles from './InputTextArea.module.scss';
 
-export interface InputTextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> { }
+export type InputTextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export const InputTextArea = forwardRef<HTMLTextAreaElement, InputTextAreaProps>(({
   className,
