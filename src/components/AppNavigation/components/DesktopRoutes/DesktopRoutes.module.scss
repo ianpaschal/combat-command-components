@@ -152,7 +152,7 @@
       height: var(--popup-height);
 
       outline: var(--border-width) solid var(--color-card-border);
-      outline-offset: -1px;
+      outline-offset: calc(var(--border-width) * -1);
 
       transition-timing-function: var(--easing);
       transition-duration: var(--duration);
