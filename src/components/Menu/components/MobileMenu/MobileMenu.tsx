@@ -20,6 +20,7 @@ export const MobileMenu = ({
           <Base.Content className={styles.mobileMenuGroups}>
             {groups.map((group, i) => (
               <div
+                key={`group_${i}`}
                 className={sx({ variant: 'surface', border: true, corners: 'wide' }, styles.mobileMenuGroup)}
                 aria-label={group.title}
               >
