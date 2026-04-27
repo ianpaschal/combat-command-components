@@ -2,6 +2,7 @@ import { Store } from '@tanstack/store';
 import deepmerge from 'deepmerge';
 
 import { dark } from './themes/dark';
+import { daybreak } from './themes/daybreak';
 import { light } from './themes/light';
 import { midnight } from './themes/midnight';
 import { DeepPartial } from '../../types';
@@ -10,6 +11,7 @@ import { Theme } from './ThemeProvider.types';
 export const themeStore = new Store<Record<string, Theme>>({
   light,
   dark,
+  daybreak,
   midnight,
 });
 

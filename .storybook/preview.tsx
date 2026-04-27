@@ -17,6 +17,7 @@ const preview: Preview = {
           { value: SYSTEM_THEME_KEY, title: 'System' },
           { value: 'light', title: 'Light' },
           { value: 'dark', title: 'Dark' },
+          { value: 'daybreak', title: 'Daybreak' },
           { value: 'midnight', title: 'Midnight' },
         ],
         dynamicTitle: true,
