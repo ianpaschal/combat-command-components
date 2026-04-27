@@ -6,4 +6,3 @@ export declare const desktopMenuItemIcon: string;
 export declare const desktopMenuItemLabel: string;
 export declare const desktopMenuItemReact: string;
 export declare const desktopMenuPopup: string;
-export declare const desktopMenuTrigger: string;

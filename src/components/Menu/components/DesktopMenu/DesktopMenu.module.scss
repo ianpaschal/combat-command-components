@@ -3,10 +3,6 @@
 
 @layer components {
   .desktop-menu {
-    &-trigger {
-      outline: none;
-    }
-
     &-popup {
       --icon-size: 1rem;
       --icon-spacing: 0.5rem;

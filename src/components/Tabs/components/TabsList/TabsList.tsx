@@ -48,10 +48,11 @@ export const TabsList = forwardRef<ElementRef<typeof BaseTabs.List>, TabsListPro
         style={maxWidth ? { maxWidth } : undefined}
         {...props}
       >
-        {tabs.map((tab) => (
+        {tabs.map(({ content: _, ...tab }) => (
           <TabTrigger
             key={tab.value}
             className={clsx(sx({ variant: 'ghost', corners: 'tight' }))}
+            iconOnly={iconOnly}
             {...tab}
           />
         ))}

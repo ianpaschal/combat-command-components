@@ -1,3 +1,8 @@
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import {
   Layers,
@@ -9,8 +14,35 @@ import { TabsList } from './components/TabsList/TabsList';
 import { TabsPanel } from './components/TabsPanel/TabsPanel';
 import { Card } from '../Card';
 import { Tabs } from './Tabs';
-import { useTabsQueryParam } from './Tabs.hooks';
 import { Tab } from './Tabs.types';
+
+const useTabsQueryParam = (key = 'tab', defaultValue = ''): [string, (v: string) => void] => {
+  const [value, setValue] = useState(() => (
+    new URLSearchParams(window.location.search).get(key) ?? defaultValue
+  ));
+
+  useEffect(() => {
+    const sync = () => {
+      setValue(new URLSearchParams(window.location.search).get(key) ?? defaultValue);
+    };
+    window.addEventListener('popstate', sync);
+    window.addEventListener('tabs-query-param-change', sync);
+    return () => {
+      window.removeEventListener('popstate', sync);
+      window.removeEventListener('tabs-query-param-change', sync);
+    };
+  }, [key, defaultValue]);
+
+  const handleChange = useCallback((newValue: string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set(key, newValue);
+    window.history.replaceState(null, '', url.toString());
+    setValue(newValue);
+    window.dispatchEvent(new CustomEvent('tabs-query-param-change', { detail: { key, value: newValue } }));
+  }, [key]);
+
+  return [value, handleChange];
+};
 
 const tabs: Tab[] = [
   {

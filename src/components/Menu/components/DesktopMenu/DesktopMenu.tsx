@@ -50,7 +50,6 @@ export const DesktopMenu = ({
                     }, styles.desktopMenuItem)}
                     onClick={() => item.handler()}
                     data-has-icons={hasIcons || undefined}
-                    role="button"
                   >
                     {item.icon && (
                       <div className={styles.desktopMenuItemIcon}>{item.icon}</div>

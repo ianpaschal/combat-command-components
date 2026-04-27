@@ -14,6 +14,8 @@ import {
 import { themeStore } from './ThemeProvider.store';
 
 export interface ThemeProviderProps {
+
+  /** Locks the active theme; overrides user selection and any setTheme calls. */
   theme?: string;
   children: ReactNode;
 }

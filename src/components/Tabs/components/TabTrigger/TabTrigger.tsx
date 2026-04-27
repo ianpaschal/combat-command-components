@@ -1,8 +1,8 @@
 import {
+  ComponentPropsWithoutRef,
   ElementRef,
   forwardRef,
   ReactElement,
-  ReactNode,
 } from 'react';
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import clsx from 'clsx';
@@ -12,16 +12,16 @@ import { sx } from '../../../../utils';
 import sizes from '../../../../style/sizes.module.scss';
 import styles from './TabTrigger.module.scss';
 
-export interface TabTriggerProps extends Omit<React.ComponentPropsWithoutRef<typeof BaseTabs.Tab>, 'content'> {
-  content: ReactNode;
+export interface TabTriggerProps extends Omit<ComponentPropsWithoutRef<typeof BaseTabs.Tab>, 'content'> {
   icon?: ReactElement;
+  iconOnly?: boolean;
   title?: string;
 }
 
 export const TabTrigger = forwardRef<ElementRef<typeof BaseTabs.Tab>, TabTriggerProps>(({
   className,
-  content: _,
   icon,
+  iconOnly = false,
   title,
   ...props
 }, ref): ReactElement => (
@@ -33,7 +33,7 @@ export const TabTrigger = forwardRef<ElementRef<typeof BaseTabs.Tab>, TabTrigger
     {icon && (
       <span className={sizes.icon}>{icon}</span>
     )}
-    {title && (
+    {title && !iconOnly && (
       <span className={styles.tabText}>{title}</span>
     )}
   </BaseTabs.Tab>

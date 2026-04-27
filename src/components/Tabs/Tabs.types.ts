@@ -1,8 +1,11 @@
 import { ReactElement, ReactNode } from 'react';
 
-export type Tab = {
+type TabBase = {
   content: ReactNode;
   value: string;
-  title?: string;
-  icon?: ReactElement;
 };
+
+export type Tab = TabBase & (
+  | { title: string; icon?: ReactElement }
+  | { icon: ReactElement; title?: string }
+);

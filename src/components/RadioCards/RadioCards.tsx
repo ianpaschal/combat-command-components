@@ -9,7 +9,6 @@ import { Radio as BaseRadio } from '@base-ui/react/radio';
 import { RadioGroup } from '@base-ui/react/radio-group';
 import clsx from 'clsx';
 
-import { Side } from '../../types';
 import { getStyleClassNames } from '../../utils/getStyleClassNames';
 
 import styles from './RadioCards.module.scss';
@@ -25,13 +24,11 @@ export type RadioCardOption = {
   disabled?: boolean;
 };
 
-export interface RadioCardsProps extends Omit<
-  InputHTMLAttributes<HTMLDivElement>,
+export interface RadioCardsProps extends Omit<InputHTMLAttributes<HTMLDivElement>,
   'defaultValue' |
   'onChange' |
   'value'
 > {
-  border?: boolean | Side | Side[];
   defaultValue?: RadioCardsValue;
   disabled?: boolean;
   onChange?: (value: RadioCardsValue) => void;
@@ -40,7 +37,6 @@ export interface RadioCardsProps extends Omit<
 }
 
 export const RadioCards = forwardRef<RadioGroupRef, RadioCardsProps>(({
-  border,
   className,
   defaultValue,
   id,
@@ -76,7 +72,7 @@ export const RadioCards = forwardRef<RadioGroupRef, RadioCardsProps>(({
             getStyleClassNames({
               variant: v !== null && v === currentValue ? 'shaded' : 'ghost',
               intent: v !== null && v === currentValue ? 'primary' : 'secondary',
-              border,
+              border: true,
               corners: 'normal',
             }),
             styles.radioCardsItem,

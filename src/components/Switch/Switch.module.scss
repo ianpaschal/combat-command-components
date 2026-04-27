@@ -45,7 +45,7 @@
       }
 
       @media (prefers-reduced-motion: no-preference) {
-        transition: left 150ms ease-in-out;
+        transition: left 150ms ease-in-out, background-color 150ms ease-in-out;
       }
     }
   }

@@ -77,7 +77,7 @@ import { registerTheme } from '@ianpaschal/combat-command-components';
 registerTheme('brand', {
   displayName: 'Brand',
   intents: {
-    accent: {
+    primary: {
       bg: '#FF5500',
       text: '#FFFFFF',
       focus: '#FF5500',
@@ -89,7 +89,7 @@ registerTheme('brand', {
 registerTheme('brand-dark', {
   displayName: 'Brand Dark',
   intents: {
-    accent: {
+    primary: {
       bg: '#FF5500',
       text: '#FFFFFF',
       focus: '#FF5500',
@@ -113,7 +113,7 @@ const ThemeSelector = () => {
     <Select
       value={key}
       options={options}
-      onChange={(value) => setTheme(value as string)}
+      onChange={(value) => setTheme(value)}
     />
   );
 };

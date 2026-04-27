@@ -34,34 +34,5 @@
 
       background: var(--badge-color-bg);
     }
-
-    // &[data-badge-intent="primary"]::after {
-
-    // }
-
-    // &[data-badge-intent="secondary"]::after {
-    //   color: var(--color-solid-secondary-text);
-    //   background: var(--color-solid-secondary-bg);
-    // }
-
-    // &[data-badge-intent="danger"]::after {
-    //   color: var(--color-solid-danger-text);
-    //   background: var(--color-solid-danger-bg);
-    // }
-
-    // &[data-badge-intent="warning"]::after {
-    //   color: var(--color-solid-warning-text);
-    //   background: var(--color-solid-warning-bg);
-    // }
-
-    // &[data-badge-intent="success"]::after {
-    //   color: var(--color-solid-success-text);
-    //   background: var(--color-solid-success-bg);
-    // }
-
-    // &[data-badge-intent="info"]::after {
-    //   color: var(--color-solid-info-text);
-    //   background: var(--color-solid-info-bg);
-    // }
   }
 }

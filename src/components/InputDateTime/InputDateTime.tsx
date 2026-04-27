@@ -4,14 +4,11 @@ import { CalendarClock } from 'lucide-react';
 
 import { DateTimePicker } from './components/DateTimePicker/DateTimePicker';
 import { InputPanel } from '../InputPanel';
-
-const normalizeDate = (date?: Date, minuteStep: number = 5, secondStep: number = 60): Date => {
-  const d = date ? new Date(date) : new Date();
-  const normalized = new Date(d);
-  normalized.setMinutes(Math.floor(d.getMinutes() / minuteStep) * minuteStep);
-  normalized.setSeconds(Math.floor(d.getSeconds() / secondStep) * secondStep, 0);
-  return normalized;
-};
+import {
+  DEFAULT_MINUTE_STEP,
+  DEFAULT_SECOND_STEP,
+  normalizeDate,
+} from './InputDateTime.utils';
 
 export interface InputDateTimeProps {
   className?: string;
@@ -30,8 +27,8 @@ export interface InputDateTimeProps {
 
 export const InputDateTime = ({
   defaultValue,
-  minuteStep = 15,
-  secondStep = 60,
+  minuteStep = DEFAULT_MINUTE_STEP,
+  secondStep = DEFAULT_SECOND_STEP,
   value,
   ...props
 }: InputDateTimeProps): ReactElement => (
@@ -49,7 +46,7 @@ export const InputDateTime = ({
         return '';
       }
       if (secondStep !== 60) {
-        format(v, 'PPP, HH:mm:ss');
+        return format(v, 'PPP, HH:mm:ss');
       }
       return format(v, 'PPP, HH:mm');
     }}

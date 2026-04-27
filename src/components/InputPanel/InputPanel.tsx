@@ -2,7 +2,6 @@ import {
   CSSProperties,
   ForwardedRef,
   forwardRef,
-  MouseEvent,
   ReactElement,
   ReactNode,
   RefAttributes,
@@ -11,11 +10,9 @@ import {
 } from 'react';
 import { Drawer as BaseDrawer } from '@base-ui/react/drawer';
 import clsx from 'clsx';
-import { X } from 'lucide-react';
 
 import { getCssValue } from '../../utils/getCssValue';
 import { sx } from '../../utils/getStyleClassNames';
-import { Button } from '../Button';
 import { ScrollArea } from '../ScrollArea';
 
 import sizes from '../../style/sizes.module.scss';
@@ -30,8 +27,6 @@ export interface InputPanelContentProps<T> {
 
 export interface InputPanelProps<T = string> {
   className?: string;
-  clearable?: boolean;
-  clearValue?: T;
   closeOnChange?: boolean;
   defaultValue?: T;
   disabled?: boolean;
@@ -56,8 +51,6 @@ export interface InputPanelProps<T = string> {
 
 export const InputPanel = forwardRef(<T,>({
   className,
-  clearable = false,
-  clearValue,
   closeOnChange = true,
   defaultValue,
   disabled = false,
@@ -96,12 +89,6 @@ export const InputPanel = forwardRef(<T,>({
     }
   };
 
-  const handleClear = (e: MouseEvent): void => {
-    e.stopPropagation();
-    setValue(clearValue);
-    onChange?.(clearValue as T);
-  };
-
   const label = renderValue?.(value);
   const contentProps: InputPanelContentProps<T> = {
     close: () => setOpen(false),
@@ -123,7 +110,6 @@ export const InputPanel = forwardRef(<T,>({
             border: !readOnly,
             size: 'normal',
           }, styles.inputPanelTrigger, className)}
-          data-clearable={clearable || undefined}
           data-readonly={readOnly || undefined}
           disabled={disabled}
         >
@@ -136,19 +122,6 @@ export const InputPanel = forwardRef(<T,>({
             {label || placeholder}
           </span>
         </BaseDrawer.Trigger>
-        {clearable && (
-          <Button
-            className={sx({
-              corners: 'normal',
-              variant: 'ghost',
-              border: true,
-              size: 'normal',
-            }, styles.inputPanelClear)}
-            disabled={disabled || value === clearValue}
-            icon={<X />}
-            onClick={handleClear}
-          />
-        )}
       </div>
       <BaseDrawer.Portal>
         <BaseDrawer.Backdrop className={drawerStyles.drawerBackdrop} />

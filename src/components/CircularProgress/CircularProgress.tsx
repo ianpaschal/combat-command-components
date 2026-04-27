@@ -1,5 +1,6 @@
 import {
   CSSProperties,
+  ReactElement,
   ReactNode,
   useId,
 } from 'react';
@@ -28,14 +29,14 @@ export const CircularProgress = ({
   children,
   className,
   style,
-}: CircularProgressProps): JSX.Element => {
+}: CircularProgressProps): ReactElement => {
   const maskId = useId();
   const { theme } = useThemeManager();
-  const fillColor = theme.colors[color].bg;
+  const strokeColor = theme.colors[color].bg;
   const circumference = Math.PI * 50;
   const clampedValue = Math.max(Math.min(value, 1), 0);
   const dasharray = `${clampedValue * circumference} ${circumference}`;
-  const thicknessProportion = Math.max(Math.min(trackWidth / (size ?? 100), 100), 0) * 100;
+  const thicknessProportion = Math.max(Math.min(trackWidth / (size ?? 100), 0.5), 0) * 100;
   return (
     <div
       className={clsx(styles.circularProgress, className)}
@@ -64,7 +65,7 @@ export const CircularProgress = ({
             cy="50"
             r="25"
             fill="none"
-            stroke={fillColor}
+            stroke={strokeColor}
             strokeWidth="50"
             strokeDasharray={dasharray}
             transform="rotate(-90 50 50)"

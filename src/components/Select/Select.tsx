@@ -1,4 +1,5 @@
 import {
+  ButtonHTMLAttributes,
   ElementRef,
   forwardRef,
   InputHTMLAttributes,
@@ -45,18 +46,37 @@ export interface SelectProps extends Omit<
 }
 
 export const Select = forwardRef<SelectRef, SelectProps>(({
+  autoComplete,
   className,
+  defaultValue,
+  disabled,
+  form,
   id,
+  name,
   onChange,
   options,
   placeholder = 'Select...',
+  readOnly,
+  required,
+  type: _type,
   value,
-  ...props
+  ...triggerProps
 }, ref): JSX.Element => (
-  <BaseSelect.Root<SelectValue | null> {...props} value={value} onValueChange={onChange}>
+  <BaseSelect.Root<SelectValue | null>
+    autoComplete={autoComplete}
+    defaultValue={defaultValue}
+    disabled={disabled}
+    form={form}
+    name={name}
+    readOnly={readOnly}
+    required={required}
+    value={value}
+    onValueChange={onChange}
+  >
     <BaseSelect.Trigger
       ref={ref}
       id={id}
+      {...(triggerProps as ButtonHTMLAttributes<HTMLButtonElement>)}
       className={clsx(styles.selectTrigger, getStyleClassNames({
         corners: 'normal',
         intent: 'secondary',
@@ -67,7 +87,10 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
       <BaseSelect.Value>
         {(val: SelectValue | null) => {
           const opt = options.find((o) => o.value === val) ?? null;
-          return opt?.label ?? opt?.value ?? placeholder;
+          if (opt === null) {
+            return placeholder;
+          }
+          return opt.label ?? String(opt.value);
         }}
       </BaseSelect.Value>
       <BaseSelect.Icon className={styles.selectTriggerIcon}>
@@ -98,14 +121,14 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
             <ChevronUp />
           </BaseSelect.ScrollUpArrow>
           <BaseSelect.List className={styles.selectList}>
-            {options.map((option) => (
+            {options.map((option, i) => (
               <BaseSelect.Item
                 className={clsx(styles.selectItem, ...getStyleClassNames({
                   intent: 'secondary',
                   variant: 'ghost',
                   corners: 'normal',
                 }))}
-                key={option.value}
+                key={`${i}-${option.value}`}
                 value={option.value}
                 disabled={option.disabled}
               >

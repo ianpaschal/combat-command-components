@@ -1,4 +1,8 @@
-import { ElementRef, forwardRef } from 'react';
+import {
+  ComponentPropsWithoutRef,
+  ElementRef,
+  forwardRef,
+} from 'react';
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import clsx from 'clsx';
 import { Check, Minus } from 'lucide-react';
@@ -7,13 +11,10 @@ import { getStyleClassNames } from '../../utils/getStyleClassNames';
 
 import styles from './Checkbox.module.scss';
 
-export interface CheckboxProps {
-  className?: string;
+export interface CheckboxProps extends Omit<ComponentPropsWithoutRef<typeof BaseCheckbox.Root>,
+  'checked' | 'defaultChecked' | 'onCheckedChange' | 'value'
+> {
   defaultValue?: boolean;
-  disabled?: boolean;
-  id?: string;
-  indeterminate?: boolean;
-  name?: string;
   onChange?: (checked: boolean) => void;
   value?: boolean;
 }
@@ -21,16 +22,14 @@ export interface CheckboxProps {
 export const Checkbox = forwardRef<ElementRef<typeof BaseCheckbox.Root>, CheckboxProps>(({
   className,
   defaultValue = false,
-  disabled = false,
-  id,
   indeterminate = false,
-  name,
   onChange,
   value,
+  ...props
 }, ref): JSX.Element => (
   <BaseCheckbox.Root
     ref={ref}
-    id={id}
+    {...props}
     className={clsx(getStyleClassNames({
       variant: 'ghost',
       intent: 'secondary',
@@ -39,9 +38,7 @@ export const Checkbox = forwardRef<ElementRef<typeof BaseCheckbox.Root>, Checkbo
     }), styles.checkboxControl, className)}
     checked={value}
     defaultChecked={defaultValue}
-    disabled={disabled}
     indeterminate={indeterminate}
-    name={name}
     onCheckedChange={onChange}
   >
     <BaseCheckbox.Indicator keepMounted className={styles.checkboxIndicator}>

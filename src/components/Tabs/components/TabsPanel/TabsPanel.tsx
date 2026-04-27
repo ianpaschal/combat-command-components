@@ -1,14 +1,9 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement } from 'react';
 import clsx from 'clsx';
 
 import { useTabsContext } from '../../Tabs.hooks';
 
 import styles from './TabsPanel.module.scss';
-
-export interface TabsPanelItem {
-  content: ReactNode;
-  value: string;
-}
 
 export interface TabsPanelProps {
   className?: string;

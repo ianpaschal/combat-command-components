@@ -27,6 +27,7 @@ export const Switch = forwardRef<ElementRef<typeof BaseSwitch.Root>, SwitchProps
   disabled = false,
   intent = 'primary',
   onChange,
+  style,
   value,
   ...props
 }, ref): JSX.Element => (
@@ -38,6 +39,7 @@ export const Switch = forwardRef<ElementRef<typeof BaseSwitch.Root>, SwitchProps
       intent: 'secondary',
     }), styles.switchControl, className)}
     style={{
+      ...style,
       '--switch-checked-track': `var(--color-solid-${!disabled ? intent : 'secondary'}-bg)`,
       '--switch-checked-thumb': `var(--color-solid-${!disabled ? intent : 'secondary'}-text)`,
     } as CSSProperties}

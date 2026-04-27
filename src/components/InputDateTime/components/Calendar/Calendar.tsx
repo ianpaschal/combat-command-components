@@ -1,4 +1,8 @@
-import { ReactElement, useState } from 'react';
+import {
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react';
 import clsx from 'clsx';
 import {
   addMonths,
@@ -34,6 +38,10 @@ export const Calendar = ({
 }: CalendarProps): ReactElement => {
   const [viewMonth, setViewMonth] = useState(() => startOfMonth(selected));
   const [direction, setDirection] = useState<'left' | 'right' | null>(null);
+
+  useEffect(() => {
+    setViewMonth((current) => isSameMonth(selected, current) ? current : startOfMonth(selected));
+  }, [selected]);
 
   const days = eachDayOfInterval({
     end: endOfWeek(endOfMonth(viewMonth)),

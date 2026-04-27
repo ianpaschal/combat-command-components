@@ -20,15 +20,15 @@ export const Menu = ({
   align = 'end',
 }: MenuProps): ReactElement | null => {
   const groups = normalizeMenuItems(items);
+  if (!groups.length) {
+    return null;
+  }
   const props: MenuDisplayProps = {
     children,
     hasIcons: groups.some((group) => group.items.some((item) => !isReactElement(item) && item?.icon)),
     groups,
     align,
   };
-  if (!groups.length) {
-    return null;
-  }
   return mobile ? (
     <MobileMenu {...props} />
   ) : (

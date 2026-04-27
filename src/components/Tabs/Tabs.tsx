@@ -23,7 +23,7 @@ export const Tabs = ({
   value: controlledValue,
   tabs,
 }: TabsProps): ReactElement => {
-  const [internalValue, setInternalValue] = useState(defaultValue ?? '');
+  const [internalValue, setInternalValue] = useState(defaultValue ?? tabs[0]?.value ?? '');
   const value = controlledValue ?? internalValue;
 
   const handleChange = (newValue: string) => {

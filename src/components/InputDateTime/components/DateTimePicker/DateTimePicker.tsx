@@ -3,6 +3,7 @@ import { Clock } from 'lucide-react';
 
 import { InputPanelContentProps } from '../../../../components/InputPanel';
 import { Select, SelectValue } from '../../../../components/Select';
+import { DEFAULT_MINUTE_STEP, DEFAULT_SECOND_STEP } from '../../InputDateTime.utils';
 import { Calendar } from '../Calendar';
 
 import styles from './DateTimePicker.module.scss';
@@ -26,14 +27,23 @@ export interface DateTimePickerProps extends InputPanelContentProps<Date> {
 export const DateTimePicker = ({
   onChange,
   value: currentDate,
-  minuteStep = 15,
-  secondStep = 60,
+  minuteStep = DEFAULT_MINUTE_STEP,
+  secondStep = DEFAULT_SECOND_STEP,
 }: DateTimePickerProps): ReactElement => {
   const workingDate = currentDate ?? createFallbackDate();
 
+  if (process.env.NODE_ENV !== 'production') {
+    if (60 % minuteStep !== 0) {
+      console.warn(`DateTimePicker: minuteStep (${minuteStep}) must evenly divide 60.`);
+    }
+    if (60 % secondStep !== 0) {
+      console.warn(`DateTimePicker: secondStep (${secondStep}) must evenly divide 60.`);
+    }
+  }
+
   const onDateChange = (selected: Date): void => {
     const newDate = new Date(selected);
-    newDate.setHours(workingDate.getHours(), workingDate.getMinutes());
+    newDate.setHours(workingDate.getHours(), workingDate.getMinutes(), workingDate.getSeconds(), workingDate.getMilliseconds());
     onChange(newDate);
   };
 

@@ -2,14 +2,14 @@
 @use "../../../../style/flex";
 @use "../../../../style/text";
 
-@keyframes slide-from-right {
+@keyframes calendar-slide-from-right {
   from {
     transform: translateX(0.75rem);
     opacity: 0;
   }
 }
 
-@keyframes slide-from-left {
+@keyframes calendar-slide-from-left {
   from {
     transform: translateX(-0.75rem);
     opacity: 0;
@@ -36,11 +36,11 @@
         font-weight: 500;
 
         &[data-direction="right"] {
-          animation: slide-from-right 150ms ease-out;
+          animation: calendar-slide-from-right 150ms ease-out;
         }
 
         &[data-direction="left"] {
-          animation: slide-from-left 150ms ease-out;
+          animation: calendar-slide-from-left 150ms ease-out;
         }
       }
 
@@ -60,11 +60,11 @@
       justify-items: center;
 
       &[data-direction="right"] {
-        animation: slide-from-right 150ms ease-out;
+        animation: calendar-slide-from-right 150ms ease-out;
       }
 
       &[data-direction="left"] {
-        animation: slide-from-left 150ms ease-out;
+        animation: calendar-slide-from-left 150ms ease-out;
       }
 
       &-day {

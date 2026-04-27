@@ -21,11 +21,12 @@ export const MobileMenu = ({
             {groups.map((group, i) => (
               <div
                 key={`group_${i}`}
+                role="group"
+                aria-labelledby={group.title ? `mobile-menu-group-label-${i}` : undefined}
                 className={sx({ variant: 'surface', border: true, corners: 'wide' }, styles.mobileMenuGroup)}
-                aria-label={group.title}
               >
                 {group.title && (
-                  <div className={styles.mobileMenuGroupLabel}>
+                  <div id={`mobile-menu-group-label-${i}`} className={styles.mobileMenuGroupLabel}>
                     {group.title}
                   </div>
                 )}
@@ -41,7 +42,7 @@ export const MobileMenu = ({
                       size: 'large',
                       intent: item.intent ?? 'secondary',
                     }, styles.mobileMenuItem)}
-                    onClick={() => item.handler}
+                    onClick={() => item.handler()}
                     data-has-icons={hasIcons || undefined}
                   >
                     {item.icon && (

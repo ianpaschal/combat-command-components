@@ -1,6 +1,5 @@
 @use "../../../../style/layers";
 @use "../../../../style/flex";
-@use "../../../../style/text";
 
 @layer components {
   .tab {
@@ -16,18 +15,8 @@
     white-space: nowrap;
 
     &[data-active] {
-      color: var(--color-accent-bg);
-
-      &:hover {
-        background: none;
-      }
+      color: var(--color-solid-primary-bg);
     }
-
-    // &:focus-visible {
-    //   outline: var(--focus-width) solid var(--color-ghost-secondary-focus-outline);
-
-    //   // outline-offset: -1px;
-    // }
 
     &[data-active]:hover,
     &[data-disabled]:hover {
@@ -40,20 +29,5 @@
       white-space: nowrap;
     }
 
-    // &-icon {
-    //   display: flex;
-    //   flex-shrink: 0;
-    //   align-items: center;
-    //   justify-content: center;
-
-    //   width: 1rem;
-    //   height: 1rem;
-
-    //   svg {
-    //     display: block;
-    //     width: 100%;
-    //     height: 100%;
-    //   }
-    // }
   }
 }
