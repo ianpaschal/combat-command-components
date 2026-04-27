@@ -17,7 +17,7 @@ export type BadgeProps = {
   value?: number | string | null;
 };
 
-export const Badge = forwardRef<unknown, BadgeProps>(({
+export const Badge = forwardRef<Element, BadgeProps>(({
   children,
   className,
   color = 'accent',

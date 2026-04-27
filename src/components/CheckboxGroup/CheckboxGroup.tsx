@@ -28,7 +28,7 @@ export interface CheckboxGroupProps {
   value?: string[];
 }
 
-export const CheckboxGroup = forwardRef<ElementRef<'div'>, CheckboxGroupProps>(({
+export const CheckboxGroup = forwardRef<ElementRef<typeof BaseCheckboxGroup>, CheckboxGroupProps>(({
   className,
   defaultValue,
   disabled = false,
