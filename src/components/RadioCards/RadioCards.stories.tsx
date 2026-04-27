@@ -33,7 +33,6 @@ export const Default: Story = {
   name: 'Default',
   args: {
     disabled: false,
-    border: true,
     options: [
       {
         value: 'llama',

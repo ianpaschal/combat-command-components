@@ -35,7 +35,7 @@
     "lint:scss": "stylelint '**/*.scss'",
     "gen": "npm run gen:theme && npm run gen:scss",
     "gen:theme": "tsx scripts/generateThemeVariables.ts",
-    "gen:scss": "tsx scripts/generateScssTypes.ts",
+    "gen:scss": "tsx scripts/generateScssTypes.ts && stylelint '**/*.scss' --fix",
     "release:patch": "npm version patch --no-commit-hooks && npm run build && npm publish",
     "release:minor": "npm version minor --no-commit-hooks && npm run build && npm publish",
     "release:major": "npm version major --no-commit-hooks && npm run build && npm publish"

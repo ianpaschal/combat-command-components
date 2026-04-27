@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import {
@@ -151,52 +150,6 @@ const ColorContent = ({ onChange, value }: InputPanelContentProps<string>) => (
     ))}
   </div>
 );
-
-export const Clearable_: Story = {
-  name: 'Clearable (Uncontrolled)',
-  args: {
-    disabled: false,
-    readOnly: false,
-    placeholder: 'Select a color...',
-  },
-  render: (args) => (
-    <InputPanel<string>
-      {...(args as InputPanelProps<string>)}
-      clearable
-      clearValue=""
-      renderValue={(v) => v || undefined}
-      renderContent={(props) => <ColorContent {...props} />}
-    />
-  ),
-};
-
-const ClearableControlledStory = (args: InputPanelProps<string>): JSX.Element => {
-  const [value, setValue] = useState<string>('');
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <InputPanel<string>
-        {...args}
-        clearable
-        clearValue=""
-        value={value}
-        onChange={setValue}
-        renderValue={(v) => v || undefined}
-        renderContent={(props) => <ColorContent {...props} />}
-      />
-      <span>Current value: <strong>{value || 'empty'}</strong></span>
-    </div>
-  );
-};
-
-export const ClearableControlled_: Story = {
-  name: 'Clearable (Controlled)',
-  args: {
-    disabled: false,
-    readOnly: false,
-    placeholder: 'Select a color...',
-  },
-  render: (args) => <ClearableControlledStory {...(args as InputPanelProps<string>)} />,
-};
 
 export const ReadOnly_: Story = {
   name: 'Read Only',
