@@ -1,7 +1,7 @@
 import {
   ButtonHTMLAttributes,
+  forwardRef,
   MouseEvent,
-  ReactElement,
 } from 'react';
 import clsx from 'clsx';
 
@@ -14,13 +14,13 @@ export interface AppLogoProps extends Omit<ButtonHTMLAttributes<HTMLButtonElemen
   path?: string;
 }
 
-export const AppLogo = ({
+export const AppLogo = forwardRef<HTMLButtonElement, AppLogoProps>(({
   children,
   className,
   disabled,
   path,
   ...props
-}: AppLogoProps): ReactElement => {
+}, ref) => {
   const { navigate } = useNavigationContext();
   const handleClick = (e: MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
@@ -30,6 +30,7 @@ export const AppLogo = ({
   };
   return (
     <button
+      ref={ref}
       className={clsx(styles.appLogo, className)}
       onClick={handleClick}
       disabled={disabled ?? !path}
@@ -38,4 +39,6 @@ export const AppLogo = ({
       {children}
     </button>
   );
-};
+});
+
+AppLogo.displayName = 'AppLogo';

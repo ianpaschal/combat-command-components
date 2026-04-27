@@ -41,10 +41,10 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
       </BaseScrollArea.Content>
     </BaseScrollArea.Viewport>
     <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="vertical">
-      <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'neutral' }), styles.scrollAreaThumb)} />
+      <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'secondary' }), styles.scrollAreaThumb)} />
     </BaseScrollArea.Scrollbar>
     <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="horizontal">
-      <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'neutral' }), styles.scrollAreaThumb)} />
+      <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'secondary' }), styles.scrollAreaThumb)} />
     </BaseScrollArea.Scrollbar>
     <BaseScrollArea.Corner />
   </BaseScrollArea.Root>

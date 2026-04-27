@@ -6,7 +6,7 @@ import { Button, ButtonProps } from '../Button';
 import styles from './ButtonStoryWrapper.module.scss';
 
 const VARIANTS = ['solid', 'shaded', 'ghost'] as const;
-const INTENTS = ['accent', 'neutral', 'danger', 'warning', 'success', 'info'] as const;
+const INTENTS = ['primary', 'secondary', 'danger', 'warning', 'success', 'info'] as const;
 
 export const ButtonStoryWrapper = (
   props: ButtonProps,

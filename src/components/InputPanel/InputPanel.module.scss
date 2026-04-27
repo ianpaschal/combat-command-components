@@ -1,0 +1,115 @@
+@use "../../style/layers";
+@use "../../style/flex";
+@use "../../style/text";
+@use "../../style/shadows";
+
+@layer components {
+  .input-panel {
+    @include flex.row($gap: 0);
+
+    width: 100%;
+
+    &-trigger {
+      @include flex.row($gap: 0.5rem, $yAlign: center);
+
+      user-select: none;
+      flex: 1;
+      line-height: 1rem;
+
+      &-label {
+        overflow: hidden;
+        flex: 1;
+
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      &-placeholder {
+        opacity: var(--opacity-placeholder, 0.5);
+      }
+
+      &[data-clearable] {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    &-clear {
+      align-self: stretch;
+
+      height: auto;
+      max-height: 100%;
+      border-left: none !important;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &-viewport {
+      position: fixed;
+      inset: 0;
+    }
+
+    &-popup {
+      --input-panel-usable-height: calc(100dvh - 2 * var(--page-padding));
+      --input-panel-usable-width: calc(100dvw - 2 * var(--page-padding));
+      --input-panel-max-height: min(var(--input-panel-user-max-height, 100dvh), var(--input-panel-usable-height));
+      --input-panel-max-width: min(var(--input-panel-user-max-width, 100dvw), var(--input-panel-usable-width));
+
+      will-change: transform;
+
+      position: fixed;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+
+      overflow: hidden;
+      display: grid;
+      grid-template-areas: "body";
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: 1fr;
+
+      width: max-content;
+      max-width: var(--input-panel-max-width);
+      max-height: var(--input-panel-max-height);
+      border-radius: var(--border-radius-wide);
+
+      transition: transform 150ms cubic-bezier(0.32, 0.72, 0, 1), opacity 150ms;
+
+      &[data-full-height] {
+        height: var(--input-panel-max-height);
+        min-height: var(--input-panel-max-height);
+      }
+
+      &[data-full-width] {
+        width: var(--input-panel-max-width);
+        max-width: var(--input-panel-max-width);
+      }
+
+      &[data-starting-style],
+      &[data-ending-style] {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+      }
+
+      &[data-swiping] {
+        user-select: none;
+        transition-duration: 0ms;
+      }
+    }
+
+    &-content {
+      @include text.ui;
+
+      display: flex;
+      grid-area: body;
+      flex-direction: column;
+
+      min-height: 0;
+      padding: calc(var(--modal-padding) - 0.5rem);
+
+      &[data-padding="false"] {
+        padding: 0;
+      }
+    }
+  }
+}

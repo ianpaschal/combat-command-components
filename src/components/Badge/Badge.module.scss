@@ -29,32 +29,10 @@
       font-size: var(--content-size);
       font-weight: 500;
       line-height: var(--content-size);
+      color: var(--badge-color-text);
       text-align: center;
-    }
 
-    &[data-badge-intent="neutral"]::after {
-      color: var(--primary-neutral-text);
-      background: var(--primary-neutral-bg);
-    }
-
-    &[data-badge-intent="danger"]::after {
-      color: var(--primary-danger-text);
-      background: var(--primary-danger-bg);
-    }
-
-    &[data-badge-intent="warning"]::after {
-      color: var(--primary-warning-text);
-      background: var(--primary-warning-bg);
-    }
-
-    &[data-badge-intent="success"]::after {
-      color: var(--primary-success-text);
-      background: var(--primary-success-bg);
-    }
-
-    &[data-badge-intent="info"]::after {
-      color: var(--primary-info-text);
-      background: var(--primary-info-bg);
+      background: var(--badge-color-bg);
     }
   }
 }

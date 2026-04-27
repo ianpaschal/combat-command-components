@@ -1,0 +1,32 @@
+@use "../../../../style/layers";
+@use "../../../../style/flex";
+
+@layer components {
+  .tab {
+    @include flex.row($gap: 0.5rem, $xAlign: center, $yAlign: center);
+
+    position: relative;
+    z-index: 1;
+
+    flex: 1;
+
+    padding: 0 0.5rem;
+
+    white-space: nowrap;
+
+    &[data-active] {
+      color: var(--color-solid-primary-bg);
+    }
+
+    &[data-active]:hover,
+    &[data-disabled]:hover {
+      background: none;
+    }
+
+    &-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

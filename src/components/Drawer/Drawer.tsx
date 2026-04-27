@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { DrawerPreview as BaseDrawer, DrawerRootProps } from '@base-ui/react/drawer';
+import { Drawer as BaseDrawer, DrawerRootProps } from '@base-ui/react/drawer';
 import clsx from 'clsx';
 import { X } from 'lucide-react';
 
@@ -71,6 +71,18 @@ export const Drawer = ({
     setDirty,
   }), [dirty, setDirty]);
 
+  const orientationProps = ['left', 'right'].includes(side) ? {
+    ['data-full-width']: fullSize || undefined,
+    style: {
+      '--drawer-user-max-width': getCssValue(maxSize),
+    } as CSSProperties,
+  } : {
+    ['data-full-height']: fullSize || undefined,
+    style: {
+      '--drawer-user-max-height': getCssValue(maxSize),
+    } as CSSProperties,
+  };
+
   return (
     <BaseDrawer.Root
       actionsRef={actionsRef}
@@ -85,11 +97,7 @@ export const Drawer = ({
         <BaseDrawer.Viewport className={styles.drawerViewport}>
           <BaseDrawer.Popup
             className={clsx(sx({ variant: 'surface', border: true }), styles.drawerPopup, className)}
-            data-full-size={fullSize || undefined}
-            style={{
-              '--drawer-user-max-width': ['left', 'right'].includes(side) ? getCssValue(maxSize) : undefined,
-              '--drawer-user-max-height': ['top', 'bottom'].includes(side) ? getCssValue(maxSize) : undefined,
-            } as CSSProperties}
+            {...orientationProps}
           >
             <BaseDrawer.Content className={styles.drawerInner}>
               {title && (
@@ -123,3 +131,5 @@ export const Drawer = ({
     </BaseDrawer.Root>
   );
 };
+
+Drawer.displayName = 'Drawer';

@@ -31,6 +31,7 @@ export type DialogProps = {
   fullHeight?: boolean;
   fullWidth?: boolean;
   id: string;
+  maxHeight?: CSSProperties['maxHeight'];
   maxWidth?: CSSProperties['maxWidth'];
   onCancel?: (dirty: boolean) => void;
   open: boolean;
@@ -54,6 +55,7 @@ export const Dialog = ({
   fullHeight = false,
   fullWidth = false,
   id,
+  maxHeight,
   maxWidth,
   nested,
   onCancel,
@@ -108,7 +110,10 @@ export const Dialog = ({
             variant: 'surface',
             border: true,
           }), styles.dialogPopup)}
-          style={{ '--dialog-user-max-width': getCssValue(maxWidth) } as CSSProperties}
+          style={{
+            '--dialog-user-max-width': getCssValue(maxWidth),
+            '--dialog-user-max-height': getCssValue(maxHeight),
+          } as CSSProperties}
           data-full-width={fullWidth || undefined}
           data-full-height={fullHeight || undefined}
         >
@@ -118,7 +123,7 @@ export const Dialog = ({
             </BaseDialog.Title>
             {!preventCancel && (
               <BaseDialog.Close render={(props) => (
-                <Button {...props} className={styles.dialogHeaderClose} icon={<X />} variant="ghost" intent="neutral" />
+                <Button {...props} className={styles.dialogHeaderClose} icon={<X />} variant="ghost" intent="secondary" />
               )} />
             )}
           </div>
@@ -138,7 +143,7 @@ export const Dialog = ({
           <div className={styles.dialogFooter}>
             {!preventCancel && (
               <BaseDialog.Close render={(props) => (
-                <Button {...props} text={cancelText ?? 'Cancel'} variant="shaded" intent="neutral" />
+                <Button {...props} text={cancelText ?? 'Cancel'} variant="shaded" intent="secondary" />
               )} />
             )}
             {actions?.length ? actions.map((action, i) => (
@@ -150,7 +155,7 @@ export const Dialog = ({
               />
             )) : (
               <BaseDialog.Close render={(props) => (
-                <Button {...props} text={confirmText ?? 'Confirm'} intent="accent" />
+                <Button {...props} text={confirmText ?? 'Confirm'} intent="primary" />
               )} />
             )}
           </div>

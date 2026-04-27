@@ -1,0 +1,74 @@
+@use "../../style/layers";
+@use "../../style/flex";
+@use "../../style/text";
+
+@layer components {
+  .checkboxGroup {
+    @include flex.column($gap: 0.5rem);
+
+    &-item {
+      @include text.ui;
+
+      cursor: pointer;
+
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+
+      color: var(--color-text-ui);
+
+      &[aria-disabled="true"] {
+        cursor: not-allowed;
+        opacity: 0.4;
+      }
+
+      &-control {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+
+        box-sizing: border-box;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin: 0;
+        padding: 0;
+
+        outline: 0;
+
+        &[data-checked],
+        &[data-indeterminate] {
+          --variant-border: var(--color-solid-primary-bg);
+
+          color: var(--color-solid-primary-text);
+          background-color: var(--color-solid-primary-bg);
+        }
+      }
+
+      &-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &[data-unchecked] {
+          display: none;
+        }
+
+        svg {
+          width: 0.875rem;
+          height: 0.875rem;
+        }
+      }
+
+      &-content {
+        @include flex.column($gap: 0.125rem);
+
+        padding-top: 0.0625rem;
+      }
+
+      &-description {
+        @include text.small($muted: true);
+      }
+    }
+  }
+}

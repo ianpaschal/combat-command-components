@@ -2,6 +2,7 @@
 
 @layer components {
   .card {
+    overflow: hidden;
     padding: var(--modal-padding);
 
     &[data-disable-padding] {

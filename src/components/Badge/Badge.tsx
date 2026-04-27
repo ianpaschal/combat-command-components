@@ -6,21 +6,21 @@ import {
 } from 'react';
 import clsx from 'clsx';
 
-import { ElementIntent } from '../../types';
+import { ThemeColor } from '../../types';
 
 import styles from './Badge.module.scss';
 
 export type BadgeProps = {
   children: ReactElement;
   className?: string;
+  color?: ThemeColor;
   value?: number | string | null;
-  intent?: ElementIntent;
 };
 
-export const Badge = forwardRef<unknown, BadgeProps>(({
+export const Badge = forwardRef<Element, BadgeProps>(({
   children,
   className,
-  intent = 'neutral',
+  color = 'accent',
   value,
   ...props
 }, ref) => cloneElement(children, {
@@ -30,8 +30,9 @@ export const Badge = forwardRef<unknown, BadgeProps>(({
   style: {
     ...children.props.style,
     '--badge-value': `"${value ?? ''}"`,
+    '--badge-color-text': `var(--color-${color}-text)`,
+    '--badge-color-bg': `var(--color-${color}-bg)`,
   } as CSSProperties,
-  'data-badge-intent': intent,
   ...(value && String(value).length > 0 && { 'data-badge-visible': true }),
 }));
 

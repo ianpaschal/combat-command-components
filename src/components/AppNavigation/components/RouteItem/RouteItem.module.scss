@@ -37,7 +37,7 @@
       border-radius: 0.125rem;
 
       opacity: 0;
-      background-color: var(--solid-accent-bg);
+      background-color: var(--color-solid-primary-bg);
 
       transition: opacity 150ms ease-out, background-color 150ms ease-out;
 
@@ -51,9 +51,12 @@
     }
 
     &-content {
-      @include flex.row($gap: 0.5rem);
-
+      display: flex;
       grid-area: content;
+      flex-direction: row;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: start;
 
       svg {
         width: 1rem;

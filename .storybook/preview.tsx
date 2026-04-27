@@ -1,32 +1,33 @@
 import type { Preview } from '@storybook/react';
-import { ThemeProvider, light, dark, midnight } from '../src/components/ThemeProvider';
-import type { Theme } from '../src/components/ThemeProvider';
+
+import { SYSTEM_THEME_KEY, ThemeProvider } from '../src/components/ThemeProvider';
 
 import '../src/style/index.scss';
 import './preview.css';
-
-const themes: Record<string, Theme> = { light, dark, midnight };
 
 const preview: Preview = {
   globalTypes: {
     theme: {
       description: 'Global theme for components',
-      defaultValue: 'light',
+      defaultValue: SYSTEM_THEME_KEY,
       toolbar: {
         title: 'Theme',
         icon: 'paintbrush',
-        items: Object.entries(themes).map(([value, { displayName }]) => ({ value, title: displayName })),
+        items: [
+          { value: SYSTEM_THEME_KEY, title: 'System' },
+          { value: 'light', title: 'Light' },
+          { value: 'dark', title: 'Dark' },
+          { value: 'midnight', title: 'Midnight' },
+        ],
         dynamicTitle: true,
       },
     },
   },
   decorators: [
     (Story, context) => {
-      const themeName = (context.globals.theme as string) ?? 'light';
-      const theme = themes[themeName] ?? themes.light;
       const bodyBackground = context.parameters.bodyBackground as string | undefined;
       return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={(context.globals.theme as string) ?? SYSTEM_THEME_KEY}>
           {bodyBackground && <style>{`body { background-color: ${bodyBackground}; }`}</style>}
           <Story />
         </ThemeProvider>
@@ -38,6 +39,11 @@ const preview: Preview = {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
+      },
+    },
+    options: {
+      storySort: {
+        method: 'alphabetical',
       },
     },
   },

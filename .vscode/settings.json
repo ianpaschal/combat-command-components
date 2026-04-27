@@ -1,6 +1,7 @@
 {
   "eslint.useFlatConfig": true,
   "cSpell.words": [
+    "autodocs",
     "colorjs",
     "oklch"
   ]

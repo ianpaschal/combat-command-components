@@ -12,14 +12,16 @@ import styles from './MobileRoutes.module.scss';
 
 export interface MobileRoutesProps {
   className?: string;
-  routes: Route[];
   depth?: number;
+  path?: string;
+  routes: Route[];
 }
 
 export const MobileRoutes = ({
   className,
-  routes,
   depth = 0,
+  path = '/',
+  routes,
 }: MobileRoutesProps): ReactElement => {
   const { state, setState } = useNavigationContext();
   return (
@@ -31,7 +33,7 @@ export const MobileRoutes = ({
       {routes.map((route) => route.children?.length ? (
         <Accordion.Item className={styles.mobileRoutesItem} key={route.path} value={route.path}>
           <Accordion.Header className={styles.mobileRoutesItemHeader}>
-            <RouteItem route={route} />
+            <RouteItem route={route} parentPath={path} />
             <Accordion.Trigger className={clsx(styles.mobileRoutesItemTrigger, ...getStyleClassNames({
               corners: 'normal',
               size: 'normal',
@@ -42,11 +44,11 @@ export const MobileRoutes = ({
             </Accordion.Trigger>
           </Accordion.Header>
           <Accordion.Panel className={styles.mobileRoutesItemPanel}>
-            <MobileRoutes routes={route.children} depth={depth + 1} />
+            <MobileRoutes routes={route.children} depth={depth + 1} path={route.path} />
           </Accordion.Panel>
         </Accordion.Item>
       ) : (
-        <RouteItem key={route.path} route={route} />
+        <RouteItem key={route.path} route={route} parentPath={path} />
       ))}
     </Accordion.Root>
   );

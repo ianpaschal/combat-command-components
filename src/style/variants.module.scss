@@ -2,10 +2,12 @@
 @use "./variables";
 @use "./text";
 
-$intents: "accent", "neutral", "danger", "warning", "info", "success";
+$intents: "primary", "secondary", "danger", "warning", "info", "success";
 $sides: "top", "right", "bottom", "left";
 
 @mixin common {
+  @include text.ui;
+
   border-color: transparent;
   border-width: var(--border-width);
 
@@ -15,110 +17,72 @@ $sides: "top", "right", "bottom", "left";
 }
 
 @mixin interactive($variant: "solid") {
-  @include text.ui;
+  &:where(button, input, select, textarea, a, [role="button"], [role="option"], [role="checkbox"], [role="switch"]) {
+    text-decoration: none; // For applying variants to links
 
-  text-decoration: none; // For applying variants to links
+    &:disabled,
+    &[data-disabled] {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
 
-  &:focus-visible {
-    outline: none;
-  }
+    &:not(:disabled, [data-disabled], [data-readonly], input, textarea) {
+      cursor: pointer;
+      user-select: none;
 
-  @each $intent in $intents {
-    &.#{$intent} {
       &:focus-visible {
-        box-shadow: 0 0 0 var(--focus-width) var(--#{$variant}-#{$intent}-focus-outline);
+        outline: none;
+      }
+
+      @each $intent in $intents {
+        &.#{$intent} {
+          &:focus-visible {
+            box-shadow: 0 0 0 var(--focus-width) var(--color-#{$variant}-#{$intent}-focus-outline);
+          }
+
+          &:hover {
+            color: var(--color-#{$variant}-#{$intent}-text-hover);
+            background-color: var(--color-#{$variant}-#{$intent}-bg-hover);
+          }
+
+          &:active {
+            color: var(--color-#{$variant}-#{$intent}-text-active);
+            background-color: var(--color-#{$variant}-#{$intent}-bg-active);
+          }
+        }
       }
     }
   }
-
-  &:disabled,
-  &[data-disabled] {
-    cursor: not-allowed;
-    opacity: 0.4;
-  }
 }
 
-@mixin solid($intent: "neutral") {
+@mixin solid($intent: "secondary") {
   @include common;
   @include interactive("solid");
 
-  --variant-border: var(--solid-#{$intent}-bg);
+  --variant-border: var(--color-solid-#{$intent}-bg);
 
-  color: var(--solid-#{$intent}-text);
-  background-color: var(--solid-#{$intent}-bg);
-
-  &:where(button, input, select, textarea, a, [role="button"], [role="option"]):not(:disabled, [data-disabled]) {
-    cursor: pointer;
-    user-select: none;
-
-    &:hover {
-      color: var(--solid-#{$intent}-text-hover);
-      background-color: var(--solid-#{$intent}-bg-hover);
-    }
-
-    &:active {
-      color: var(--solid-#{$intent}-text-active);
-      background-color: var(--solid-#{$intent}-bg-active);
-    }
-  }
+  color: var(--color-solid-#{$intent}-text);
+  background-color: var(--color-solid-#{$intent}-bg);
 }
 
-@mixin shaded($intent: "neutral") {
+@mixin shaded($intent: "secondary") {
   @include common;
   @include interactive("shaded");
 
-  --variant-border: var(--shaded-#{$intent}-border);
+  --variant-border: var(--color-shaded-#{$intent}-border);
 
-  color: var(--shaded-#{$intent}-text);
-  background-color: var(--shaded-#{$intent}-bg);
-
-  &:where(button, input, select, textarea, a, [role="button"], [role="option"]):not(:disabled, [data-disabled]) {
-    cursor: pointer;
-    user-select: none;
-
-    &:hover {
-      --variant-border: var(--shaded-#{$intent}-border-hover);
-
-      color: var(--shaded-#{$intent}-text-hover);
-      background-color: var(--shaded-#{$intent}-bg-hover);
-    }
-
-    &:active {
-      --variant-border: var(--shaded-#{$intent}-border-active);
-
-      color: var(--shaded-#{$intent}-text-active);
-      background-color: var(--shaded-#{$intent}-bg-active);
-    }
-  }
+  color: var(--color-shaded-#{$intent}-text);
+  background-color: var(--color-shaded-#{$intent}-bg);
 }
 
-@mixin ghost($intent: "neutral") {
+@mixin ghost($intent: "secondary") {
   @include common;
   @include interactive("ghost");
 
-  --variant-border: var(--ghost-#{$intent}-border);
+  --variant-border: var(--color-ghost-#{$intent}-border);
 
-  color: var(--ghost-#{$intent}-text);
-  background-color: var(--ghost-#{$intent}-bg);
-
-  &:where(button, input, select, textarea, a, [role="button"], [role="option"]):not(:disabled, [data-disabled]) {
-    cursor: pointer;
-    user-select: none;
-
-    &:hover {
-      --variant-border: var(--ghost-#{$intent}-border-hover);
-
-      color: var(--ghost-#{$intent}-text-hover);
-      background-color: var(--ghost-#{$intent}-bg-hover);
-    }
-
-    &:active {
-      --variant-border: var(--ghost-#{$intent}-border-active);
-
-      color: var(--ghost-#{$intent}-text-active);
-      background-color: var(--ghost-#{$intent}-bg-active);
-    }
-  }
+  color: var(--color-ghost-#{$intent}-text);
+  background-color: var(--color-ghost-#{$intent}-bg);
 }
 
 @layer variants {

@@ -61,7 +61,7 @@ export const Radio = forwardRef<RadioGroupRef, RadioProps>(({
         <BaseRadio.Root
           className={clsx(getStyleClassNames({
             variant: 'ghost',
-            intent: v === value ? 'accent' : 'neutral',
+            intent: v === value ? 'primary' : 'secondary',
             border: true,
           }), styles.radioItemControl)}
           value={v}

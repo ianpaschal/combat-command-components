@@ -1,0 +1,8 @@
+export declare const desktopMenuGroup: string;
+export declare const desktopMenuGroupLabel: string;
+export declare const desktopMenuGroups: string;
+export declare const desktopMenuItem: string;
+export declare const desktopMenuItemIcon: string;
+export declare const desktopMenuItemLabel: string;
+export declare const desktopMenuItemReact: string;
+export declare const desktopMenuPopup: string;

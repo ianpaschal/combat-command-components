@@ -10,18 +10,23 @@ import styles from './RouteItem.module.scss';
 export interface RouteItemProps extends Omit<ComponentPropsWithoutRef<'a'>, 'href'> {
   primary?: boolean;
   route: Route;
+  parentPath: string;
 }
 
 export const RouteItem = forwardRef<HTMLAnchorElement, RouteItemProps>(({
   children,
   className,
   primary = false,
+  parentPath,
   route,
   ...rest
 }, ref) => {
   const { navigate, location } = useNavigationContext();
-  const isActive = location === route.path;
-  const childActive = location.startsWith(route.path + '/');
+  const currentPath = location.split('?')[0];
+  const routePath = route.path.split('?')[0];
+
+  const childActive = route.children?.length && currentPath.startsWith(routePath + '/');
+  const isActive = parentPath.split('?')[0] !== routePath && currentPath === routePath;
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
     e.preventDefault();
     navigate(route.path);
@@ -33,7 +38,7 @@ export const RouteItem = forwardRef<HTMLAnchorElement, RouteItemProps>(({
       {...rest}
       className={clsx(sx({
         corners: 'normal',
-        intent: isActive ? 'accent' : 'neutral',
+        intent: isActive ? 'primary' : 'secondary',
         size: !primary ? 'normal' : undefined,
         variant: 'ghost',
       }), styles.routeItem, className)}

@@ -1,0 +1,35 @@
+@use "../../../../style/layers";
+
+@layer components {
+  .arrow {
+    display: flex;
+    visibility: hidden;
+
+    &[data-side] {
+      visibility: visible;
+    }
+
+    &[data-side="top"] {
+      bottom: -6px;
+      rotate: 180deg;
+    }
+
+    &[data-side="bottom"] {
+      top: -6px;
+    }
+
+    &[data-side="left"] {
+      right: -14px;
+      rotate: 90deg;
+    }
+
+    &[data-side="right"] {
+      left: -14px;
+      rotate: -90deg;
+    }
+  }
+
+  .navigation-menu-arrow {
+    transition: left var(--duration, 0.35s) var(--easing, ease);
+  }
+}

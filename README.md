@@ -48,6 +48,88 @@ import '@ianpaschal/combat-command-components/styles/reset.css';
 
 [WIP: See Storybook]
 
+## ThemeProvider
+
+`ThemeProvider` manages the active theme and exposes it (along with controls) to the component tree via context.
+
+### Setup
+
+Wrap your app once at the root. No props are required — the provider always starts on the `__system` theme, which follows the OS light/dark preference.
+
+```tsx
+import { ThemeProvider } from '@ianpaschal/combat-command-components';
+
+const App = () => (
+  <ThemeProvider>
+    <YourApp />
+  </ThemeProvider>
+);
+```
+
+### Registering a theme
+
+Call `registerTheme` at module level before your app mounts. It takes a key, a partial theme object, and an optional parent key to inherit from (defaults to `'light'`).
+
+```ts
+import { registerTheme } from '@ianpaschal/combat-command-components';
+
+// Extend the built-in light theme
+registerTheme('brand', {
+  displayName: 'Brand',
+  intents: {
+    primary: {
+      bg: '#FF5500',
+      text: '#FFFFFF',
+      focus: '#FF5500',
+    },
+  },
+});
+
+// Extend a different built-in theme
+registerTheme('brand-dark', {
+  displayName: 'Brand Dark',
+  intents: {
+    primary: {
+      bg: '#FF5500',
+      text: '#FFFFFF',
+      focus: '#FF5500',
+    },
+  },
+}, 'dark');
+```
+
+Built-in keys are `'light'`, `'dark'`, and `'midnight'`. The special key `'__system'` (also exported as `SYSTEM_THEME_KEY`) is the default and resolves to `'light'` or `'dark'` based on `prefers-color-scheme`.
+
+### Switching themes
+
+Use `useThemeManager` inside the tree to read the current state and switch themes:
+
+```tsx
+import { useThemeManager } from '@ianpaschal/combat-command-components';
+
+const ThemeSelector = () => {
+  const { key, options, setTheme } = useThemeManager();
+  return (
+    <Select
+      value={key}
+      options={options}
+      onChange={(value) => setTheme(value)}
+    />
+  );
+};
+```
+
+`options` is a memoized `SelectOption[]` derived from the registry (including a "System" entry for `__system`), so it always reflects any themes registered at startup.
+
+### Reading the current theme
+
+`useThemeManager` also exposes `theme`, the resolved `Theme` object, for cases where you need direct access to token values:
+
+```ts
+const { theme } = useThemeManager();
+console.log(theme.surface.card.bg);
+```
+
 ## Development
 
 ### Building

@@ -1,0 +1,9 @@
+export declare const mobileMenuBackdrop: string;
+export declare const mobileMenuGroup: string;
+export declare const mobileMenuGroupLabel: string;
+export declare const mobileMenuGroups: string;
+export declare const mobileMenuItem: string;
+export declare const mobileMenuItemIcon: string;
+export declare const mobileMenuItemLabel: string;
+export declare const mobileMenuPopup: string;
+export declare const mobileMenuViewport: string;

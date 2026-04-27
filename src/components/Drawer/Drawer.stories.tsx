@@ -73,6 +73,7 @@ export const Uncontrolled: Story = {
     children: 'This drawer manages its own open state via the trigger prop.',
     side: 'right',
     disablePadding: false,
+    fullSize: false,
   },
   render: (args) => (
     <Drawer
@@ -90,6 +91,7 @@ export const RightSideControlled: Story = {
     side: 'right',
     disablePadding: false,
     open: false,
+    fullSize: false,
   },
   render: (args) => <ControlledStory {...args} />,
 };
@@ -110,6 +112,7 @@ export const ProgrammaticClose: Story = {
     title: 'Drawer with Close Button',
     side: 'right',
     disablePadding: false,
+    fullSize: false,
   },
   render: (args) => (
     <Drawer
@@ -128,6 +131,7 @@ export const LongContent: Story = {
     children: longContent,
     side: 'bottom',
     disablePadding: false,
+    fullSize: false,
   },
   render: (args) => (
     <Drawer {...args} trigger={<Button text="Open Drawer" />} />
@@ -142,6 +146,7 @@ export const MaxSize: Story = {
     side: 'right',
     maxSize: 480,
     disablePadding: false,
+    fullSize: false,
   },
   render: (args) => (
     <Drawer {...args} trigger={<Button text="Open Drawer" />} />
@@ -186,6 +191,7 @@ export const Nested: Story = {
     title: 'Parent Drawer',
     side: 'bottom',
     disablePadding: false,
+    fullSize: false,
   },
   render: (args) => (
     <DrawerProvider>

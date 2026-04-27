@@ -1,5 +1,6 @@
 import Color from 'colorjs.io';
 
+import { ElementIntent, ThemeColor } from '../../types';
 import { Theme } from './ThemeProvider.types';
 
 export const shift = (color: string, value: number): string => {
@@ -16,63 +17,81 @@ export const alpha = (color: string, value: number): string => {
   return c.toString({ format: 'hex' }).toUpperCase();
 };
 
-export const INTENTS = ['accent', 'neutral', 'danger', 'warning', 'success', 'info'] as const;
+export const intentColorMap: Record<ElementIntent, ThemeColor> = {
+  primary: 'accent',
+  secondary: 'neutral',
+  danger: 'red',
+  warning: 'yellow',
+  success: 'green',
+  info: 'blue',
+};
 
 export const buildThemeVars = (theme: Theme): Record<string, string> => {
   const vars: Record<string, string> = {
-    '--overlay-strength': String(theme.overlayStrength),
-    '--shadow-strength': String(theme.shadowStrength),
-    '--color-header-text': theme.text.header,
-    '--color-ui-text': theme.text.ui,
-    '--color-body-text': theme.text.body,
-    '--color-page-bg': theme.surface.page.bg,
     '--color-card-bg': theme.surface.card.bg,
     '--color-card-border': theme.surface.card.border,
+    '--color-page-bg': theme.surface.page.bg,
+    '--color-text-body': theme.text.body,
+    '--color-text-header': theme.text.header,
+    '--color-text-muted': theme.text.muted,
+    '--color-text-ui': theme.text.ui,
+    '--overlay-strength': String(theme.overlayStrength),
+    '--shadow-strength': String(theme.shadowStrength),
+    '--scroll-indicator-shadow': `rgb(0 0 0 / ${theme.shadowStrength * 0.8})`,
+    '--modal-backdrop-bg': `rgb(0 0 0 / ${theme.overlayStrength})`,
+    '--modal-backdrop-nested-bg': `rgb(0 0 0 / ${theme.overlayStrength * 0.5})`,
   };
 
-  for (const intent of INTENTS) {
-    const { bg, text, focus } = theme.intents[intent];
+  for (const [color, { bg, text }] of Object.entries(theme.colors)) {
+    Object.assign(vars, {
+      [`--color-${color}-bg`]: bg,
+      [`--color-${color}-text`]: text,
+    });
+  }
 
-    // Make the alpha increases on hover more strong (up to 0.10 more) for lighter colors:
-    const offset = (new Color(bg).to('oklch').coords[0] ?? 0) * 0.05;
+  for (const [intent, color] of Object.entries(intentColorMap)) {
+    const { bg, text, focus } = theme.colors[color];
+
+    // Make the alpha increases on hover more strong for lighter colors:
+    const offset = (new Color(bg).to('oklch').coords[0] ?? 0) * 0.2;
 
     Object.assign(vars, {
 
       // Solid
-      [`--solid-${intent}-bg`]: bg,
-      [`--solid-${intent}-bg-hover`]: shift(bg, 0.35),
-      [`--solid-${intent}-bg-active`]: shift(bg, 0.60),
-      [`--solid-${intent}-text`]: text,
-      [`--solid-${intent}-text-hover`]: text,
-      [`--solid-${intent}-text-active`]: text,
-      [`--solid-${intent}-border`]: bg,
-      [`--solid-${intent}-border-hover`]: shift(bg, 0.35),
-      [`--solid-${intent}-border-active`]: shift(bg, 0.60),
-      [`--solid-${intent}-focus-outline`]: alpha(focus ?? bg, 0.65),
+      [`--color-solid-${intent}-bg`]: bg,
+      [`--color-solid-${intent}-bg-hover`]: shift(bg, 0.35),
+      [`--color-solid-${intent}-bg-active`]: shift(bg, 0.60),
+      [`--color-solid-${intent}-text`]: text,
+      [`--color-solid-${intent}-text-hover`]: text,
+      [`--color-solid-${intent}-text-active`]: text,
+      [`--color-solid-${intent}-border`]: bg,
+      [`--color-solid-${intent}-border-hover`]: shift(bg, 0.35),
+      [`--color-solid-${intent}-border-active`]: shift(bg, 0.60),
+      [`--color-solid-${intent}-focus-outline`]: alpha(focus ?? bg, 0.65),
 
       // Shaded
-      [`--shaded-${intent}-bg`]: alpha(bg, 0.15 + offset),
-      [`--shaded-${intent}-bg-hover`]: alpha(bg, 0.30 + offset),
-      [`--shaded-${intent}-bg-active`]: alpha(bg, 0.45 + offset),
-      [`--shaded-${intent}-text`]: bg,
-      [`--shaded-${intent}-text-hover`]: bg,
-      [`--shaded-${intent}-text-active`]: bg,
-      [`--shaded-${intent}-border`]: alpha(bg, 0.35 + offset),
-      [`--shaded-${intent}-border-hover`]: alpha(bg, 0.55 + offset),
-      [`--shaded-${intent}-border-active`]: alpha(bg, 0.75 + offset),
-      [`--shaded-${intent}-focus-outline`]: alpha(focus ?? bg, 0.55),
+      [`--color-shaded-${intent}-bg`]: alpha(bg, 0.10 + offset),
+      [`--color-shaded-${intent}-bg-hover`]: alpha(bg, 0.25 + offset),
+      [`--color-shaded-${intent}-bg-active`]: alpha(bg, 0.40 + offset),
+      [`--color-shaded-${intent}-text`]: bg,
+      [`--color-shaded-${intent}-text-hover`]: bg,
+      [`--color-shaded-${intent}-text-active`]: bg,
+      [`--color-shaded-${intent}-border`]: alpha(bg, 0.40 + offset),
+      [`--color-shaded-${intent}-border-hover`]: alpha(bg, 0.55 + offset),
+      [`--color-shaded-${intent}-border-active`]: alpha(bg, 0.70 + offset),
+      [`--color-shaded-${intent}-focus-outline`]: alpha(focus ?? bg, 0.55),
 
       // Ghost
-      [`--ghost-${intent}-bg`]: 'transparent',
-      [`--ghost-${intent}-bg-hover`]: alpha(bg, 0.05 + offset),
-      [`--ghost-${intent}-bg-active`]: alpha(bg, 0.15 + offset),
-      [`--ghost-${intent}-text`]: bg,
-      [`--ghost-${intent}-text-hover`]: bg,
-      [`--ghost-${intent}-text-active`]: bg,
-      [`--ghost-${intent}-border`]: alpha(bg, 0.15 + offset),
-      [`--ghost-${intent}-border-hover`]: alpha(bg, 0.25 + offset),
-      [`--ghost-${intent}-border-active`]: alpha(bg, 0.35 + offset),
-      [`--ghost-${intent}-focus-outline`]: alpha(focus ?? bg, 0.45),
+      [`--color-ghost-${intent}-bg`]: 'transparent',
+      [`--color-ghost-${intent}-bg-hover`]: alpha(bg, offset),
+      [`--color-ghost-${intent}-bg-active`]: alpha(bg, 0.05 + offset),
+      [`--color-ghost-${intent}-text`]: bg,
+      [`--color-ghost-${intent}-text-hover`]: bg,
+      [`--color-ghost-${intent}-text-active`]: bg,
+      [`--color-ghost-${intent}-border`]: alpha(bg, 0.05 + offset),
+      [`--color-ghost-${intent}-border-hover`]: alpha(bg, 0.10 + offset),
+      [`--color-ghost-${intent}-border-active`]: alpha(bg, 0.15 + offset),
+      [`--color-ghost-${intent}-focus-outline`]: alpha(focus ?? bg, 0.45),
     });
   }
 

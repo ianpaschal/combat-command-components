@@ -17,6 +17,7 @@ import sizes from '../../style/sizes.module.scss';
 import styles from './Button.module.scss';
 
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title' | 'children'> {
+  align?: 'start' | 'center' | 'end';
   border?: boolean;
   className?: string;
   collapsePadding?: boolean;
@@ -31,12 +32,13 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
+  align = 'center',
   border = false,
   className,
   collapsePadding,
   icon,
   iconPosition,
-  intent = 'neutral',
+  intent = 'secondary',
   loading = false,
   rounded,
   size = 'normal',
@@ -57,8 +59,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       square: icon && !text,
       variant,
     }), styles.button, className)}
-    type={type}
+    data-align={align}
     data-reverse={iconPosition === 'end'}
+    type={type}
     {...props}
   >
     {icon && !loading && (

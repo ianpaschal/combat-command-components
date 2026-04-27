@@ -1,14 +1,31 @@
 @use "../../style/layers";
-@use "../../style/flex";
 
 @layer components {
   .button {
-    @include flex.row($xAlign: center, $yAlign: center, $gap: 0.5rem);
-
     position: relative;
+
+    display: flex;
+    flex-direction: row;
     flex-shrink: 0;
+    gap: 0.5rem;
+    align-items: center;
+
     box-sizing: border-box;
+
+    line-height: 1rem;
     white-space: nowrap;
+
+    &[data-align="start"] {
+      justify-content: start;
+    }
+
+    &[data-align="center"] {
+      justify-content: center;
+    }
+
+    &[data-align="end"] {
+      justify-content: end;
+    }
 
     &[data-reverse="true"] {
       flex-direction: row-reverse;
