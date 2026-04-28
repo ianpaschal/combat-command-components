@@ -17,7 +17,8 @@ $sides: "top", "right", "bottom", "left";
 }
 
 @mixin interactive($variant: "solid") {
-  &:where(button, input, select, textarea, a, [role="button"], [role="option"], [role="checkbox"], [role="switch"]) {
+  /* stylelint-disable-next-line @stylistic/max-line-length */
+  &:where(button, input, select, textarea, a, [role="button"], [role="menuitem"], [role="option"], [role="checkbox"], [role="switch"]) {
     text-decoration: none; // For applying variants to links
 
     &:disabled,
