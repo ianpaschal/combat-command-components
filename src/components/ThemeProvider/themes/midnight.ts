@@ -12,7 +12,7 @@ export const midnight: Theme = {
   shadowStrength: 0.3,
   surface: {
     page: {
-      bg: brandSecondary(7.5),
+      bg: brandSecondary(5),
     },
     card: {
       bg: brandSecondary(10),

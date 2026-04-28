@@ -12,7 +12,7 @@ export const daybreak: Theme = {
     },
     card: {
       bg: brandSecondary(100),
-      border: brandSecondary(85),
+      border: brandSecondary(90),
     },
   },
   text: {
