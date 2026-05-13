@@ -37,10 +37,10 @@ export const MasonryGrid = ({
 }: MasonryGridProps) => {
   const { ref, columnCount, wrapperStyle } = useMasonry(props);
 
-  // Distribute children into columns top-to-bottom, left-to-right:
-  const columns = Array.from({ length: columnCount }, () => [] as React.ReactNode[]);
+  // Distribute children round-robin across columns (left-to-right, wrapping top-to-bottom):
+  const columns = Array.from({ length: columnCount }, () => [] as { node: React.ReactNode; originalIndex: number }[]);
   Children.forEach(children, (child, index) => {
-    columns[index % columnCount].push(child);
+    columns[index % columnCount].push({ node: child, originalIndex: index });
   });
 
   return (
@@ -48,9 +48,9 @@ export const MasonryGrid = ({
       <div className={styles.masonryGrid} style={{ gridTemplateColumns: `repeat(${columnCount}, 1fr)` }}>
         {columns.map((column, columnIndex) => (
           <div key={columnIndex} className={styles.masonryGridColumn}>
-            {column.map((child, rowIndex) => (
-              <div key={rowIndex}>
-                {child}
+            {column.map(({ node, originalIndex }) => (
+              <div key={originalIndex}>
+                {node}
               </div>
             ))}
           </div>

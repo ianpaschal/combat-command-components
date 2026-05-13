@@ -38,7 +38,7 @@ export const useMasonry = (config: MasonryConfig): UseMasonryResult => {
   const clampedMaxColumns = Math.max(minColumns, maxColumns);
 
   const ref = useRef<HTMLDivElement>(null);
-  const [columnCount, setColumnCount] = useState(minColumns);
+  const [columnCount, setColumnCount] = useState(clampedMinColumns);
 
   useEffect(() => {
     const element = ref.current;
