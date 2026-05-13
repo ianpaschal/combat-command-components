@@ -27,6 +27,12 @@ const meta: Meta<typeof Select> = {
       table: { category: 'Behavior' },
     },
     onChange: { table: { disable: true } },
+    size: {
+      control: 'select',
+      options: ['small', 'normal', 'large'],
+      description: 'The size of the select.',
+      table: { category: 'Appearance' },
+    },
     value: { table: { disable: true } },
   },
 };
@@ -38,6 +44,7 @@ export const Text: Story = {
   name: 'Text',
   args: {
     disabled: false,
+    size: 'normal',
     options: [
       { value: 'apple', label: 'Apple' },
       { value: 'banana', label: 'Banana' },
@@ -53,6 +60,7 @@ export const Numeric: Story = {
   name: 'Numeric',
   args: {
     disabled: false,
+    size: 'normal',
     options: [
       { value: 1, label: 'Critical' },
       { value: 2, label: 'High' },
@@ -68,6 +76,7 @@ export const CustomItemComponents: Story = {
   name: 'Custom Item Components',
   args: {
     disabled: false,
+    size: 'normal',
     options: [
       {
         value: '7b90a423-1979-4e61-a30b-b19d663b3e43',
@@ -94,6 +103,7 @@ export const ControlledValue: Story = {
   },
   args: {
     disabled: false,
+    size: 'normal',
     options: [
       { value: 'apple', label: 'Apple' },
       { value: 'banana', label: 'Banana' },
@@ -109,6 +119,7 @@ export const ManyItems: Story = {
   name: 'Many (200+) Items',
   args: {
     disabled: false,
+    size: 'normal',
     options: Array.from({ length: 200 }, (_, i) => ({
       value: i + 1,
       label: `Item ${i + 1}`,
