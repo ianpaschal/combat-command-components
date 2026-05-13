@@ -1,0 +1,11 @@
+.masonry-grid {
+  display: grid;
+  gap: var(--masonry-column-gap);
+  align-items: start;
+
+  &-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--masonry-row-gap);
+  }
+}
