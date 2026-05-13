@@ -70,8 +70,8 @@ export const RadioCards = forwardRef<RadioGroupRef, RadioCardsProps>(({
           key={v}
           className={clsx(
             getStyleClassNames({
-              variant: v !== null && v === currentValue ? 'shaded' : 'ghost',
-              intent: v !== null && v === currentValue ? 'primary' : 'secondary',
+              variant: v === currentValue ? 'shaded' : 'ghost',
+              intent: v === currentValue ? 'primary' : 'secondary',
               border: true,
               corners: 'normal',
             }),
