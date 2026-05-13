@@ -136,6 +136,7 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
                   intent: 'secondary',
                   variant: 'ghost',
                   corners: 'normal',
+                  size,
                 }))}
                 key={`${i}-${option.value}`}
                 value={option.value}

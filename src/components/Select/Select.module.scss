@@ -86,7 +86,8 @@
       gap: 0.5rem;
       align-items: center;
 
-      min-height: 2.5rem;
+      padding-right: 0.25rem;
+      padding-left: 0.25rem;
 
       &-indicator {
         @include flex.centered;
@@ -96,8 +97,8 @@
         justify-self: end;
 
         svg {
-          width: 1.25rem;
-          height: 1.25rem;
+          width: 1rem;
+          height: 1rem;
         }
       }
 
