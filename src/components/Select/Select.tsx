@@ -14,6 +14,7 @@ import {
   ChevronUp,
 } from 'lucide-react';
 
+import { ElementSize } from '../../types';
 import { getStyleClassNames, sx } from '../../utils/getStyleClassNames';
 
 import styles from './Select.module.scss';
@@ -34,6 +35,7 @@ export interface SelectProps extends Omit<
   'multiple' |
   'onChange' |
   'placeholder' |
+  'size' |
   'value'
 > {
   defaultValue?: SelectValue | null;
@@ -42,6 +44,7 @@ export interface SelectProps extends Omit<
   onChange?: (value: SelectValue | null) => void;
   options: SelectOption[];
   placeholder?: ReactNode;
+  size?: ElementSize;
   value?: SelectValue | null;
 }
 
@@ -58,6 +61,7 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
   placeholder = 'Select...',
   readOnly,
   required,
+  size = 'normal',
   type: _type,
   value,
   ...triggerProps
@@ -82,11 +86,16 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
         intent: 'secondary',
         variant: 'ghost',
         border: true,
+        size,
       }), className)}
     >
       <BaseSelect.Value>
         {(val: SelectValue | null) => {
-          const opt = options.find((o) => o.value === val) ?? null;
+
+          /* BaseUI may pass undefined instead of null when the selected value is null, so use loose
+           * equality for null-valued options to match both.
+           */
+          const opt = options.find((o) => (o.value === null ? val == null : o.value === val)) ?? null;
           if (opt === null) {
             return placeholder;
           }
