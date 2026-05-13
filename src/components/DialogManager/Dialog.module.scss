@@ -60,13 +60,11 @@
       transition: all 150ms;
 
       &[data-full-height] {
-        height: var(--dialog-usable-height);
-        max-height: var(--dialog-usable-height);
+        min-height: var(--dialog-max-height);
       }
 
       &[data-full-width] {
-        width: var(--dialog-usable-width);
-        max-width: var(--dialog-usable-width);
+        min-width: var(--dialog-max-width);
       }
 
       &[data-nested-dialog-open] {
