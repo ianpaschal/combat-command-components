@@ -1,9 +1,5 @@
 import type { Theme } from '../ThemeProvider.types';
-import { brandPrimary } from './shared';
-
-const brandSecondary = (l: number): string => (
-  `hsl(220, 22.5%, ${Math.max(Math.min(l, 100), 0)}%)`
-);
+import { brandPrimary, brandSecondary } from './shared';
 
 export const midnight: Theme = {
   displayName: 'Midnight',
