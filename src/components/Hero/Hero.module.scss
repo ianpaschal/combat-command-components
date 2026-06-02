@@ -41,8 +41,6 @@
     animation: hero-fade-in 0.6s ease-out both;
 
     &-content {
-      @include flex.column($gap: 1rem, $yAlign: center);
-
       flex: 1;
 
       box-sizing: border-box;
@@ -50,10 +48,14 @@
       margin: 0 auto;
       padding: 3rem var(--page-padding);
 
-      // Stagger children in with a rise animation:
       > * {
+        color: var(--hero-color, var(--color-text-header));
+
+        // Stagger children in with a rise animation:
         animation: hero-rise 0.6s ease-out both;
       }
+
+      @include flex.column($gap: 1rem, $yAlign: center);
 
       @for $i from 1 through 8 {
         > *:nth-child(#{$i}) {
