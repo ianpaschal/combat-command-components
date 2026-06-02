@@ -148,7 +148,8 @@
       transform-origin: var(--transform-origin);
 
       box-sizing: border-box;
-      width: min-content;
+      width: max-content;
+      max-width: 16rem;
       height: var(--popup-height);
 
       outline: var(--border-width) solid var(--color-card-border);
