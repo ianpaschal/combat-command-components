@@ -1,6 +1,7 @@
 import {
   useContext,
   useEffect,
+  useLayoutEffect,
   useState,
 } from 'react';
 import { useStore } from '@tanstack/react-store';
@@ -14,7 +15,13 @@ export const SYSTEM_THEME_KEY = '__system';
 
 export const useResolvedTheme = (activeKey: string): { theme: Theme; resolvedKey: string } => {
   const registry = useStore(themeStore);
-  const [isDark, setIsDark] = useState(() => window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const [isDark, setIsDark] = useState(() => (
+    typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
+  ));
+
+  useLayoutEffect(() => {
+    setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches);
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');

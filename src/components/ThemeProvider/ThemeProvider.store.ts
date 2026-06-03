@@ -48,7 +48,9 @@ export const getThemeStyleSheet = (): string => {
 
   if (typeof document !== 'undefined') {
     const existing = document.querySelector('style[data-theme-vars]');
-    if (!existing) {
+    if (existing) {
+      existing.textContent = css;
+    } else {
       const style = document.createElement('style');
       style.setAttribute('data-theme-vars', '');
       style.textContent = css;
@@ -63,16 +65,16 @@ export const injectThemePreflight = (defaults?: { dark?: string; light?: string 
   const dark = defaults?.dark ?? 'dark';
   const light = defaults?.light ?? 'light';
   return (
-    `(function(){` +
-    `function a(){` +
+    '(function(){' +
+    'function a(){' +
     `var k=localStorage.getItem('${THEME_STORAGE_KEY}')||'__system';` +
     `if(k==='__system'){k=window.matchMedia('(prefers-color-scheme: dark)').matches?'${dark}':'${light}';}` +
-    `document.documentElement.setAttribute('data-theme',k);` +
-    `}` +
-    `a();` +
-    `new MutationObserver(function(ms){ms.forEach(function(m){` +
-    `if(m.attributeName==='data-theme'&&!document.documentElement.getAttribute('data-theme'))a();` +
-    `});}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});` +
-    `})();`
+    'document.documentElement.setAttribute(\'data-theme\',k);' +
+    '}' +
+    'a();' +
+    'new MutationObserver(function(ms){ms.forEach(function(m){' +
+    'if(m.attributeName===\'data-theme\'&&!document.documentElement.getAttribute(\'data-theme\'))a();' +
+    '});}).observe(document.documentElement,{attributes:true,attributeFilter:[\'data-theme\']});' +
+    '})();'
   );
 };

@@ -122,10 +122,28 @@ Serializes all registered themes' CSS variables into a single CSS string scoped 
 In a browser context, also injects the result as a `<style data-theme-vars>` element in `<head>` (idempotent).
 Returns the CSS string.
 
-#### `injectThemePreflight(): string`
+#### `injectThemePreflight(defaults?): string`
 
 Returns a self-executing script string that reads `localStorage.getItem("cc-theme")` and sets `data-theme` on `<html>` before first paint.
-If no key is stored or the stored key is `"__system"`, it falls back to `prefers-color-scheme`.
+If no key is stored or the stored key is `"__system"`, it falls back to `prefers-color-scheme`, mapping to the resolved theme keys.
+
+`defaults` is an optional object that overrides the theme keys used when the stored value is `"__system"`:
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `dark` | `string` | `"dark"` | The theme key applied when `prefers-color-scheme: dark` matches. |
+| `light` | `string` | `"light"` | The theme key applied otherwise. |
+
+When omitted, `"dark"` and `"light"` are used.
+
+```ts
+// Use built-in keys (dark → "dark", light → "light")
+injectThemePreflight()
+
+// Map system dark/light to custom registered keys
+injectThemePreflight({ dark: 'midnight', light: 'daybreak' })
+```
+
 Drop the returned string into a blocking `<script>` in `<head>`.
 
 #### `registerTheme(key, theme, parentKey?)`

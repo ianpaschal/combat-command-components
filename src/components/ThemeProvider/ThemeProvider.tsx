@@ -1,5 +1,6 @@
 import {
   ReactNode,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useState,
@@ -14,6 +15,8 @@ import {
   themeStore,
 } from './ThemeProvider.store';
 
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
 export interface ThemeProviderProps {
 
   /** Locks the active theme; overrides user selection and any setTheme calls. */
@@ -25,7 +28,9 @@ export const ThemeProvider = ({
   theme: forcedTheme,
   children,
 }: ThemeProviderProps) => {
-  const [key, setKey] = useState(() => localStorage.getItem(THEME_STORAGE_KEY) ?? SYSTEM_THEME_KEY);
+  const [key, setKey] = useState(() => (
+    typeof window !== 'undefined' ? (localStorage.getItem(THEME_STORAGE_KEY) ?? SYSTEM_THEME_KEY) : SYSTEM_THEME_KEY
+  ));
   const activeKey = forcedTheme ?? key;
   const { theme, resolvedKey } = useResolvedTheme(activeKey);
   const registry = useStore(themeStore);
@@ -37,11 +42,11 @@ export const ThemeProvider = ({
     })),
   ], [registry]);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     getThemeStyleSheet();
   }, []);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', resolvedKey);
   }, [resolvedKey]);
 
