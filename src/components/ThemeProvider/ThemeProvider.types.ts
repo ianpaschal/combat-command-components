@@ -1,5 +1,10 @@
 import { ThemeColor } from '../../types';
 
+export type ThemeRegistryEntry = {
+  theme: Theme;
+  vars: Record<string, string>;
+};
+
 export type Theme = {
   displayName: string;
   dark: boolean;
