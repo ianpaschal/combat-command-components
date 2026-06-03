@@ -28,6 +28,9 @@ export const RouteItem = forwardRef<HTMLAnchorElement, RouteItemProps>(({
   const childActive = route.children?.length && currentPath.startsWith(routePath + '/');
   const isActive = parentPath.split('?')[0] !== routePath && currentPath === routePath;
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
+    if (route.newTab) {
+      return;
+    }
     e.preventDefault();
     navigate(route.path);
   };
@@ -35,6 +38,8 @@ export const RouteItem = forwardRef<HTMLAnchorElement, RouteItemProps>(({
     <a
       ref={ref}
       href={route.path}
+      target={route.newTab ? '_blank' : undefined}
+      rel={route.newTab ? 'noopener noreferrer' : undefined}
       {...rest}
       className={clsx(sx({
         corners: 'normal',
