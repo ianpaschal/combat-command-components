@@ -41,7 +41,7 @@ export const ThemeProvider = ({
 
   useIsomorphicLayoutEffect(() => {
     getThemeStyleSheet();
-  }, []);
+  }, [registry]);
 
   useIsomorphicLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', resolvedKey);

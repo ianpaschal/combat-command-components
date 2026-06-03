@@ -22,7 +22,21 @@ export const themeStore = new Store<Record<string, ThemeRegistryEntry>>({
   midnight: makeEntry(midnight),
 });
 
-export const registerTheme = (key: string, theme: DeepPartial<Theme>, parentKey?: string): void => {
+/**
+ * Registers a new theme or overrides an existing one. The provided theme is
+ * deep-merged onto the parent (defaults to `light`). CSS variables are computed
+ * and cached immediately.
+ *
+ * @param key - Unique key used to identify and activate the theme.
+ * @param theme - Partial theme object; missing values are inherited from the
+ *   parent.
+ * @param parentKey - Key of the theme to inherit from. Defaults to `"light"`.
+ */
+export const registerTheme = (
+  key: string,
+  theme: DeepPartial<Theme>,
+  parentKey?: string,
+): void => {
   themeStore.setState((state) => {
     const parent = parentKey ? (state[parentKey]?.theme ?? light) : light;
     const merged = deepmerge(parent, theme as Theme);
@@ -30,6 +44,12 @@ export const registerTheme = (key: string, theme: DeepPartial<Theme>, parentKey?
   });
 };
 
+/**
+ * Returns the resolved `Theme` object for the given key. Falls back to `light`
+ * and logs a warning if the key is not registered.
+ *
+ * @param key - Key of the registered theme to retrieve.
+ */
 export const getRegisteredTheme = (key: string): Theme => {
   const entry = themeStore.state[key];
   if (!entry) {
@@ -39,9 +59,19 @@ export const getRegisteredTheme = (key: string): Theme => {
   return entry.theme;
 };
 
+/**
+ * Serializes all registered themes' CSS variables into a single stylesheet
+ * string, with each theme scoped to `:root[data-theme="<key>"]`. In a browser
+ * context, also injects or updates a `<style data-theme-vars>` element in
+ * `<head>` (idempotent).
+ *
+ * @returns The generated CSS string.
+ */
 export const getThemeStyleSheet = (): string => {
   const css = Object.entries(themeStore.state).map(([key, { vars }]) => {
-    const declarations = Object.entries(vars).map(([k, v]) => `  ${k}: ${v};`).join('\n');
+    const declarations = Object.entries(vars).map(([k, v]) => (
+      `  ${k}: ${v};`
+    )).join('\n');
     return `:root[data-theme="${key}"] {\n${declarations}\n}`;
   }).join('\n\n');
 
@@ -60,20 +90,44 @@ export const getThemeStyleSheet = (): string => {
   return css;
 };
 
-export const injectThemePreflight = (defaults?: { dark?: string; light?: string }): string => {
+/**
+ * Returns a self-executing script string that reads `localStorage` and sets
+ * `data-theme` on `<html>` before first paint, preventing a flash of unstyled
+ * content. Also installs a `MutationObserver` to re-apply the theme if
+ * `data-theme` is removed (e.g. during Astro page transitions). Drop the
+ * returned string into a blocking `<script>` in `<head>`.
+ *
+ * @param defaults - Optional overrides for the theme keys used when the stored
+ *   value is `SYSTEM_THEME_KEY`. Defaults to `{ dark: "dark", light: "light" }`.
+ */
+export const injectThemePreflight = (
+  defaults?: { dark?: string; light?: string },
+): string => {
   const dark = defaults?.dark ?? 'dark';
   const light = defaults?.light ?? 'light';
-  return (
-    '(function(){' +
-    'function a(){' +
-    `var k=localStorage.getItem('${THEME_STORAGE_KEY}')||'${SYSTEM_THEME_KEY}';` +
-    `if(k==='${SYSTEM_THEME_KEY}'){k=window.matchMedia('(prefers-color-scheme: dark)').matches?'${dark}':'${light}';}` +
-    'document.documentElement.setAttribute(\'data-theme\',k);' +
-    '}' +
-    'a();' +
-    'new MutationObserver(function(ms){ms.forEach(function(m){' +
-    'if(m.attributeName===\'data-theme\'&&!document.documentElement.getAttribute(\'data-theme\'))a();' +
-    '});}).observe(document.documentElement,{attributes:true,attributeFilter:[\'data-theme\']});' +
-    '})();'
-  );
+  return `
+    (() => {
+      const applyTheme = () => {
+        var key = '${SYSTEM_THEME_KEY}';
+        try {
+          key = localStorage.getItem('${THEME_STORAGE_KEY}') || '${SYSTEM_THEME_KEY}';
+        } catch(e) {}
+        if (key === '${SYSTEM_THEME_KEY}') {
+          key = window.matchMedia('(prefers-color-scheme: dark)').matches ? '${dark}' : '${light}';
+        }
+        document.documentElement.setAttribute('data-theme', key);
+      };
+      applyTheme();
+      new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.attributeName === 'data-theme' && !document.documentElement.getAttribute('data-theme')) {
+            applyTheme();
+          }
+        });
+      }).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+    })()
+  `;
 };

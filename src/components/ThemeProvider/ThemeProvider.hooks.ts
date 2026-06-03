@@ -12,6 +12,15 @@ import { themeContext } from './ThemeProvider.context';
 import { themeStore } from './ThemeProvider.store';
 import { Theme } from './ThemeProvider.types';
 
+/**
+ * Resolves an active theme key to a `Theme` object and a concrete registry key.
+ * Handles `SYSTEM_THEME_KEY` by mapping it to `"dark"` or `"light"` based on
+ * `prefers-color-scheme`, and subscribes to OS preference changes.
+ *
+ * @param activeKey - The active theme key, which may be `SYSTEM_THEME_KEY`.
+ * @returns The resolved `Theme` object and the concrete key (never
+ *   `SYSTEM_THEME_KEY`).
+ */
 export const useResolvedTheme = (activeKey: string): { theme: Theme; resolvedKey: string } => {
   const registry = useStore(themeStore);
   const [isDark, setIsDark] = useState(() => (
@@ -42,4 +51,8 @@ export const useResolvedTheme = (activeKey: string): { theme: Theme; resolvedKey
   };
 };
 
+/**
+ * Returns the theme context value from the nearest `ThemeProvider`, exposing
+ * the active key, resolved `Theme` object, available options, and `setTheme`.
+ */
 export const useThemeManager = () => useContext(themeContext);
