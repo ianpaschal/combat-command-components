@@ -6,7 +6,11 @@ import { daybreak } from './themes/daybreak';
 import { light } from './themes/light';
 import { midnight } from './themes/midnight';
 import { DeepPartial } from '../../types';
-import { SYSTEM_THEME_KEY, THEME_STORAGE_KEY } from './ThemeProvider.constants';
+import {
+  SYSTEM_THEME_KEY,
+  THEME_STORAGE_KEY,
+  validateKey,
+} from './ThemeProvider.constants';
 import { Theme, ThemeRegistryEntry } from './ThemeProvider.types';
 import { buildThemeVars } from './ThemeProvider.utils';
 
@@ -37,7 +41,11 @@ export const registerTheme = (
   theme: DeepPartial<Theme>,
   parentKey?: string,
 ): void => {
+  validateKey(key, 'registerTheme');
   themeStore.setState((state) => {
+    if (parentKey && !state[parentKey]) {
+      console.warn(`registerTheme: parent key "${parentKey}" not found for theme "${key}". Falling back to "light".`);
+    }
     const parent = parentKey ? (state[parentKey]?.theme ?? light) : light;
     const merged = deepmerge(parent, theme as Theme);
     return { ...state, [key]: makeEntry(merged) };
@@ -69,10 +77,11 @@ export const getRegisteredTheme = (key: string): Theme => {
  */
 export const getThemeStyleSheet = (): string => {
   const css = Object.entries(themeStore.state).map(([key, { vars }]) => {
+    const safeKey = key.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
     const declarations = Object.entries(vars).map(([k, v]) => (
       `  ${k}: ${v};`
     )).join('\n');
-    return `:root[data-theme="${key}"] {\n${declarations}\n}`;
+    return `:root[data-theme="${safeKey}"] {\n${declarations}\n}`;
   }).join('\n\n');
 
   if (typeof document !== 'undefined') {
@@ -104,7 +113,9 @@ export const injectThemePreflight = (
   defaults?: { dark?: string; light?: string },
 ): string => {
   const dark = defaults?.dark ?? 'dark';
+  validateKey(dark, 'injectThemePreflight defaults.dark');
   const light = defaults?.light ?? 'light';
+  validateKey(light, 'injectThemePreflight defaults.light');
   return `
     (() => {
       const applyTheme = () => {

@@ -12,6 +12,8 @@ import { themeContext } from './ThemeProvider.context';
 import { themeStore } from './ThemeProvider.store';
 import { Theme } from './ThemeProvider.types';
 
+export const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
 /**
  * Resolves an active theme key to a `Theme` object and a concrete registry key.
  * Handles `SYSTEM_THEME_KEY` by mapping it to `"dark"` or `"light"` based on
@@ -27,7 +29,7 @@ export const useResolvedTheme = (activeKey: string): { theme: Theme; resolvedKey
     typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
   ));
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches);
   }, []);
 

@@ -1,7 +1,5 @@
 import {
   ReactNode,
-  useEffect,
-  useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
@@ -9,10 +7,8 @@ import { useStore } from '@tanstack/react-store';
 
 import { SYSTEM_THEME_KEY, THEME_STORAGE_KEY } from './ThemeProvider.constants';
 import { ThemeContextProvider } from './ThemeProvider.context';
-import { useResolvedTheme } from './ThemeProvider.hooks';
+import { useIsomorphicLayoutEffect, useResolvedTheme } from './ThemeProvider.hooks';
 import { getThemeStyleSheet, themeStore } from './ThemeProvider.store';
-
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export interface ThemeProviderProps {
 
@@ -49,7 +45,11 @@ export const ThemeProvider = ({
 
   const handleSetTheme = (newKey: string) => {
     if (!forcedTheme) {
-      localStorage.setItem(THEME_STORAGE_KEY, newKey);
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, newKey);
+      } catch (e) {
+        console.error(e);
+      }
       setKey(newKey);
     }
   };
