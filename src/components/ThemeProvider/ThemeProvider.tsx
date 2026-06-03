@@ -1,17 +1,18 @@
 import {
   ReactNode,
+  useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
 import { useStore } from '@tanstack/react-store';
 
 import { ThemeContextProvider } from './ThemeProvider.context';
+import { SYSTEM_THEME_KEY, useResolvedTheme } from './ThemeProvider.hooks';
 import {
-  SYSTEM_THEME_KEY,
-  useResolvedTheme,
-  useThemeVars,
-} from './ThemeProvider.hooks';
-import { themeStore } from './ThemeProvider.store';
+  getThemeStyleSheet,
+  THEME_STORAGE_KEY,
+  themeStore,
+} from './ThemeProvider.store';
 
 export interface ThemeProviderProps {
 
@@ -24,22 +25,35 @@ export const ThemeProvider = ({
   theme: forcedTheme,
   children,
 }: ThemeProviderProps) => {
-  const [key, setKey] = useState(SYSTEM_THEME_KEY);
+  const [key, setKey] = useState(() => localStorage.getItem(THEME_STORAGE_KEY) ?? SYSTEM_THEME_KEY);
   const activeKey = forcedTheme ?? key;
-  const theme = useResolvedTheme(activeKey);
+  const { theme, resolvedKey } = useResolvedTheme(activeKey);
   const registry = useStore(themeStore);
   const options = useMemo(() => [
     { value: SYSTEM_THEME_KEY, label: 'System' },
-    ...Object.entries(registry).map(([k, { displayName }]) => ({
+    ...Object.entries(registry).map(([k, { theme: { displayName } }]) => ({
       value: k,
       label: displayName,
     })),
   ], [registry]);
 
-  useThemeVars(theme);
+  useLayoutEffect(() => {
+    getThemeStyleSheet();
+  }, []);
+
+  useLayoutEffect(() => {
+    document.documentElement.setAttribute('data-theme', resolvedKey);
+  }, [resolvedKey]);
+
+  const handleSetTheme = (newKey: string) => {
+    if (!forcedTheme) {
+      localStorage.setItem(THEME_STORAGE_KEY, newKey);
+    }
+    setKey(newKey);
+  };
 
   return (
-    <ThemeContextProvider value={{ key: activeKey, theme, options, setTheme: setKey }}>
+    <ThemeContextProvider value={{ key: activeKey, theme, options, setTheme: handleSetTheme }}>
       {children}
     </ThemeContextProvider>
   );

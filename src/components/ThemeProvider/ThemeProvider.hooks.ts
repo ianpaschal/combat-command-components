@@ -1,7 +1,6 @@
 import {
   useContext,
   useEffect,
-  useLayoutEffect,
   useState,
 } from 'react';
 import { useStore } from '@tanstack/react-store';
@@ -10,11 +9,10 @@ import { light } from './themes/light';
 import { themeContext } from './ThemeProvider.context';
 import { themeStore } from './ThemeProvider.store';
 import { Theme } from './ThemeProvider.types';
-import { buildThemeVars } from './ThemeProvider.utils';
 
 export const SYSTEM_THEME_KEY = '__system';
 
-export const useResolvedTheme = (activeKey: string): Theme => {
+export const useResolvedTheme = (activeKey: string): { theme: Theme; resolvedKey: string } => {
   const registry = useStore(themeStore);
   const [isDark, setIsDark] = useState(() => window.matchMedia('(prefers-color-scheme: dark)').matches);
 
@@ -26,18 +24,16 @@ export const useResolvedTheme = (activeKey: string): Theme => {
   }, []);
 
   if (activeKey === SYSTEM_THEME_KEY) {
-    return isDark ? (registry['dark'] ?? registry['light'] ?? light) : (registry['light'] ?? light);
+    const resolvedKey = isDark ? 'dark' : 'light';
+    return {
+      theme: registry[resolvedKey]?.theme ?? registry['light']?.theme ?? light,
+      resolvedKey,
+    };
   }
-  return registry[activeKey] ?? registry['light'] ?? light;
+  return {
+    theme: registry[activeKey]?.theme ?? registry['light']?.theme ?? light,
+    resolvedKey: activeKey,
+  };
 };
 
 export const useThemeManager = () => useContext(themeContext);
-
-export const useThemeVars = (theme: Theme): void => {
-  useLayoutEffect(() => {
-    const vars = buildThemeVars(theme);
-    for (const [key, value] of Object.entries(vars)) {
-      document.body.style.setProperty(key, value);
-    }
-  }, [theme]);
-};
