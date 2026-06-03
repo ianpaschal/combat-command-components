@@ -7,13 +7,10 @@ import {
 } from 'react';
 import { useStore } from '@tanstack/react-store';
 
+import { SYSTEM_THEME_KEY, THEME_STORAGE_KEY } from './ThemeProvider.constants';
 import { ThemeContextProvider } from './ThemeProvider.context';
-import { SYSTEM_THEME_KEY, useResolvedTheme } from './ThemeProvider.hooks';
-import {
-  getThemeStyleSheet,
-  THEME_STORAGE_KEY,
-  themeStore,
-} from './ThemeProvider.store';
+import { useResolvedTheme } from './ThemeProvider.hooks';
+import { getThemeStyleSheet, themeStore } from './ThemeProvider.store';
 
 const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
@@ -53,8 +50,8 @@ export const ThemeProvider = ({
   const handleSetTheme = (newKey: string) => {
     if (!forcedTheme) {
       localStorage.setItem(THEME_STORAGE_KEY, newKey);
+      setKey(newKey);
     }
-    setKey(newKey);
   };
 
   return (

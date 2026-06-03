@@ -6,10 +6,9 @@ import { daybreak } from './themes/daybreak';
 import { light } from './themes/light';
 import { midnight } from './themes/midnight';
 import { DeepPartial } from '../../types';
+import { SYSTEM_THEME_KEY, THEME_STORAGE_KEY } from './ThemeProvider.constants';
 import { Theme, ThemeRegistryEntry } from './ThemeProvider.types';
 import { buildThemeVars } from './ThemeProvider.utils';
-
-export const THEME_STORAGE_KEY = 'cc-theme';
 
 const makeEntry = (theme: Theme): ThemeRegistryEntry => ({
   theme,
@@ -67,8 +66,8 @@ export const injectThemePreflight = (defaults?: { dark?: string; light?: string 
   return (
     '(function(){' +
     'function a(){' +
-    `var k=localStorage.getItem('${THEME_STORAGE_KEY}')||'__system';` +
-    `if(k==='__system'){k=window.matchMedia('(prefers-color-scheme: dark)').matches?'${dark}':'${light}';}` +
+    `var k=localStorage.getItem('${THEME_STORAGE_KEY}')||'${SYSTEM_THEME_KEY}';` +
+    `if(k==='${SYSTEM_THEME_KEY}'){k=window.matchMedia('(prefers-color-scheme: dark)').matches?'${dark}':'${light}';}` +
     'document.documentElement.setAttribute(\'data-theme\',k);' +
     '}' +
     'a();' +

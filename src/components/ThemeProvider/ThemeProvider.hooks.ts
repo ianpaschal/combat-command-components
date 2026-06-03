@@ -7,11 +7,10 @@ import {
 import { useStore } from '@tanstack/react-store';
 
 import { light } from './themes/light';
+import { SYSTEM_THEME_KEY } from './ThemeProvider.constants';
 import { themeContext } from './ThemeProvider.context';
 import { themeStore } from './ThemeProvider.store';
 import { Theme } from './ThemeProvider.types';
-
-export const SYSTEM_THEME_KEY = '__system';
 
 export const useResolvedTheme = (activeKey: string): { theme: Theme; resolvedKey: string } => {
   const registry = useStore(themeStore);
