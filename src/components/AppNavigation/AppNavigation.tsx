@@ -45,11 +45,7 @@ export const AppNavigation = ({
 }: AppNavigationProps): JSX.Element => {
   const [state, setState] = useState<string[] | null>(null);
   const navigate = useCallback((path: string) => {
-    if (path.startsWith('/')) {
-      onNavigate(path);
-    } else {
-      window.open(path, '_blank', 'noopener,noreferrer');
-    }
+    onNavigate(path);
     setState(null); // Close all navigation accordions, menus, etc.
   }, [onNavigate]);
   return createPortal((

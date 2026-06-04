@@ -4,7 +4,7 @@ export type Route = {
   title: string;
   path: string;
   icon?: ReactElement;
-  newTab?: boolean;
+  external?: boolean;
   children?: Route[];
 };
 
