@@ -12,13 +12,14 @@ import { DesktopNavigation } from './components/DesktopNavigation';
 import { MobileNavigation } from './components/MobileNavigation';
 import { getStyleClassNames } from '../../utils/getStyleClassNames';
 import { NavigationProvider } from './AppNavigation.context';
-import { Route } from './AppNavigation.types';
+import { LogoRoute, Route } from './AppNavigation.types';
 
 import styles from './AppNavigation.module.scss';
 
 export interface AppNavigationProps {
   className?: string;
   logoPath?: string;
+  logoRoute?: LogoRoute;
   location: string;
   logo?: ReactNode;
   maxWidth?: number | string;
@@ -33,6 +34,7 @@ export interface AppNavigationProps {
 export const AppNavigation = ({
   className,
   logoPath,
+  logoRoute,
   location,
   logo,
   maxWidth = '100vw',
@@ -55,12 +57,12 @@ export const AppNavigation = ({
     }), className)}>
       <div className={styles.appNavigationContent} style={{ maxWidth }} data-layout={mobile ? 'mobile' : 'desktop'}>
         <NavigationProvider value={{ navigate, location, state, setState }}>
-          <AppLogo className={styles.appNavigationLogo} path={logoPath}>
+          <AppLogo className={styles.appNavigationLogo} path={logoPath} route={logoRoute}>
             {logo}
           </AppLogo>
           <div className={styles.appNavigationNavigation}>
             {mobile ? (
-              <MobileNavigation logo={logo} logoPath={logoPath} routes={routes} secondaryRoutes={secondaryRoutes} />
+              <MobileNavigation logo={logo} logoPath={logoPath} logoRoute={logoRoute} routes={routes} secondaryRoutes={secondaryRoutes} />
             ) : (
               <DesktopNavigation routes={routes} secondaryRoutes={secondaryRoutes} />
             )}

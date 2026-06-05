@@ -7,7 +7,7 @@ import { getStyleClassNames, sx } from '../../../../utils';
 import { Button } from '../../../Button';
 import { ScrollArea } from '../../../ScrollArea';
 import { useNavigationContext } from '../../AppNavigation.context';
-import { Route } from '../../AppNavigation.types';
+import { LogoRoute, Route } from '../../AppNavigation.types';
 import { locationToAncestorPaths } from '../../AppNavigation.utils';
 import { AppLogo } from '../AppLogo';
 import { MobileRoutes } from '../MobileRoutes';
@@ -17,6 +17,7 @@ import styles from './MobileNavigation.module.scss';
 interface MobileNavigationProps {
   logo?: ReactNode;
   logoPath?: string;
+  logoRoute?: LogoRoute;
   routes: Route[];
   secondaryRoutes?: Route[];
 }
@@ -24,6 +25,7 @@ interface MobileNavigationProps {
 export const MobileNavigation = ({
   logo,
   logoPath,
+  logoRoute,
   routes,
   secondaryRoutes = [],
 }: MobileNavigationProps): JSX.Element => {
@@ -50,7 +52,7 @@ export const MobileNavigation = ({
             variant: 'surface',
             border: 'bottom',
           }), styles.mobileNavigationHeader)}>
-            <AppLogo path={logoPath}>
+            <AppLogo path={logoPath} route={logoRoute}>
               {logo}
             </AppLogo>
             <Dialog.Close render={(props) => (

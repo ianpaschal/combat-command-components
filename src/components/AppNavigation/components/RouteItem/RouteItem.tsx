@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { sx } from '../../../../utils';
 import { useNavigationContext } from '../../AppNavigation.context';
 import { Route } from '../../AppNavigation.types';
+import { defaultNavigate } from '../../AppNavigation.utils';
 
 import styles from './RouteItem.module.scss';
 
@@ -29,8 +30,8 @@ export const RouteItem = forwardRef<HTMLAnchorElement, RouteItemProps>(({
   const isActive = parentPath.split('?')[0] !== routePath && currentPath === routePath;
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
     e.preventDefault();
-    if (route.external) {
-      window.open(route.path, '_blank', 'noopener,noreferrer');
+    if (route.target) {
+      defaultNavigate(route);
     } else {
       navigate(route.path);
     }
