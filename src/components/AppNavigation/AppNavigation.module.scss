@@ -18,7 +18,9 @@
     box-sizing: border-box;
     width: 100vw;
     height: calc(var(--app-bar-height) + var(--bleed) + env(safe-area-inset-top));
-    padding-top: var(--bleed);
+    padding-top: calc(var(--bleed) + env(safe-area-inset-top));
+    padding-right: env(safe-area-inset-right);
+    padding-left: env(safe-area-inset-left);
 
     &-content {
       display: grid;
@@ -27,8 +29,7 @@
 
       box-sizing: border-box;
       margin: 0 auto;
-      /* stylelint-disable-next-line @stylistic/max-line-length */
-      padding: calc(0.75rem + env(safe-area-inset-top)) calc(var(--page-padding) + env(safe-area-inset-right)) calc(0.75rem - var(--border-width)) calc(var(--page-padding) + env(safe-area-inset-left));
+      padding: 0.75rem var(--page-padding) calc(0.75rem - var(--border-width));
 
       &[data-layout="mobile"] {
         grid-template-areas: "navigation logo secondary";
