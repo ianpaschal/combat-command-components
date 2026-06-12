@@ -50,6 +50,8 @@
 
       box-sizing: border-box;
       min-width: var(--anchor-width);
+      max-width: var(--available-width);
+      max-height: var(--available-height);
 
       @media (prefers-reduced-motion: no-preference) {
         transition: transform 150ms, opacity 150ms;

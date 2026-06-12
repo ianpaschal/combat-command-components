@@ -16,6 +16,7 @@ import {
 
 import { ElementSize } from '../../types';
 import { getStyleClassNames, sx } from '../../utils/getStyleClassNames';
+import { useSafeCollisionPadding } from './Select.hooks';
 
 import styles from './Select.module.scss';
 
@@ -65,102 +66,106 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
   type: _type,
   value,
   ...triggerProps
-}, ref): JSX.Element => (
-  <BaseSelect.Root<SelectValue | null>
-    autoComplete={autoComplete}
-    defaultValue={defaultValue}
-    disabled={disabled}
-    form={form}
-    name={name}
-    readOnly={readOnly}
-    required={required}
-    value={value}
-    onValueChange={onChange}
-  >
-    <BaseSelect.Trigger
-      ref={ref}
-      id={id}
-      {...(triggerProps as ButtonHTMLAttributes<HTMLButtonElement>)}
-      className={clsx(styles.selectTrigger, getStyleClassNames({
-        corners: 'normal',
-        intent: 'secondary',
-        variant: 'ghost',
-        border: true,
-        size,
-      }), className)}
-    >
-      <BaseSelect.Value>
-        {(val: SelectValue | null) => {
+}, ref): JSX.Element => {
+  const collisionPadding = useSafeCollisionPadding(8);
 
-          /* BaseUI may pass undefined instead of null when the selected value is null, so use loose
+  return (
+    <BaseSelect.Root<SelectValue | null>
+      autoComplete={autoComplete}
+      defaultValue={defaultValue}
+      disabled={disabled}
+      form={form}
+      name={name}
+      readOnly={readOnly}
+      required={required}
+      value={value}
+      onValueChange={onChange}
+    >
+      <BaseSelect.Trigger
+        ref={ref}
+        id={id}
+        {...(triggerProps as ButtonHTMLAttributes<HTMLButtonElement>)}
+        className={clsx(styles.selectTrigger, getStyleClassNames({
+          corners: 'normal',
+          intent: 'secondary',
+          variant: 'ghost',
+          border: true,
+          size,
+        }), className)}
+      >
+        <BaseSelect.Value>
+          {(val: SelectValue | null) => {
+
+            /* BaseUI may pass undefined instead of null when the selected value is null, so use loose
            * equality for null-valued options to match both.
            */
-          const opt = options.find((o) => (o.value === null ? val == null : o.value === val)) ?? null;
-          if (opt === null) {
-            return placeholder;
-          }
-          return opt.label ?? String(opt.value);
-        }}
-      </BaseSelect.Value>
-      <BaseSelect.Icon className={styles.selectTriggerIcon}>
-        <ChevronsUpDown />
-      </BaseSelect.Icon>
-    </BaseSelect.Trigger>
-    <BaseSelect.Portal>
-      <BaseSelect.Positioner
-        className={styles.positioner}
-        sideOffset={8}
-        collisionPadding={8}
-        alignItemWithTrigger={false} // See: https://github.com/mui/base-ui/issues/1922
-      >
-        <BaseSelect.Popup
-          className={sx({
-            border: true,
-            corners: 'normal',
-            elevation: 5,
-            intent: 'secondary',
-            variant: 'surface',
-          }, styles.selectPopup)}
-          tabIndex={-1}
+            const opt = options.find((o) => (o.value === null ? val == null : o.value === val)) ?? null;
+            if (opt === null) {
+              return placeholder;
+            }
+            return opt.label ?? String(opt.value);
+          }}
+        </BaseSelect.Value>
+        <BaseSelect.Icon className={styles.selectTriggerIcon}>
+          <ChevronsUpDown />
+        </BaseSelect.Icon>
+      </BaseSelect.Trigger>
+      <BaseSelect.Portal>
+        <BaseSelect.Positioner
+          className={styles.positioner}
+          sideOffset={8}
+          collisionPadding={collisionPadding}
+          alignItemWithTrigger={false} // See: https://github.com/mui/base-ui/issues/1922
         >
-          <BaseSelect.ScrollUpArrow className={clsx(...getStyleClassNames({
-            border: 'bottom',
-            variant: 'surface',
-          }), styles.selectScrollArrow)}>
-            <ChevronUp />
-          </BaseSelect.ScrollUpArrow>
-          <BaseSelect.List className={styles.selectList}>
-            {options.map((option, i) => (
-              <BaseSelect.Item
-                className={clsx(styles.selectItem, ...getStyleClassNames({
-                  intent: 'secondary',
-                  variant: 'ghost',
-                  corners: 'normal',
-                  size,
-                }))}
-                key={`${i}-${option.value}`}
-                value={option.value}
-                disabled={option.disabled}
-              >
-                <BaseSelect.ItemIndicator className={styles.selectItemIndicator}>
-                  <Check />
-                </BaseSelect.ItemIndicator>
-                <BaseSelect.ItemText className={styles.selectItemContent}>
-                  {option.label}
-                </BaseSelect.ItemText>
-              </BaseSelect.Item>
-            ))}
-          </BaseSelect.List>
-          <BaseSelect.ScrollDownArrow className={clsx(...getStyleClassNames({
-            border: 'top',
-            variant: 'surface',
-          }), styles.selectScrollArrow)}>
-            <ChevronDown />
-          </BaseSelect.ScrollDownArrow>
-        </BaseSelect.Popup>
-      </BaseSelect.Positioner>
-    </BaseSelect.Portal>
-  </BaseSelect.Root >
-));
+          <BaseSelect.Popup
+            className={sx({
+              border: true,
+              corners: 'normal',
+              elevation: 5,
+              intent: 'secondary',
+              variant: 'surface',
+            }, styles.selectPopup)}
+            tabIndex={-1}
+          >
+            <BaseSelect.ScrollUpArrow className={clsx(...getStyleClassNames({
+              border: 'bottom',
+              variant: 'surface',
+            }), styles.selectScrollArrow)}>
+              <ChevronUp />
+            </BaseSelect.ScrollUpArrow>
+            <BaseSelect.List className={styles.selectList}>
+              {options.map((option, i) => (
+                <BaseSelect.Item
+                  className={clsx(styles.selectItem, ...getStyleClassNames({
+                    intent: 'secondary',
+                    variant: 'ghost',
+                    corners: 'normal',
+                    size,
+                  }))}
+                  key={`${i}-${option.value}`}
+                  value={option.value}
+                  disabled={option.disabled}
+                >
+                  <BaseSelect.ItemIndicator className={styles.selectItemIndicator}>
+                    <Check />
+                  </BaseSelect.ItemIndicator>
+                  <BaseSelect.ItemText className={styles.selectItemContent}>
+                    {option.label}
+                  </BaseSelect.ItemText>
+                </BaseSelect.Item>
+              ))}
+            </BaseSelect.List>
+            <BaseSelect.ScrollDownArrow className={clsx(...getStyleClassNames({
+              border: 'top',
+              variant: 'surface',
+            }), styles.selectScrollArrow)}>
+              <ChevronDown />
+            </BaseSelect.ScrollDownArrow>
+          </BaseSelect.Popup>
+        </BaseSelect.Positioner>
+      </BaseSelect.Portal>
+    </BaseSelect.Root >
+  );
+});
 
 Select.displayName = 'Select';
