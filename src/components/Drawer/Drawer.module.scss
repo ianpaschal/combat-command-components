@@ -73,6 +73,10 @@
     &-popup {
       --bleed: 3rem;
       --stack-scale: calc(1 - 0.05 * var(--nested-drawers, 0));
+      --inset-top: calc(var(--modal-padding) + env(safe-area-inset-top));
+      --inset-right: calc(var(--modal-padding) + env(safe-area-inset-right));
+      --inset-bottom: calc(var(--modal-padding) + env(safe-area-inset-bottom));
+      --inset-left: calc(var(--modal-padding) + env(safe-area-inset-left));
 
       @include shadows.elevated;
 
@@ -245,7 +249,30 @@
 
       grid-area: header;
       justify-content: space-between;
-      padding: calc(var(--modal-padding) + env(safe-area-inset-top)) var(--modal-padding) 1rem;
+      padding: var(--modal-padding) var(--modal-padding) 1rem;
+
+      // Only inset for the safe area on edges where this drawer's popup actually touches the
+      // screen edge for its anchor direction.
+      .drawer-popup[data-swipe-direction="up"] & {
+        padding-top: var(--inset-top);
+        padding-right: var(--inset-right);
+        padding-left: var(--inset-left);
+      }
+
+      .drawer-popup[data-swipe-direction="down"] & {
+        padding-right: var(--inset-right);
+        padding-left: var(--inset-left);
+      }
+
+      .drawer-popup[data-swipe-direction="left"] & {
+        padding-top: var(--inset-top);
+        padding-left: var(--inset-left);
+      }
+
+      .drawer-popup[data-swipe-direction="right"] & {
+        padding-top: var(--inset-top);
+        padding-right: var(--inset-right);
+      }
 
       &-close {
         margin: -0.25rem;
@@ -264,7 +291,30 @@
       flex-direction: column;
 
       min-height: 0;
-      padding: 0 var(--modal-padding) calc(var(--modal-padding) + env(safe-area-inset-bottom));
+      padding: 0 var(--modal-padding) var(--modal-padding);
+
+      // Only inset for the safe area on edges where this drawer's popup actually touches the
+      // screen edge for its anchor direction.
+      .drawer-popup[data-swipe-direction="up"] & {
+        padding-right: var(--inset-right);
+        padding-left: var(--inset-left);
+      }
+
+      .drawer-popup[data-swipe-direction="down"] & {
+        padding-right: var(--inset-right);
+        padding-bottom: var(--inset-bottom);
+        padding-left: var(--inset-left);
+      }
+
+      .drawer-popup[data-swipe-direction="left"] & {
+        padding-bottom: var(--inset-bottom);
+        padding-left: var(--inset-left);
+      }
+
+      .drawer-popup[data-swipe-direction="right"] & {
+        padding-right: var(--inset-right);
+        padding-bottom: var(--inset-bottom);
+      }
 
       &[data-padding="false"] {
         padding: 0;

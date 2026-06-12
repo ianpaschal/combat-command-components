@@ -27,7 +27,8 @@
 
       box-sizing: border-box;
       margin: 0 auto;
-      padding: calc(0.75rem + env(safe-area-inset-top)) var(--page-padding) calc(0.75rem - var(--border-width));
+      /* stylelint-disable-next-line @stylistic/max-line-length */
+      padding: calc(0.75rem + env(safe-area-inset-top)) calc(var(--page-padding) + env(safe-area-inset-right)) calc(0.75rem - var(--border-width)) calc(var(--page-padding) + env(safe-area-inset-left));
 
       &[data-layout="mobile"] {
         grid-template-areas: "navigation logo secondary";
