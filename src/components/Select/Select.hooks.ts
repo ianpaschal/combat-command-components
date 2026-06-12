@@ -51,17 +51,25 @@ const listeners = new Set<() => void>();
  * per the recommended pattern for "Subscribing to an external store":
  * https://react.dev/reference/react/useSyncExternalStore#subscribing-to-an-external-store
  */
+const handleResize = (): void => {
+  cachedSafeAreas = measureSafeAreas();
+  listeners.forEach((l) => l());
+};
+
 const subscribe = (listener: () => void): (() => void) => {
   if (!initialized) {
     initialized = true;
     cachedSafeAreas = measureSafeAreas();
-    window.addEventListener('resize', () => {
-      cachedSafeAreas = measureSafeAreas();
-      listeners.forEach((l) => l());
-    });
+    window.addEventListener('resize', handleResize);
   }
   listeners.add(listener);
-  return () => listeners.delete(listener);
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0) {
+      window.removeEventListener('resize', handleResize);
+      initialized = false;
+    }
+  };
 };
 
 /* Must return a cached/referentially-stable value when nothing has changed,
@@ -69,6 +77,13 @@ const subscribe = (listener: () => void): (() => void) => {
  * https://react.dev/reference/react/useSyncExternalStore#im-getting-an-error-the-result-of-getsnapshot-should-be-cached
  */
 const getSnapshot = (): SafeAreaInsets => cachedSafeAreas;
+
+/*
+ * SSR fallback: `env(safe-area-inset-*)` is meaningless on the server, and `measureSafeAreas`
+ * relies on `document`, which isn't available there. See:
+ * https://react.dev/reference/react/useSyncExternalStore#adding-support-for-server-rendering
+ */
+const getServerSnapshot = (): SafeAreaInsets => ({ top: 0, right: 0, bottom: 0, left: 0 });
 
 /**
  * Returns a `collisionPadding`-shaped object (Base UI / Floating UI
@@ -79,7 +94,7 @@ const getSnapshot = (): SafeAreaInsets => cachedSafeAreas;
  * See: https://floating-ui.com/docs/detectOverflow#padding
  */
 export const useSafeCollisionPadding = (padding: number = 0): SafeAreaInsets => {
-  const safeAreas = useSyncExternalStore(subscribe, getSnapshot);
+  const safeAreas = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   return {
     top: padding + safeAreas.top,
     right: padding + safeAreas.right,
