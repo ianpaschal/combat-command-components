@@ -51,15 +51,18 @@
     }
 
     &-popup {
-      --input-panel-usable-height: calc(100dvh - 2 * var(--page-padding));
-      --input-panel-usable-width: calc(100dvw - 2 * var(--page-padding));
+      --input-panel-offset-top: calc(var(--page-padding) + env(safe-area-inset-top));
+      --input-panel-offset-bottom: calc(var(--page-padding) + env(safe-area-inset-bottom));
+      --input-panel-usable-height: calc(100dvh - (var(--input-panel-offset-top) + var(--input-panel-offset-bottom)));
+      --input-panel-usable-width: calc(100dvw - (2 * var(--page-padding)));
       --input-panel-max-height: min(var(--input-panel-user-max-height, 100dvh), var(--input-panel-usable-height));
       --input-panel-max-width: min(var(--input-panel-user-max-width, 100dvw), var(--input-panel-usable-width));
 
       will-change: transform;
 
       position: fixed;
-      inset: 50% auto auto 50%;
+      top: calc((var(--input-panel-usable-height) / 2) + var(--input-panel-offset-top));
+      left: 50%;
       transform: translate(-50%, -50%);
 
       overflow: hidden;

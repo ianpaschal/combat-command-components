@@ -57,6 +57,7 @@
       box-sizing: border-box;
       width: 100%;
       max-width: 24rem;
+      max-height: calc(100dvh - env(safe-area-inset-top, 0px));
       padding: 0 1rem calc(2rem + env(safe-area-inset-bottom, 0px));
 
       outline: 0;

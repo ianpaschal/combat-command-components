@@ -31,9 +31,9 @@
         left: 0;
 
         width: 100%;
-        height: var(--app-bar-height);
-        min-height: var(--app-bar-height);
-        padding: calc(var(--spacing) - var(--border-width)) 0 var(--spacing);
+        height: calc(var(--app-bar-height) + env(safe-area-inset-bottom));
+        min-height: calc(var(--app-bar-height) + env(safe-area-inset-bottom));
+        padding: calc(var(--spacing) - var(--border-width)) 0 calc(var(--spacing) + env(safe-area-inset-bottom));
 
         background-color: unset;
       }
