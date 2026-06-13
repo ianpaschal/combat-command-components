@@ -17,5 +17,5 @@ export const useAsFooter = (
       </FooterBar>
     );
   }
-  return <>{children} </>;
+  return <>{children}</>;
 }, [asFooter, maxWidth]);

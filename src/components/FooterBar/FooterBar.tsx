@@ -37,7 +37,10 @@ export const FooterBar = ({
       document.documentElement.style.setProperty('--footer-bar-height', `${entry.contentRect.height}px`);
     });
     observer.observe(content);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty('--footer-bar-height');
+    };
   }, []);
 
   return createPortal((
