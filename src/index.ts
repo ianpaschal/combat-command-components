@@ -10,6 +10,7 @@ export * from './components/CircularProgress';
 export * from './components/CombatCommandLogo';
 export * from './components/DialogManager';
 export * from './components/Drawer';
+export * from './components/FooterBar';
 export * from './components/Hero';
 export * from './components/ImageViewer';
 export * from './components/InputDateTime';

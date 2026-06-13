@@ -1,0 +1,41 @@
+@use "../../style/layers";
+@use "../../style/flex";
+@use "../../style/shadows";
+
+@layer components {
+  .footer-bar {
+    --bleed: 100dvh;
+    --vertical-padding: 1rem;
+
+    @include shadows.surface;
+
+    position: fixed;
+    bottom: calc(-1 * var(--bleed));
+    left: 0;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+    width: 100vw;
+    padding-bottom: calc(var(--bleed) + env(safe-area-inset-bottom));
+
+    &-content {
+      @include flex.row($gap: 1.5rem, $yAlign: center);
+
+      box-sizing: border-box;
+      margin: 0 auto;
+      padding-top: calc(var(--vertical-padding) - var(--border-width));
+      padding-right: calc(var(--page-padding) + env(safe-area-inset-right));
+      padding-bottom: var(--vertical-padding);
+      padding-left: calc(var(--page-padding) + env(safe-area-inset-left));
+
+      &[data-mobile] {
+        --mobile-offset: 0.5rem;
+
+        padding-right: calc(var(--vertical-padding) + var(--mobile-offset) + env(safe-area-inset-right));
+        padding-bottom: calc(var(--vertical-padding) + var(--mobile-offset));
+        padding-left: calc(var(--vertical-padding) + var(--mobile-offset) + env(safe-area-inset-left));
+      }
+    }
+  }
+}

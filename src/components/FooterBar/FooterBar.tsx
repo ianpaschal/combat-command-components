@@ -1,0 +1,56 @@
+import {
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useRef,
+} from 'react';
+import { createPortal } from 'react-dom';
+import clsx from 'clsx';
+
+import { getStyleClassNames } from '../../utils/getStyleClassNames';
+
+import styles from './FooterBar.module.scss';
+
+export interface FooterBarProps {
+  children?: ReactNode;
+  className?: string;
+  maxWidth?: number | string;
+  mobile?: boolean;
+  portalTarget?: Element;
+}
+
+export const FooterBar = ({
+  children,
+  className,
+  maxWidth = '100vw',
+  mobile = false,
+  portalTarget = document.body,
+}: FooterBarProps): ReactElement => {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const content = contentRef.current;
+    if (!content) {
+      return;
+    }
+    const observer = new ResizeObserver(([entry]) => {
+      document.documentElement.style.setProperty('--footer-bar-height', `${entry.contentRect.height}px`);
+    });
+    observer.observe(content);
+    return () => observer.disconnect();
+  }, []);
+
+  return createPortal((
+    <div
+      className={clsx(styles.footerBar, ...getStyleClassNames({
+        variant: 'surface',
+        border: 'top',
+      }), className)}
+
+    >
+      <div ref={contentRef} className={styles.footerBarContent} style={{ maxWidth }} data-mobile={mobile || undefined}>
+        {children}
+      </div>
+    </div>
+  ), portalTarget);
+};

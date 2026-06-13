@@ -5,6 +5,17 @@
 @import "@fontsource/figtree/700.css";
 
 :root {
+  --color-brand: hsl(5deg 90% 60%);
+  --color-gray-100: hsl(220deg 22.5% 95%);
+  --color-gray-200: hsl(220deg 22.5% 85%);
+  --color-gray-300: hsl(220deg 22.5% 75%);
+  --color-gray-400: hsl(220deg 22.5% 65%);
+  --color-gray-500: hsl(220deg 22.5% 55%);
+  --color-gray-600: hsl(220deg 22.5% 45%);
+  --color-gray-700: hsl(220deg 22.5% 35%);
+  --color-gray-800: hsl(220deg 22.5% 25%);
+  --color-gray-900: hsl(220deg 22.5% 15%);
+
   // -----------------------------------------------------------------------------------------------
   // Theme default variables (can be overwritten by <ThemeProvider/>).
   // Re-generate with: `npm run gen:theme-defaults`
@@ -231,6 +242,9 @@
   // App Bar Sizes
   --app-bar-height: 4rem;
   --app-bar-logo-size: 2.5rem;
+
+  // Footer Bar Sizes
+  --footer-bar-height: 4rem;
 
   // Spacing
   --modal-padding: 1rem;
