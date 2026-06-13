@@ -34,7 +34,8 @@ export const FooterBar = ({
       return;
     }
     const observer = new ResizeObserver(([entry]) => {
-      document.documentElement.style.setProperty('--footer-bar-height', `${entry.contentRect.height}px`);
+      const height = entry.borderBoxSize?.[0]?.blockSize ?? entry.target.getBoundingClientRect().height;
+      document.documentElement.style.setProperty('--footer-bar-height', `${height}px`);
     });
     observer.observe(content);
     return () => {
