@@ -10,6 +10,7 @@ import { ElementSize } from '../../../../types';
 import { sx } from '../../../../utils';
 import { useTabsContext } from '../../Tabs.hooks';
 import { TabTrigger } from '../TabTrigger';
+import { useAsFooter } from './TabsList.hooks';
 
 import styles from './TabsList.module.scss';
 
@@ -29,12 +30,10 @@ export const TabsList = forwardRef<ElementRef<typeof BaseTabs.List>, TabsListPro
   ...props
 }, ref): ReactElement => {
   const { tabs } = useTabsContext();
-  return (
+  const wrapFooter = useAsFooter(asFooter, maxWidth);
+  return wrapFooter(
     <div
       className={clsx(sx({
-        variant: asFooter ? 'surface' : undefined,
-        border: asFooter ? 'top' : undefined,
-        elevation: asFooter ? 5 : undefined,
         corners: asFooter ? undefined : 'normal',
         size: asFooter ? 'large' : size,
       }), styles.tabsListWrapper, className)}
@@ -45,7 +44,7 @@ export const TabsList = forwardRef<ElementRef<typeof BaseTabs.List>, TabsListPro
         className={styles.tabsList}
         data-icon-only={iconOnly || undefined}
         data-as-footer={asFooter || undefined}
-        style={maxWidth ? { maxWidth } : undefined}
+        style={!asFooter && maxWidth ? { maxWidth } : undefined}
         {...props}
       >
         {tabs.map(({ content: _, ...tab }) => (
@@ -62,7 +61,7 @@ export const TabsList = forwardRef<ElementRef<typeof BaseTabs.List>, TabsListPro
           elevation: asFooter ? undefined : 1,
         }), styles.tabsListIndicator)} />
       </BaseTabs.List>
-    </div>
+    </div>,
   );
 });
 

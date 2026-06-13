@@ -25,29 +25,9 @@
       &[data-as-footer] {
         --spacing: 0.5rem;
 
-        position: fixed;
-        right: 0;
-        bottom: 0;
-        left: 0;
-
         width: 100%;
-        height: var(--app-bar-height);
-        min-height: var(--app-bar-height);
-        padding: calc(var(--spacing) - var(--border-width)) 0 var(--spacing);
-
+        padding: 0;
         background-color: unset;
-      }
-    }
-
-    &[data-as-footer] {
-      height: 100%;
-      max-height: 100%;
-      margin: 0 auto;
-      padding: 0 var(--page-padding);
-
-      > button {
-        height: 100%;
-        max-height: none;
       }
     }
 

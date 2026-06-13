@@ -6,6 +6,7 @@
   .app-navigation {
     --bleed: 100dvh;
     --indicator-thickness: 0.25rem;
+    --vertical-padding: 0.75rem;
 
     @include shadows.surface;
 
@@ -17,8 +18,8 @@
 
     box-sizing: border-box;
     width: 100vw;
-    height: calc(var(--app-bar-height) + var(--bleed));
-    padding-top: var(--bleed);
+    height: calc(var(--app-bar-height) + var(--bleed) + env(safe-area-inset-top));
+    padding-top: calc(var(--bleed) + env(safe-area-inset-top));
 
     &-content {
       display: grid;
@@ -27,7 +28,10 @@
 
       box-sizing: border-box;
       margin: 0 auto;
-      padding: 0.75rem var(--page-padding) calc(0.75rem - var(--border-width));
+      padding-top: calc(var(--vertical-padding) - var(--border-width));
+      padding-right: calc(var(--page-padding) + env(safe-area-inset-right));
+      padding-bottom: var(--vertical-padding);
+      padding-left: calc(var(--page-padding) + env(safe-area-inset-left));
 
       &[data-layout="mobile"] {
         grid-template-areas: "navigation logo secondary";

@@ -1,0 +1,15 @@
+@use "../../style/layers";
+@use "../../style/flex";
+
+@layer components {
+  .footer-bar-actions {
+    @include flex.row($gap: 1.5rem);
+
+    flex: 1;
+    justify-content: space-between;
+
+    &-group {
+      @include flex.row($gap: 0.5rem, $yAlign: center);
+    }
+  }
+}
