@@ -76,6 +76,21 @@ const meta: Meta<typeof Button> = {
       description: 'Whether the button is disabled.',
       table: { category: 'State' },
     },
+    href: {
+      control: 'text',
+      description: 'When provided, renders the button as an anchor element.',
+      table: { category: 'Link' },
+    },
+    target: {
+      control: 'text',
+      description: 'The target attribute for the anchor element.',
+      table: { category: 'Link' },
+    },
+    rel: {
+      control: 'text',
+      description: 'The rel attribute for the anchor element.',
+      table: { category: 'Link' },
+    },
   },
 };
 
@@ -128,6 +143,21 @@ export const Icon: Story = {
     loading: false,
     rounded: false,
     size: 'normal',
+    variant: 'solid',
+  },
+};
+
+export const Link: Story = {
+  name: 'Link',
+  args: {
+    border: false,
+    collapsePadding: false,
+    href: 'https://example.com',
+    intent: 'secondary',
+    rounded: false,
+    size: 'normal',
+    target: '_blank',
+    text: 'Visit Site',
     variant: 'solid',
   },
 };
