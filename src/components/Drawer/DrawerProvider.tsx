@@ -5,6 +5,10 @@ interface DrawerProviderProps {
   children: ReactNode;
 }
 
-export const DrawerProvider = ({ children }: DrawerProviderProps): JSX.Element => (
-  <BaseDrawer.Provider>{children}</BaseDrawer.Provider>
+export const DrawerProvider = ({
+  children,
+}: DrawerProviderProps): JSX.Element => (
+  <BaseDrawer.Provider>
+    {children}
+  </BaseDrawer.Provider>
 );

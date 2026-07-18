@@ -92,7 +92,7 @@
     }
 
     &-header {
-      @include flex.row;
+      @include flex.row($yAlign: center);
 
       grid-area: header;
       justify-content: space-between;
