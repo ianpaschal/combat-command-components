@@ -1,5 +1,6 @@
 import './style/index.scss';
 
+export * from './components/Accordion';
 export * from './components/AppNavigation';
 export * from './components/Badge';
 export * from './components/Button';

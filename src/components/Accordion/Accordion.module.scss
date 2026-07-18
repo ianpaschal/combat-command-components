@@ -1,0 +1,67 @@
+@use "../../style/layers";
+@use "../../style/flex";
+@use "../../style/text";
+
+@layer components {
+  .accordion {
+    --offset-label: 1.75rem;
+    --offset-chevron: 0.5rem;
+
+    @include flex.column($gap: 0.125rem);
+
+    width: 100%;
+
+    &-item {
+      @include flex.column($gap: 0.125rem);
+
+      width: 100%;
+    }
+
+    &-trigger-header {
+      width: 100%;
+    }
+
+    &-trigger {
+      @include flex.row($gap: 0.5rem, $yAlign: center);
+      @include text.small;
+
+      position: relative;
+      width: 100%;
+      padding-left: var(--offset-label);
+
+      &-chevron {
+        position: absolute;
+        top: 50%;
+        left: var(--offset-chevron);
+        transform: translateY(-50%);
+
+        flex-shrink: 0;
+
+        width: 0.875rem;
+        height: 0.875rem;
+
+        transition: transform 150ms ease-out;
+
+        [data-panel-open] > & {
+          transform: translateY(-50%) rotate(90deg);
+        }
+      }
+    }
+
+    &-panel {
+      overflow: hidden;
+      height: var(--accordion-panel-height);
+      padding-left: var(--offset-label);
+      transition: height 150ms ease-out;
+
+      &[data-nested] {
+        padding-left: calc(var(--offset-label) - var(--offset-chevron));
+      }
+
+      &[data-starting-style],
+      &[data-ending-style] {
+        height: 0;
+      }
+    }
+  }
+}
