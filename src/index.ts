@@ -20,6 +20,7 @@ export * from './components/InputText';
 export * from './components/InputTextArea';
 export * from './components/MasonryGrid';
 export * from './components/Menu';
+export * from './components/Pagination';
 export * from './components/PdfViewer';
 export * from './components/Radio';
 export * from './components/RadioCards';
