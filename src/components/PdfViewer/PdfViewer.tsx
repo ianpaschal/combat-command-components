@@ -39,7 +39,7 @@ export const PdfViewer = ({
   if (workerSrc && pdfjs.GlobalWorkerOptions.workerSrc !== workerSrc) {
     pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
   }
-  const viewer = usePdfViewer(restConfig);
+  const viewer = usePdfViewer(file, restConfig);
   return (
     <div ref={viewer.containerRef} className={clsx(styles.pdfViewer, className)}>
       {(loading || viewer.state.numPages === null) && (
