@@ -31,6 +31,7 @@ export const DEFAULT_CONFIG: PdfViewerConfig = {
 };
 
 export const usePdfViewer = (
+  file: string | File | ArrayBuffer | null,
   customConfig?: Partial<PdfViewerConfig>,
 ): UsePdfViewerReturn => {
   const config = {
@@ -39,12 +40,21 @@ export const usePdfViewer = (
   };
   const containerRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLDivElement>(null);
+  const [prevFile, setPrevFile] = useState(file);
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(config.initialPage);
   const [scale, setScale] = useState(config.initialScale ?? 1);
   const pdfPageWidthRef = useRef<number | null>(null);
   const isScrollingTo = useRef(false);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+
+  if (file !== prevFile) {
+    setPrevFile(file);
+    setNumPages(null);
+    setPageNumber(config.initialPage);
+    setScale(config.initialScale ?? 1);
+    pdfPageWidthRef.current = null;
+  }
 
   useEffect(() => () => clearTimeout(scrollTimeoutRef.current), []);
 
