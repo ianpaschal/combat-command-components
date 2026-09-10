@@ -1,0 +1,16 @@
+@use "../../style/layers";
+@use "../../style/text";
+
+@layer components {
+  .markdownRenderer {
+    overflow-wrap: anywhere;
+
+    > :first-child {
+      margin-top: 0;
+    }
+
+    > :last-child {
+      margin-bottom: 0;
+    }
+  }
+}
