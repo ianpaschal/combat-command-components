@@ -18,6 +18,7 @@ export * from './components/InputDateTime';
 export * from './components/InputPanel';
 export * from './components/InputText';
 export * from './components/InputTextArea';
+export * from './components/MarkdownRenderer';
 export * from './components/MasonryGrid';
 export * from './components/Menu';
 export * from './components/Pagination';
