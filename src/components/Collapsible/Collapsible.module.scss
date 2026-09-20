@@ -1,0 +1,26 @@
+.collapsible {
+  display: flex;
+  flex-direction: column;
+
+  &-trigger {
+    all: unset;
+
+    cursor: pointer;
+
+    display: block;
+
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  &-panel {
+    overflow: hidden;
+    height: var(--collapsible-panel-height);
+    transition: height 150ms ease-in-out;
+
+    &[data-starting-style],
+    &[data-ending-style] {
+      height: 0;
+    }
+  }
+}

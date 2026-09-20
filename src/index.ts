@@ -8,6 +8,7 @@ export * from './components/Card';
 export * from './components/Checkbox';
 export * from './components/CheckboxGroup';
 export * from './components/CircularProgress';
+export * from './components/Collapsible';
 export * from './components/CombatCommandLogo';
 export * from './components/DialogManager';
 export * from './components/Drawer';
