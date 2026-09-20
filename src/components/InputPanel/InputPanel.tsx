@@ -1,4 +1,5 @@
 import {
+  ButtonHTMLAttributes,
   CSSProperties,
   ForwardedRef,
   forwardRef,
@@ -33,6 +34,7 @@ export interface InputPanelProps<T = string> {
   disablePadding?: boolean;
   disableScroll?: boolean;
   renderValue?: (value: T | undefined) => ReactNode;
+  renderTrigger?: (value: T | undefined, triggerProps: ButtonHTMLAttributes<HTMLButtonElement>) => ReactElement;
   fullHeight?: boolean;
   fullWidth?: boolean;
   icon?: ReactElement;
@@ -57,6 +59,7 @@ export const InputPanel = forwardRef(<T,>({
   disablePadding = false,
   disableScroll = false,
   renderValue,
+  renderTrigger,
   fullHeight = false,
   fullWidth = false,
   icon,
@@ -90,6 +93,39 @@ export const InputPanel = forwardRef(<T,>({
   };
 
   const label = renderValue?.(value);
+
+  const triggerProps = {
+    ref,
+    id,
+    disabled,
+    'data-readonly': readOnly || undefined,
+    ...(renderTrigger ? {
+      render: (props: ButtonHTMLAttributes<HTMLButtonElement>) => (
+        renderTrigger(value, { type: 'button', ...props })
+      ),
+    } : {
+      className: sx({
+        corners: 'normal',
+        variant: 'ghost',
+        border: !readOnly,
+        size: 'normal',
+      }, styles.inputPanelTrigger, className),
+      children: (
+        <>
+          {icon && (
+            <span className={sizes.icon}>
+              {icon}
+            </span>
+          )}
+          <span className={clsx(styles.inputPanelTriggerLabel, !label && styles.inputPanelTriggerPlaceholder)}>
+            {label || placeholder}
+          </span>
+        </>
+      ),
+    }),
+
+  };
+
   const contentProps: InputPanelContentProps<T> = {
     close: () => setOpen(false),
     onChange: handleChange,
@@ -102,26 +138,7 @@ export const InputPanel = forwardRef(<T,>({
         <input type="hidden" name={name} id={id} value={serialize(value)} />
       )}
       <div className={styles.inputPanel}>
-        <BaseDrawer.Trigger
-          ref={ref}
-          className={sx({
-            corners: 'normal',
-            variant: 'ghost',
-            border: !readOnly,
-            size: 'normal',
-          }, styles.inputPanelTrigger, className)}
-          data-readonly={readOnly || undefined}
-          disabled={disabled}
-        >
-          {icon && (
-            <span className={sizes.icon}>
-              {icon}
-            </span>
-          )}
-          <span className={clsx(styles.inputPanelTriggerLabel, !label && styles.inputPanelTriggerPlaceholder)}>
-            {label || placeholder}
-          </span>
-        </BaseDrawer.Trigger>
+        <BaseDrawer.Trigger {...triggerProps} />
       </div>
       <BaseDrawer.Portal>
         <BaseDrawer.Backdrop className={drawerStyles.drawerBackdrop} />
