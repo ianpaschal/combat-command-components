@@ -1,25 +1,46 @@
 @use "../../style/layers";
+@use "../../style/sizes";
 @use "../../style/text";
+
+@mixin size($size: large) {
+  --switch-height: var(--switch-size-#{$size});
+  --switch-width: calc(var(--switch-height) * 1.75);
+  --switch-thumb-size: calc(var(--switch-height) - 0.375rem);
+}
 
 @layer components {
   .switch {
     &-control {
+      @include sizes.min-hit-area(var(--switch-height));
+
       position: relative;
 
-      display: inline-block;
+      display: inline-flex;
       flex-shrink: 0;
 
       box-sizing: border-box;
-      width: 2.5rem;
-      height: 1.5rem;
+      width: var(--switch-width);
+      height: var(--switch-height);
       margin: 0;
       padding: 0;
-      border-radius: calc(2.5rem / 2);
+      border-radius: calc(var(--switch-width) / 2);
 
       outline: 0;
 
       &[data-checked] {
         background-color: var(--switch-checked-track);
+      }
+
+      &[data-size="small"] {
+        @include size($size: small);
+      }
+
+      &[data-size="normal"] {
+        @include size($size: normal);
+      }
+
+      &[data-size="large"] {
+        @include size($size: large);
       }
 
       @media (prefers-reduced-motion: no-preference) {
@@ -33,14 +54,14 @@
       left: 0.1875rem;
       transform: translateY(-50%);
 
-      width: 1.125rem;
-      height: 1.125rem;
-      border-radius: calc(1.125rem / 2);
+      width: var(--switch-thumb-size);
+      height: var(--switch-thumb-size);
+      border-radius: calc(var(--switch-thumb-size) / 2);
 
       background-color: white;
 
       [data-checked] & {
-        left: calc(100% - 1.3125rem);
+        left: calc(100% - var(--switch-thumb-size) - 0.1875rem);
         background-color: var(--switch-checked-thumb);
       }
 

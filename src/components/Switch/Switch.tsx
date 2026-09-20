@@ -7,7 +7,7 @@ import {
 import { Switch as BaseSwitch } from '@base-ui/react/switch';
 import clsx from 'clsx';
 
-import { ElementIntent } from '../../types';
+import { ElementIntent, ElementSize } from '../../types';
 import { sx } from '../../utils';
 
 import styles from './Switch.module.scss';
@@ -18,6 +18,7 @@ export interface SwitchProps extends Omit<HTMLAttributes<HTMLElement>, 'onChange
   intent?: ElementIntent;
   name?: string;
   onChange?: (value: boolean) => void;
+  size?: ElementSize;
   value?: boolean;
 }
 
@@ -27,6 +28,7 @@ export const Switch = forwardRef<ElementRef<typeof BaseSwitch.Root>, SwitchProps
   disabled = false,
   intent = 'primary',
   onChange,
+  size = 'large',
   style,
   value,
   ...props
@@ -34,6 +36,7 @@ export const Switch = forwardRef<ElementRef<typeof BaseSwitch.Root>, SwitchProps
   <BaseSwitch.Root
     ref={ref}
     {...props}
+    data-size={size}
     className={clsx(sx({
       variant: 'shaded',
       intent: 'secondary',

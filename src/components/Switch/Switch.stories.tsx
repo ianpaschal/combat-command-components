@@ -20,6 +20,11 @@ const meta: Meta<typeof Switch> = {
       options: ELEMENT_INTENTS,
       description: 'The color of the switch when checked.',
     },
+    size: {
+      control: 'select',
+      options: ['small', 'normal', 'large'],
+      description: 'The size of the switch.',
+    },
     onChange: { table: { disable: true } },
   },
 };
@@ -39,6 +44,7 @@ export const Default: Story = {
   args: {
     disabled: false,
     intent: 'primary',
+    size: 'large',
   },
   argTypes: noControls,
 };

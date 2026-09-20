@@ -9,3 +9,4 @@ export declare const selectPopup: string;
 export declare const selectScrollArrow: string;
 export declare const selectTrigger: string;
 export declare const selectTriggerIcon: string;
+export declare const selectTriggerValue: string;

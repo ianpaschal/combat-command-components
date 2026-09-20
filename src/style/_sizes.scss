@@ -1,0 +1,14 @@
+// Ensure hit-box is at least 40px, regardless of the element's own visual size.
+@mixin min-hit-area($reference-size) {
+  &::before {
+    --offset: min(0px, calc((40px - #{$reference-size}) / -2));
+
+    content: "";
+
+    position: absolute;
+    top: var(--offset);
+    right: var(--offset);
+    bottom: var(--offset);
+    left: var(--offset);
+  }
+}

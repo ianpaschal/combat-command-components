@@ -18,6 +18,7 @@ import { ElementSize } from '../../types';
 import { getStyleClassNames, sx } from '../../utils/getStyleClassNames';
 import { useSafeCollisionPadding } from './Select.hooks';
 
+import sizes from '../../style/sizes.module.scss';
 import styles from './Select.module.scss';
 
 type SelectRef = ElementRef<typeof BaseSelect.Trigger>;
@@ -45,6 +46,7 @@ export interface SelectProps extends Omit<
   onChange?: (value: SelectValue | null) => void;
   options: SelectOption[];
   placeholder?: ReactNode;
+  renderValue?: (option: SelectOption | null) => ReactNode;
   size?: ElementSize;
   value?: SelectValue | null;
 }
@@ -61,6 +63,7 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
   options,
   placeholder = 'Select...',
   readOnly,
+  renderValue,
   required,
   size = 'normal',
   type: _type,
@@ -93,20 +96,19 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
           size,
         }), className)}
       >
-        <BaseSelect.Value>
+        <BaseSelect.Value className={styles.selectTriggerValue}>
           {(val: SelectValue | null) => {
-
-            /* BaseUI may pass undefined instead of null when the selected value is null, so use loose
-           * equality for null-valued options to match both.
-           */
             const opt = options.find((o) => (o.value === null ? val == null : o.value === val)) ?? null;
             if (opt === null) {
               return placeholder;
             }
+            if (renderValue) {
+              return renderValue(opt);
+            }
             return opt.label ?? String(opt.value);
           }}
         </BaseSelect.Value>
-        <BaseSelect.Icon className={styles.selectTriggerIcon}>
+        <BaseSelect.Icon className={clsx(styles.selectTriggerIcon, sizes.icon)}>
           <ChevronsUpDown />
         </BaseSelect.Icon>
       </BaseSelect.Trigger>

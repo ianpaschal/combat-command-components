@@ -27,6 +27,7 @@ const meta: Meta<typeof Select> = {
       table: { category: 'Behavior' },
     },
     onChange: { table: { disable: true } },
+    renderValue: { table: { disable: true } },
     size: {
       control: 'select',
       options: ['small', 'normal', 'large'],

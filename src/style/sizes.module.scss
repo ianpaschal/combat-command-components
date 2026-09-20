@@ -1,4 +1,5 @@
 @use "./layers";
+@use "./sizes" as hit-area;
 
 @mixin common($size: normal) {
   // Assume always used with variants (1px border, even if invisible)
@@ -12,18 +13,7 @@
   min-height: var(--size-#{$size});
   padding: $padding-y $padding-x;
 
-  // Ensure hit-box is at least 40px
-  &::before {
-    --offset: min(0px, calc((40px - var(--size-#{$size})) / -2));
-
-    content: "";
-
-    position: absolute;
-    top: var(--offset);
-    right: var(--offset);
-    bottom: var(--offset);
-    left: var(--offset);
-  }
+  @include hit-area.min-hit-area(var(--size-#{$size}));
 
   &.collapse-padding {
     margin: 0 calc(var(--size-#{$size}-padding) * -1);
