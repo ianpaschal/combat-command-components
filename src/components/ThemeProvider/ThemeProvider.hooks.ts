@@ -58,3 +58,8 @@ export const useResolvedTheme = (activeKey: string): { theme: Theme; resolvedKey
  * the active key, resolved `Theme` object, available options, and `setTheme`.
  */
 export const useThemeManager = () => useContext(themeContext);
+
+/**
+ * Returns the current resolved `Theme` object from the nearest `ThemeProvider`.
+ */
+export const useTheme = (): Theme => useContext(themeContext).theme;
