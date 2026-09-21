@@ -129,7 +129,7 @@ export const Dialog = ({
           </div>
           <DialogContextProvider value={contextValue}>
             {disableScroll ? (
-              <div className={styles.dialogContent} data-padding={!disablePadding}>
+              <div className={styles.dialogContent} data-padding={!disablePadding} data-disable-scroll>
                 {renderContent ? renderContent(contextValue) : content}
               </div>
             ) : (
