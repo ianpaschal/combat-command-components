@@ -6,24 +6,24 @@ import {
 } from 'react';
 import { useStore } from '@tanstack/react-store';
 
-import { light } from './themes/light';
 import { SYSTEM_THEME_KEY } from './ThemeProvider.constants';
 import { themeContext } from './ThemeProvider.context';
 import { themeStore } from './ThemeProvider.store';
-import { Theme } from './ThemeProvider.types';
+import { Theme, ThemeMode } from './ThemeProvider.types';
 
 export const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 /**
- * Resolves an active theme key to a `Theme` object and a concrete registry key.
- * Handles `SYSTEM_THEME_KEY` by mapping it to `"dark"` or `"light"` based on
- * `prefers-color-scheme`, and subscribes to OS preference changes.
+ * Resolves a theme key and mode to a `Theme` object and a concrete `dark`
+ * flag. Handles `SYSTEM_THEME_KEY` by mapping it to `prefers-color-scheme`,
+ * and subscribes to OS preference changes.
  *
- * @param activeKey - The active theme key, which may be `SYSTEM_THEME_KEY`.
- * @returns The resolved `Theme` object and the concrete key (never
- *   `SYSTEM_THEME_KEY`).
+ * @param key - The active theme key.
+ * @param mode - The active mode, which may be `SYSTEM_THEME_KEY`.
+ * @returns The resolved `Theme` object and its `dark` flag (matching
+ *   `Theme.dark`, never the `SYSTEM_THEME_KEY` sentinel).
  */
-export const useResolvedTheme = (activeKey: string): { theme: Theme; resolvedKey: string } => {
+export const useResolvedTheme = (key: string, mode: ThemeMode): { theme: Theme; dark: boolean } => {
   const registry = useStore(themeStore);
   const [isDark, setIsDark] = useState(() => (
     typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -40,17 +40,10 @@ export const useResolvedTheme = (activeKey: string): { theme: Theme; resolvedKey
     return () => mq.removeEventListener('change', update);
   }, []);
 
-  if (activeKey === SYSTEM_THEME_KEY) {
-    const resolvedKey = isDark ? 'dark' : 'light';
-    return {
-      theme: registry[resolvedKey]?.theme ?? registry['light']?.theme ?? light,
-      resolvedKey,
-    };
-  }
-  return {
-    theme: registry[activeKey]?.theme ?? registry['light']?.theme ?? light,
-    resolvedKey: activeKey,
-  };
+  const dark = mode === SYSTEM_THEME_KEY ? isDark : mode === 'dark';
+  const family = registry[key] ?? registry['storm'];
+  const theme = (dark ? family.dark : family.light).theme;
+  return { theme, dark };
 };
 
 /**

@@ -1,13 +1,15 @@
 import { Store } from '@tanstack/store';
 import deepmerge from 'deepmerge';
 
-import { dark } from './themes/dark';
-import { daybreak } from './themes/daybreak';
-import { light } from './themes/light';
-import { midnight } from './themes/midnight';
+import { classicDark } from './themes/classic-dark';
+import { classicLight } from './themes/classic-light';
+import { stormDark } from './themes/storm-dark';
+import { stormLight } from './themes/storm-light';
 import { DeepPartial } from '../../types';
 import {
+  LEGACY_THEME_KEY_ALIASES,
   SYSTEM_THEME_KEY,
+  THEME_MODE_STORAGE_KEY,
   THEME_STORAGE_KEY,
   validateKey,
 } from './ThemeProvider.constants';
@@ -19,69 +21,91 @@ const makeEntry = (theme: Theme): ThemeRegistryEntry => ({
   vars: buildThemeVars(theme),
 });
 
-export const themeStore = new Store<Record<string, ThemeRegistryEntry>>({
-  light: makeEntry(light),
-  dark: makeEntry(dark),
-  daybreak: makeEntry(daybreak),
-  midnight: makeEntry(midnight),
+type ThemeFamilyEntry = {
+  displayName: string;
+  light: ThemeRegistryEntry;
+  dark: ThemeRegistryEntry;
+};
+
+export const themeStore = new Store<Record<string, ThemeFamilyEntry>>({
+  classic: { displayName: 'Classic', light: makeEntry(classicLight), dark: makeEntry(classicDark) },
+  storm: { displayName: 'Storm', light: makeEntry(stormLight), dark: makeEntry(stormDark) },
 });
 
 /**
- * Registers a new theme or overrides an existing one. The provided theme is
- * deep-merged onto the parent (defaults to `light`). CSS variables are computed
- * and cached immediately.
+ * Registers a theme family (both its light and dark variants, plus a display
+ * name). Each variant is deep-merged onto the corresponding variant of the
+ * parent family (defaults to `"classic"`). CSS variables are computed and
+ * cached immediately.
  *
- * @param key - Unique key used to identify and activate the theme.
- * @param theme - Partial theme object; missing values are inherited from the
- *   parent.
- * @param parentKey - Key of the theme to inherit from. Defaults to `"light"`.
+ * @param key - Unique key used to identify and activate the family.
+ * @param theme - The family's display name and its two variants; missing
+ *   fields on each variant are inherited from the parent.
+ * @param parentKey - Key of the family to inherit from. Defaults to `"classic"`.
  */
 export const registerTheme = (
   key: string,
-  theme: DeepPartial<Theme>,
-  parentKey?: string,
+  theme: {
+    displayName: string;
+    light: DeepPartial<Omit<Theme, 'key' | 'dark'>>;
+    dark: DeepPartial<Omit<Theme, 'key' | 'dark'>>;
+  },
+  parentKey = 'classic',
 ): void => {
   validateKey(key, 'registerTheme');
   themeStore.setState((state) => {
-    if (parentKey && !state[parentKey]) {
-      console.warn(`registerTheme: parent key "${parentKey}" not found for theme "${key}". Falling back to "light".`);
+    const parentFamily = state[parentKey];
+    if (!parentFamily) {
+      console.warn(`registerTheme: parent key "${parentKey}" not found for theme "${key}". Falling back to "classic".`);
     }
-    const parent = parentKey ? (state[parentKey]?.theme ?? light) : light;
-    const merged = deepmerge(parent, theme as Theme);
-    return { ...state, [key]: makeEntry(merged) };
+    const parent = parentFamily ?? state.classic;
+    const mergedLight = deepmerge(parent.light.theme, { ...theme.light, key, dark: false } as Theme);
+    const mergedDark = deepmerge(parent.dark.theme, { ...theme.dark, key, dark: true } as Theme);
+    return {
+      ...state,
+      [key]: {
+        displayName: theme.displayName,
+        light: makeEntry(mergedLight),
+        dark: makeEntry(mergedDark),
+      },
+    };
   });
 };
 
 /**
- * Returns the resolved `Theme` object for the given key. Falls back to `light`
- * and logs a warning if the key is not registered.
+ * Returns the resolved `Theme` object for the given key and mode. Falls back
+ * to Storm and logs a warning if the key is not registered.
  *
- * @param key - Key of the registered theme to retrieve.
+ * @param key - Key of the registered theme family to retrieve.
+ * @param dark - Whether to retrieve the dark or light variant.
  */
-export const getRegisteredTheme = (key: string): Theme => {
-  const entry = themeStore.state[key];
-  if (!entry) {
-    console.warn(`Could not find a theme with key ${key}. Will use 'light' instead.`);
-    return light;
+export const getRegisteredTheme = (key: string, dark: boolean): Theme => {
+  const family = themeStore.state[key];
+  if (!family) {
+    console.warn(`Could not find a theme with key ${key}. Will use 'storm' instead.`);
+    return dark ? stormDark : stormLight;
   }
-  return entry.theme;
+  return dark ? family.dark.theme : family.light.theme;
 };
 
 /**
  * Serializes all registered themes' CSS variables into a single stylesheet
- * string, with each theme scoped to `:root[data-theme="<key>"]`. In a browser
- * context, also injects or updates a `<style data-theme-vars>` element in
- * `<head>` (idempotent).
+ * string, with each theme scoped to
+ * `:root[data-theme-key="<key>"][data-theme-mode="<light|dark>"]`. In a
+ * browser context, also injects or updates a `<style data-theme-vars>`
+ * element in `<head>` (idempotent).
  *
  * @returns The generated CSS string.
  */
 export const getThemeStyleSheet = (): string => {
-  const css = Object.entries(themeStore.state).map(([key, { vars }]) => {
+  const css = Object.entries(themeStore.state).flatMap(([key, family]) => {
     const safeKey = key.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-    const declarations = Object.entries(vars).map(([k, v]) => (
-      `  ${k}: ${v};`
-    )).join('\n');
-    return `:root[data-theme="${safeKey}"] {\n${declarations}\n}`;
+    return (['light', 'dark'] as const).map((mode) => {
+      const declarations = Object.entries(family[mode].vars).map(([k, v]) => (
+        `  ${k}: ${v};`
+      )).join('\n');
+      return `:root[data-theme-key="${safeKey}"][data-theme-mode="${mode}"] {\n${declarations}\n}`;
+    });
   }).join('\n\n');
 
   if (typeof document !== 'undefined') {
@@ -101,43 +125,53 @@ export const getThemeStyleSheet = (): string => {
 
 /**
  * Returns a self-executing script string that reads `localStorage` and sets
- * `data-theme` on `<html>` before first paint, preventing a flash of unstyled
- * content. Also installs a `MutationObserver` to re-apply the theme if
- * `data-theme` is removed (e.g. during Astro page transitions). Drop the
- * returned string into a blocking `<script>` in `<head>`.
+ * `data-theme-key`/`data-theme-mode` on `<html>` before first paint,
+ * preventing a flash of unstyled content. Also installs a `MutationObserver`
+ * to re-apply the theme if those attributes are removed (e.g. during Astro
+ * page transitions). Drop the returned string into a blocking `<script>` in
+ * `<head>`.
  *
- * @param defaults - Optional overrides for the theme keys used when the stored
- *   value is `SYSTEM_THEME_KEY`. Defaults to `{ dark: "dark", light: "light" }`.
+ * @param defaults - Optional override for the family key used when nothing is
+ *   stored yet. Defaults to `"storm"`.
  */
 export const injectThemePreflight = (
-  defaults?: { dark?: string; light?: string },
+  defaults?: { key?: string },
 ): string => {
-  const dark = defaults?.dark ?? 'dark';
-  validateKey(dark, 'injectThemePreflight defaults.dark');
-  const light = defaults?.light ?? 'light';
-  validateKey(light, 'injectThemePreflight defaults.light');
+  const defaultKey = defaults?.key ?? 'storm';
+  validateKey(defaultKey, 'injectThemePreflight defaults.key');
+  const aliases = JSON.stringify(LEGACY_THEME_KEY_ALIASES);
   return `
     (() => {
+      const aliases = ${aliases};
       const applyTheme = () => {
-        var key = '${SYSTEM_THEME_KEY}';
+        var key = null;
+        var mode = null;
         try {
-          key = localStorage.getItem('${THEME_STORAGE_KEY}') || '${SYSTEM_THEME_KEY}';
+          key = localStorage.getItem('${THEME_STORAGE_KEY}');
+          mode = localStorage.getItem('${THEME_MODE_STORAGE_KEY}');
         } catch(e) {}
-        if (key === '${SYSTEM_THEME_KEY}') {
-          key = window.matchMedia('(prefers-color-scheme: dark)').matches ? '${dark}' : '${light}';
+        if (!key || !mode) {
+          var legacy = key ? aliases[key] : null;
+          key = legacy ? legacy.key : '${defaultKey}';
+          mode = legacy ? legacy.mode : '${SYSTEM_THEME_KEY}';
         }
-        document.documentElement.setAttribute('data-theme', key);
+        var dark = mode === '${SYSTEM_THEME_KEY}'
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : mode === 'dark';
+        document.documentElement.setAttribute('data-theme-key', key);
+        document.documentElement.setAttribute('data-theme-mode', dark ? 'dark' : 'light');
       };
       applyTheme();
       new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
-          if (mutation.attributeName === 'data-theme' && !document.documentElement.getAttribute('data-theme')) {
+          if ((mutation.attributeName === 'data-theme-key' || mutation.attributeName === 'data-theme-mode')
+            && !document.documentElement.getAttribute('data-theme-key')) {
             applyTheme();
           }
         });
       }).observe(document.documentElement, {
         attributes: true,
-        attributeFilter: ['data-theme'],
+        attributeFilter: ['data-theme-key', 'data-theme-mode'],
       });
     })()
   `;

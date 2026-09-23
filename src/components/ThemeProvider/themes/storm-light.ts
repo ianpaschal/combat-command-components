@@ -1,25 +1,25 @@
 import type { Theme } from '../ThemeProvider.types';
 import { brandPrimary, brandSecondary } from './shared';
 
-export const midnight: Theme = {
-  displayName: 'Midnight',
-  dark: true,
-  overlayStrength: 0.65,
-  shadowStrength: 0.3,
+export const stormLight: Theme = {
+  key: 'storm',
+  dark: false,
+  overlayStrength: 0.45,
+  shadowStrength: 0.05,
   surface: {
     page: {
-      bg: brandSecondary(5),
+      bg: brandSecondary(95),
     },
     card: {
-      bg: brandSecondary(10),
-      border: brandSecondary(15),
+      bg: brandSecondary(100),
+      border: brandSecondary(90),
     },
   },
   text: {
-    body: brandSecondary(70),
-    header: brandSecondary(80),
-    ui: brandSecondary(55),
-    muted: brandSecondary(30),
+    body: brandSecondary(45),
+    header: brandSecondary(25),
+    ui: brandSecondary(35),
+    muted: brandSecondary(60),
   },
   colors: {
     accent: {
@@ -28,9 +28,9 @@ export const midnight: Theme = {
       text: 'hsl(0, 0%, 100%)',
     },
     neutral: {
-      bg: brandSecondary(55),
-      focus: brandSecondary(55),
-      text: brandSecondary(10),
+      bg: brandSecondary(45),
+      focus: brandSecondary(45),
+      text: brandSecondary(100),
     },
     red: {
       bg: 'hsl(5, 90%, 60%)',

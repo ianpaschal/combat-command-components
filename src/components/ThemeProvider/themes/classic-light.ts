@@ -1,40 +1,35 @@
 import type { Theme } from '../ThemeProvider.types';
 
-export const dark: Theme = {
-  displayName: 'Dark',
-  dark: true,
-  overlayStrength: 0.65,
-  shadowStrength: 0.3,
+export const classicLight: Theme = {
+  key: 'classic',
+  dark: false,
+  overlayStrength: 0.45,
+  shadowStrength: 0.05,
   surface: {
     page: {
-      bg: '#111111', // Radix Gray 1 Dark
+      bg: '#F9F9F9', // Radix Gray 2
     },
     card: {
-      bg: '#191919', // Radix Gray 2 Dark
-      border: '#222222', // Radix Gray 3 Dark
+      bg: '#FFFFFF',
+      border: '#E8E8E8', // Radix Gray 4
     },
-
-    // highlight: {
-    //   bg: '#191919', // Radix Gray 2 Dark
-    //   border: '#222222', // Radix Gray 3 Dark
-    // },
   },
   text: {
-    body: '#B4B4B4', // Radix Gray 11 Dark
-    header: '#EEEEEE', // Radix Gray 12 Dark
-    ui: '#B4B4B4', // Radix Gray 11 Dark
-    muted: '#484848', // Radix Gray 7 Dark
+    body: '#646464', // Radix Gray 11
+    header: '#202020', // Radix Gray 12
+    ui: '#646464', // Radix Gray 11
+    muted: '#CECECE', // Radix Gray 7
   },
   colors: {
     accent: {
-      bg: '#EEEEEE', // Radix Gray 12 Dark
+      bg: '#202020', // Radix Gray 12
       focus: '#0090FF', // Radix Blue 9
-      text: '#111111', // Radix Gray 1 Dark
+      text: '#FFFFFF',
     },
     neutral: {
-      bg: '#EEEEEE', // Radix Gray 12 Dark
+      bg: '#202020', // Radix Gray 12
       focus: '#0090FF', // Radix Blue 9
-      text: '#111111', // Radix Gray 1 Dark
+      text: '#FFFFFF',
     },
     red: {
       bg: '#E54D2E', // Radix Tomato 9

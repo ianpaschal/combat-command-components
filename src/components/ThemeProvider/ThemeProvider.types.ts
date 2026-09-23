@@ -1,12 +1,14 @@
 import { ThemeColor } from '../../types';
 
+export type ThemeMode = '__system' | 'light' | 'dark';
+
 export type ThemeRegistryEntry = {
   theme: Theme;
   vars: Record<string, string>;
 };
 
 export type Theme = {
-  displayName: string;
+  key: string;
   dark: boolean;
   overlayStrength: number;
   shadowStrength: number;

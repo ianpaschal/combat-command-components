@@ -1,19 +1,22 @@
 import { createContext } from 'react';
 
-import { light } from './themes/light';
+import { stormLight } from './themes/storm-light';
 import { SelectOption } from '../Select';
-import { Theme } from './ThemeProvider.types';
+import { SYSTEM_THEME_KEY } from './ThemeProvider.constants';
+import { Theme, ThemeMode } from './ThemeProvider.types';
 
 export interface ThemeContextValue {
   key: string;
+  mode: ThemeMode;
   theme: Theme;
   options: SelectOption[];
-  setTheme: (key: string) => void;
+  setTheme: (key: string, mode: ThemeMode) => void;
 }
 
 export const themeContext = createContext<ThemeContextValue>({
-  key: 'light',
-  theme: light,
+  key: 'storm',
+  mode: SYSTEM_THEME_KEY,
+  theme: stormLight,
   options: [],
   setTheme: () => {},
 });
