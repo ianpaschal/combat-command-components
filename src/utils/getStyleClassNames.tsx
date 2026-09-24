@@ -1,6 +1,7 @@
 import clsx, { ClassValue } from 'clsx';
 
 import {
+  ElementCorners,
   ElementElevation,
   ElementIntent,
   ElementSize,
@@ -27,7 +28,7 @@ type GetStyleClassNamesConfig = {
   rounded?: boolean;
   square?: boolean;
   border?: boolean | Side | Side[];
-  corners?: boolean | 'tight' | 'normal' | 'wide';
+  corners?: boolean | ElementCorners;
 };
 
 export const getStyleClassNames = (config: GetStyleClassNamesConfig): string[] => {

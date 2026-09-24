@@ -8,6 +8,7 @@ import {
 import clsx from 'clsx';
 
 import {
+  ElementCorners,
   ElementIntent,
   ElementSize,
   ElementVariant,
@@ -23,6 +24,7 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   border?: boolean;
   className?: string;
   collapsePadding?: boolean;
+  corners?: boolean | ElementCorners;
   href?: string;
   icon?: ReactElement;
   iconPosition?: 'start' | 'end';
@@ -41,6 +43,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
   border = false,
   className,
   collapsePadding,
+  corners = 'normal',
   href,
   icon,
   iconPosition,
@@ -58,7 +61,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
   const resolvedClassName = clsx(getStyleClassNames({
     border,
     collapsePadding,
-    corners: 'normal',
+    corners,
     intent,
     rounded,
     size,

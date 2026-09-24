@@ -56,6 +56,12 @@ const meta: Meta<typeof Button> = {
       description: 'Whether the button has a visible border.',
       table: { category: 'Appearance' },
     },
+    corners: {
+      control: 'select',
+      options: ['tight', 'normal', 'wide'],
+      description: 'The corner radius of the button.',
+      table: { category: 'Appearance' },
+    },
     rounded: {
       control: 'boolean',
       description: 'Whether the button has rounded ends.',
@@ -102,6 +108,7 @@ export const Text: Story = {
   args: {
     border: false,
     collapsePadding: false,
+    corners: 'normal',
     disabled: false,
     icon: undefined,
     iconPosition: undefined,
@@ -119,6 +126,7 @@ export const TextIcon: Story = {
   args: {
     border: false,
     collapsePadding: false,
+    corners: 'normal',
     disabled: false,
     icon: <Plus />,
     iconPosition: 'start',
@@ -136,6 +144,7 @@ export const Icon: Story = {
   args: {
     border: false,
     collapsePadding: false,
+    corners: 'normal',
     disabled: false,
     icon: <Mail />,
     iconPosition: 'start',
@@ -152,6 +161,7 @@ export const Link: Story = {
   args: {
     border: false,
     collapsePadding: false,
+    corners: 'normal',
     href: 'https://example.com',
     intent: 'secondary',
     rounded: false,
@@ -170,6 +180,7 @@ export const VisualComparison: Story = {
     iconPosition: 'start',
     size: 'normal',
     collapsePadding: false,
+    corners: 'normal',
     loading: false,
     disabled: false,
     rounded: false,
@@ -196,6 +207,7 @@ export const FileInput: StoryObj<typeof FileInputButton> = {
   args: {
     accept: ['.pdf', '.png', '.jpg'],
     collapsePadding: false,
+    corners: 'normal',
     disabled: false,
     icon: <Upload />,
     iconPosition: 'start',
