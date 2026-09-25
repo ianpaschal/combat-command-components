@@ -34,6 +34,7 @@ export type ToggleGroupOption = {
   icon?: ReactElement;
   iconPosition?: 'start' | 'end';
   disabled?: boolean;
+  ariaLabel?: string;
 };
 
 export interface ToggleGroupProps extends Omit<HTMLAttributes<HTMLDivElement>,
@@ -71,6 +72,7 @@ export const ToggleGroup = forwardRef<ElementRef<typeof BaseToggleGroup>, Toggle
   orientation = 'horizontal',
   rounded = false,
   size = 'normal',
+  style,
   variant = 'shaded',
   ...props
 }, ref): JSX.Element => (
@@ -80,7 +82,7 @@ export const ToggleGroup = forwardRef<ElementRef<typeof BaseToggleGroup>, Toggle
     className={clsx(styles.toggleGroup, className)}
     data-border={border}
     data-equal={equal}
-    style={getRootStyle(equal, orientation, options.length)}
+    style={{ ...style, ...getRootStyle(equal, orientation, options.length) }}
     orientation={orientation}
     onValueChange={onChange}
   >
@@ -95,6 +97,7 @@ export const ToggleGroup = forwardRef<ElementRef<typeof BaseToggleGroup>, Toggle
         <BaseToggle
           value={option.value}
           disabled={option.disabled}
+          aria-label={option.ariaLabel}
           data-reverse={option.iconPosition === 'end'}
           className={clsx(getStyleClassNames({
             variant,

@@ -138,9 +138,9 @@ export const Icon: Story = {
   args: {
     ...sharedArgs,
     options: [
-      { value: 'left', icon: <AlignLeft /> },
-      { value: 'center', icon: <AlignCenter /> },
-      { value: 'right', icon: <AlignRight /> },
+      { value: 'left', icon: <AlignLeft />, ariaLabel: 'Align left' },
+      { value: 'center', icon: <AlignCenter />, ariaLabel: 'Align center' },
+      { value: 'right', icon: <AlignRight />, ariaLabel: 'Align right' },
     ],
     defaultValue: ['left'],
   },
