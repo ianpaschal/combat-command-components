@@ -46,6 +46,12 @@ describe('getResolvedProps', () => {
   it('does not throw when onChange is not provided.', () => {
     expect(() => getResolvedProps({ multiple: false }).onValueChange(['left'])).not.toThrow();
   });
+
+  it('calls onChange with undefined when deselecting the only pressed item and not multiple.', () => {
+    const onChange = vi.fn();
+    getResolvedProps({ multiple: false, onChange }).onValueChange([]);
+    expect(onChange).toHaveBeenCalledWith(undefined);
+  });
 });
 
 describe('getRootStyle', () => {

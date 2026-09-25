@@ -38,7 +38,7 @@ export const getResolvedProps = ({
     if (multiple) {
       (onChange as ((values: ToggleGroupValue[]) => void) | undefined)?.(values);
     } else {
-      (onChange as ((value: ToggleGroupValue) => void) | undefined)?.(values[0]);
+      (onChange as ((value: ToggleGroupValue | undefined) => void) | undefined)?.(values[0]);
     }
   },
 });

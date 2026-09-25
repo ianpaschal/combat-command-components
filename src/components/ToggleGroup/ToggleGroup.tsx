@@ -72,7 +72,7 @@ export type ToggleGroupProps = ToggleGroupBaseProps & (
   | {
     multiple?: false;
     defaultValue?: ToggleGroupValue;
-    onChange?: (value: ToggleGroupValue) => void;
+    onChange?: (value: ToggleGroupValue | undefined) => void;
     value?: ToggleGroupValue;
   }
 );
@@ -104,6 +104,7 @@ export const ToggleGroup = forwardRef<ElementRef<typeof BaseToggleGroup>, Toggle
     data-equal={equal}
     style={{ ...style, ...getRootStyle(equal, orientation, options.length) }}
     orientation={orientation}
+    multiple={multiple}
     {...getResolvedProps({
       defaultValue,
       multiple,
