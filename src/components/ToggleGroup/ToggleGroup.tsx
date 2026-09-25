@@ -19,6 +19,7 @@ import {
 import { getStyleClassNames } from '../../utils/getStyleClassNames';
 import {
   getItemPressedStyle,
+  getResolvedProps,
   getRootStyle,
   getSpacerStyle,
 } from './ToggleGroup.utils';
@@ -37,7 +38,7 @@ export type ToggleGroupOption = {
   ariaLabel?: string;
 };
 
-export interface ToggleGroupProps extends Omit<HTMLAttributes<HTMLDivElement>,
+interface ToggleGroupBaseProps extends Omit<HTMLAttributes<HTMLDivElement>,
   'defaultValue' |
   'onChange' |
   'value'
@@ -45,27 +46,45 @@ export interface ToggleGroupProps extends Omit<HTMLAttributes<HTMLDivElement>,
   activeVariant?: ElementVariant;
   border?: boolean;
   corners?: boolean | ElementCorners;
-  defaultValue?: ToggleGroupValue[];
   disabled?: boolean;
   equal?: boolean;
   intent?: ElementIntent;
   loopFocus?: boolean;
-  multiple?: boolean;
-  onChange?: (values: ToggleGroupValue[]) => void;
   options: ToggleGroupOption[];
   orientation?: ElementOrientation;
   rounded?: boolean;
   size?: ElementSize;
-  value?: ToggleGroupValue[];
   variant?: ElementVariant;
 }
+
+/* `multiple` decides whether `value`/`defaultValue`/`onChange` work with a
+ * single value (typical) or an array. Base UI's underlying `ToggleGroup` always
+ * works with arrays, so this wraps/unwraps at this boundary rather than pushing
+ * that array-handling onto every caller.
+ */
+export type ToggleGroupProps = ToggleGroupBaseProps & (
+  | {
+    multiple: true;
+    defaultValue?: ToggleGroupValue[];
+    onChange?: (value: ToggleGroupValue[]) => void;
+    value?: ToggleGroupValue[];
+  }
+  | {
+    multiple?: false;
+    defaultValue?: ToggleGroupValue;
+    onChange?: (value: ToggleGroupValue) => void;
+    value?: ToggleGroupValue;
+  }
+);
 
 export const ToggleGroup = forwardRef<ElementRef<typeof BaseToggleGroup>, ToggleGroupProps>(({
   activeVariant = 'solid',
   border = false,
   className,
+  defaultValue,
   equal = false,
   intent = 'secondary',
+  multiple,
   onChange,
   corners = 'normal',
   options,
@@ -73,6 +92,7 @@ export const ToggleGroup = forwardRef<ElementRef<typeof BaseToggleGroup>, Toggle
   rounded = false,
   size = 'normal',
   style,
+  value,
   variant = 'shaded',
   ...props
 }, ref): JSX.Element => (
@@ -84,7 +104,12 @@ export const ToggleGroup = forwardRef<ElementRef<typeof BaseToggleGroup>, Toggle
     data-equal={equal}
     style={{ ...style, ...getRootStyle(equal, orientation, options.length) }}
     orientation={orientation}
-    onValueChange={onChange}
+    {...getResolvedProps({
+      defaultValue,
+      multiple,
+      onChange,
+      value,
+    })}
   >
     {options.map((option, index) => (
       <Fragment key={option.value}>

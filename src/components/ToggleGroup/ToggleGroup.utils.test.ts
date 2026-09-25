@@ -2,13 +2,51 @@ import {
   describe,
   expect,
   it,
+  vi,
 } from 'vitest';
 
 import {
   getItemPressedStyle,
+  getResolvedProps,
   getRootStyle,
   getSpacerStyle,
 } from './ToggleGroup.utils';
+
+describe('getResolvedProps', () => {
+  it('leaves value/defaultValue undefined when neither is provided and not multiple.', () => {
+    const props = getResolvedProps({ multiple: false });
+    expect(props.value).toBeUndefined();
+    expect(props.defaultValue).toBeUndefined();
+  });
+
+  it('wraps a single value/defaultValue in an array when not multiple.', () => {
+    const props = getResolvedProps({ multiple: false, value: 'left', defaultValue: 'left' });
+    expect(props.value).toEqual(['left']);
+    expect(props.defaultValue).toEqual(['left']);
+  });
+
+  it('passes value/defaultValue through unwrapped when multiple.', () => {
+    const props = getResolvedProps({ multiple: true, value: ['left', 'right'], defaultValue: ['left'] });
+    expect(props.value).toEqual(['left', 'right']);
+    expect(props.defaultValue).toEqual(['left']);
+  });
+
+  it('calls onChange with the first value when not multiple.', () => {
+    const onChange = vi.fn();
+    getResolvedProps({ multiple: false, onChange }).onValueChange(['left', 'right']);
+    expect(onChange).toHaveBeenCalledWith('left');
+  });
+
+  it('calls onChange with the full array when multiple.', () => {
+    const onChange = vi.fn();
+    getResolvedProps({ multiple: true, onChange }).onValueChange(['left', 'right']);
+    expect(onChange).toHaveBeenCalledWith(['left', 'right']);
+  });
+
+  it('does not throw when onChange is not provided.', () => {
+    expect(() => getResolvedProps({ multiple: false }).onValueChange(['left'])).not.toThrow();
+  });
+});
 
 describe('getRootStyle', () => {
   it('leaves both grid template properties undefined when equal is false.', () => {

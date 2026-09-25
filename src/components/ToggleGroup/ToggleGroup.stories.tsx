@@ -5,7 +5,7 @@ import {
   AlignRight,
 } from 'lucide-react';
 
-import { ToggleGroup } from './ToggleGroup';
+import { ToggleGroup, ToggleGroupProps } from './ToggleGroup';
 
 const meta: Meta<typeof ToggleGroup> = {
   title: 'Components/ToggleGroup',
@@ -90,7 +90,7 @@ const meta: Meta<typeof ToggleGroup> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ToggleGroupProps>;
 
 const sharedArgs = {
   activeVariant: 'shaded',
@@ -116,7 +116,7 @@ export const Text: Story = {
       { value: 'light', text: 'Light' },
       { value: 'dark', text: 'Dark' },
     ],
-    defaultValue: ['system'],
+    defaultValue: 'system',
   },
 };
 
@@ -129,7 +129,7 @@ export const TextIcon: Story = {
       { value: 'center', text: 'Center', icon: <AlignCenter /> },
       { value: 'right', text: 'Right', icon: <AlignRight /> },
     ],
-    defaultValue: ['left'],
+    defaultValue: 'left',
   },
 };
 
@@ -142,6 +142,6 @@ export const Icon: Story = {
       { value: 'center', icon: <AlignCenter />, ariaLabel: 'Align center' },
       { value: 'right', icon: <AlignRight />, ariaLabel: 'Align right' },
     ],
-    defaultValue: ['left'],
+    defaultValue: 'left',
   },
 };

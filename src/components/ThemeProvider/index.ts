@@ -3,6 +3,7 @@ export {
   type ThemeProviderProps,
 } from './ThemeProvider';
 export { SYSTEM_THEME_KEY, THEME_STORAGE_KEY } from './ThemeProvider.constants';
+export type { ThemeOption } from './ThemeProvider.context';
 export { useTheme, useThemeManager } from './ThemeProvider.hooks';
 export {
   getThemeStyleSheet,

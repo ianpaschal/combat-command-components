@@ -29,9 +29,10 @@ export const ThemeProvider = ({
   const registry = useStore(themeStore);
   const options = useMemo(() => [
     { value: SYSTEM_THEME_KEY, label: 'System' },
-    ...Object.entries(registry).map(([k, { theme: { displayName } }]) => ({
+    ...Object.entries(registry).map(([k, { theme: { displayName, dark } }]) => ({
       value: k,
       label: displayName,
+      dark,
     })),
   ], [registry]);
 

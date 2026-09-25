@@ -5,6 +5,43 @@ import {
   ElementOrientation,
   ElementVariant,
 } from '../../types';
+import { ToggleGroupProps, ToggleGroupValue } from './ToggleGroup';
+
+type ToggleGroupGroupProps = Pick<ToggleGroupProps, 'defaultValue' | 'multiple' | 'onChange' | 'value'>;
+
+/**
+ * Adapts this component's own `value`/`defaultValue`/`onChange` (a single
+ * value when not `multiple`, matching how most consumers think about a
+ * single-selection group) into the array-shaped props base-ui's underlying
+ * `ToggleGroup` always expects, regardless of `multiple`.
+ *
+ * @param props - This component's own `value`/`defaultValue`/`onChange`/`multiple` props.
+ * @returns `value`/`defaultValue`/`onValueChange` props, ready to spread onto base-ui's `ToggleGroup`.
+ */
+export const getResolvedProps = ({
+  defaultValue,
+  multiple,
+  onChange,
+  value,
+}: ToggleGroupGroupProps): {
+    defaultValue: ToggleGroupValue[] | undefined;
+    onValueChange: (values: ToggleGroupValue[]) => void;
+    value: ToggleGroupValue[] | undefined;
+  } => ({
+  value: multiple ? (value as ToggleGroupValue[] | undefined) : (
+    value !== undefined ? [value as ToggleGroupValue] : undefined
+  ),
+  defaultValue: multiple ? (defaultValue as ToggleGroupValue[] | undefined) : (
+    defaultValue !== undefined ? [defaultValue as ToggleGroupValue] : undefined
+  ),
+  onValueChange: (values) => {
+    if (multiple) {
+      (onChange as ((values: ToggleGroupValue[]) => void) | undefined)?.(values);
+    } else {
+      (onChange as ((value: ToggleGroupValue) => void) | undefined)?.(values[0]);
+    }
+  },
+});
 
 /**
  * Computes the root element's grid template properties.
