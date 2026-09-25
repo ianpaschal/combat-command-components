@@ -14,7 +14,11 @@ import {
   ChevronUp,
 } from 'lucide-react';
 
-import { ElementSize } from '../../types';
+import {
+  ElementIntent,
+  ElementSize,
+  ElementVariant,
+} from '../../types';
 import { getStyleClassNames, sx } from '../../utils/getStyleClassNames';
 import { useSafeCollisionPadding } from './Select.hooks';
 
@@ -40,8 +44,10 @@ export interface SelectProps extends Omit<
   'size' |
   'value'
 > {
+  border?: boolean;
   defaultValue?: SelectValue | null;
   disabled?: boolean;
+  intent?: ElementIntent;
   multiple?: false;
   onChange?: (value: SelectValue | null) => void;
   options: SelectOption[];
@@ -49,15 +55,18 @@ export interface SelectProps extends Omit<
   renderValue?: (option: SelectOption | null) => ReactNode;
   size?: ElementSize;
   value?: SelectValue | null;
+  variant?: ElementVariant;
 }
 
 export const Select = forwardRef<SelectRef, SelectProps>(({
   autoComplete,
+  border = true,
   className,
   defaultValue,
   disabled,
   form,
   id,
+  intent = 'secondary',
   name,
   onChange,
   options,
@@ -68,6 +77,7 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
   size = 'normal',
   type: _type,
   value,
+  variant = 'ghost',
   ...triggerProps
 }, ref): JSX.Element => {
   const collisionPadding = useSafeCollisionPadding(8);
@@ -90,9 +100,9 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
         {...(triggerProps as ButtonHTMLAttributes<HTMLButtonElement>)}
         className={clsx(styles.selectTrigger, getStyleClassNames({
           corners: 'normal',
-          intent: 'secondary',
-          variant: 'ghost',
-          border: true,
+          intent,
+          variant,
+          border,
           size,
         }), className)}
       >

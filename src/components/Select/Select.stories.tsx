@@ -20,6 +20,23 @@ const meta: Meta<typeof Select> = {
   tags: ['autodocs'],
   argTypes: {
     className: { table: { disable: true } },
+    border: {
+      control: 'boolean',
+      description: 'Whether the input has a border.',
+      table: { category: 'Appearance' },
+    },
+    intent: {
+      control: 'select',
+      options: ['primary', 'secondary', 'danger', 'warning', 'success', 'info'],
+      description: 'The color of the input.',
+      table: { category: 'Appearance' },
+    },
+    variant: {
+      control: 'select',
+      options: ['solid', 'shaded', 'ghost', 'surface'],
+      description: 'The variant of the input.',
+      table: { category: 'Appearance' },
+    },
     defaultValue: { table: { disable: true } },
     disabled: {
       control: 'boolean',
@@ -44,8 +61,11 @@ type Story = StoryObj<typeof meta>;
 export const Text: Story = {
   name: 'Text',
   args: {
+    border: true,
     disabled: false,
+    intent: 'secondary',
     size: 'normal',
+    variant: 'ghost',
     options: [
       { value: 'apple', label: 'Apple' },
       { value: 'banana', label: 'Banana' },
@@ -60,8 +80,11 @@ export const Text: Story = {
 export const Numeric: Story = {
   name: 'Numeric',
   args: {
+    border: true,
     disabled: false,
+    intent: 'secondary',
     size: 'normal',
+    variant: 'ghost',
     options: [
       { value: 1, label: 'Critical' },
       { value: 2, label: 'High' },
@@ -76,8 +99,11 @@ export const Numeric: Story = {
 export const CustomItemComponents: Story = {
   name: 'Custom Item Components',
   args: {
+    border: true,
     disabled: false,
+    intent: 'secondary',
     size: 'normal',
+    variant: 'ghost',
     options: [
       {
         value: '7b90a423-1979-4e61-a30b-b19d663b3e43',
@@ -103,8 +129,11 @@ export const ControlledValue: Story = {
     placeholder: { table: { disable: true } },
   },
   args: {
+    border: true,
     disabled: false,
+    intent: 'secondary',
     size: 'normal',
+    variant: 'ghost',
     options: [
       { value: 'apple', label: 'Apple' },
       { value: 'banana', label: 'Banana' },
@@ -119,8 +148,11 @@ export const ControlledValue: Story = {
 export const ManyItems: Story = {
   name: 'Many (200+) Items',
   args: {
+    border: true,
     disabled: false,
+    intent: 'secondary',
     size: 'normal',
+    variant: 'ghost',
     options: Array.from({ length: 200 }, (_, i) => ({
       value: i + 1,
       label: `Item ${i + 1}`,
