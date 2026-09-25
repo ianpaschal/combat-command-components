@@ -13,6 +13,8 @@ export const ELEMENT_INTENTS = [
   'info',
 ] as const;
 
+export type ElementCorners = 'tight' | 'normal' | 'wide';
+
 export type ElementIntent = (typeof ELEMENT_INTENTS)[number];
 
 export type ElementOrientation = 'horizontal' | 'vertical';

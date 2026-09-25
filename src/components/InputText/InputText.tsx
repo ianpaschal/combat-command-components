@@ -5,6 +5,7 @@ import {
 } from 'react';
 import clsx from 'clsx';
 
+import { ElementCorners } from '../../types';
 import { getStyleClassNames } from '../../utils/getStyleClassNames';
 
 import styles from './InputText.module.scss';
@@ -12,10 +13,12 @@ import styles from './InputText.module.scss';
 export interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: ReactElement;
   loading?: boolean;
+  corners?: boolean | ElementCorners;
 }
 
 export const InputText = forwardRef<HTMLInputElement, InputTextProps>(({
   className,
+  corners = 'normal',
   icon,
   loading = false, // TODO: Implement skeleton loading state
   disabled,
@@ -32,7 +35,7 @@ export const InputText = forwardRef<HTMLInputElement, InputTextProps>(({
     <input
       ref={ref}
       className={clsx(getStyleClassNames({
-        corners: 'normal',
+        corners,
         variant: 'ghost',
         border: true,
         size: 'normal',

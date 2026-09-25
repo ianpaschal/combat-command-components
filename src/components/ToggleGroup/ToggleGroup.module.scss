@@ -1,0 +1,183 @@
+@use "../../style/layers";
+
+@layer components {
+  .toggleGroup {
+    --toggle-group-spacer-size: 0px;
+
+    display: inline-flex;
+    flex-direction: row;
+
+    &[data-border="true"] {
+      --toggle-group-spacer-size: var(--border-width);
+    }
+
+    &[data-orientation="vertical"] {
+      flex-direction: column;
+    }
+
+    &[data-equal="true"] {
+      display: inline-grid;
+
+      &[data-orientation="vertical"] {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &-item {
+      cursor: pointer;
+
+      position: relative;
+
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: center;
+
+      line-height: 1rem;
+      white-space: nowrap;
+
+      &[data-reverse="true"] {
+        flex-direction: row-reverse;
+      }
+
+      &[data-disabled] {
+        cursor: not-allowed;
+        opacity: 0.4;
+      }
+
+      /* The item's own class names always reflect its unpressed variant;
+       * base-ui sets `data-pressed` natively, and these custom properties
+       * (set inline per-item) are what this rule swaps in - so the
+       * pressed/unpressed variant swap never needs to be decided in JS.
+       */
+      &[data-pressed] {
+        --variant-border: var(--toggle-group-item-pressed-border-color);
+
+        color: var(--toggle-group-item-pressed-color, inherit);
+        background-color: var(--toggle-group-item-pressed-background-color);
+      }
+    }
+
+    &-spacer {
+      flex-shrink: 0;
+      border-color: transparent;
+      background-color: transparent;
+
+      /* The width itself never animates (a 1px change looks stepped/jittery
+       * no matter how it's eased), so it's always a 0s (instant) transition.
+       * The delay is what's doing the work: hiding first sets border-color/
+       * background-color transparent (250ms fade) while the width transition
+       * is delayed by that same 250ms, so the spacer keeps its full width
+       * until the fade finishes, then collapses in a single frame instead of
+       * collapsing immediately and leaving nothing for the fade to render.
+       */
+      @media (prefers-reduced-motion: no-preference) {
+        transition:
+          background-color 250ms ease-in-out,
+          border-color 250ms ease-in-out,
+          border-left-width 0s linear 250ms,
+          border-top-width 0s linear 250ms;
+      }
+    }
+
+    &[data-border="true"] &-spacer {
+      border-color: var(--toggle-group-spacer-border-color);
+      background-color: var(--toggle-group-spacer-background-color);
+
+      /* Showing goes the other way: no delay, so the width snaps to its full
+       * size immediately, giving the color something to fade into right away.
+       */
+      @media (prefers-reduced-motion: no-preference) {
+        transition:
+          background-color 250ms ease-in-out,
+          border-color 250ms ease-in-out,
+          border-left-width 0s linear 0s,
+          border-top-width 0s linear 0s;
+      }
+    }
+
+    &[data-orientation="horizontal"] &-spacer {
+      width: 0;
+      border-left-style: solid;
+      border-left-width: var(--toggle-group-spacer-size);
+    }
+
+    &[data-orientation="vertical"] &-spacer {
+      width: auto;
+      height: 0;
+      border-top-style: solid;
+      border-top-width: var(--toggle-group-spacer-size);
+    }
+
+    /* Higher specificity than the plain `[data-border="true"] &-spacer` rule
+     * above, so this wins whenever either neighboring item is pressed -
+     * `:has()` covers the next item, the adjacent sibling combinator covers
+     * the previous one - without needing to know which one in JS.
+     */
+    &[data-border="true"] {
+      .toggleGroup-item[data-pressed] + .toggleGroup-spacer,
+      .toggleGroup-spacer:has(+ .toggleGroup-item[data-pressed]) {
+        border-color: var(--toggle-group-spacer-active-border-color);
+        background-color: var(--toggle-group-spacer-active-background-color);
+      }
+    }
+
+    &[data-orientation="horizontal"] {
+      .toggleGroup-item:first-child:not(:only-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .toggleGroup-item:last-child:not(:only-child) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      /* stylelint-disable-next-line no-descending-specificity */
+      .toggleGroup-item:not(:first-child, :last-child) {
+        border-radius: 0;
+      }
+
+      .toggleGroup-item {
+        /* stylelint-disable-next-line no-descending-specificity */
+        &:not(:first-child) {
+          border-left-width: 0;
+        }
+
+        /* stylelint-disable-next-line no-descending-specificity */
+        &:not(:last-child) {
+          border-right-width: 0;
+        }
+      }
+    }
+
+    &[data-orientation="vertical"] {
+      .toggleGroup-item:first-child:not(:only-child) {
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+
+      .toggleGroup-item:last-child:not(:only-child) {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      /* stylelint-disable-next-line no-descending-specificity */
+      .toggleGroup-item:not(:first-child, :last-child) {
+        border-radius: 0;
+      }
+
+      .toggleGroup-item {
+        /* stylelint-disable-next-line no-descending-specificity */
+        &:not(:first-child) {
+          border-top-width: 0;
+        }
+
+        /* stylelint-disable-next-line no-descending-specificity */
+        &:not(:last-child) {
+          border-bottom-width: 0;
+        }
+      }
+    }
+  }
+}

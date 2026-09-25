@@ -9,6 +9,7 @@ $sides: "top", "right", "bottom", "left";
   @include text.ui;
 
   border-color: transparent;
+  border-style: solid;
   border-width: var(--border-width);
 
   transition-timing-function: ease-in-out;

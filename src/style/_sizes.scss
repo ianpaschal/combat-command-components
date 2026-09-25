@@ -1,3 +1,6 @@
+// Keep in sync with `ElementSize` in `src/types.ts`.
+$sizes: "small", "normal", "large";
+
 // Ensure hit-box is at least 40px, regardless of the element's own visual size.
 @mixin min-hit-area($reference-size) {
   &::before {

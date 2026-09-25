@@ -18,6 +18,12 @@ const meta: Meta<typeof InputText> = {
   ],
   tags: ['autodocs'],
   argTypes: {
+    corners: {
+      control: 'select',
+      options: ['tight', 'normal', 'wide'],
+      description: 'The corner radius of the input.',
+      table: { category: 'Appearance' },
+    },
     disabled: {
       control: 'boolean',
       description: 'Whether the component is disabled.',
@@ -33,6 +39,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   name: 'Default',
   args: {
+    corners: 'normal',
     disabled: false,
     placeholder: 'Enter your name...',
   },
@@ -41,6 +48,7 @@ export const Default: Story = {
 export const WithIcon: Story = {
   name: 'With Icon',
   args: {
+    corners: 'normal',
     disabled: false,
     placeholder: 'Search...',
     icon: <Search />,
