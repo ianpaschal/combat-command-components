@@ -47,7 +47,7 @@ export const TransferListGroup = ({
     }
     const state: TransferListItemState = {
       checked: checked.includes(item.value),
-      disabled: item.disabled,
+      disabled: disabled || item.disabled,
     };
     return [{
       children: renderItem ? renderItem(item, state) : item.label,
@@ -83,6 +83,7 @@ export const TransferListGroup = ({
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
         placeholder={searchPlaceholder}
+        aria-label={searchPlaceholder}
         disabled={disabled}
       />
       <label

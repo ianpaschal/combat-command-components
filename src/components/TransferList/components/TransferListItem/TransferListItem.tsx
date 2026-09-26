@@ -20,13 +20,13 @@ export const TransferListItem = ({
       corners: 'tight',
       size: 'small',
     }, styles.transferListItem)}
-    aria-disabled={disabled}
+    data-disabled={disabled || undefined}
     role="button"
   >
     <BaseCheckbox.Root
-      className={clsx(sx({
-        variant: 'ghost',
-        intent: 'secondary',
+      className={(state) => clsx(sx({
+        variant: state.checked ? 'solid' : 'ghost',
+        intent: state.checked ? 'primary' : 'secondary',
         border: true,
         corners: 'tight',
       }), checkboxStyles.checkboxControl)}

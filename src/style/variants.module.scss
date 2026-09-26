@@ -22,9 +22,11 @@ $sides: "top", "right", "bottom", "left";
   &[data-disabled],
   &[aria-disabled="true"] {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: var(--disabled-opacity, 0.5);
 
     * {
+      --disabled-opacity: 1;
+
       pointer-events: none;
     }
   }

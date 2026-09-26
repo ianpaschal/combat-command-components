@@ -29,14 +29,6 @@
       padding: 0;
 
       outline: 0;
-
-      &[data-checked],
-      &[data-indeterminate] {
-        --variant-border: var(--color-solid-primary-bg);
-
-        color: var(--color-solid-primary-text);
-        background-color: var(--color-solid-primary-bg);
-      }
     }
 
     &-indicator {

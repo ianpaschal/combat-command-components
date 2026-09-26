@@ -11,7 +11,7 @@ export type TransferListItemDef = {
 
 export type TransferListGroupDef = {
   key: TransferListGroupKey;
-  title: ReactNode;
+  title: string;
 };
 
 export type TransferListOrientation = 'horizontal' | 'vertical';

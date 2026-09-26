@@ -2,6 +2,7 @@ import {
   CSSProperties,
   Fragment,
   ReactNode,
+  useEffect,
   useState,
 } from 'react';
 import clsx from 'clsx';
@@ -46,19 +47,27 @@ export const TransferList = ({
   orientation = 'horizontal',
   renderItem,
   searchPlaceholder = 'Filter...',
-  value,
+  value: controlledValue,
 }: TransferListProps): JSX.Element => {
-  const [state, setState] = useState<TransferListState>(valueToState(value ?? defaultValue ?? {}));
+  const [value, setValue] = useState<TransferListValue>(defaultValue ?? {});
+
+  const state = valueToState(controlledValue ?? value);
 
   const [staged, setStaged] = useState<Record<ListId, ItemValue[]>>({});
+
+  useEffect(() => {
+    if (disabled) {
+      setStaged({});
+    }
+  }, [disabled]);
 
   const getListKey = (item: TransferListItemDef): string => (
     groups.some((list) => list.key === state[item.value]) ? state[item.value] : groups[0].key
   );
 
   const handleChange = (next: TransferListState) => {
-    if (value === undefined) {
-      setState(next);
+    if (controlledValue === undefined) {
+      setValue(stateToValue(next, groups, items));
     }
     onChange?.(stateToValue(next, groups, items));
   };
