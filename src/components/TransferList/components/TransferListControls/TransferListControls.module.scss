@@ -1,0 +1,12 @@
+@use "../../../../style/layers";
+@use "../../../../style/flex";
+
+@layer components {
+  .transfer-list-controls {
+    @include flex.column($gap: 0.5rem, $xAlign: center, $yAlign: center);
+
+    &[data-orientation="vertical"] {
+      @include flex.row($gap: 0.5rem, $xAlign: center, $yAlign: center);
+    }
+  }
+}

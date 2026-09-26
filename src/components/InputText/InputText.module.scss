@@ -21,10 +21,16 @@
       width: 2.5rem;
       height: 2.5rem;
 
+      color: var(--color-text-muted);
+
       svg {
         width: 1rem;
         height: 1rem;
       }
+    }
+
+    &:has(input:disabled) .icon-wrapper {
+      opacity: 0.6;
     }
 
     input {

@@ -15,6 +15,10 @@
     line-height: 1rem;
     white-space: nowrap;
 
+    &-text {
+      padding: 0 0.125rem;
+    }
+
     &[data-align="start"] {
       justify-content: start;
     }

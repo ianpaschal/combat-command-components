@@ -30,9 +30,9 @@ export const Checkbox = forwardRef<ElementRef<typeof BaseCheckbox.Root>, Checkbo
   <BaseCheckbox.Root
     ref={ref}
     {...props}
-    className={clsx(getStyleClassNames({
-      variant: 'ghost',
-      intent: 'secondary',
+    className={(state) => clsx(getStyleClassNames({
+      variant: state.checked || state.indeterminate ? 'solid' : 'ghost',
+      intent: state.checked || state.indeterminate ? 'primary' : 'secondary',
       border: true,
       corners: 'tight',
     }), styles.checkboxControl, className)}
