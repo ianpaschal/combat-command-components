@@ -100,7 +100,7 @@ export const TransferListGroup = ({
           indeterminate={someChecked && !allChecked}
           onChange={handleSelectAll}
           disabled={selectableValues.length === 0}
-          tabIndex={disabled ? -1 : undefined}
+          {...(disabled && { tabIndex: -1 })}
         />
         <span>{checked.length} selected</span>
       </label>
@@ -108,7 +108,7 @@ export const TransferListGroup = ({
         corners: 'normal',
         border: true,
         variant: 'ghost',
-      }, styles.transferListGroupScrollArea)} disabled={disabled || undefined}>
+      }, styles.transferListGroupScrollArea)} disabled={disabled || undefined} focusable={false}>
         {itemProps.length === 0 ? (
           <div className={styles.transferListGroupEmptyState}>
             {emptyMessage}

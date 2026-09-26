@@ -12,8 +12,8 @@ const meta: Meta<typeof TransferList> = {
     layout: 'centered',
   },
   decorators: [
-    (Story) => (
-      <div style={{ width: 560 }}>
+    (Story, { args }) => (
+      <div style={{ width: args.orientation === 'vertical' ? 320 : 560 }}>
         <Story />
       </div>
     ),
@@ -24,6 +24,12 @@ const meta: Meta<typeof TransferList> = {
       control: 'boolean',
       description: 'Whether the component is disabled.',
       table: { category: 'Behavior' },
+    },
+    orientation: {
+      control: 'inline-radio',
+      options: ['horizontal', 'vertical'],
+      description: 'Whether the groups are laid out side by side or stacked.',
+      table: { category: 'Appearance' },
     },
     searchPlaceholder: {
       control: 'text',
@@ -103,6 +109,20 @@ export const Default: Story = {
   name: 'Default',
   args: {
     disabled: false,
+    orientation: 'horizontal',
+    groups: twoGroups,
+    items: fruitItems,
+    defaultValue: {
+      selected: ['banana', 'fig', 'mango', 'pear', 'watermelon'],
+    },
+  },
+};
+
+export const Vertical: Story = {
+  name: 'Vertical',
+  args: {
+    disabled: false,
+    orientation: 'vertical',
     groups: twoGroups,
     items: fruitItems,
     defaultValue: {
@@ -115,6 +135,7 @@ export const ThreeLists: Story = {
   name: 'Three Lists',
   args: {
     disabled: false,
+    orientation: 'horizontal',
     groups: threeGroups,
     items: fruitItems,
     defaultValue: {
@@ -142,6 +163,7 @@ export const CustomItems: Story = {
   name: 'Custom Items',
   args: {
     disabled: false,
+    orientation: 'horizontal',
     groups: [
       { key: 'users', title: 'Users' },
       { key: 'invited', title: 'Invited' },
@@ -164,6 +186,7 @@ export const Controlled: Story = {
   name: 'Controlled',
   args: {
     disabled: false,
+    orientation: 'horizontal',
   },
   render: (args) => (
     <ControlledStory<TransferListValue, TransferListProps>

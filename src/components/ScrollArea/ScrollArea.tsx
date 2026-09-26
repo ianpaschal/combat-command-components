@@ -13,6 +13,7 @@ import styles from './ScrollArea.module.scss';
 
 type ScrollAreaProps = ComponentPropsWithoutRef<'div'> & {
   disabled?: boolean;
+  focusable?: boolean;
   offset?: Partial<Record<'top' | 'bottom' | 'left' | 'right', string | number | undefined>>;
 };
 
@@ -20,6 +21,7 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
   className,
   children,
   disabled = false,
+  focusable = true,
   onScroll,
   offset,
   style,
@@ -38,7 +40,11 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
     data-disabled={disabled || undefined}
     {...props}
   >
-    <BaseScrollArea.Viewport className={styles.scrollAreaViewport} onScroll={onScroll}>
+    <BaseScrollArea.Viewport
+      className={styles.scrollAreaViewport}
+      onScroll={onScroll}
+      {...(!focusable && { tabIndex: -1 })}
+    >
       <BaseScrollArea.Content>
         {children}
       </BaseScrollArea.Content>

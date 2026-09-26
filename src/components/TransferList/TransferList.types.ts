@@ -14,6 +14,8 @@ export type TransferListGroupDef = {
   title: ReactNode;
 };
 
+export type TransferListOrientation = 'horizontal' | 'vertical';
+
 export type TransferListState = Record<TransferListItemValue, TransferListGroupKey>;
 
 export type TransferListValue = Record<TransferListGroupKey, TransferListItemValue[]>;

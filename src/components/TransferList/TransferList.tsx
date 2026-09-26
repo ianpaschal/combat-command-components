@@ -1,4 +1,5 @@
 import {
+  CSSProperties,
   Fragment,
   ReactNode,
   useState,
@@ -11,6 +12,7 @@ import {
   TransferListGroupDef,
   TransferListItemDef,
   TransferListItemState,
+  TransferListOrientation,
   TransferListState,
   TransferListValue,
 } from './TransferList.types';
@@ -28,6 +30,7 @@ export interface TransferListProps {
   groups: TransferListGroupDef[];
   onChange?: (value: TransferListValue) => void;
   items: TransferListItemDef[];
+  orientation?: TransferListOrientation;
   renderItem?: (item: TransferListItemDef, state: TransferListItemState) => ReactNode;
   searchPlaceholder?: string;
   value?: TransferListValue;
@@ -40,6 +43,7 @@ export const TransferList = ({
   groups,
   onChange,
   items,
+  orientation = 'horizontal',
   renderItem,
   searchPlaceholder = 'Filter...',
   value,
@@ -78,13 +82,18 @@ export const TransferList = ({
     <div
       className={clsx(styles.transferList, className)}
       data-disabled={disabled || undefined}
-      data-orientation="horizontal"
+      data-orientation={orientation}
       data-batch
-      style={{
+      style={orientation === 'horizontal' ? {
         gridTemplateAreas: 'none',
         gridTemplateRows: 'auto',
         gridTemplateColumns: groups.map(() => '1fr').join(' auto '),
-      }}
+      } : {
+        '--transfer-list-group-height': '10rem',
+        gridTemplateAreas: 'none',
+        gridTemplateRows: 'none',
+        gridTemplateColumns: '1fr',
+      } as CSSProperties}
     >
       {groups.map((group, index) => (
         <Fragment key={group.key}>
@@ -103,6 +112,7 @@ export const TransferList = ({
             groups={groups}
             index={index}
             onMove={moveItems}
+            orientation={orientation}
             staged={staged}
           />
         </Fragment>

@@ -1,7 +1,12 @@
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+} from 'lucide-react';
 
 import { Button } from '../../../Button';
-import { TransferListGroupDef } from '../../TransferList.types';
+import { TransferListGroupDef, TransferListOrientation } from '../../TransferList.types';
 
 import styles from './TransferListControls.module.scss';
 
@@ -10,6 +15,7 @@ export interface TransferListControlsProps {
   groups: TransferListGroupDef[];
   index: number;
   onMove: (values: string[], groupKey: string) => void;
+  orientation?: TransferListOrientation;
   staged: Record<string, string[]>;
 }
 
@@ -18,6 +24,7 @@ export const TransferListControls = ({
   groups,
   index,
   onMove,
+  orientation = 'horizontal',
   staged,
 }: TransferListControlsProps): JSX.Element | null => {
   const group = groups[index];
@@ -30,14 +37,14 @@ export const TransferListControls = ({
   const rightDisabled = disabled || rightChecked.length === 0;
   const leftDisabled = disabled || leftChecked.length === 0;
   return (
-    <div className={styles.transferListControls}>
+    <div className={styles.transferListControls} data-orientation={orientation}>
       <Button
         size="small"
         variant={rightDisabled ? 'ghost' : 'solid'}
         intent={rightDisabled ? 'secondary' : 'primary'}
         border
         aria-label={`Move checked to ${nextGroup.title}`}
-        icon={<ArrowRight />}
+        icon={orientation === 'horizontal' ? <ArrowRight /> : <ArrowDown />}
         onClick={() => onMove(rightChecked, nextGroup.key)}
         disabled={rightDisabled}
       />
@@ -47,7 +54,7 @@ export const TransferListControls = ({
         intent={leftDisabled ? 'secondary' : 'primary'}
         border
         aria-label={`Move checked to ${group.title}`}
-        icon={<ArrowLeft />}
+        icon={orientation === 'horizontal' ? <ArrowLeft /> : <ArrowUp />}
         onClick={() => onMove(leftChecked, group.key)}
         disabled={leftDisabled}
       />

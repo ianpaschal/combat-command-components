@@ -5,7 +5,7 @@
 @layer components {
   .transfer-list-group {
     display: grid;
-    grid-template-rows: auto auto auto 16rem;
+    grid-template-rows: auto auto auto var(--transfer-list-group-height, 16rem);
     flex: 1 1 0;
     min-width: 0;
 
