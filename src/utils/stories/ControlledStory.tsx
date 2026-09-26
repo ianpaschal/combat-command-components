@@ -5,6 +5,8 @@ import {
 } from 'react';
 
 import { Button } from '../../components/Button';
+import { ScrollArea } from '../../components/ScrollArea';
+import { sx } from '../getStyleClassNames';
 
 export interface ControlledStoryAction<TValue> {
   label: string;
@@ -35,7 +37,9 @@ export const ControlledStory = <
   component: Component,
   initialValue,
   props,
-  renderValue = (value) => JSON.stringify(value),
+  renderValue = (value) => (
+    <pre style={{ margin: 0 }}>{JSON.stringify(value, null, 2)}</pre>
+  ),
 }: ControlledStoryProps<TValue, TProps>): JSX.Element => {
   const [value, setValue] = useState<TValue>(initialValue);
 
@@ -46,7 +50,17 @@ export const ControlledStory = <
         value={value}
         onChange={setValue}
       />
-      <span>Current value: <strong>{renderValue(value)}</strong></span>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <strong>Current value:</strong>
+        <ScrollArea
+          className={sx({ variant: 'surface', border: true, corners: 'normal' })}
+          style={{ height: 'auto', maxHeight: 240, fontSize: 12, fontWeight: 400 }}
+        >
+          <div style={{ padding: 12 }}>
+            {renderValue(value)}
+          </div>
+        </ScrollArea>
+      </div>
       <div style={{ display: 'flex', gap: 8 }}>
         {actions.map((action) => (
           <Button key={action.label} text={action.label} onClick={() => setValue(action.value)} />

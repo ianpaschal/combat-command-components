@@ -12,12 +12,14 @@ import { getStyleClassNames } from '../../utils/getStyleClassNames';
 import styles from './ScrollArea.module.scss';
 
 type ScrollAreaProps = ComponentPropsWithoutRef<'div'> & {
+  disabled?: boolean;
   offset?: Partial<Record<'top' | 'bottom' | 'left' | 'right', string | number | undefined>>;
 };
 
 export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
   className,
   children,
+  disabled = false,
   onScroll,
   offset,
   style,
@@ -33,6 +35,7 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
       '--scroll-area-offset-left': getCssValue(offset?.left),
       '--scroll-area-offset-right': getCssValue(offset?.right),
     } as CSSProperties}
+    data-disabled={disabled || undefined}
     {...props}
   >
     <BaseScrollArea.Viewport className={styles.scrollAreaViewport} onScroll={onScroll}>
@@ -40,13 +43,17 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
         {children}
       </BaseScrollArea.Content>
     </BaseScrollArea.Viewport>
-    <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="vertical">
-      <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'secondary' }), styles.scrollAreaThumb)} />
-    </BaseScrollArea.Scrollbar>
-    <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="horizontal">
-      <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'secondary' }), styles.scrollAreaThumb)} />
-    </BaseScrollArea.Scrollbar>
-    <BaseScrollArea.Corner />
+    {!disabled && (
+      <>
+        <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="vertical">
+          <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'secondary' }), styles.scrollAreaThumb)} />
+        </BaseScrollArea.Scrollbar>
+        <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="horizontal">
+          <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'secondary' }), styles.scrollAreaThumb)} />
+        </BaseScrollArea.Scrollbar>
+        <BaseScrollArea.Corner />
+      </>
+    )}
   </BaseScrollArea.Root>
 ));
 

@@ -1,9 +1,5 @@
 export declare const transferList: string;
 export declare const transferListAvailableLabel: string;
 export declare const transferListAvailableList: string;
-export declare const transferListControls: string;
-export declare const transferListCount: string;
-export declare const transferListHeader: string;
-export declare const transferListLabel: string;
 export declare const transferListSelectedLabel: string;
 export declare const transferListSelectedList: string;

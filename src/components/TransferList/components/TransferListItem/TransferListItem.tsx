@@ -6,9 +6,9 @@ import { sx } from '../../../../utils';
 import { TransferListItemProps } from '../../TransferList.types';
 
 import checkboxStyles from '../../../Checkbox/Checkbox.module.scss';
-import styles from './TransferListCheckboxItem.module.scss';
+import styles from './TransferListItem.module.scss';
 
-export const TransferListCheckboxItem = ({
+export const TransferListItem = ({
   children,
   disabled = false,
   value,
@@ -19,7 +19,7 @@ export const TransferListCheckboxItem = ({
       intent: 'secondary',
       corners: 'tight',
       size: 'small',
-    }, styles.transferListCheckboxItem)}
+    }, styles.transferListItem)}
     aria-disabled={disabled}
     role="button"
   >
@@ -41,4 +41,4 @@ export const TransferListCheckboxItem = ({
   </label>
 );
 
-TransferListCheckboxItem.displayName = 'TransferListCheckboxItem';
+TransferListItem.displayName = 'TransferListItem';

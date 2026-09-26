@@ -1,0 +1,12 @@
+export declare const transferListGroup: string;
+export declare const transferListGroupBody: string;
+export declare const transferListGroupBulk: string;
+export declare const transferListGroupEmptyState: string;
+export declare const transferListGroupHeader: string;
+export declare const transferListGroupHeaderCount: string;
+export declare const transferListGroupHeaderText: string;
+export declare const transferListGroupItems: string;
+export declare const transferListGroupScrollArea: string;
+export declare const transferListGroupSearch: string;
+export declare const transferListGroupSelectionContent: string;
+export declare const transferListGroupSelectionPanel: string;

@@ -18,17 +18,23 @@ $sides: "top", "right", "bottom", "left";
 }
 
 @mixin interactive($variant: "solid") {
+  &:disabled,
+  &[data-disabled],
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    * {
+      pointer-events: none;
+    }
+  }
+
+  /* stylelint-disable no-descending-specificity */
   /* stylelint-disable-next-line @stylistic/max-line-length */
   &:where(button, input, select, textarea, a, [role="button"], [role="menuitem"], [role="option"], [role="checkbox"], [role="switch"]) {
     text-decoration: none; // For applying variants to links
 
-    &:disabled,
-    &[data-disabled] {
-      cursor: not-allowed;
-      opacity: 0.4;
-    }
-
-    &:not(:disabled, [data-disabled], [data-readonly]) {
+    &:not(:disabled, [data-disabled], [aria-disabled="true"], [data-readonly]) {
       cursor: pointer;
       user-select: none;
 
@@ -55,6 +61,7 @@ $sides: "top", "right", "bottom", "left";
       }
     }
   }
+  /* stylelint-enable no-descending-specificity */
 }
 
 @mixin solid($intent: "secondary") {

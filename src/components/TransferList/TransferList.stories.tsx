@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { ControlledStory } from '../../utils/stories/ControlledStory';
 import { UserOption } from '../Select/stories/UserOption';
-import { TransferList } from './TransferList';
+import { TransferList, TransferListProps } from './TransferList';
+import { TransferListValue } from './TransferList.types';
 
 const meta: Meta<typeof TransferList> = {
   title: 'Components/TransferList',
@@ -24,28 +25,14 @@ const meta: Meta<typeof TransferList> = {
       description: 'Whether the component is disabled.',
       table: { category: 'Behavior' },
     },
-    batch: {
-      control: 'boolean',
-      description: 'Renders checkboxes and center arrow buttons for moving multiple items at once, instead of moving items on click.',
-      table: { category: 'Behavior' },
-    },
-    availableLabel: {
-      control: 'text',
-      description: 'The label for the available (left) pane.',
-      table: { category: 'Content' },
-    },
-    selectedLabel: {
-      control: 'text',
-      description: 'The label for the selected (right) pane.',
-      table: { category: 'Content' },
-    },
     searchPlaceholder: {
       control: 'text',
       description: 'The placeholder text for each pane\'s search input.',
       table: { category: 'Content' },
     },
     className: { table: { disable: true } },
-    options: { table: { disable: true } },
+    groups: { table: { disable: true } },
+    items: { table: { disable: true } },
     renderItem: { table: { disable: true } },
     value: { table: { disable: true } },
     onChange: { table: { disable: true } },
@@ -55,7 +42,7 @@ const meta: Meta<typeof TransferList> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const fruitOptions = [
+const fruitItems = [
   'Apple',
   'Apricot',
   'Banana',
@@ -101,27 +88,43 @@ const fruitOptions = [
   'Watermelon',
 ].map((label) => ({ value: label.toLowerCase().replace(/\s+/g, '-'), label }));
 
+const twoGroups = [
+  { key: 'available', title: 'Available' },
+  { key: 'selected', title: 'Selected' },
+];
+
+const threeGroups = [
+  { key: 'available', title: 'Available' },
+  { key: 'shortlist', title: 'Shortlist' },
+  { key: 'selected', title: 'Selected' },
+];
+
 export const Default: Story = {
   name: 'Default',
   args: {
     disabled: false,
-    batch: false,
-    options: fruitOptions,
-    defaultValue: ['banana', 'fig', 'mango', 'pear', 'watermelon'],
+    groups: twoGroups,
+    items: fruitItems,
+    defaultValue: {
+      selected: ['banana', 'fig', 'mango', 'pear', 'watermelon'],
+    },
   },
 };
 
-export const Batch: Story = {
-  name: 'Batch',
+export const ThreeLists: Story = {
+  name: 'Three Lists',
   args: {
     disabled: false,
-    batch: true,
-    options: fruitOptions,
-    defaultValue: ['banana', 'fig', 'mango', 'pear', 'watermelon'],
+    groups: threeGroups,
+    items: fruitItems,
+    defaultValue: {
+      shortlist: ['banana', 'fig'],
+      selected: ['mango', 'pear'],
+    },
   },
 };
 
-const userOptions = [
+const userItems = [
   'Alice A.',
   'Bob B.',
   'Charlie C.',
@@ -139,11 +142,12 @@ export const CustomItems: Story = {
   name: 'Custom Items',
   args: {
     disabled: false,
-    batch: false,
-    options: userOptions,
-    defaultValue: ['bob-b-', 'eve-e-'],
-    availableLabel: 'Users',
-    selectedLabel: 'Invited',
+    groups: [
+      { key: 'users', title: 'Users' },
+      { key: 'invited', title: 'Invited' },
+    ],
+    items: userItems,
+    defaultValue: { invited: ['bob-b-', 'eve-e-'] },
     searchPlaceholder: 'Search users...',
     renderItem: (item) => (
       <UserOption user={{ name: `${item.label}` }} />
@@ -151,21 +155,24 @@ export const CustomItems: Story = {
   },
 };
 
+const getFruitValue = (selected: string[]): TransferListValue => ({
+  available: fruitItems.map((o) => o.value).filter((v) => !selected.includes(v)),
+  selected,
+});
+
 export const Controlled: Story = {
   name: 'Controlled',
   args: {
     disabled: false,
-    batch: false,
   },
   render: (args) => (
-    <ControlledStory
+    <ControlledStory<TransferListValue, TransferListProps>
       component={TransferList}
-      props={{ ...args, options: fruitOptions }}
-      initialValue={['cherry', 'kiwi', 'papaya']}
-      renderValue={(value) => (value.length ? value.join(', ') : 'none')}
+      props={{ ...args, groups: twoGroups, items: fruitItems }}
+      initialValue={getFruitValue(['cherry', 'kiwi', 'papaya'])}
       actions={[
-        { label: 'Select Cherry, Kiwi, Papaya', value: ['cherry', 'kiwi', 'papaya'] },
-        { label: 'Clear', value: [] },
+        { label: 'Move Cherry, Kiwi, Papaya to Selected', value: getFruitValue(['cherry', 'kiwi', 'papaya']) },
+        { label: 'Move All to Available', value: getFruitValue([]) },
       ]}
     />
   ),

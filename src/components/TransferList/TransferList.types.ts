@@ -1,10 +1,22 @@
 import { ReactNode } from 'react';
 
-export type TransferListItem = {
+export type TransferListGroupKey = string;
+export type TransferListItemValue = string;
+
+export type TransferListItemDef = {
   value: string;
   label?: ReactNode;
   disabled?: boolean;
 };
+
+export type TransferListGroupDef = {
+  key: TransferListGroupKey;
+  title: ReactNode;
+};
+
+export type TransferListState = Record<TransferListItemValue, TransferListGroupKey>;
+
+export type TransferListValue = Record<TransferListGroupKey, TransferListItemValue[]>;
 
 export type TransferListItemState = {
   checked?: boolean;

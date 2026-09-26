@@ -3,15 +3,55 @@
 @use "../../../../style/text";
 
 @layer components {
-  .transfer-list-pane {
+  .transfer-list-group {
     display: grid;
-    grid-template-rows: auto 16rem;
+    grid-template-rows: auto auto auto 16rem;
     flex: 1 1 0;
     min-width: 0;
+
+    &-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      flex-shrink: 0;
+      gap: 0.5rem;
+
+      margin-bottom: 0.5rem;
+
+      line-height: 1rem;
+
+      &-text {
+        @include text.ui($bold: true);
+        @include text.single-line;
+      }
+
+      &-count {
+        @include text.ui($bold: true);
+      }
+    }
 
     &-search input {
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
+    }
+
+    &-bulk {
+      @include text.small;
+      @include flex.row($gap: 0.5rem, $yAlign: center);
+
+      width: 100%;
+      padding: 0 calc(1rem - var(--border-width));
+    }
+
+    &-scroll-area {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    &[data-disabled] {
+      .transfer-list-group-header {
+        cursor: not-allowed;
+        opacity: 0.4;
+      }
     }
 
     &-selection {

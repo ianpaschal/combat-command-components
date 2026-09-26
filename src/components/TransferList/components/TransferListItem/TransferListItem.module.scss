@@ -3,10 +3,10 @@
 @use "../../../../style/text";
 
 @layer components {
-  .transfer-list-button-item {
+  .transfer-list-item {
     @include text.ui;
+    @include flex.row($gap: 0.5rem, $yAlign: center);
 
     width: 100%;
-    text-align: left;
   }
 }
