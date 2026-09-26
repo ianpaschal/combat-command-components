@@ -21,7 +21,7 @@ export const TransferListItem = ({
       size: 'small',
     }, styles.transferListItem)}
     data-disabled={disabled || undefined}
-    role="button"
+    data-interactive
   >
     <BaseCheckbox.Root
       className={(state) => clsx(sx({
