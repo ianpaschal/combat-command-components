@@ -80,7 +80,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         </span>
       )}
       {text && (
-        <span>{text}</span>
+        <span className={styles.buttonText}>{text}</span>
       )}
     </>
   );

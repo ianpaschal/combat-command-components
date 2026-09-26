@@ -1,0 +1,12 @@
+@use "../../../../style/layers";
+@use "../../../../style/flex";
+@use "../../../../style/text";
+
+@layer components {
+  .transfer-list-button-item {
+    @include text.ui;
+
+    width: 100%;
+    text-align: left;
+  }
+}

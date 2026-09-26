@@ -4,7 +4,7 @@
 @mixin common($size: normal) {
   // Assume always used with variants (1px border, even if invisible)
   $padding-y: calc(var(--size-#{$size}-padding) - var(--border-width));
-  $padding-x: calc(var(--size-#{$size}-padding) + 0.125rem - var(--border-width));
+  $padding-x: calc(var(--size-#{$size}-padding) - var(--border-width));
 
   position: relative;
 
@@ -16,7 +16,7 @@
   @include hit-area.min-hit-area(var(--size-#{$size}));
 
   &.collapse-padding {
-    margin: 0 calc(var(--size-#{$size}-padding) * -1);
+    margin: calc(($padding-y + var(--border-width)) * -1) calc(($padding-x + var(--border-width)) * -1);
   }
 
   &.square {

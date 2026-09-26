@@ -38,5 +38,6 @@ export * from './components/Tabs';
 export * from './components/Tag';
 export * from './components/ThemeProvider';
 export * from './components/ToggleGroup';
+export * from './components/TransferList';
 export * from './types';
 export * from './utils';

@@ -28,7 +28,7 @@ $sides: "top", "right", "bottom", "left";
       opacity: 0.4;
     }
 
-    &:not(:disabled, [data-disabled], [data-readonly], input, textarea) {
+    &:not(:disabled, [data-disabled], [data-readonly]) {
       cursor: pointer;
       user-select: none;
 
