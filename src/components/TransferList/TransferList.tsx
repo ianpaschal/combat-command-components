@@ -28,6 +28,9 @@ export interface TransferListProps {
   className?: string;
   defaultValue?: TransferListValue;
   disabled?: boolean;
+
+  /** Stretch to fill the height of the parent, instead of each group using a fixed height. */
+  fill?: boolean;
   groups: TransferListGroupDef[];
   onChange?: (value: TransferListValue) => void;
   items: TransferListItemDef[];
@@ -41,6 +44,7 @@ export const TransferList = ({
   className,
   defaultValue,
   disabled = false,
+  fill = false,
   groups,
   onChange,
   items,
@@ -91,16 +95,18 @@ export const TransferList = ({
     <div
       className={clsx(styles.transferList, className)}
       data-disabled={disabled || undefined}
+      data-fill={fill || undefined}
       data-orientation={orientation}
       data-batch
       style={orientation === 'horizontal' ? {
         gridTemplateAreas: 'none',
-        gridTemplateRows: 'auto',
+        gridTemplateRows: fill ? '1fr' : 'auto',
         gridTemplateColumns: groups.map(() => '1fr').join(' auto '),
+        ...(fill ? { '--transfer-list-group-height': '1fr' } : {}),
       } : {
-        '--transfer-list-group-height': '10rem',
+        '--transfer-list-group-height': fill ? '1fr' : '10rem',
         gridTemplateAreas: 'none',
-        gridTemplateRows: 'none',
+        gridTemplateRows: fill ? groups.map(() => '1fr').join(' auto ') : 'none',
         gridTemplateColumns: '1fr',
       } as CSSProperties}
     >

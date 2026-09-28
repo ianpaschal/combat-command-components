@@ -7,6 +7,12 @@
     display: grid;
     gap: 0.5rem;
 
+    &[data-fill] {
+      flex: 1 1 auto;
+      height: 100%;
+      min-height: 0;
+    }
+
     &[data-orientation="vertical"] {
       grid-template-areas:
         "available_label"
