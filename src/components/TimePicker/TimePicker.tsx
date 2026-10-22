@@ -39,12 +39,12 @@ export const TimePicker = ({
     }
   }
 
-  const minuteOptions = Array.from({ length: Math.floor(60 / minuteStep) }, (_, i) => ({
+  const minuteOptions = Array.from({ length: Math.ceil(60 / minuteStep) }, (_, i) => ({
     value: i * minuteStep,
     label: String(i * minuteStep).padStart(2, '0'),
   }));
 
-  const secondOptions = Array.from({ length: Math.floor(60 / secondStep) }, (_, i) => ({
+  const secondOptions = Array.from({ length: Math.ceil(60 / secondStep) }, (_, i) => ({
     value: i * secondStep,
     label: String(i * secondStep).padStart(2, '0'),
   }));
@@ -59,12 +59,14 @@ export const TimePicker = ({
     <div className={styles.timePicker}>
       <Clock className={styles.timePickerIcon} />
       <Select
+        aria-label="Hours"
         onChange={handleChange('hours')}
         options={HOUR_OPTIONS}
         value={value.hours}
       />
       <span className={styles.timePickerSeparator}>:</span>
       <Select
+        aria-label="Minutes"
         onChange={handleChange('minutes')}
         options={minuteOptions}
         value={value.minutes}
@@ -74,6 +76,7 @@ export const TimePicker = ({
         <>
           <span className={styles.timePickerSeparator}>:</span>
           <Select
+            aria-label="Seconds"
             onChange={handleChange('seconds')}
             options={secondOptions}
             value={value.seconds}

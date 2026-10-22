@@ -2,6 +2,7 @@ import {
   ChangeEvent,
   FocusEvent,
   KeyboardEvent,
+  MouseEvent,
   ReactElement,
   SyntheticEvent,
   useState,
@@ -123,6 +124,16 @@ export const InputDuration = ({
     e.currentTarget.setSelectionRange(length, length);
   };
 
+  const handleClick = (e: MouseEvent<HTMLInputElement>): void => {
+    props.onClick?.(e);
+    moveCaretToEnd(e);
+  };
+
+  const handleFocus = (e: FocusEvent<HTMLInputElement>): void => {
+    props.onFocus?.(e);
+    moveCaretToEnd(e);
+  };
+
   return (
     <InputText
       {...props}
@@ -155,8 +166,8 @@ export const InputDuration = ({
       value={digits}
       onBlur={handleBlur}
       onChange={handleChange}
-      onClick={moveCaretToEnd}
-      onFocus={moveCaretToEnd}
+      onClick={handleClick}
+      onFocus={handleFocus}
       onKeyDown={handleKeyDown}
     />
   );

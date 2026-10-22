@@ -40,9 +40,11 @@ export const setTimeOfDay = (
  * @param maxUnit - The largest unit shown
  * @returns The visible units
  */
-export const getVisibleTimeUnits = (minUnit: TimeUnit, maxUnit: TimeUnit): TimeUnit[] => (
-  TIME_UNIT_ORDER.slice(TIME_UNIT_ORDER.indexOf(maxUnit), TIME_UNIT_ORDER.indexOf(minUnit) + 1)
-);
+export const getVisibleTimeUnits = (minUnit: TimeUnit, maxUnit: TimeUnit): TimeUnit[] => {
+  const minIndex = TIME_UNIT_ORDER.indexOf(minUnit);
+  const maxIndex = TIME_UNIT_ORDER.indexOf(maxUnit);
+  return TIME_UNIT_ORDER.slice(Math.min(minIndex, maxIndex), Math.max(minIndex, maxIndex) + 1);
+};
 
 /**
  * Makes a time of day fit what can be chosen. Units smaller than the smallest unit are zeroed, and

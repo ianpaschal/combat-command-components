@@ -107,6 +107,7 @@ export const InputTime = ({
         <Fragment key={unit}>
           {i > 0 && <span className={styles.inputTimeSeparator}>:</span>}
           <Select
+            aria-label={UNIT_PARTS[unit]}
             border={border}
             disabled={disabled}
             id={i === 0 ? id : undefined}

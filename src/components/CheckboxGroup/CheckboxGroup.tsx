@@ -21,6 +21,7 @@ export type CheckboxOption = {
 };
 
 export interface CheckboxGroupProps extends Omit<ComponentPropsWithoutRef<typeof BaseCheckboxGroup>,
+  'children' |
   'className' |
   'defaultValue' |
   'disabled' |

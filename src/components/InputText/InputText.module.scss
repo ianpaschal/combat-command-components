@@ -31,7 +31,7 @@
       color: var(--color-text-muted);
     }
 
-    &:has(input:disabled) .icon-wrapper {
+    &:has(input:disabled) .input-text-icon-wrapper {
       opacity: 0.6;
     }
 

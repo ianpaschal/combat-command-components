@@ -85,7 +85,7 @@ export const InputText = forwardRef<HTMLInputElement, InputTextProps>(({
       {mask && (
         <div
           className={styles.inputTextMask}
-          data-disabled={disabled || undefined}
+          data-disabled={loading || disabled || undefined}
           style={{ color: maskColor }}
           aria-hidden
         >
