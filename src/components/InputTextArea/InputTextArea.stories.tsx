@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { InputTextArea } from './InputTextArea';
 
 const meta: Meta<typeof InputTextArea> = {
-  title: 'Components/InputTextArea',
+  title: 'Inputs/InputTextArea',
   component: InputTextArea,
   parameters: {
     layout: 'centered',

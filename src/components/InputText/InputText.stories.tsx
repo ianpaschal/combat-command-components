@@ -4,7 +4,7 @@ import { Search } from 'lucide-react';
 import { InputText } from './InputText';
 
 const meta: Meta<typeof InputText> = {
-  title: 'Components/InputText',
+  title: 'Inputs/InputText',
   component: InputText,
   parameters: {
     layout: 'centered',

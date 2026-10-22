@@ -1,0 +1,35 @@
+@use "../../style/layers";
+
+@layer components {
+  .input-currency {
+    display: flex;
+    width: 100%;
+
+    &-select {
+      flex-shrink: 0;
+      width: 5.5rem;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &-field {
+      flex: 1;
+      width: auto;
+      min-width: 0;
+
+      input {
+        border-left: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+
+    &-group {
+      display: inline-flex;
+    }
+
+    &-digit[data-leading-zero] {
+      opacity: 0.4;
+    }
+  }
+}

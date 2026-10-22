@@ -1,0 +1,35 @@
+@use "../../style/layers";
+
+@layer components {
+  .input-duration {
+    // Leaves room after the digits for the last unit's label
+    --input-padding-end: 1.5rem;
+
+    // A unit's label hangs off the top right of its digits. It takes no room, so every unit but the
+    // last leaves space for it. The last one's label sits in the end padding, after the caret.
+    &-unit {
+      position: relative;
+      display: inline-flex;
+
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+
+    &-digit[data-leading-zero] {
+      opacity: 0.4;
+    }
+
+    &-label {
+      position: absolute;
+      top: 0;
+      left: 100%;
+
+      margin-left: 0.125rem;
+
+      font-size: 0.75em;
+
+      opacity: 0.6;
+    }
+  }
+}

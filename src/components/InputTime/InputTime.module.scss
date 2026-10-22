@@ -1,0 +1,14 @@
+@use "../../style/layers";
+
+@layer components {
+  .input-time {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    width: 100%;
+
+    &-separator {
+      color: var(--color-text-muted);
+    }
+  }
+}
