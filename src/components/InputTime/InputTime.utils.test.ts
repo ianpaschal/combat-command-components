@@ -5,10 +5,9 @@ import {
 } from 'vitest';
 
 import {
+  getTimeFromInputValue,
+  getTimeInputValue,
   getTimeOfDayParts,
-  getTimeOptions,
-  getVisibleTimeUnits,
-  normalizeTimeOfDay,
   setTimeOfDay,
 } from './InputTime.utils';
 
@@ -38,43 +37,36 @@ describe('InputTime.utils', () => {
     });
   });
 
-  describe('getVisibleTimeUnits', () => {
-    it('should list the units from the largest to the smallest.', () => {
-      expect(getVisibleTimeUnits('s', 'h')).toEqual(['h', 'm', 's']);
-      expect(getVisibleTimeUnits('m', 'h')).toEqual(['h', 'm']);
-      expect(getVisibleTimeUnits('s', 'm')).toEqual(['m', 's']);
-      expect(getVisibleTimeUnits('h', 'h')).toEqual(['h']);
+  describe('getTimeInputValue', () => {
+    const date = new Date(2026, 5, 15, 9, 7, 5);
+    it('should format hours and minutes by default.', () => {
+      expect(getTimeInputValue(date, 'm')).toBe('09:07');
+    });
+    it('should include seconds only for the seconds unit.', () => {
+      expect(getTimeInputValue(date, 's')).toBe('09:07:05');
+    });
+    it('should zero the minutes for the hours unit.', () => {
+      expect(getTimeInputValue(date, 'h')).toBe('09:00');
     });
   });
 
-  describe('normalizeTimeOfDay', () => {
-    const date = new Date(2026, 5, 15, 9, 47, 23, 500);
-    it('should zero units smaller than the smallest unit.', () => {
-      const next = normalizeTimeOfDay(date, 'h', 15, 60);
-      expect([next.getHours(), next.getMinutes(), next.getSeconds()]).toEqual([9, 0, 0]);
-      const withMinutes = normalizeTimeOfDay(date, 'm', 1, 60);
-      expect([withMinutes.getHours(), withMinutes.getMinutes(), withMinutes.getSeconds()]).toEqual([9, 47, 0]);
+  describe('getTimeFromInputValue', () => {
+    const date = new Date(2026, 5, 15, 9, 30, 45, 123);
+    it('should only change the time portion.', () => {
+      const next = getTimeFromInputValue(date, '17:05', 'm');
+      expect([next?.getFullYear(), next?.getMonth(), next?.getDate()]).toEqual([2026, 5, 15]);
+      expect([next?.getHours(), next?.getMinutes(), next?.getSeconds()]).toEqual([17, 5, 0]);
+      expect(next?.getMilliseconds()).toBe(123);
     });
-    it('should floor minutes and seconds to their steps.', () => {
-      const next = normalizeTimeOfDay(date, 's', 15, 10);
-      expect([next.getHours(), next.getMinutes(), next.getSeconds()]).toEqual([9, 45, 20]);
+    it('should read seconds only for the seconds unit.', () => {
+      expect(getTimeFromInputValue(date, '17:05:20', 's')?.getSeconds()).toBe(20);
+      expect(getTimeFromInputValue(date, '17:05:20', 'm')?.getSeconds()).toBe(0);
     });
-    it('should leave the date alone and not mutate the original.', () => {
-      const next = normalizeTimeOfDay(date, 'm', 5, 60);
-      expect([next.getFullYear(), next.getMonth(), next.getDate()]).toEqual([2026, 5, 15]);
-      expect(date.getMinutes()).toBe(47);
+    it('should zero the minutes for the hours unit.', () => {
+      expect(getTimeFromInputValue(date, '17:05', 'h')?.getMinutes()).toBe(0);
     });
-  });
-
-  describe('getTimeOptions', () => {
-    it('should give every hour.', () => {
-      const options = getTimeOptions('h', 15, 60);
-      expect(options).toHaveLength(24);
-      expect(options[9]).toEqual({ value: 9, label: '09' });
-    });
-    it('should follow the step for minutes and seconds.', () => {
-      expect(getTimeOptions('m', 15, 60).map((o) => o.value)).toEqual([0, 15, 30, 45]);
-      expect(getTimeOptions('s', 15, 30).map((o) => o.value)).toEqual([0, 30]);
+    it('should return undefined if the value is not a time.', () => {
+      expect(getTimeFromInputValue(date, '', 'm')).toBeUndefined();
     });
   });
 });

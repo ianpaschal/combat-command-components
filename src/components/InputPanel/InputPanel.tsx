@@ -7,6 +7,7 @@ import {
   ReactNode,
   RefAttributes,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { Drawer as BaseDrawer } from '@base-ui/react/drawer';
@@ -92,6 +93,35 @@ export const InputPanel = forwardRef(<T,>({
     }
   };
 
+  /*
+   * Native browser popups (e.g. the picker of a time input) live outside the
+   * DOM, so a click which dismisses one is also reported as an outside press.
+   * That is only reported on click, after the popup is gone, so whether one was
+   * open is recorded when the press starts. If one was, use that click only to
+   * dismiss it and keep the panel open.
+   */
+  const nativePickerOpenRef = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
+    const handlePointerDown = (): void => {
+      nativePickerOpenRef.current = CSS.supports('selector(:open)') && !!document.activeElement?.matches(':open');
+    };
+    document.addEventListener('pointerdown', handlePointerDown, true);
+    return () => document.removeEventListener('pointerdown', handlePointerDown, true);
+  }, [open]);
+
+  const handleOpenChange = (next: boolean, eventDetails: BaseDrawer.Root.ChangeEventDetails): void => {
+    if (!next && eventDetails.reason === 'outside-press' && nativePickerOpenRef.current) {
+      nativePickerOpenRef.current = false;
+      eventDetails.cancel();
+      return;
+    }
+    setOpen(next);
+  };
+
   const label = renderValue?.(value);
 
   const triggerProps = {
@@ -133,7 +163,7 @@ export const InputPanel = forwardRef(<T,>({
   };
 
   return (
-    <BaseDrawer.Root open={readOnly ? false : open} onOpenChange={setOpen} swipeDirection="down" >
+    <BaseDrawer.Root open={readOnly ? false : open} onOpenChange={handleOpenChange} swipeDirection="down" >
       {name && serialize && (
         <input type="hidden" name={name} id={id} value={serialize(value)} />
       )}
@@ -145,6 +175,7 @@ export const InputPanel = forwardRef(<T,>({
         <BaseDrawer.Viewport className={mobile ? drawerStyles.drawerViewport : styles.inputPanelViewport}>
           <BaseDrawer.Popup
             className={sx({ variant: 'surface', border: true }, mobile ? drawerStyles.drawerPopup : styles.inputPanelPopup)}
+            initialFocus={() => document.querySelector<HTMLElement>('[data-initial-focus]') ?? true}
             data-full-height={fullHeight || undefined}
             data-full-width={fullWidth || undefined}
             data-padding={!disablePadding}

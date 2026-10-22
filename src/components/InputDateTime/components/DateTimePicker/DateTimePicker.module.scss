@@ -3,18 +3,15 @@
 
 @layer components {
   .date-time-picker {
-    --padding: calc(1rem - var(--border-width));
+    --date-time-picker-padding: calc(1rem - var(--border-width));
 
-    @include flex.column;
+    padding: var(--date-time-picker-padding);
 
-    &-calendar {
+    &-content {
+      @include flex.column;
+
+      width: fit-content;
       margin: 0 auto;
-      padding: var(--padding);
-    }
-
-    &-separator {
-      height: 1px;
-      background-color: var(--color-card-border);
     }
   }
 }

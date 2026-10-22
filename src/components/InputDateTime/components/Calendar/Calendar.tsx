@@ -90,6 +90,7 @@ export const Calendar = ({
         {days.map((day) => (
           <Button
             className={styles.calendarGridDay}
+            data-initial-focus={isSameDay(day, selected) || undefined}
             data-outside={!isSameMonth(day, viewMonth) || undefined}
             intent={isSameDay(day, selected) ? 'primary' : 'secondary'}
             key={day.toISOString()}

@@ -2,13 +2,9 @@
 
 @layer components {
   .input-time {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    width: 100%;
-
-    &-separator {
-      color: var(--color-text-muted);
+    input {
+      font-variant-numeric: tabular-nums;
+      color: var(--color-text-ui);
     }
   }
 }

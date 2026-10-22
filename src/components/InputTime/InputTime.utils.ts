@@ -1,9 +1,6 @@
-import { SelectOption } from '../Select';
 import { TimePickerValue } from '../TimePicker';
 
 export type TimeUnit = 'h' | 'm' | 's';
-
-const TIME_UNIT_ORDER: TimeUnit[] = ['h', 'm', 's'];
 
 export const createFallbackTimeOfDay = (): Date => {
   const d = new Date();
@@ -34,62 +31,42 @@ export const setTimeOfDay = (
 };
 
 /**
- * Gets the units which are shown, from the largest to the smallest.
+ * Formats the time of day of a date as the value of a native time input.
  *
- * @param minUnit - The smallest unit shown
- * @param maxUnit - The largest unit shown
- * @returns The visible units
+ * @param date - The date to read the time of day from
+ * @param minUnit - The smallest unit shown; seconds are only included for 's'
+ * @returns A string like "09:30" or "09:30:15"
  */
-export const getVisibleTimeUnits = (minUnit: TimeUnit, maxUnit: TimeUnit): TimeUnit[] => {
-  const minIndex = TIME_UNIT_ORDER.indexOf(minUnit);
-  const maxIndex = TIME_UNIT_ORDER.indexOf(maxUnit);
-  return TIME_UNIT_ORDER.slice(Math.min(minIndex, maxIndex), Math.max(minIndex, maxIndex) + 1);
+export const getTimeInputValue = (date: Date, minUnit: TimeUnit): string => {
+  const { hours, minutes, seconds } = getTimeOfDayParts(date);
+  const parts = [hours, minUnit === 'h' ? 0 : minutes];
+  if (minUnit === 's') {
+    parts.push(seconds);
+  }
+  return parts.map((part) => `${part}`.padStart(2, '0')).join(':');
 };
 
 /**
- * Makes a time of day fit what can be chosen. Units smaller than the smallest unit are zeroed, and
- * minutes and seconds are floored to their steps. The date portion is untouched.
+ * Sets the time of day of a date from the value of a native time input. Units smaller than the
+ * smallest unit are set to zero. The date portion is untouched.
  *
  * @param date - The date to start from (it is not mutated)
+ * @param inputValue - A string like "09:30" or "09:30:15"
  * @param minUnit - The smallest unit which can be chosen
- * @param minuteStep - The interval between selectable minutes
- * @param secondStep - The interval between selectable seconds
- * @returns A new date
+ * @returns A new date, or undefined if the input value is not a time (e.g. it was cleared)
  */
-export const normalizeTimeOfDay = (
+export const getTimeFromInputValue = (
   date: Date,
+  inputValue: string,
   minUnit: TimeUnit,
-  minuteStep: number,
-  secondStep: number,
-): Date => {
-  const { hours, minutes, seconds } = getTimeOfDayParts(date);
-  const next = new Date(date);
-  next.setHours(
+): Date | undefined => {
+  const [hours, minutes, seconds = 0] = inputValue.split(':').map(Number);
+  if (hours === undefined || minutes === undefined || [hours, minutes, seconds].some(Number.isNaN)) {
+    return undefined;
+  }
+  return setTimeOfDay(date, {
     hours,
-    minUnit === 'h' ? 0 : Math.floor(minutes / minuteStep) * minuteStep,
-    minUnit === 's' ? Math.floor(seconds / secondStep) * secondStep : 0,
-    0,
-  );
-  return next;
-};
-
-/**
- * Gets the values which can be chosen for a unit.
- *
- * @param unit - The unit
- * @param minuteStep - The interval between selectable minutes
- * @param secondStep - The interval between selectable seconds
- * @returns The options, each labelled with its value padded to 2 digits
- */
-export const getTimeOptions = (
-  unit: TimeUnit,
-  minuteStep: number,
-  secondStep: number,
-): SelectOption[] => {
-  const count = { h: 24, m: Math.ceil(60 / minuteStep), s: Math.ceil(60 / secondStep) }[unit];
-  const step = { h: 1, m: minuteStep, s: secondStep }[unit];
-  return Array.from({ length: count }, (_, i) => ({
-    value: i * step,
-    label: `${i * step}`.padStart(2, '0'),
-  }));
+    minutes: minUnit === 'h' ? 0 : minutes,
+    seconds: minUnit === 's' ? seconds : 0,
+  });
 };

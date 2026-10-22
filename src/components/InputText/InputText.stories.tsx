@@ -65,6 +65,18 @@ export const Default: Story = {
   },
 };
 
+export const Time: Story = {
+  name: 'Time',
+  args: {
+    border: true,
+    corners: 'normal',
+    disabled: false,
+    intent: 'secondary',
+    type: 'time',
+    variant: 'ghost',
+  },
+};
+
 export const WithIcon: Story = {
   name: 'With Icon',
   args: {

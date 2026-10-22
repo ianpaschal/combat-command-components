@@ -30,26 +30,10 @@ const meta: Meta<typeof InputTime> = {
       description: 'The color of the input.',
       table: { category: 'Appearance' },
     },
-    maxUnit: {
-      control: 'select',
-      options: ['h', 'm', 's'],
-      description: 'The largest unit which can be chosen.',
-      table: { category: 'Behavior' },
-    },
     minUnit: {
       control: 'select',
       options: ['h', 'm', 's'],
       description: 'The smallest unit which can be chosen. Smaller units are set to zero.',
-      table: { category: 'Behavior' },
-    },
-    minuteStep: {
-      control: { type: 'number', min: 1, max: 60 },
-      description: 'Interval in minutes between selectable minute values.',
-      table: { category: 'Behavior' },
-    },
-    secondStep: {
-      control: { type: 'number', min: 1, max: 60 },
-      description: 'Interval in seconds between selectable second values.',
       table: { category: 'Behavior' },
     },
     variant: {
@@ -72,10 +56,7 @@ export const Default: Story = {
     border: true,
     disabled: false,
     intent: 'secondary',
-    maxUnit: 'h',
     minUnit: 'm',
-    minuteStep: 5,
-    secondStep: 5,
     variant: 'ghost',
   },
   render: (args) => <ControlledStory {...args} />,

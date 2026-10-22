@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 
 import { InputPanelContentProps } from '../../../../components/InputPanel';
-import { TimePicker, TimePickerValue } from '../../../../components/TimePicker';
-import { DEFAULT_MINUTE_STEP, DEFAULT_SECOND_STEP } from '../../InputDateTime.utils';
+import { InputTime } from '../../../../components/InputTime';
+import { DEFAULT_SECOND_STEP } from '../../InputDateTime.utils';
 import { Calendar } from '../Calendar';
 
 import styles from './DateTimePicker.module.scss';
@@ -21,7 +21,6 @@ export interface DateTimePickerProps extends InputPanelContentProps<Date> {
 export const DateTimePicker = ({
   onChange,
   value: currentDate,
-  minuteStep = DEFAULT_MINUTE_STEP,
   secondStep = DEFAULT_SECOND_STEP,
 }: DateTimePickerProps): ReactElement => {
   const workingDate = currentDate ?? createFallbackDate();
@@ -32,26 +31,19 @@ export const DateTimePicker = ({
     onChange(newDate);
   };
 
-  const onTimeChange = ({ hours, minutes, seconds }: TimePickerValue): void => {
-    const newDate = new Date(workingDate);
-    newDate.setHours(hours, minutes, seconds);
-    onChange(newDate);
-  };
-
   return (
     <div className={styles.dateTimePicker}>
-      <Calendar className={styles.dateTimePickerCalendar} onSelect={onDateChange} selected={workingDate} />
-      <div className={styles.dateTimePickerSeparator} />
-      <TimePicker
-        minuteStep={minuteStep}
-        onChange={onTimeChange}
-        secondStep={secondStep}
-        value={{
-          hours: workingDate.getHours(),
-          minutes: workingDate.getMinutes(),
-          seconds: workingDate.getSeconds(),
-        }}
-      />
+      <div className={styles.dateTimePickerContent}>
+        <Calendar
+          onSelect={onDateChange}
+          selected={workingDate}
+        />
+        <InputTime
+          minUnit={secondStep === DEFAULT_SECOND_STEP ? 'm' : 's'}
+          onChange={onChange}
+          value={workingDate}
+        />
+      </div>
     </div>
   );
 };
