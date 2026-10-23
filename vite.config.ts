@@ -35,6 +35,7 @@ export default defineConfig({
         'react/jsx-dev-runtime',
         'react-pdf',
         'pdfjs-dist',
+        'react-markdown',
       ],
       output: {
         preserveModules: true,
