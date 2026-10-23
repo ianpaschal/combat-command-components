@@ -2,6 +2,7 @@ import type { Preview } from '@storybook/react';
 
 import { SYSTEM_THEME_KEY, ThemeProvider } from '../src/components/ThemeProvider';
 
+import { DocsContainer } from './DocsContainer';
 import '../src/style/index.scss';
 import './preview.css';
 
@@ -36,6 +37,9 @@ const preview: Preview = {
     },
   ],
   parameters: {
+    docs: {
+      container: DocsContainer,
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

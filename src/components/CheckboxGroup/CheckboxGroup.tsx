@@ -1,4 +1,5 @@
 import {
+  ComponentPropsWithoutRef,
   ElementRef,
   forwardRef,
   ReactNode,
@@ -19,7 +20,15 @@ export type CheckboxOption = {
   disabled?: boolean;
 };
 
-export interface CheckboxGroupProps {
+export interface CheckboxGroupProps extends Omit<ComponentPropsWithoutRef<typeof BaseCheckboxGroup>,
+  'children' |
+  'className' |
+  'defaultValue' |
+  'disabled' |
+  'onChange' |
+  'onValueChange' |
+  'value'
+> {
   className?: string;
   defaultValue?: string[];
   disabled?: boolean;
@@ -35,8 +44,10 @@ export const CheckboxGroup = forwardRef<ElementRef<typeof BaseCheckboxGroup>, Ch
   onChange,
   options,
   value,
+  ...props
 }, ref): JSX.Element => (
   <BaseCheckboxGroup
+    {...props}
     ref={ref}
     className={clsx(styles.checkboxGroup, className)}
     value={value}

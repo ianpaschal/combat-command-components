@@ -1,4 +1,5 @@
 import {
+  cloneElement,
   forwardRef,
   InputHTMLAttributes,
   ReactElement,
@@ -10,13 +11,14 @@ import {
   ElementIntent,
   ElementVariant,
 } from '../../types';
-import { getStyleClassNames } from '../../utils/getStyleClassNames';
+import { sx } from '../../utils';
 
+import sizes from '../../style/sizes.module.scss';
 import styles from './InputText.module.scss';
 
 export interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   border?: boolean;
-  icon?: ReactElement;
+  icon?: ReactElement<{ className?: string }>;
   loading?: boolean;
   corners?: boolean | ElementCorners;
   intent?: ElementIntent;
@@ -25,6 +27,7 @@ export interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const InputText = forwardRef<HTMLInputElement, InputTextProps>(({
   border = true,
+  children,
   className,
   corners = 'normal',
   icon,
@@ -34,27 +37,26 @@ export const InputText = forwardRef<HTMLInputElement, InputTextProps>(({
   variant = 'ghost',
   ...props
 }, ref): JSX.Element => (
-  <div className={clsx(styles.inputText, getStyleClassNames({
-    size: 'normal',
-  }), className)}>
+  <div className={sx({ size: 'normal' }, styles.inputText, className)} data-has-icon={icon || undefined}>
     {icon && (
-      <div className={styles.iconWrapper}>
-        {icon}
+      <div className={styles.inputTextIconWrapper}>
+        {cloneElement(icon, {
+          className: clsx(sizes.icon, icon.props.className),
+        })}
       </div>
     )}
     <input
       ref={ref}
-      className={clsx(getStyleClassNames({
+      className={sx({
         corners,
         intent,
         variant,
         border,
-        size: 'normal',
-      }))}
-      data-has-icon={icon ?? undefined}
+      })}
       disabled={loading || disabled}
       {...props}
     />
+    {children}
   </div>
 ));
 

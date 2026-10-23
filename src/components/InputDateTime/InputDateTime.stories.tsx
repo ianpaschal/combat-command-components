@@ -4,7 +4,7 @@ import { ControlledStory } from './stories/ControlledStory';
 import { InputDateTime } from './InputDateTime';
 
 const meta: Meta<typeof InputDateTime> = {
-  title: 'Components/InputDateTime',
+  title: 'Inputs/InputDateTime',
   component: InputDateTime,
   parameters: {
     layout: 'centered',

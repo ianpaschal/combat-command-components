@@ -4,7 +4,7 @@ import { Search } from 'lucide-react';
 import { InputText } from './InputText';
 
 const meta: Meta<typeof InputText> = {
-  title: 'Components/InputText',
+  title: 'Inputs/InputText',
   component: InputText,
   parameters: {
     layout: 'centered',
@@ -61,6 +61,18 @@ export const Default: Story = {
     disabled: false,
     intent: 'secondary',
     placeholder: 'Enter your name...',
+    variant: 'ghost',
+  },
+};
+
+export const Time: Story = {
+  name: 'Time',
+  args: {
+    border: true,
+    corners: 'normal',
+    disabled: false,
+    intent: 'secondary',
+    type: 'time',
     variant: 'ghost',
   },
 };

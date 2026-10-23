@@ -5,7 +5,7 @@ import { UserOption } from './stories/UserOption';
 import { Select } from './Select';
 
 const meta: Meta<typeof Select> = {
-  title: 'Components/Select',
+  title: 'Inputs/Select',
   component: Select,
   parameters: {
     layout: 'centered',

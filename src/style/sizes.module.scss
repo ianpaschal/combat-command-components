@@ -31,8 +31,11 @@
   }
 
   .icon {
+    pointer-events: none;
+
     display: block;
     flex-shrink: 0;
+
     width: calc(var(--size-#{$size}) * 0.4);
     height: calc(var(--size-#{$size}) * 0.4);
 

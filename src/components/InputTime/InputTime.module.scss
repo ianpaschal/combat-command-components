@@ -1,0 +1,10 @@
+@use "../../style/layers";
+
+@layer components {
+  .input-time {
+    input {
+      font-variant-numeric: tabular-nums;
+      color: var(--color-text-ui);
+    }
+  }
+}

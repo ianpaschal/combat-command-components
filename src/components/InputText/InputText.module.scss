@@ -4,12 +4,19 @@
 
 @layer components {
   .input-text {
+    --input-padding-start: var(--size-normal-padding);
+    --input-padding-end: var(--size-normal-padding);
+
     position: relative;
     width: 100%;
     padding: 0;
-    color: var(--color-text-ui);
+    color: var(--color-text-muted);
 
-    .icon-wrapper {
+    &[data-has-icon] {
+      --input-padding-start: var(--size-normal);
+    }
+
+    &-icon-wrapper {
       pointer-events: none;
 
       position: absolute;
@@ -18,33 +25,27 @@
       align-items: center;
       justify-content: center;
 
-      width: 2.5rem;
-      height: 2.5rem;
+      width: var(--size-normal);
+      height: var(--size-normal);
 
       color: var(--color-text-muted);
-
-      svg {
-        width: 1rem;
-        height: 1rem;
-      }
     }
 
-    &:has(input:disabled) .icon-wrapper {
+    &:has(input:disabled) .input-text-icon-wrapper {
       opacity: 0.6;
     }
 
     input {
-      width: 100%;
-      height: 100%;
-      padding: 0 0.75rem;
-      color: inherit;
+      position: absolute;
+      inset: 0;
+      padding:
+        0
+        calc(var(--input-padding-end) - var(--border-width))
+        0
+        calc(var(--input-padding-start) - var(--border-width));
 
       &:not(:disabled) {
         cursor: text;
-      }
-
-      &[data-has-icon] {
-        padding-left: 2.5rem;
       }
     }
   }
