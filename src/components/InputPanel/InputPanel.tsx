@@ -102,6 +102,8 @@ export const InputPanel = forwardRef(<T,>({
    */
   const nativePickerOpenRef = useRef<boolean>(false);
 
+  const popupRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!open) {
       return undefined;
@@ -175,7 +177,8 @@ export const InputPanel = forwardRef(<T,>({
         <BaseDrawer.Viewport className={mobile ? drawerStyles.drawerViewport : styles.inputPanelViewport}>
           <BaseDrawer.Popup
             className={sx({ variant: 'surface', border: true }, mobile ? drawerStyles.drawerPopup : styles.inputPanelPopup)}
-            initialFocus={() => document.querySelector<HTMLElement>('[data-initial-focus]') ?? true}
+            ref={popupRef}
+            initialFocus={() => popupRef.current?.querySelector<HTMLElement>('[data-initial-focus]') ?? true}
             data-full-height={fullHeight || undefined}
             data-full-width={fullWidth || undefined}
             data-padding={!disablePadding}

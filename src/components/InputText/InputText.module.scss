@@ -47,38 +47,6 @@
       &:not(:disabled) {
         cursor: text;
       }
-
-      // The value is drawn by the mask, aligned to the end. The input's own text is hidden, but
-      // its caret (also at the end) shows where the next character goes.
-      &[data-mask] {
-        color: transparent;
-        text-align: end;
-
-        &::selection {
-          background-color: transparent;
-        }
-      }
-    }
-
-    &-mask {
-      pointer-events: none;
-
-      position: absolute;
-      inset: 0;
-
-      display: flex;
-      gap: 0.125rem;
-      align-items: center;
-      justify-content: end;
-
-      padding: 0 var(--input-padding-end) 0 var(--input-padding-start);
-
-      font-variant-numeric: tabular-nums;
-      color: var(--color-text-ui);
-
-      &[data-disabled] {
-        opacity: 0.4;
-      }
     }
   }
 }

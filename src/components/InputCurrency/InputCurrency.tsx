@@ -6,8 +6,9 @@ import {
 } from 'react';
 import clsx from 'clsx';
 
-import { InputText, InputTextProps } from '../InputText';
-import { parseDigits } from '../InputText/InputText.utils';
+import { getCalculatorCaretProps } from '../../utils/getCalculatorCaretProps';
+import { parseCalculatorDigits } from '../../utils/parseCalculatorDigits';
+import { InputMasked, InputMaskedProps } from '../InputMasked';
 import {
   Select,
   SelectOption,
@@ -30,11 +31,12 @@ export type CurrencyValue = {
   currency: string;
 };
 
-export interface InputCurrencyProps extends Omit<InputTextProps,
+export interface InputCurrencyProps extends Omit<InputMaskedProps,
   'defaultValue' |
   'icon' |
   'inputMode' |
   'mask' |
+  'maskDescription' |
   'onChange' |
   'placeholder' |
   'type' |
@@ -66,6 +68,7 @@ export const InputCurrency = forwardRef<HTMLInputElement, InputCurrencyProps>(({
   variant = 'ghost',
   ...props
 }, ref): ReactElement => {
+  const caretProps = getCalculatorCaretProps(props);
   const [internalValue, setInternalValue] = useState(defaultValue);
   const current = value ?? internalValue;
   const amount = current?.amount ?? 0;
@@ -77,17 +80,18 @@ export const InputCurrency = forwardRef<HTMLInputElement, InputCurrencyProps>(({
   };
 
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const digits = parseDigits(e.target.value, MAX_DIGITS);
+    const digits = parseCalculatorDigits(e.target.value, MAX_DIGITS);
     commit({ amount: getAmountFromDigits(digits), currency });
   };
 
   const handleCurrencyChange = (next: SelectValue | null): void => {
-    if (typeof next === 'string') {
-      commit({ amount, currency: next });
+    if (next !== null) {
+      commit({ amount, currency: `${next}` });
     }
   };
 
   const { fraction, integer } = getAmountParts(getAmountDigits(amount), decimals);
+  const amountText = decimals > 0 ? `${integer}.${fraction}` : integer;
 
   return (
     <div className={clsx(styles.inputCurrency, className)}>
@@ -101,8 +105,9 @@ export const InputCurrency = forwardRef<HTMLInputElement, InputCurrencyProps>(({
         variant={variant}
         onChange={handleCurrencyChange}
       />
-      <InputText
+      <InputMasked
         {...props}
+        align="end"
         ref={ref}
         border={border}
         className={styles.inputCurrencyField}
@@ -141,10 +146,12 @@ export const InputCurrency = forwardRef<HTMLInputElement, InputCurrencyProps>(({
             </>
           );
         }}
+        maskDescription={`${amountText} ${currency.toUpperCase()}`}
         type="text"
         value={getAmountDigits(amount)}
         variant={variant}
         onChange={handleAmountChange}
+        {...caretProps}
       />
     </div>
   );

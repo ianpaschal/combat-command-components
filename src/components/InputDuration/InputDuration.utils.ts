@@ -85,26 +85,40 @@ export const getDurationParts = (
   }).reverse();
 };
 
+export type DurationTypedDigits = {
+  digits: string;
+  maxUnit: DurationUnit;
+};
+
 /**
  * Gets the digits which would be typed (calculator style) to arrive at a
  * duration. Every unit below the top one takes 2 digits; the top unit takes the
  * rest.
  *
+ * If digits were typed and they still arrive at the duration, they are returned
+ * as typed (so nothing is reformatted mid-typing), and the units they were typed
+ * in are used instead of the given largest unit.
+ *
  * @param duration - The duration in milliseconds
  * @param minUnit - The smallest visible unit
  * @param maxUnit - The largest visible unit
+ * @param typed - The digits as typed, and the largest unit they are read in
  * @returns The digits, without leading zeros
  */
 export const getDurationDigits = (
   duration: number,
   minUnit: DurationUnit,
   maxUnit: DurationUnit,
-): string => (
-  getDurationParts(duration, minUnit, maxUnit)
+  typed?: DurationTypedDigits | null,
+): string => {
+  if (typed && duration === getDurationFromDigits(typed.digits, minUnit, typed.maxUnit)) {
+    return typed.digits;
+  }
+  return getDurationParts(duration, minUnit, typed?.maxUnit ?? maxUnit)
     .map(({ value }, i) => (i === 0 ? `${value}` : `${value}`.padStart(2, '0')))
     .join('')
-    .replace(/^0+/, '')
-);
+    .replace(/^0+/, '');
+};
 
 /**
  * Lays typed digits out over the visible units (largest first), filled in from
@@ -130,6 +144,31 @@ export const getDigitParts = (
     rest = isTop ? '' : rest.slice(0, -2);
     return { unit, value: Number(chunk || 0) };
   }).reverse();
+};
+
+const UNIT_NAMES: Record<DurationUnit, string> = {
+  w: 'week',
+  d: 'day',
+  h: 'hour',
+  m: 'minute',
+  s: 'second',
+};
+
+/**
+ * Describes visible units in words (e.g. "3 hours 7 minutes"). Units without a value are left out.
+ *
+ * @param parts - The value of each visible unit, largest first
+ * @param minUnit - The smallest visible unit, which is used if every value is zero
+ * @returns The description
+ */
+export const getDurationDescription = (
+  parts: DurationPart[],
+  minUnit: DurationUnit,
+): string => {
+  const spoken = parts
+    .filter(({ value }) => value > 0)
+    .map(({ unit, value }) => `${value} ${UNIT_NAMES[unit]}${value === 1 ? '' : 's'}`);
+  return spoken.length > 0 ? spoken.join(' ') : `0 ${UNIT_NAMES[minUnit]}s`;
 };
 
 /**

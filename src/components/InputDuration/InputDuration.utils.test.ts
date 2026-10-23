@@ -6,6 +6,7 @@ import {
 
 import {
   getDigitParts,
+  getDurationDescription,
   getDurationDigits,
   getDurationFromDigits,
   getDurationParts,
@@ -147,6 +148,24 @@ describe('InputDuration.utils', () => {
     });
   });
 
+  describe('getDurationDescription', () => {
+    it('should describe each unit with a value in words.', () => {
+      const parts = getDurationParts(3 * HOUR + 7 * MINUTE, 'm', 'h');
+      expect(getDurationDescription(parts, 'm')).toBe('3 hours 7 minutes');
+    });
+    it('should use the singular for one.', () => {
+      const parts = getDurationParts(HOUR + MINUTE, 'm', 'h');
+      expect(getDurationDescription(parts, 'm')).toBe('1 hour 1 minute');
+    });
+    it('should leave out units without a value.', () => {
+      const parts = getDurationParts(2 * HOUR, 'm', 'h');
+      expect(getDurationDescription(parts, 'm')).toBe('2 hours');
+    });
+    it('should describe zero in the smallest unit.', () => {
+      expect(getDurationDescription(getDurationParts(0, 'm', 'h'), 'm')).toBe('0 minutes');
+    });
+  });
+
   describe('getDurationDigits', () => {
     it('should round trip with getDurationFromDigits.', () => {
       const duration = 3 * HOUR + 7 * MINUTE;
@@ -158,6 +177,21 @@ describe('InputDuration.utils', () => {
     });
     it('should be empty for zero.', () => {
       expect(getDurationDigits(0, 'm', 'h')).toBe('');
+    });
+    it('should give back the typed digits while they still arrive at the duration.', () => {
+      const duration = getDurationFromDigits('170', 'm', 'h');
+      expect(getDurationDigits(duration, 'm', 'h')).toBe('210');
+      expect(getDurationDigits(duration, 'm', 'h', { digits: '170', maxUnit: 'h' })).toBe('170');
+    });
+    it('should lay out the duration in the typed units once the typed digits no longer match.', () => {
+      expect(getDurationDigits(25 * HOUR, 'm', 'd')).toBe('10100');
+      expect(getDurationDigits(25 * HOUR, 'm', 'd', { digits: '1', maxUnit: 'h' })).toBe('2500');
+    });
+    it('should lay out as the same parts as the duration.', () => {
+      [0, 3 * HOUR + 7 * MINUTE, 25 * HOUR].forEach((duration) => {
+        const digits = getDurationDigits(duration, 'm', 'h');
+        expect(getDigitParts(digits, 'm', 'h')).toEqual(getDurationParts(duration, 'm', 'h'));
+      });
     });
   });
 });

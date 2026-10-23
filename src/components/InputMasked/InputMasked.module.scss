@@ -1,0 +1,59 @@
+@use "../../style/layers";
+
+@layer components {
+  .input-masked {
+    // The value is drawn by the mask. The input's own text is hidden, but its
+    // caret (aligned the
+    // same way) shows where the next character goes.
+    input {
+      color: transparent;
+
+      &::selection {
+        background-color: transparent;
+      }
+
+      &[data-align="end"] {
+        text-align: end;
+      }
+    }
+
+    &-description {
+      position: absolute;
+
+      overflow: hidden;
+
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+
+      white-space: nowrap;
+
+      clip-path: inset(50%);
+    }
+
+    &-mask {
+      pointer-events: none;
+
+      position: absolute;
+      inset: 0;
+
+      display: flex;
+      gap: 0.125rem;
+      align-items: center;
+
+      padding: 0 var(--input-padding-end) 0 var(--input-padding-start);
+
+      font-variant-numeric: tabular-nums;
+      color: var(--color-text-ui);
+
+      &[data-align="end"] {
+        justify-content: end;
+      }
+
+      &[data-disabled] {
+        opacity: 0.4;
+      }
+    }
+  }
+}
