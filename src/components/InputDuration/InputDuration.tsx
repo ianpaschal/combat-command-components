@@ -1,6 +1,7 @@
 import {
   ChangeEvent,
   FocusEvent,
+  forwardRef,
   KeyboardEvent,
   ReactElement,
   useState,
@@ -63,7 +64,7 @@ export interface InputDurationProps extends Omit<InputMaskedProps,
   step?: number;
 }
 
-export const InputDuration = ({
+export const InputDuration = forwardRef<HTMLInputElement, InputDurationProps>(({
   className,
   defaultValue,
   maxUnit,
@@ -72,7 +73,7 @@ export const InputDuration = ({
   step = 1,
   value,
   ...props
-}: InputDurationProps): ReactElement => {
+}, ref): ReactElement => {
   const [internalValue, setInternalValue] = useState(defaultValue);
   const current = value ?? internalValue;
 
@@ -150,6 +151,7 @@ export const InputDuration = ({
         ));
       }}
       maskDescription={getDurationDescription(parts, minUnit)}
+      ref={ref}
       type="text"
       value={digits}
       onBlur={handleBlur}
@@ -157,6 +159,6 @@ export const InputDuration = ({
       {...caretProps}
     />
   );
-};
+});
 
 InputDuration.displayName = 'InputDuration';

@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { forwardRef, ReactElement } from 'react';
 import { format } from 'date-fns';
 import { CalendarClock } from 'lucide-react';
 
@@ -25,15 +25,16 @@ export interface InputDateTimeProps {
   value?: Date;
 };
 
-export const InputDateTime = ({
+export const InputDateTime = forwardRef<HTMLButtonElement, InputDateTimeProps>(({
   defaultValue,
   minuteStep = DEFAULT_MINUTE_STEP,
   secondStep = DEFAULT_SECOND_STEP,
   value,
   ...props
-}: InputDateTimeProps): ReactElement => (
+}, ref): ReactElement => (
   <InputPanel<Date>
     {...props}
+    ref={ref}
     closeOnChange={false}
     defaultValue={defaultValue ? normalizeDate(defaultValue, minuteStep, secondStep) : undefined}
     disablePadding
@@ -52,6 +53,6 @@ export const InputDateTime = ({
     }}
     value={value ? normalizeDate(value, minuteStep, secondStep) : undefined}
   />
-);
+));
 
 InputDateTime.displayName = 'InputDateTime';

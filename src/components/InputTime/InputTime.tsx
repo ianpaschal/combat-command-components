@@ -1,5 +1,6 @@
 import {
   ChangeEvent,
+  forwardRef,
   ReactElement,
   useState,
 } from 'react';
@@ -46,14 +47,14 @@ export interface InputTimeProps extends Omit<InputTextProps,
   minUnit?: TimeUnit;
 }
 
-export const InputTime = ({
+export const InputTime = forwardRef<HTMLInputElement, InputTimeProps>(({
   className,
   defaultValue,
   minUnit = 'm',
   onChange,
   value,
   ...props
-}: InputTimeProps): ReactElement => {
+}, ref): ReactElement => {
   const [internalValue, setInternalValue] = useState(defaultValue);
   const current = value ?? internalValue;
 
@@ -69,12 +70,13 @@ export const InputTime = ({
     <InputText
       {...props}
       className={clsx(styles.inputTime, className)}
+      ref={ref}
       step={minUnit === 's' ? 1 : 60}
       type="time"
       value={current ? getTimeInputValue(current, minUnit) : ''}
       onChange={handleChange}
     />
   );
-};
+});
 
 InputTime.displayName = 'InputTime';
