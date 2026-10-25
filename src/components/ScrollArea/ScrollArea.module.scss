@@ -17,6 +17,7 @@
     height: 100%;
 
     &-viewport {
+      scroll-padding-top: var(--scroll-area-scroll-padding-top, 0);
       flex: 1;
       min-width: 0;
 
