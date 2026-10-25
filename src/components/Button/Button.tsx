@@ -2,6 +2,7 @@ import {
   AnchorHTMLAttributes,
   ButtonHTMLAttributes,
   forwardRef,
+  MouseEventHandler,
   ReactElement,
   Ref,
 } from 'react';
@@ -14,6 +15,7 @@ import {
   ElementVariant,
 } from '../../types';
 import { getStyleClassNames } from '../../utils/getStyleClassNames';
+import { handleNavigationClick } from '../../utils/handleNavigationClick';
 import { Spinner } from '../Spinner';
 
 import sizes from '../../style/sizes.module.scss';
@@ -30,6 +32,7 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   iconPosition?: 'start' | 'end';
   intent?: ElementIntent;
   loading?: boolean;
+  onNavigate?: (path: string) => void;
   rel?: string;
   rounded?: boolean;
   size?: ElementSize;
@@ -49,6 +52,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
   iconPosition,
   intent = 'secondary',
   loading = false,
+  onNavigate,
   rel,
   rounded,
   size = 'normal',
@@ -96,6 +100,10 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         rel={rel}
         target={target}
         {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}
+        onClick={(e) => {
+          (props.onClick as MouseEventHandler<HTMLAnchorElement> | undefined)?.(e);
+          handleNavigationClick(e, href, onNavigate);
+        }}
       >
         {content}
       </a>

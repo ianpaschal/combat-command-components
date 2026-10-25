@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { X } from 'lucide-react';
 
 import { getStyleClassNames } from '../../utils/getStyleClassNames';
+import { handleNavigationClick } from '../../utils/handleNavigationClick';
 import { ButtonProps } from '../Button';
 
 import styles from './Tag.module.scss';
@@ -24,6 +25,7 @@ export const Tag = forwardRef<HTMLSpanElement | HTMLAnchorElement, TagProps>(({
   icon,
   intent = 'secondary',
   onClick,
+  onNavigate,
   onRemove,
   rel,
   size = 'normal',
@@ -75,6 +77,7 @@ export const Tag = forwardRef<HTMLSpanElement | HTMLAnchorElement, TagProps>(({
         rel={rel}
         target={target}
         {...(props as AnchorHTMLAttributes<HTMLAnchorElement>)}
+        onClick={(e) => handleNavigationClick(e, href, onNavigate)}
       >
         {content}
       </a>
