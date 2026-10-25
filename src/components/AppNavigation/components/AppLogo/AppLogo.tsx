@@ -13,6 +13,7 @@ import styles from './AppLogo.module.scss';
 
 export interface AppLogoProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title' | 'onClick'> {
   className?: string;
+  name?: string;
   path?: string;
   route?: LogoRoute;
 }
@@ -21,6 +22,7 @@ export const AppLogo = forwardRef<HTMLButtonElement, AppLogoProps>(({
   children,
   className,
   disabled,
+  name,
   path,
   route,
   ...props
@@ -47,6 +49,7 @@ export const AppLogo = forwardRef<HTMLButtonElement, AppLogoProps>(({
       {...props}
     >
       {children}
+      {name && <span className={styles.appLogoName}>{name}</span>}
     </button>
   );
 });

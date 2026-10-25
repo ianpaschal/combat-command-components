@@ -19,6 +19,10 @@ const meta: Meta<typeof AppNavigation> = {
     },
   },
   argTypes: {
+    name: {
+      control: 'text',
+      description: 'Optional name rendered beside the logo.',
+    },
     location: {
       table: { disable: true },
     },

@@ -7,7 +7,11 @@
     cursor: pointer;
     user-select: none;
 
-    width: min-content;
+    display: flex;
+    gap: 0.625rem;
+    align-items: center;
+
+    width: max-content;
     margin: 0 -0.5rem;
     padding: 0.5rem;
     border: none;
@@ -19,6 +23,14 @@
       color: var(--color-text-header);
       fill: var(--color-text-header);
       transition: all 150ms ease;
+    }
+
+    &-name {
+      font-family: Figtree, sans-serif;
+      font-size: 1.0625rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
     }
 
     &:disabled {

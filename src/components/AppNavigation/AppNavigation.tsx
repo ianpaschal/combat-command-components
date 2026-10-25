@@ -17,6 +17,7 @@ import { LogoRoute, Route } from './AppNavigation.types';
 import styles from './AppNavigation.module.scss';
 
 export interface AppNavigationProps {
+  name?: string;
   className?: string;
   logoPath?: string;
   logoRoute?: LogoRoute;
@@ -32,6 +33,7 @@ export interface AppNavigationProps {
 }
 
 export const AppNavigation = ({
+  name,
   className,
   logoPath,
   logoRoute,
@@ -57,12 +59,12 @@ export const AppNavigation = ({
     }), className)}>
       <div className={styles.appNavigationContent} style={{ maxWidth }} data-layout={mobile ? 'mobile' : 'desktop'}>
         <NavigationProvider value={{ navigate, location, state, setState }}>
-          <AppLogo className={styles.appNavigationLogo} path={logoPath} route={logoRoute}>
+          <AppLogo className={styles.appNavigationLogo} name={name} path={logoPath} route={logoRoute}>
             {logo}
           </AppLogo>
           <div className={styles.appNavigationNavigation}>
             {mobile ? (
-              <MobileNavigation logo={logo} logoPath={logoPath} logoRoute={logoRoute} routes={routes} secondaryRoutes={secondaryRoutes} />
+              <MobileNavigation name={name} logo={logo} logoPath={logoPath} logoRoute={logoRoute} routes={routes} secondaryRoutes={secondaryRoutes} />
             ) : (
               <DesktopNavigation routes={routes} secondaryRoutes={secondaryRoutes} />
             )}

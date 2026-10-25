@@ -15,6 +15,7 @@ import { MobileRoutes } from '../MobileRoutes';
 import styles from './MobileNavigation.module.scss';
 
 interface MobileNavigationProps {
+  name?: string;
   logo?: ReactNode;
   logoPath?: string;
   logoRoute?: LogoRoute;
@@ -23,6 +24,7 @@ interface MobileNavigationProps {
 }
 
 export const MobileNavigation = ({
+  name,
   logo,
   logoPath,
   logoRoute,
@@ -52,7 +54,7 @@ export const MobileNavigation = ({
             variant: 'surface',
             border: 'bottom',
           }), styles.mobileNavigationHeader)}>
-            <AppLogo path={logoPath} route={logoRoute}>
+            <AppLogo name={name} path={logoPath} route={logoRoute}>
               {logo}
             </AppLogo>
             <Dialog.Close render={(props) => (
