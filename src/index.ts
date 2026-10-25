@@ -37,6 +37,7 @@ export * from './components/Select';
 export * from './components/Spinner';
 export * from './components/Switch';
 export * from './components/Table';
+export * from './components/TableOfContents';
 export * from './components/Tabs';
 export * from './components/Tag';
 export * from './components/ThemeProvider';
