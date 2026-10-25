@@ -23,6 +23,10 @@ const meta: Meta<typeof AppNavigation> = {
       control: 'text',
       description: 'Optional name rendered beside the logo.',
     },
+    glass: {
+      control: 'boolean',
+      description: 'Whether the bar background is translucent and blurred.',
+    },
     location: {
       table: { disable: true },
     },
@@ -169,5 +173,12 @@ export const Mobile: Story = {
   args: {
     ...defaultProps,
     mobile: true,
+  },
+};
+
+export const Glass: Story = {
+  args: {
+    ...defaultProps,
+    glass: true,
   },
 };

@@ -19,6 +19,7 @@ import styles from './AppNavigation.module.scss';
 export interface AppNavigationProps {
   name?: string;
   className?: string;
+  glass?: boolean;
   logoPath?: string;
   logoRoute?: LogoRoute;
   location: string;
@@ -28,13 +29,14 @@ export interface AppNavigationProps {
   onNavigate: (path: string) => void;
   portalTarget?: Element;
   routes: Route[];
-  secondaryControls?: ReactElement;
+  secondaryControls?: ReactElement | ReactElement[];
   secondaryRoutes?: Route[];
 }
 
 export const AppNavigation = ({
   name,
   className,
+  glass = false,
   logoPath,
   logoRoute,
   location,
@@ -53,10 +55,17 @@ export const AppNavigation = ({
     setState(null); // Close all navigation accordions, menus, etc.
   }, [onNavigate]);
   return createPortal((
-    <div className={clsx(styles.appNavigation, ...getStyleClassNames({
+    <div className={clsx(styles.appNavigation, ...(glass ? [] : getStyleClassNames({
       variant: 'surface',
       border: 'bottom',
-    }), className)}>
+    })), className)}>
+      {glass && (
+        <div className={clsx(styles.appNavigationGlass, ...getStyleClassNames({
+          variant: 'surface',
+          border: 'bottom',
+          glass,
+        }))} />
+      )}
       <div className={styles.appNavigationContent} style={{ maxWidth }} data-layout={mobile ? 'mobile' : 'desktop'}>
         <NavigationProvider value={{ navigate, location, state, setState }}>
           <AppLogo className={styles.appNavigationLogo} name={name} path={logoPath} route={logoRoute}>

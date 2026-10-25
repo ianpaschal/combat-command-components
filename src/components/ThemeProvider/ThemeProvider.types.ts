@@ -10,12 +10,17 @@ export type Theme = {
   dark: boolean;
   overlayStrength: number;
   shadowStrength: number;
+  glassOpacity: number;
+  glassBlur: number;
   colors: Record<ThemeColor, {
     bg: string;
     text: string;
     focus: string;
   }>;
   surface: {
+    glass: {
+      bg: string;
+    };
     page: {
       bg: string;
     };

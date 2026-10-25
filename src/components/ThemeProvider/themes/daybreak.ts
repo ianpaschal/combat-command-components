@@ -6,7 +6,12 @@ export const daybreak: Theme = {
   dark: false,
   overlayStrength: 0.45,
   shadowStrength: 0.05,
+  glassOpacity: 0.6,
+  glassBlur: 14,
   surface: {
+    glass: {
+      bg: brandSecondary(95),
+    },
     page: {
       bg: brandSecondary(95),
     },

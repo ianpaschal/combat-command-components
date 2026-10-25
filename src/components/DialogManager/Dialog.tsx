@@ -30,6 +30,7 @@ export type DialogProps = {
   disableScroll?: boolean;
   fullHeight?: boolean;
   fullWidth?: boolean;
+  glass?: boolean;
   id: string;
   maxHeight?: CSSProperties['maxHeight'];
   maxWidth?: CSSProperties['maxWidth'];
@@ -54,6 +55,7 @@ export const Dialog = ({
   disableScroll = false,
   fullHeight = false,
   fullWidth = false,
+  glass = false,
   id,
   maxHeight,
   maxWidth,
@@ -109,6 +111,7 @@ export const Dialog = ({
             corners: 'wide',
             variant: 'surface',
             border: true,
+            glass,
           }), styles.dialogPopup)}
           style={{
             '--dialog-user-max-width': getCssValue(maxWidth),

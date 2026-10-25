@@ -30,6 +30,7 @@ export const buildThemeVars = (theme: Theme): Record<string, string> => {
   const vars: Record<string, string> = {
     '--color-card-bg': theme.surface.card.bg,
     '--color-card-border': theme.surface.card.border,
+    '--color-glass-bg': theme.surface.glass.bg,
     '--color-page-bg': theme.surface.page.bg,
     '--color-text-body': theme.text.body,
     '--color-text-header': theme.text.header,
@@ -37,6 +38,8 @@ export const buildThemeVars = (theme: Theme): Record<string, string> => {
     '--color-text-ui': theme.text.ui,
     '--overlay-strength': String(theme.overlayStrength),
     '--shadow-strength': String(theme.shadowStrength),
+    '--glass-opacity': String(theme.glassOpacity),
+    '--glass-blur': `${theme.glassBlur}px`,
     '--scroll-indicator-shadow': `rgb(0 0 0 / ${theme.shadowStrength * 0.8})`,
     '--modal-backdrop-bg': `rgb(0 0 0 / ${theme.overlayStrength})`,
     '--modal-backdrop-nested-bg': `rgb(0 0 0 / ${theme.overlayStrength * 0.5})`,

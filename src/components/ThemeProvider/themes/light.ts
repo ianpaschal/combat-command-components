@@ -5,7 +5,12 @@ export const light: Theme = {
   dark: false,
   overlayStrength: 0.45,
   shadowStrength: 0.05,
+  glassOpacity: 0.6,
+  glassBlur: 14,
   surface: {
+    glass: {
+      bg: '#F9F9F9', // Radix Gray 2
+    },
     page: {
       bg: '#F9F9F9', // Radix Gray 2
     },

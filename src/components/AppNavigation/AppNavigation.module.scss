@@ -21,7 +21,16 @@
     height: calc(var(--app-bar-height) + var(--bleed) + env(safe-area-inset-top));
     padding-top: calc(var(--bleed) + env(safe-area-inset-top));
 
+    /* Keeps the backdrop-filter region on-screen; the bleed area above has nothing to sample. */
+    &-glass {
+      position: absolute;
+      inset: var(--bleed) 0 0;
+      box-sizing: border-box;
+    }
+
     &-content {
+      position: relative;
+
       display: grid;
       gap: 1.5rem;
       align-items: center;
@@ -58,6 +67,7 @@
       display: flex;
       grid-area: secondary;
       flex-direction: row;
+      gap: 0.5rem;
       align-items: center;
       justify-content: flex-end;
     }

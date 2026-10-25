@@ -22,6 +22,7 @@ const camelKey = (keys: string[]) => keys.map((key, i) => (
 type GetStyleClassNamesConfig = {
   intent?: ElementIntent;
   variant?: ElementVariant;
+  glass?: boolean;
   size?: ElementSize;
   elevation?: ElementElevation;
   collapsePadding?: boolean;
@@ -48,6 +49,10 @@ export const getStyleClassNames = (config: GetStyleClassNamesConfig): string[] =
         classNames.add(variants.secondary);
       }
     }
+  }
+
+  if (config.glass) {
+    classNames.add(variants.glass);
   }
 
   if (config.border && !(config.variant === 'solid')) {

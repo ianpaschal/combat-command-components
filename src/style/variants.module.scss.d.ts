@@ -1,5 +1,6 @@
 export declare const danger: string;
 export declare const ghost: string;
+export declare const glass: string;
 export declare const info: string;
 export declare const primary: string;
 export declare const secondary: string;

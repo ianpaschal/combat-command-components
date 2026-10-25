@@ -14,6 +14,7 @@ interface StoryArgs {
   confirmText?: string;
   fullHeight?: boolean;
   fullWidth?: boolean;
+  glass?: boolean;
   maxWidth?: string | number;
   preventCancel?: boolean;
   disablePadding?: boolean;
@@ -136,6 +137,11 @@ const meta: Meta<StoryArgs> = {
       description: 'Whether the dialog should expand to the full available height.',
       table: { category: 'Appearance' },
     },
+    glass: {
+      control: 'boolean',
+      description: 'Whether the dialog background is translucent and blurred.',
+      table: { category: 'Appearance' },
+    },
     maxWidth: {
       control: 'number',
       description: 'The maximum width of the dialog in pixels.',
@@ -224,6 +230,22 @@ export const LongContent: Story = {
     maxWidth: 480,
     content: longContent,
     preventCancel: false,
+    disablePadding: false,
+  },
+  render: (args) => (
+    <DialogManager>
+      <BasicDialogWrapper {...args} />
+    </DialogManager>
+  ),
+};
+
+export const Glass: Story = {
+  name: 'Glass',
+  args: {
+    title: 'Glass Dialog',
+    content: 'The background of this dialog is translucent and blurred.',
+    maxWidth: 480,
+    glass: true,
     disablePadding: false,
   },
   render: (args) => (

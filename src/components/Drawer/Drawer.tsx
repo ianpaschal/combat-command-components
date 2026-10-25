@@ -31,6 +31,7 @@ export interface DrawerProps {
   disablePadding?: boolean;
   disableScroll?: boolean;
   fullSize?: boolean;
+  glass?: boolean;
   maxSize?: CSSProperties['maxWidth'];
   onClose?: (dirty: boolean) => void;
   onOpenChangeComplete?: (open: boolean) => void;
@@ -46,6 +47,7 @@ export const Drawer = ({
   disablePadding = false,
   disableScroll = false,
   fullSize = false,
+  glass = false,
   maxSize,
   onClose,
   onOpenChangeComplete,
@@ -96,7 +98,7 @@ export const Drawer = ({
         <BaseDrawer.Backdrop className={styles.drawerBackdrop} />
         <BaseDrawer.Viewport className={styles.drawerViewport}>
           <BaseDrawer.Popup
-            className={clsx(sx({ variant: 'surface', border: true }), styles.drawerPopup, className)}
+            className={clsx(sx({ variant: 'surface', border: true, glass }), styles.drawerPopup, className)}
             {...orientationProps}
           >
             <BaseDrawer.Content className={styles.drawerInner}>

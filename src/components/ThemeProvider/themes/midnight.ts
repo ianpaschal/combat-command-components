@@ -6,7 +6,12 @@ export const midnight: Theme = {
   dark: true,
   overlayStrength: 0.65,
   shadowStrength: 0.3,
+  glassOpacity: 0.8,
+  glassBlur: 14,
   surface: {
+    glass: {
+      bg: brandSecondary(7),
+    },
     page: {
       bg: brandSecondary(5),
     },

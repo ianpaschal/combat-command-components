@@ -35,6 +35,11 @@ const meta: Meta<DrawerProps> = {
       description: 'Expands the drawer to its maximum size. When false (default), the drawer shrinks to fit its content.',
       table: { category: 'Appearance' },
     },
+    glass: {
+      control: 'boolean',
+      description: 'Whether the drawer background is translucent and blurred.',
+      table: { category: 'Appearance' },
+    },
     maxSize: {
       control: 'number',
       description: 'Caps the maximum size of the drawer (width for left/right, height for top/bottom).',
@@ -145,6 +150,21 @@ export const MaxSize: Story = {
     children: longContent,
     side: 'right',
     maxSize: 480,
+    disablePadding: false,
+    fullSize: false,
+  },
+  render: (args) => (
+    <Drawer {...args} trigger={<Button text="Open Drawer" />} />
+  ),
+};
+
+export const Glass: Story = {
+  name: 'Glass',
+  args: {
+    title: 'Glass Drawer',
+    children: 'The background of this drawer is translucent and blurred.',
+    side: 'right',
+    glass: true,
     disablePadding: false,
     fullSize: false,
   },

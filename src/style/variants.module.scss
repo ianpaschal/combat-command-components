@@ -50,13 +50,15 @@ $sides: "top", "right", "bottom", "left";
           }
 
           &:hover {
+            --variant-bg: var(--color-#{$variant}-#{$intent}-bg-hover);
+
             color: var(--color-#{$variant}-#{$intent}-text-hover);
-            background-color: var(--color-#{$variant}-#{$intent}-bg-hover);
           }
 
           &:active {
+            --variant-bg: var(--color-#{$variant}-#{$intent}-bg-active);
+
             color: var(--color-#{$variant}-#{$intent}-text-active);
-            background-color: var(--color-#{$variant}-#{$intent}-bg-active);
           }
         }
       }
@@ -69,30 +71,33 @@ $sides: "top", "right", "bottom", "left";
   @include common;
   @include interactive("solid");
 
+  --variant-bg: var(--color-solid-#{$intent}-bg);
   --variant-border: var(--color-solid-#{$intent}-bg);
 
   color: var(--color-solid-#{$intent}-text);
-  background-color: var(--color-solid-#{$intent}-bg);
+  background-color: var(--variant-bg);
 }
 
 @mixin shaded($intent: "secondary") {
   @include common;
   @include interactive("shaded");
 
+  --variant-bg: var(--color-shaded-#{$intent}-bg);
   --variant-border: var(--color-shaded-#{$intent}-border);
 
   color: var(--color-shaded-#{$intent}-text);
-  background-color: var(--color-shaded-#{$intent}-bg);
+  background-color: var(--variant-bg);
 }
 
 @mixin ghost($intent: "secondary") {
   @include common;
   @include interactive("ghost");
 
+  --variant-bg: var(--color-ghost-#{$intent}-bg);
   --variant-border: var(--color-ghost-#{$intent}-border);
 
   color: var(--color-ghost-#{$intent}-text);
-  background-color: var(--color-ghost-#{$intent}-bg);
+  background-color: var(--variant-bg);
 }
 
 @layer variants {
@@ -129,9 +134,19 @@ $sides: "top", "right", "bottom", "left";
   .surface {
     @include common;
 
+    --variant-bg: var(--color-card-bg);
     --variant-border: var(--color-card-border);
 
     border-color: var(--color-card-border);
-    background-color: var(--color-card-bg);
+    background-color: var(--variant-bg);
+  }
+
+  .glass:is(.solid, .shaded, .ghost, .surface) {
+    background-color: color-mix(in srgb, var(--variant-bg) calc(var(--glass-opacity) * 100%), transparent);
+    backdrop-filter: blur(var(--glass-blur));
+  }
+
+  .glass.surface {
+    --variant-bg: var(--color-glass-bg);
   }
 }
