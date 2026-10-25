@@ -3,6 +3,7 @@ import './style/index.scss';
 export * from './components/Accordion';
 export * from './components/AppNavigation';
 export * from './components/Badge';
+export * from './components/Breadcrumbs';
 export * from './components/Button';
 export * from './components/Card';
 export * from './components/Checkbox';
