@@ -51,6 +51,10 @@ const meta: Meta<typeof AppNavigation> = {
       control: 'text',
       description: 'Path navigated to when the logo is clicked.',
     },
+    logoSize: {
+      control: 'text',
+      description: 'Size of the logo as a CSS length (e.g. "2rem"). A number is treated as px.',
+    },
     onNavigate: {
       table: { disable: true },
     },
@@ -181,4 +185,45 @@ export const Glass: Story = {
     ...defaultProps,
     glass: true,
   },
+  parameters: {
+    docs: {
+      story: { inline: false, height: '30rem' },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <>
+        <Story />
+        <div style={{
+          boxSizing: 'border-box',
+          margin: '0 auto',
+          maxWidth: '48rem',
+          padding: '5rem 1rem 4rem',
+        }}>
+          {Array.from({ length: 12 }, (_, i) => {
+            const hue = (i * 47) % 360;
+            const light = i % 3 === 0;
+            return (
+              <article key={i} style={{ marginBottom: '3rem' }}>
+                <div style={{
+                  background: [
+                    `radial-gradient(circle at ${20 + (i * 17) % 60}% 40%, hsl(${hue + 40} 90% ${light ? 90 : 60}%) 0%, transparent 45%)`,
+                    `linear-gradient(135deg, hsl(${hue} ${light ? 40 : 80}% ${light ? 85 : 30}%), hsl(${hue + 80} 70% ${light ? 95 : 15}%))`,
+                  ].join(', '),
+                  borderRadius: '0.5rem',
+                  height: '16rem',
+                }} />
+                <h2 style={{ margin: '1rem 0 0.5rem' }}>Blog Post Number {i + 1}</h2>
+                <p style={{ margin: 0 }}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+              </article>
+            );
+          })}
+        </div>
+      </>
+    ),
+  ],
 };

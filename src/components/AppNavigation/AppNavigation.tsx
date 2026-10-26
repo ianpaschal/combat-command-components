@@ -1,16 +1,16 @@
 import {
+  CSSProperties,
   ReactElement,
   ReactNode,
   useCallback,
   useState,
 } from 'react';
 import { createPortal } from 'react-dom';
-import clsx from 'clsx';
 
 import { AppLogo } from './components/AppLogo/AppLogo';
 import { DesktopNavigation } from './components/DesktopNavigation';
 import { MobileNavigation } from './components/MobileNavigation';
-import { getStyleClassNames } from '../../utils/getStyleClassNames';
+import { sx } from '../../utils/getStyleClassNames';
 import { NavigationProvider } from './AppNavigation.context';
 import { LogoRoute, Route } from './AppNavigation.types';
 
@@ -22,6 +22,7 @@ export interface AppNavigationProps {
   glass?: boolean;
   logoPath?: string;
   logoRoute?: LogoRoute;
+  logoSize?: number | string;
   location: string;
   logo?: ReactNode;
   maxWidth?: number | string;
@@ -39,6 +40,7 @@ export const AppNavigation = ({
   glass = false,
   logoPath,
   logoRoute,
+  logoSize,
   location,
   logo,
   maxWidth = '100vw',
@@ -55,19 +57,25 @@ export const AppNavigation = ({
     setState(null); // Close all navigation accordions, menus, etc.
   }, [onNavigate]);
   return createPortal((
-    <div className={clsx(styles.appNavigation, ...(glass ? [] : getStyleClassNames({
-      variant: 'surface',
-      border: 'bottom',
-    })), className)}>
+    <div
+      className={sx(glass ? {} : {
+        variant: 'surface',
+        border: 'bottom',
+      }, styles.appNavigation, className)}
+      style={logoSize !== undefined ? {
+        '--logo-size': typeof logoSize === 'number' ? `${logoSize}px` : logoSize,
+      } as CSSProperties : undefined}
+    >
+      {/* Glass is applied to this child, not the root. See AppNavigation.module.scss. */}
       {glass && (
-        <div className={clsx(styles.appNavigationGlass, ...getStyleClassNames({
+        <div className={sx({
           variant: 'surface',
           border: 'bottom',
           glass,
-        }))} />
+        }, styles.appNavigationGlass)} />
       )}
       <div className={styles.appNavigationContent} style={{ maxWidth }} data-layout={mobile ? 'mobile' : 'desktop'}>
-        <NavigationProvider value={{ navigate, location, state, setState }}>
+        <NavigationProvider value={{ glass, navigate, location, state, setState }}>
           <AppLogo className={styles.appNavigationLogo} name={name} path={logoPath} route={logoRoute}>
             {logo}
           </AppLogo>
