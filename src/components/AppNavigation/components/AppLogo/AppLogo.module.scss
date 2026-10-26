@@ -30,6 +30,11 @@
       height: var(--logo-size, 2.5rem);
     }
 
+    img {
+      width: var(--logo-size, 2.5rem);
+      height: auto;
+    }
+
     &-name {
       font-family: Figtree, sans-serif;
       font-size: 1.0625rem;
