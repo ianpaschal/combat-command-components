@@ -4,6 +4,17 @@
 
 @layer components {
   .app-navigation {
+    /* The bar extends --bleed above the top of the viewport (see top, height
+     * and padding-top below), so the area outside the visible page is also
+     * covered by the bar's background.
+     *
+     * This means `glass` cannot be applied to this element directly:
+     * backdrop-filter on an element that extends off-screen flickers, because
+     * the off-screen part has nothing to sample. With glass, the root therefore
+     * has no background of its own, and .app-navigation-glass (rendered by
+     * <AppNavigation/>) is inset by --bleed so that it covers only the
+     * on-screen part of the bar and carries the glass background and blur.
+     */
     --bleed: 100dvh;
     --indicator-thickness: 0.25rem;
     --vertical-padding: 0.75rem;

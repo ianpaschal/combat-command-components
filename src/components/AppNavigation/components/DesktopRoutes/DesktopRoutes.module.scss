@@ -148,7 +148,7 @@
       transform-origin: var(--transform-origin);
 
       box-sizing: border-box;
-      width: max-content;
+      width: var(--popup-width);
       max-width: 16rem;
       height: var(--popup-height);
 

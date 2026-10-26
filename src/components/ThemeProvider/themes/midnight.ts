@@ -6,7 +6,7 @@ export const midnight: Theme = {
   dark: true,
   overlayStrength: 0.65,
   shadowStrength: 0.3,
-  glassOpacity: 0.8,
+  glassOpacity: 0.6,
   glassBlur: 14,
   surface: {
     glass: {
