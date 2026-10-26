@@ -24,7 +24,7 @@ export const DesktopRoutes = ({
   path = '/',
   routes,
 }: DesktopRoutesProps): ReactElement => {
-  const { glass, state, setState } = useNavigationContext();
+  const { state, setState } = useNavigationContext();
   const handleValueChange = (value: string | null): void => setState([
     ...(state ?? []).slice(0, depth),
     ...(value ? [value] : []),
@@ -71,7 +71,6 @@ export const DesktopRoutes = ({
           <NavigationMenu.Popup className={clsx(sx({
             corners: 'normal',
             elevation: 5,
-            glass,
             variant: 'surface',
           }), styles.desktopRoutesPopup)}>
             {!depth && (

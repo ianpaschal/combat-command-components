@@ -75,7 +75,7 @@ export const AppNavigation = ({
         }, styles.appNavigationGlass)} />
       )}
       <div className={styles.appNavigationContent} style={{ maxWidth }} data-layout={mobile ? 'mobile' : 'desktop'}>
-        <NavigationProvider value={{ glass, navigate, location, state, setState }}>
+        <NavigationProvider value={{ navigate, location, state, setState }}>
           <AppLogo className={styles.appNavigationLogo} name={name} path={logoPath} route={logoRoute}>
             {logo}
           </AppLogo>

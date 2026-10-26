@@ -1,7 +1,6 @@
 import { createContext, useContext } from 'react';
 
 export type AppNavigationContextValue = {
-  glass?: boolean;
   location: string;
   logoRoute?: string;
   navigate: (path: string) => void;
