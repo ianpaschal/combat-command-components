@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 export interface CombatCommandLogoProps {
   className?: string;
   size?: number;
@@ -6,7 +8,7 @@ export interface CombatCommandLogoProps {
 export const CombatCommandLogo = ({
   className,
   size = 40,
-}: CombatCommandLogoProps): JSX.Element => (
+}: CombatCommandLogoProps): ReactElement => (
   <svg
     className={className}
     height={size}

@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 import styles from './Spinner.module.scss';
 
 export interface SpinnerProps {
@@ -9,7 +11,7 @@ export interface SpinnerProps {
  */
 export const Spinner = ({
   size = 24,
-}: SpinnerProps): JSX.Element => (
+}: SpinnerProps): ReactElement => (
   <div
     className={styles.spinner}
     style={{

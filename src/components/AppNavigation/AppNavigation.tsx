@@ -50,7 +50,7 @@ export const AppNavigation = ({
   routes,
   secondaryControls,
   secondaryRoutes,
-}: AppNavigationProps): JSX.Element => {
+}: AppNavigationProps): ReactElement => {
   const [state, setState] = useState<string[] | null>(null);
   const navigate = useCallback((path: string) => {
     onNavigate(path);

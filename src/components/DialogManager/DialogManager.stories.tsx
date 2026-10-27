@@ -1,4 +1,8 @@
-import { ReactNode, useState } from 'react';
+import {
+  ReactElement,
+  ReactNode,
+  useState,
+} from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { longContent } from '../../fixtures';
@@ -20,14 +24,14 @@ interface StoryArgs {
   disablePadding?: boolean;
 }
 
-const BasicDialogWrapper = (args: StoryArgs): JSX.Element => {
+const BasicDialogWrapper = (args: StoryArgs): ReactElement => {
   const { open } = useDialogManager();
   return (
     <Button text="Click Me" onClick={() => open(args)} />
   );
 };
 
-const NestedConfirmationStory = (args: StoryArgs): JSX.Element => {
+const NestedConfirmationStory = (args: StoryArgs): ReactElement => {
   const { open, close } = useDialogManager();
   const [id, setId] = useState<string>('');
   const handleClick = (): void => {
@@ -57,7 +61,7 @@ const NestedConfirmationStory = (args: StoryArgs): JSX.Element => {
   );
 };
 
-const DirtyConfirmationStory = (args: StoryArgs): JSX.Element => {
+const DirtyConfirmationStory = (args: StoryArgs): ReactElement => {
   const { open, close } = useDialogManager();
   const [id, setId] = useState<string>('');
   const handleClick = (): void => {

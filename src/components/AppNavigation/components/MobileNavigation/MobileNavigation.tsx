@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement,ReactNode } from 'react';
 import { Dialog } from '@base-ui/react/dialog';
 import clsx from 'clsx';
 import { Menu, X } from 'lucide-react';
@@ -30,7 +30,7 @@ export const MobileNavigation = ({
   logoRoute,
   routes,
   secondaryRoutes = [],
-}: MobileNavigationProps): JSX.Element => {
+}: MobileNavigationProps): ReactElement => {
   const { location, state, setState } = useNavigationContext();
   const handleOpenChange = (open: boolean): void => {
     setState(open ? locationToAncestorPaths(location).slice(0, -1) : null);

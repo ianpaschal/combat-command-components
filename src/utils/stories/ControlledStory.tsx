@@ -1,5 +1,6 @@
 import {
   ComponentType,
+  ReactElement,
   ReactNode,
   useState,
 } from 'react';
@@ -40,7 +41,7 @@ export const ControlledStory = <
   renderValue = (value) => (
     <pre style={{ margin: 0 }}>{JSON.stringify(value, null, 2)}</pre>
   ),
-}: ControlledStoryProps<TValue, TProps>): JSX.Element => {
+}: ControlledStoryProps<TValue, TProps>): ReactElement => {
   const [value, setValue] = useState<TValue>(initialValue);
 
   return (

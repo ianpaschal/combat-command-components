@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef } from 'react';
+import { ComponentPropsWithoutRef, ReactElement } from 'react';
 import clsx from 'clsx';
 
 import { ElementElevation } from '../../types';
@@ -17,7 +17,7 @@ export const Card = ({
   disablePadding = false,
   elevation = 1,
   ...props
-}: CardProps): JSX.Element => (
+}: CardProps): ReactElement => (
   <div
     {...props}
     className={clsx(...getStyleClassNames({

@@ -1,4 +1,8 @@
-import { ReactNode, useMemo } from 'react';
+import {
+  ReactElement,
+  ReactNode,
+  useMemo,
+} from 'react';
 import { useStore } from '@tanstack/react-store';
 
 import { Dialog } from './Dialog';
@@ -11,7 +15,7 @@ export interface DialogManagerProps {
 
 export const DialogManager = ({
   children,
-}: DialogManagerProps): JSX.Element | null => {
+}: DialogManagerProps): ReactElement | null => {
   const manager = useMemo(() => createDialogManager(), []);
   const [props, ...nested] = useStore(manager.store);
   return (

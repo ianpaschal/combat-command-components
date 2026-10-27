@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactElement,useState } from 'react';
 import {
   Document,
   Page,
@@ -21,7 +21,7 @@ export const PdfThumbnail = ({
   className,
   file,
   width = 80,
-}: PdfThumbnailProps): JSX.Element => {
+}: PdfThumbnailProps): ReactElement => {
   const [pageDimension, setPageDimension] = useState<'width' | 'height' | null>(null);
 
   const handleDocumentLoadSuccess = async (pdf: PDFDocumentProxy) => {

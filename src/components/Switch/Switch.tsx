@@ -3,6 +3,7 @@ import {
   ElementRef,
   forwardRef,
   HTMLAttributes,
+  ReactElement,
 } from 'react';
 import { Switch as BaseSwitch } from '@base-ui/react/switch';
 import clsx from 'clsx';
@@ -32,7 +33,7 @@ export const Switch = forwardRef<ElementRef<typeof BaseSwitch.Root>, SwitchProps
   style,
   value,
   ...props
-}, ref): JSX.Element => (
+}, ref): ReactElement => (
   <BaseSwitch.Root
     ref={ref}
     {...props}

@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 import styles from './UserOption.module.scss';
 
 interface UserOptionProps {
@@ -10,7 +12,7 @@ interface UserOptionProps {
 export const UserOption = ({
   placeholder,
   user,
-}: UserOptionProps): JSX.Element => (
+}: UserOptionProps): ReactElement => (
   <div className={styles.userOption}>
     {user ? (
       <img

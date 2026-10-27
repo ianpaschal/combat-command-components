@@ -6,8 +6,8 @@ import {
 } from 'react';
 
 type UseMaxPagesResult = {
-  trackRef: RefObject<HTMLDivElement>;
-  slotRef: RefObject<HTMLButtonElement>;
+  trackRef: RefObject<HTMLDivElement | null>;
+  slotRef: RefObject<HTMLButtonElement | null>;
   slotCount: number;
   slotWidth: number;
   gapWidth: number;

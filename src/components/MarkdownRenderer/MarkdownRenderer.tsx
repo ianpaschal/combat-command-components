@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import ReactMarkdown from 'react-markdown';
 import clsx from 'clsx';
 import DOMPurify from 'dompurify';
@@ -12,7 +13,7 @@ export interface MarkdownRendererProps {
 export const MarkdownRenderer = ({
   className,
   content,
-}: MarkdownRendererProps): JSX.Element => (
+}: MarkdownRendererProps): ReactElement => (
   <div className={clsx(styles.markdownRenderer, className)}>
     <ReactMarkdown>
       {DOMPurify.sanitize(content)}

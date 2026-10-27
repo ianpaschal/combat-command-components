@@ -3,6 +3,7 @@ import {
   CSSProperties,
   forwardRef,
   ReactElement,
+  Ref,
 } from 'react';
 import clsx from 'clsx';
 
@@ -11,7 +12,11 @@ import { ThemeColor } from '../../types';
 import styles from './Badge.module.scss';
 
 export type BadgeProps = {
-  children: ReactElement;
+  children: ReactElement<{
+    className?: string;
+    ref?: Ref<Element>;
+    style?: CSSProperties;
+  }>;
   className?: string;
   color?: ThemeColor;
   value?: number | string | null;

@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import {
   Document,
   Page,
@@ -35,7 +36,7 @@ export const PdfViewer = ({
   showControls = true,
   workerSrc,
   ...restConfig
-}: PdfViewerProps): JSX.Element => {
+}: PdfViewerProps): ReactElement => {
   if (workerSrc && pdfjs.GlobalWorkerOptions.workerSrc !== workerSrc) {
     pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
   }

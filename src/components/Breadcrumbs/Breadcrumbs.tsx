@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement,ReactNode } from 'react';
 import clsx from 'clsx';
 import { ChevronRight } from 'lucide-react';
 
@@ -24,7 +24,7 @@ export const Breadcrumbs = ({
   items,
   onNavigate,
   rounded = false,
-}: BreadcrumbsProps): JSX.Element => (
+}: BreadcrumbsProps): ReactElement => (
   <nav className={clsx(styles.breadcrumbs, className)} aria-label="Breadcrumb">
     <ol className={styles.breadcrumbsList}>
       {items.map(({ label, href }, i) => {

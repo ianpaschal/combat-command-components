@@ -3,6 +3,7 @@ import {
   ElementRef,
   forwardRef,
   InputHTMLAttributes,
+  ReactElement,
   ReactNode,
 } from 'react';
 import { Select as BaseSelect } from '@base-ui/react/select';
@@ -79,7 +80,7 @@ export const Select = forwardRef<SelectRef, SelectProps>(({
   value,
   variant = 'ghost',
   ...triggerProps
-}, ref): JSX.Element => {
+}, ref): ReactElement => {
   const collisionPadding = useSafeCollisionPadding(8);
 
   return (

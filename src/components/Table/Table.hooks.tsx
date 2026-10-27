@@ -10,7 +10,7 @@ import {
 import { ColumnDef, RowData } from './Table.types';
 import { isValidCSSCalcValue } from './Table.utils';
 
-export const useScrollbarOffset = (): [RefObject<HTMLDivElement>, number] => {
+export const useScrollbarOffset = (): [RefObject<HTMLDivElement | null>, number] => {
   const ref = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState<number>(0);
 

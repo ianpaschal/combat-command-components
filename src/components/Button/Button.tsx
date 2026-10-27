@@ -61,7 +61,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
   type = 'button',
   variant = 'solid',
   ...props
-}, ref): JSX.Element => {
+}, ref): ReactElement => {
   const resolvedClassName = clsx(getStyleClassNames({
     border,
     collapsePadding,

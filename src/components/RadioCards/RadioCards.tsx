@@ -2,6 +2,7 @@ import {
   ElementRef,
   forwardRef,
   InputHTMLAttributes,
+  ReactElement,
   ReactNode,
   useState,
 } from 'react';
@@ -44,7 +45,7 @@ export const RadioCards = forwardRef<RadioGroupRef, RadioCardsProps>(({
   options,
   value,
   ...props
-}, ref): JSX.Element => {
+}, ref): ReactElement => {
   const [internalValue, setInternalValue] = useState<RadioCardsValue | null>(defaultValue ?? null);
   const isControlled = value !== undefined;
   const currentValue = isControlled ? value : internalValue;

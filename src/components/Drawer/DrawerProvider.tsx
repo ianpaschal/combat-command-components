@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement,ReactNode } from 'react';
 import { Drawer as BaseDrawer } from '@base-ui/react/drawer';
 
 interface DrawerProviderProps {
@@ -7,7 +7,7 @@ interface DrawerProviderProps {
 
 export const DrawerProvider = ({
   children,
-}: DrawerProviderProps): JSX.Element => (
+}: DrawerProviderProps): ReactElement => (
   <BaseDrawer.Provider>
     {children}
   </BaseDrawer.Provider>

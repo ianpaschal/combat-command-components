@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 import { Route } from '../../AppNavigation.types';
 import { DesktopRoutes } from '../DesktopRoutes';
 
@@ -11,7 +13,7 @@ interface NavigationProps {
 export const DesktopNavigation = ({
   routes,
   secondaryRoutes = [],
-}: NavigationProps): JSX.Element => (
+}: NavigationProps): ReactElement => (
   <div className={styles.desktopNavigation}>
     <DesktopRoutes className={styles.desktopNavigationPrimaryRoutes} routes={routes} />
     <DesktopRoutes className={styles.desktopNavigationSecondaryRoutes} routes={secondaryRoutes} />

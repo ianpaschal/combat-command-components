@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { ReactElement,useCallback } from 'react';
 import clsx from 'clsx';
 import {
   ChevronLeft,
@@ -34,7 +34,7 @@ export const PdfViewerControls = ({
   file,
   fileName,
   state,
-}: PdfViewerControlsProps): JSX.Element => {
+}: PdfViewerControlsProps): ReactElement => {
   const handleDownload = useCallback(() => download(file, fileName), [file, fileName]);
   return (
     <div className={clsx(getStyleClassNames({

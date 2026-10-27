@@ -2,6 +2,7 @@ import {
   ElementRef,
   forwardRef,
   InputHTMLAttributes,
+  ReactElement,
   ReactNode,
 } from 'react';
 import { Radio as BaseRadio } from '@base-ui/react/radio';
@@ -46,7 +47,7 @@ export const Radio = forwardRef<RadioGroupRef, RadioProps>(({
   defaultValue,
 
   ...props
-}, ref): JSX.Element => (
+}, ref): ReactElement => (
   <RadioGroup
     className={clsx(styles.radio, className)}
     ref={ref}

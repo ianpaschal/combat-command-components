@@ -55,7 +55,7 @@ export const Drawer = ({
   side = 'bottom',
   title,
   trigger,
-}: DrawerProps): JSX.Element => {
+}: DrawerProps): ReactElement => {
   const actionsRef = useRef<BaseDrawer.Root.Actions>(null);
   const [dirty, setDirty] = useState(false);
 

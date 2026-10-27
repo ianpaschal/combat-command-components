@@ -2,6 +2,7 @@ import {
   ComponentPropsWithoutRef,
   ElementRef,
   forwardRef,
+  ReactElement,
   ReactNode,
 } from 'react';
 import { Collapsible as BaseCollapsible } from '@base-ui/react/collapsible';
@@ -18,7 +19,7 @@ export const Collapsible = forwardRef<ElementRef<typeof BaseCollapsible.Root>, C
   children,
   trigger,
   ...props
-}, ref): JSX.Element => (
+}, ref): ReactElement => (
   <BaseCollapsible.Root ref={ref} {...props}>
     <BaseCollapsible.Trigger render={(triggerProps, state) => (
       <button type="button" {...triggerProps} className={clsx(styles.collapsibleTrigger, triggerProps.className)}>

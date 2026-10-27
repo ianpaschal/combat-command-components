@@ -13,8 +13,8 @@ import {
 } from './PdfViewer.types';
 
 interface UsePdfViewerReturn {
-  containerRef: RefObject<HTMLDivElement>;
-  ref: RefObject<HTMLDivElement>;
+  containerRef: RefObject<HTMLDivElement | null>;
+  ref: RefObject<HTMLDivElement | null>;
   onLoadError: () => void;
   onLoadSuccess: (pdf: { numPages: number; getPage: (n: number) => Promise<{ getViewport: (opts: { scale: number }) => { width: number } }> }) => void;
   onScroll: () => void;
@@ -46,7 +46,7 @@ export const usePdfViewer = (
   const [scale, setScale] = useState(config.initialScale ?? 1);
   const pdfPageWidthRef = useRef<number | null>(null);
   const isScrollingTo = useRef(false);
-  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   if (file !== prevFile) {
     setPrevFile(file);

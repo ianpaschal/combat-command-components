@@ -1,4 +1,8 @@
-import { ReactNode, useState } from 'react';
+import {
+  ReactElement,
+  ReactNode,
+  useState,
+} from 'react';
 import { CheckboxGroup as BaseCheckboxGroup } from '@base-ui/react/checkbox-group';
 import clsx from 'clsx';
 import { Search } from 'lucide-react';
@@ -39,7 +43,7 @@ export const TransferListGroup = ({
   renderItem,
   searchPlaceholder = 'Filter...',
   title,
-}: TransferListGroupProps): JSX.Element => {
+}: TransferListGroupProps): ReactElement => {
   const [filter, setFilter] = useState('');
   const itemProps: TransferListItemProps[] = items.flatMap((item) => {
     if (!matchesFilter(item, filter)) {

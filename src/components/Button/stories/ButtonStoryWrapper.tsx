@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import clsx from 'clsx';
 
 import { getStyleClassNames } from '../../../utils/getStyleClassNames';
@@ -10,7 +11,7 @@ const INTENTS = ['primary', 'secondary', 'danger', 'warning', 'success', 'info']
 
 export const ButtonStoryWrapper = (
   props: ButtonProps,
-): JSX.Element => (
+): ReactElement => (
   <div className={styles.buttonStoryWrapper}>
     <div className={styles.buttonStoryWrapperLabelsX}>
       <h2 className={styles.buttonStoryWrapperLabelHeader}>

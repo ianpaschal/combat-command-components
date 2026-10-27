@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactElement,useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Drawer } from '../Drawer';
@@ -83,7 +83,7 @@ const MapWithDrawerStory = ({
   clusterMaxZoom,
   clusterRadius,
   mapStyle,
-}: MapWithDrawerStoryProps): JSX.Element => {
+}: MapWithDrawerStoryProps): ReactElement => {
   const [selected, setSelected] = useState<MapPin<TournamentData> | null>(null);
 
   return (

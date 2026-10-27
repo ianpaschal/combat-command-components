@@ -1,4 +1,5 @@
 import {
+  ReactElement,
   useLayoutEffect,
   useRef,
   useState,
@@ -30,7 +31,7 @@ export const TableOfContents = ({
   className,
   items,
   offset,
-}: TableOfContentsProps): JSX.Element => {
+}: TableOfContentsProps): ReactElement => {
   const activeId = useActiveHeading(items.map((item) => item.id), offset);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [indicator, setIndicator] = useState<IndicatorState | null>(null);
@@ -67,7 +68,9 @@ export const TableOfContents = ({
         {items.map(({ id, label }) => (
           <li key={id}>
             <a
-              ref={(el) => linkRefs.current[id] = el}
+              ref={(el) => {
+                linkRefs.current[id] = el;
+              }}
               className={sx({
                 variant: 'ghost',
                 size: 'small',

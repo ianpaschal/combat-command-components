@@ -1,4 +1,5 @@
 import {
+  ReactElement,
   ReactNode,
   useCallback,
   useRef,
@@ -53,7 +54,7 @@ export const Map = <T,>({
   onPinClick,
   pins,
   renderPin,
-}: MapProps<T>): JSX.Element => {
+}: MapProps<T>): ReactElement => {
   const mapRef = useRef<MapRef>(null);
   const [zoom, setZoom] = useState(initialViewport.zoom);
 

@@ -2,6 +2,7 @@ import {
   ComponentPropsWithoutRef,
   ElementRef,
   forwardRef,
+  ReactElement,
 } from 'react';
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import clsx from 'clsx';
@@ -26,7 +27,7 @@ export const Checkbox = forwardRef<ElementRef<typeof BaseCheckbox.Root>, Checkbo
   onChange,
   value,
   ...props
-}, ref): JSX.Element => (
+}, ref): ReactElement => (
   <BaseCheckbox.Root
     ref={ref}
     {...props}

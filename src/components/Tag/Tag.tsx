@@ -1,6 +1,7 @@
 import {
   AnchorHTMLAttributes,
   forwardRef,
+  ReactElement,
   Ref,
 } from 'react';
 import clsx from 'clsx';
@@ -34,7 +35,7 @@ export const Tag = forwardRef<HTMLSpanElement | HTMLAnchorElement, TagProps>(({
   variant = 'solid',
   rounded,
   ...props
-}, ref): JSX.Element => {
+}, ref): ReactElement => {
   const resolvedClassName = clsx(getStyleClassNames({
     border,
     corners,

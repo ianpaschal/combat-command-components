@@ -1,4 +1,8 @@
-import { forwardRef, TextareaHTMLAttributes } from 'react';
+import {
+  forwardRef,
+  ReactElement,
+  TextareaHTMLAttributes,
+} from 'react';
 import clsx from 'clsx';
 
 import { ElementIntent, ElementVariant } from '../../types';
@@ -18,7 +22,7 @@ export const InputTextArea = forwardRef<HTMLTextAreaElement, InputTextAreaProps>
   intent = 'secondary',
   variant = 'ghost',
   ...props
-}, ref): JSX.Element => (
+}, ref): ReactElement => (
   <textarea
     className={clsx(...getStyleClassNames({
       intent,

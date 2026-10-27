@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactElement,useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { longContent } from '../../fixtures';
@@ -57,7 +57,7 @@ const meta: Meta<DrawerProps> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const ControlledStory = (args: DrawerProps): JSX.Element => {
+const ControlledStory = (args: DrawerProps): ReactElement => {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -101,7 +101,7 @@ export const RightSideControlled: Story = {
   render: (args) => <ControlledStory {...args} />,
 };
 
-const ProgrammaticCloseContent = (): JSX.Element => {
+const ProgrammaticCloseContent = (): ReactElement => {
   const { close } = useDrawer();
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'start' }}>
@@ -187,7 +187,7 @@ export const FullSize: Story = {
   ),
 };
 
-const NestedDrawerContent = (): JSX.Element => {
+const NestedDrawerContent = (): ReactElement => {
   const [nestedOpen, setNestedOpen] = useState(false);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'start' }}>

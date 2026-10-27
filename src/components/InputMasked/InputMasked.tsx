@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  ReactElement,
   ReactNode,
   useId,
 } from 'react';
@@ -42,7 +43,7 @@ export const InputMasked = forwardRef<HTMLInputElement, InputMaskedProps>(({
   style,
   variant = 'ghost',
   ...props
-}, ref): JSX.Element => {
+}, ref): ReactElement => {
   const maskDescriptionId = useId();
   const maskColor = variant === 'surface' ? undefined : `var(--color-${variant}-${intent}-text)`;
   return (

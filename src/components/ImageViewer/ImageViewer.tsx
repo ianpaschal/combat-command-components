@@ -1,4 +1,8 @@
-import { useEffect, useState } from 'react';
+import {
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react';
 import clsx from 'clsx';
 
 import { Spinner } from '../Spinner';
@@ -17,7 +21,7 @@ export const ImageViewer = ({
   className,
   loading: forceLoading = false,
   url,
-}: ImageViewerProps): JSX.Element => {
+}: ImageViewerProps): ReactElement => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(true);

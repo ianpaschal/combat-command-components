@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactElement,useState } from 'react';
 
 import { Button } from '../../Button';
 import {
@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from '../Select';
 
-export const ControlledValueStory = (props: SelectProps): JSX.Element => {
+export const ControlledValueStory = (props: SelectProps): ReactElement => {
   const [value, setValue] = useState<SelectValue | null>(null);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

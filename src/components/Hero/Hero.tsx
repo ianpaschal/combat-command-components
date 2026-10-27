@@ -1,4 +1,8 @@
-import { CSSProperties, ReactNode } from 'react';
+import {
+  CSSProperties,
+  ReactElement,
+  ReactNode,
+} from 'react';
 import clsx from 'clsx';
 
 import styles from './Hero.module.scss';
@@ -21,7 +25,7 @@ export const Hero = ({
   maxWidth,
   minHeight,
   maxHeight,
-}: HeroProps): JSX.Element => (
+}: HeroProps): ReactElement => (
   <div
     className={clsx(styles.hero, className)}
     style={{

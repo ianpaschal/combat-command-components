@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import {
   ArrowDown,
   ArrowLeft,
@@ -26,7 +27,7 @@ export const TransferListControls = ({
   onMove,
   orientation = 'horizontal',
   staged,
-}: TransferListControlsProps): JSX.Element | null => {
+}: TransferListControlsProps): ReactElement | null => {
   const group = groups[index];
   const nextGroup = groups[index + 1];
   if (!nextGroup) {

@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import clsx from 'clsx';
 
 import styles from './RatioBar.module.scss';
@@ -19,7 +20,7 @@ export const RatioBar = ({
   className,
   sections,
   removeEmpty = true,
-}: RatioBarProps): JSX.Element => (
+}: RatioBarProps): ReactElement => (
   <div className={clsx(styles.ratioBar, className)}>
     {sections.filter(({ value }) => value > 0 || !removeEmpty).map((section, i) => (
       <div

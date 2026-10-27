@@ -75,7 +75,7 @@ export const InputPanel = forwardRef(<T,>({
   renderContent,
   serialize,
   value: controlledValue,
-}: InputPanelProps<T>, ref: ForwardedRef<HTMLButtonElement>): JSX.Element => {
+}: InputPanelProps<T>, ref: ForwardedRef<HTMLButtonElement>): ReactElement => {
   const [value, setValue] = useState<T | undefined>(controlledValue ?? defaultValue);
   const [open, setOpen] = useState(false);
 
@@ -211,7 +211,7 @@ export const InputPanel = forwardRef(<T,>({
       </BaseDrawer.Portal>
     </BaseDrawer.Root >
   );
-}) as (<T>(props: InputPanelProps<T> & RefAttributes<HTMLButtonElement>) => JSX.Element) & {
+}) as (<T>(props: InputPanelProps<T> & RefAttributes<HTMLButtonElement>) => ReactElement) & {
   displayName?: string;
 };
 

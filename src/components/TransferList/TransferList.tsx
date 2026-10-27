@@ -1,6 +1,7 @@
 import {
   CSSProperties,
   Fragment,
+  ReactElement,
   ReactNode,
   useEffect,
   useState,
@@ -52,7 +53,7 @@ export const TransferList = ({
   renderItem,
   searchPlaceholder = 'Filter...',
   value: controlledValue,
-}: TransferListProps): JSX.Element => {
+}: TransferListProps): ReactElement => {
   const [value, setValue] = useState<TransferListValue>(defaultValue ?? {});
 
   const state = valueToState(controlledValue ?? value);

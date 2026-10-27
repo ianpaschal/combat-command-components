@@ -1,4 +1,5 @@
 import {
+  ReactElement,
   useEffect,
   useRef,
   useState,
@@ -8,7 +9,7 @@ import { Button } from '../../Button';
 import { ImageViewer, ImageViewerProps } from '../ImageViewer';
 import { randomPicsumUrl } from './InteractiveStory.utils';
 
-export const InteractiveStory = ({ url: urlProp, loading, alt }: ImageViewerProps): JSX.Element => {
+export const InteractiveStory = ({ url: urlProp, loading, alt }: ImageViewerProps): ReactElement => {
   const [url, setUrl] = useState(urlProp);
   const [key, setKey] = useState(0);
   const prevUrlPropRef = useRef(urlProp);

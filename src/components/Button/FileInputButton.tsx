@@ -1,4 +1,8 @@
-import { ChangeEvent, useRef } from 'react';
+import {
+  ChangeEvent,
+  ReactElement,
+  useRef,
+} from 'react';
 
 import { Button, ButtonProps } from './Button';
 
@@ -13,7 +17,7 @@ export const FileInputButton = ({
   multiple = false,
   onChange,
   ...props
-}: FileInputButtonProps): JSX.Element => {
+}: FileInputButtonProps): ReactElement => {
   const ref = useRef<HTMLInputElement>(null);
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     if (!event.target.files || event.target.files.length === 0) {

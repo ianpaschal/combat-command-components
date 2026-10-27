@@ -1,4 +1,5 @@
 import {
+  ReactElement,
   useCallback,
   useRef,
   useState,
@@ -105,7 +106,7 @@ export const NoControls: Story = {
   },
 };
 
-const FileUploadStory = (): JSX.Element => {
+const FileUploadStory = (): ReactElement => {
   const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 

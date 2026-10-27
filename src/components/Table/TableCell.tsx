@@ -22,7 +22,7 @@ export const TableCell = <T extends RowData>({
   position,
   row,
   showScrollIndicator = false,
-}: TableCellProps<T>): JSX.Element => {
+}: TableCellProps<T>): ReactElement => {
   const isHeader = !row;
 
   const renderInner = (): ReactElement => {

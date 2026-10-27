@@ -95,7 +95,7 @@ export const ToggleGroup = forwardRef<ElementRef<typeof BaseToggleGroup>, Toggle
   value,
   variant = 'shaded',
   ...props
-}, ref): JSX.Element => (
+}, ref): ReactElement => (
   <BaseToggleGroup
     ref={ref}
     {...props}

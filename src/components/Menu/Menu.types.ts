@@ -5,7 +5,7 @@ import { ElementIntent } from '../../types';
 export type Action = {
   handler: (id?: string) => void;
   label: string;
-  icon?: JSX.Element;
+  icon?: ReactElement;
   intent?: ElementIntent;
 };
 

@@ -1,5 +1,6 @@
 import {
   CSSProperties,
+  ReactElement,
   ReactNode,
   useLayoutEffect,
 } from 'react';
@@ -65,7 +66,7 @@ export const Dialog = ({
   preventCancel = false,
   renderContent,
   title,
-}: DialogPropsWithNested): JSX.Element => {
+}: DialogPropsWithNested): ReactElement => {
   const { remove, setDirty, setOpen } = useDialogManager();
 
   const handleOpenChange = (open: boolean): void => {

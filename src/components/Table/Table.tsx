@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import clsx from 'clsx';
 
 import { ScrollArea } from '../ScrollArea';
@@ -18,7 +19,7 @@ export const Table = <T extends RowData>({
   className,
   columns,
   rows,
-}: TableProps<T>): JSX.Element => {
+}: TableProps<T>): ReactElement => {
   const [ref, offset] = useScrollbarOffset();
   const style = useGridStyle(columns);
   return (

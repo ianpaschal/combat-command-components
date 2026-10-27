@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import clsx from 'clsx';
 import { Check } from 'lucide-react';
@@ -12,7 +13,7 @@ export const TransferListItem = ({
   children,
   disabled = false,
   value,
-}: TransferListItemProps): JSX.Element => (
+}: TransferListItemProps): ReactElement => (
   <label
     className={sx({
       variant: 'ghost',

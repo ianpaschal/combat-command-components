@@ -36,7 +36,7 @@ export const InputText = forwardRef<HTMLInputElement, InputTextProps>(({
   intent = 'secondary',
   variant = 'ghost',
   ...props
-}, ref): JSX.Element => (
+}, ref): ReactElement => (
   <div className={sx({ size: 'normal' }, styles.inputText, className)} data-has-icon={icon || undefined}>
     {icon && (
       <div className={styles.inputTextIconWrapper}>
