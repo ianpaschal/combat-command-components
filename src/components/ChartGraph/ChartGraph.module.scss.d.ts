@@ -1,10 +1,10 @@
 export declare const chartGraph: string;
 export declare const chartGraphCorner: string;
 export declare const chartGraphGrid: string;
-export declare const chartGraphMajorLine: string;
-export declare const chartGraphMinorLine: string;
+export declare const chartGraphGridLine: string;
+export declare const chartGraphHighlightLine: string;
 export declare const chartGraphPlot: string;
 export declare const chartGraphSvg: string;
-export declare const chartGraphTick: string;
+export declare const chartGraphTooltip: string;
 export declare const chartGraphXAxis: string;
 export declare const chartGraphYAxis: string;

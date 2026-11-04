@@ -1,0 +1,13 @@
+@use "../../style/layers";
+
+@layer components {
+  .chart-bar {
+    &-bar {
+      transition: opacity 150ms;
+
+      &[data-dimmed] {
+        opacity: 0.4;
+      }
+    }
+  }
+}
