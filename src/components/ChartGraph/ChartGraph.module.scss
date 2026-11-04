@@ -2,31 +2,46 @@
 
 @layer components {
   .chart-graph {
-    /* Debug colors, until the graph draws real data. */
-    --chart-graph-plot-color: #FFF8E1;
-    --chart-graph-x-axis-color: #E0F5EC;
-    --chart-graph-y-axis-color: #EDE7F6;
-    --chart-graph-corner-color: #FFE4D6;
-    --chart-graph-major-line-color: #90CAF9;
-    --chart-graph-minor-line-color: #D6EAFB;
+    --chart-graph-grid-line-color: var(--color-card-border);
+
+    position: relative;
 
     width: 100%;
     min-width: 0;
     height: 100%;
     min-height: 0;
 
-    font-size: 0.75rem;
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-small);
+    color: var(--color-text-body);
+
+    /* Base UI sets the scroll position on the viewport as variables which don't
+     * inherit, so they are passed down to the plot and the axes by hand.
+     */
+    * {
+      --scroll-area-overflow-x-start: inherit;
+      --scroll-area-overflow-y-end: inherit;
+    }
 
     &-grid {
       display: grid;
+      box-sizing: border-box;
     }
 
     &-plot {
       grid-column: 2;
       grid-row: 1;
+
       min-width: 0;
       min-height: 0;
-      background-color: var(--chart-graph-plot-color);
+
+      background-color: var(--chart-graph-plot-color, transparent);
+
+      /* The axes are see-through, so the plot is clipped where they cover it: on
+       * the left by as far as it is scrolled sideways, and at the bottom by as
+       * far as there is left to scroll down.
+       */
+      clip-path: inset(0 0 var(--scroll-area-overflow-y-end, 0) var(--scroll-area-overflow-x-start, 0));
     }
 
     &-svg {
@@ -35,65 +50,67 @@
       height: 100%;
     }
 
-    &-major-line {
-      stroke: var(--chart-graph-major-line-color);
+    &-grid-line {
+      stroke: var(--chart-graph-grid-line-color);
       stroke-width: 1;
     }
 
-    &-minor-line {
-      stroke: var(--chart-graph-minor-line-color);
+    &-highlight-line {
+      stroke: var(--color-text-header);
       stroke-width: 1;
+    }
+
+    &-tooltip {
+      pointer-events: none;
+      position: absolute;
+      z-index: 3;
     }
 
     /* The axes stick to the edges of the scroll area, so that the plot scrolls under them. */
     &-y-axis {
       position: sticky;
-      z-index: 1;
+      z-index: 2;
       left: 0;
 
-      display: grid;
       grid-column: 1;
       grid-row: 1;
 
-      padding: 0 0.5rem;
+      background-color: var(--chart-graph-y-axis-color, transparent);
 
-      text-align: right;
-
-      background-color: var(--chart-graph-y-axis-color);
+      /* A scrolling axis goes under the corner, so its labels scroll under it. */
+      [data-has-overflow-y] & {
+        z-index: 0;
+        clip-path: inset(-0.5lh 0 var(--scroll-area-overflow-y-end, 0) 0);
+      }
     }
 
     &-x-axis {
       position: sticky;
-      z-index: 1;
+      z-index: 2;
       bottom: 0;
 
-      display: grid;
       grid-column: 2;
       grid-row: 2;
 
-      padding: 0.5rem 0;
+      background-color: var(--chart-graph-x-axis-color, transparent);
 
-      text-align: center;
-
-      background-color: var(--chart-graph-x-axis-color);
+      /* A scrolling axis goes under the corner, so its labels scroll under it. */
+      [data-has-overflow-x] & {
+        z-index: 0;
+        clip-path: inset(0 -50% 0 var(--scroll-area-overflow-x-start, 0));
+      }
     }
 
     &-corner {
       position: sticky;
-      z-index: 2;
+      z-index: 1;
       bottom: 0;
       left: 0;
 
       grid-column: 1;
       grid-row: 2;
 
-      background-color: var(--chart-graph-corner-color);
-    }
-
-    &-tick {
-      overflow: hidden;
-      align-self: center;
-      white-space: nowrap;
+      background-color: var(--chart-graph-corner-color, transparent);
     }
   }
 }
