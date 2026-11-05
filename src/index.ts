@@ -9,6 +9,7 @@ export * from './components/Card';
 export * from './components/ChartBar';
 export * from './components/ChartGraph';
 export * from './components/ChartLine';
+export * from './components/ChartPie';
 export * from './components/Checkbox';
 export * from './components/CheckboxGroup';
 export * from './components/CircularProgress';

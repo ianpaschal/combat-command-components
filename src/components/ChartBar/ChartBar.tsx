@@ -8,10 +8,15 @@ import {
   ChartGraphValueAxis,
 } from '../ChartGraph';
 import { getNiceTicks } from '../ChartGraph/ChartGraph.utils';
+import {
+  getBarExtent,
+  getBarSegments,
+  getBarSizes,
+} from './ChartBar.utils';
 
 import styles from './ChartBar.module.scss';
 
-const BAR_RADIUS = 4;
+const DEFAULT_CORNER_RADIUS = 4;
 const BAND_FILL = 0.6;
 const DEFAULT_SPACING = 2;
 
@@ -57,6 +62,12 @@ export interface ChartBarProps extends ChartGraphPaddingProps {
   categoryTicks?: string[];
   className?: string;
 
+  /**
+   * The radius of each bar's corners, in pixels. It shrinks to fit thin or short bars. Defaults
+   * to 4.
+   */
+  cornerRadius?: number;
+
   /** The categories, in order along the category axis. */
   data: ChartBarDatum[];
 
@@ -97,6 +108,7 @@ export const ChartBar = ({
   categoryTickSize,
   categoryTicks,
   className,
+  cornerRadius = DEFAULT_CORNER_RADIUS,
   data,
   formatValue,
   mode = 'grouped',
@@ -168,30 +180,30 @@ export const ChartBar = ({
       }) => {
         const getValuePosition = isHorizontal ? getX : getY;
         const getCategoryPosition = isHorizontal ? getY : getX;
-        const groupCount = isStacked ? 1 : series.length;
-        const groupThickness = (isHorizontal ? bandY : bandX) * BAND_FILL;
-        const thickness = barSize ?? Math.max(0, (groupThickness - spacing * (groupCount - 1)) / groupCount);
-        const groupSize = thickness * groupCount + spacing * (groupCount - 1);
+        const { thickness, groupSize } = getBarSizes(
+          (isHorizontal ? bandY : bandX) * BAND_FILL,
+          isStacked ? 1 : series.length,
+          spacing,
+          barSize,
+        );
 
         return data.flatMap((datum) => {
           const groupStart = getCategoryPosition(datum.x) - groupSize / 2;
-          const visible = series
-            .map((s, index) => ({ ...s, index }))
-            .filter(({ key }) => getValue(datum, key) !== 0);
-          let total = baseline;
-          return visible.map(({ color, index, key }, i) => {
-            const value = getValue(datum, key);
-            const from = isStacked ? total : baseline;
-            const to = isStacked ? total + value : value;
-            total = to;
-
-            /* Stacked segments give up half the spacing at each edge they share with another. */
-            const direction = Math.sign(getValuePosition(to) - getValuePosition(from));
-            const startInset = isStacked && i > 0 ? spacing / 2 : 0;
-            const endInset = isStacked && i < visible.length - 1 ? spacing / 2 : 0;
-            const start = getValuePosition(from) + direction * startInset;
-            const end = getValuePosition(to) - direction * endInset;
-            const length = Math.max(0, Math.abs(end - start));
+          const values = series.map(({ key }) => getValue(datum, key));
+          return getBarSegments(values, baseline, isStacked, spacing).map(({
+            index,
+            from,
+            to,
+            startInset,
+            endInset,
+          }) => {
+            const { color, key } = series[index];
+            const { position, length } = getBarExtent(
+              getValuePosition(from),
+              getValuePosition(to),
+              startInset,
+              endInset,
+            );
             const offset = groupStart + (isStacked ? 0 : index * (thickness + spacing));
             return (
               <rect
@@ -200,10 +212,10 @@ export const ChartBar = ({
                 fill={color}
                 height={isHorizontal ? thickness : length}
                 key={`${datum.x}-${key}`}
-                rx={Math.min(BAR_RADIUS, thickness / 2, length / 2)}
+                rx={Math.min(cornerRadius, thickness / 2, length / 2)}
                 width={isHorizontal ? length : thickness}
-                x={isHorizontal ? Math.min(start, end) : offset}
-                y={isHorizontal ? offset : Math.min(start, end)}
+                x={isHorizontal ? position : offset}
+                y={isHorizontal ? offset : position}
               />
             );
           });

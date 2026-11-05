@@ -3,14 +3,13 @@ import {
   PointerEvent,
   ReactElement,
   ReactNode,
-  useEffect,
   useState,
 } from 'react';
 import clsx from 'clsx';
 
 import { ChartGraphAxis } from './components/ChartGraphAxis';
 import { ScrollArea } from '../ScrollArea';
-import { useElementSize } from './ChartGraph.hooks';
+import { useElementSize, usePointerDownOutside } from './ChartGraph.hooks';
 import {
   ChartGraphAxis as ChartGraphAxisConfig,
   ChartGraphPaddingProps,
@@ -20,28 +19,11 @@ import {
   getAxisBand,
   getAxisFraction,
   getAxisPosition,
-  getCategorySteps,
+  getFixedLength,
+  getTooltipStyle,
 } from './ChartGraph.utils';
 
 import styles from './ChartGraph.module.scss';
-
-const TOOLTIP_OFFSET = 12;
-
-/**
- * Gets the fixed length of the plot along an axis, if the axis' ticks have a
- * fixed size.
- *
- * @param axis - The axis
- * @param padding - The padding at each end of the axis
- * @returns The length, or nothing if the plot fills the space it has
- */
-const getFixedLength = (axis: ChartGraphAxisConfig, padding: number): number | undefined => {
-  if (!axis.tickSize) {
-    return undefined;
-  }
-  const steps = axis.type === 'category' ? getCategorySteps(axis) : Math.max(1, axis.ticks.length - 1);
-  return steps * axis.tickSize + padding * 2;
-};
 
 type ActiveCategory = {
   value: string;
@@ -85,20 +67,7 @@ export const ChartGraph = ({
   const [yAxisRef, yAxisSize] = useElementSize<HTMLDivElement>();
   const [lastXLabelRef, lastXLabelSize] = useElementSize<HTMLSpanElement>();
   const [active, setActive] = useState<ActiveCategory>();
-  const isActive = !!active;
-
-  useEffect(() => {
-    if (!isActive) {
-      return;
-    }
-    const handleDocumentPointerDown = (event: globalThis.PointerEvent): void => {
-      if (!ref.current?.contains(event.target as Node)) {
-        setActive(undefined);
-      }
-    };
-    document.addEventListener('pointerdown', handleDocumentPointerDown);
-    return () => document.removeEventListener('pointerdown', handleDocumentPointerDown);
-  }, [isActive, ref]);
+  usePointerDownOutside(ref, !!active, () => setActive(undefined));
 
   const plotWidth = getFixedLength(x, paddingX);
   const plotHeight = getFixedLength(y, paddingY);
@@ -146,11 +115,7 @@ export const ChartGraph = ({
         nearest
       )
     ));
-    const left = event.clientX - rootRect.left;
-    const top = event.clientY - rootRect.top;
-    const shiftX = left > rootRect.width / 2 ? `calc(-100% - ${TOOLTIP_OFFSET}px)` : `${TOOLTIP_OFFSET}px`;
-    const shiftY = top > rootRect.height / 2 ? `calc(-100% - ${TOOLTIP_OFFSET}px)` : `${TOOLTIP_OFFSET}px`;
-    return { value, tooltipStyle: { left, top, transform: `translate(${shiftX}, ${shiftY})` } };
+    return { value, tooltipStyle: getTooltipStyle(event.clientX, event.clientY, rootRect) };
   };
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>): void => {

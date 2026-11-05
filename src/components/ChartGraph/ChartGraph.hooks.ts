@@ -1,5 +1,6 @@
 import {
   RefObject,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -36,4 +37,34 @@ export const useElementSize = <T extends HTMLElement>(): [RefObject<T | null>, E
   }, []);
 
   return [ref, size];
+};
+
+/**
+ * Calls back when a pointer goes down outside an element, while enabled. Charts use it to clear
+ * their selection when the viewer taps elsewhere.
+ *
+ * @param ref - The element
+ * @param isEnabled - Whether to listen
+ * @param onPointerDownOutside - The callback
+ */
+export const usePointerDownOutside = (
+  ref: RefObject<HTMLElement | null>,
+  isEnabled: boolean,
+  onPointerDownOutside: () => void,
+): void => {
+  const callbackRef = useRef(onPointerDownOutside);
+  callbackRef.current = onPointerDownOutside;
+
+  useEffect(() => {
+    if (!isEnabled) {
+      return;
+    }
+    const handleDocumentPointerDown = (event: PointerEvent): void => {
+      if (!ref.current?.contains(event.target as Node)) {
+        callbackRef.current();
+      }
+    };
+    document.addEventListener('pointerdown', handleDocumentPointerDown);
+    return () => document.removeEventListener('pointerdown', handleDocumentPointerDown);
+  }, [isEnabled, ref]);
 };

@@ -78,6 +78,7 @@ const meta: Meta<typeof ChartBar> = {
     barSize: { control: 'number' },
     categoryTickSize: { control: 'number' },
     className: { table: { disable: true } },
+    cornerRadius: { control: 'number' },
     data: { control: 'object' },
     formatValue: { table: { disable: true } },
     mode: { control: 'inline-radio', options: ['grouped', 'stacked'] },
