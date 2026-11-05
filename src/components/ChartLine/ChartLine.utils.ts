@@ -59,3 +59,14 @@ export const getAreaPath = (linePath: string, points: ChartLinePoint[], baseline
   }
   return `${linePath}L${points[points.length - 1][0]},${baseline}L${points[0][0]},${baseline}Z`;
 };
+
+/**
+ * Joins two lines' paths into the band between them, to fill it.
+ *
+ * @param upperPath - The upper line's path, from left to right
+ * @param lowerPath - The lower line's path, from right to left
+ * @returns The band's path
+ */
+export const getBandPath = (upperPath: string, lowerPath: string): string => (
+  upperPath && lowerPath ? `${upperPath}L${lowerPath.slice(1)}Z` : ''
+);

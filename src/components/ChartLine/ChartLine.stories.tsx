@@ -1,13 +1,41 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ChartLine, ChartLineDatum } from './ChartLine';
+import {
+  ChartLine,
+  ChartLineDatum,
+  ChartLineSeries,
+} from './ChartLine';
 
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
+const GAMES_SERIES: ChartLineSeries[] = [
+  { key: 'games', color: '#0090FF', label: 'Games' },
+];
+
+const OUTCOME_SERIES: ChartLineSeries[] = [
+  { key: 'win', color: '#0090FF', label: 'Wins' },
+  { key: 'draw', color: '#8B8D98', label: 'Draws' },
+  { key: 'loss', color: '#F76B15', label: 'Losses' },
+];
+
+const getX = (i: number): string => `${MONTHS[i % MONTHS.length]} ${Math.floor(i / MONTHS.length) + 1}`;
+
+const getGames = (i: number, phase = 0): number => (
+  Math.max(0, Math.round(40 + i * 1.5 + (Math.sin(i * 0.9 + phase) + Math.sin(i * 0.37) * 0.6) * 20))
+);
+
 const getData = (count: number): ChartLineDatum[] => (
+  Array.from({ length: count }, (_, i) => ({ x: getX(i), values: { games: getGames(i) } }))
+);
+
+const getOutcomeData = (count: number): ChartLineDatum[] => (
   Array.from({ length: count }, (_, i) => ({
-    x: `${MONTHS[i % MONTHS.length]} ${Math.floor(i / MONTHS.length) + 1}`,
-    value: Math.max(0, Math.round(40 + i * 1.5 + (Math.sin(i * 0.9) + Math.sin(i * 0.37) * 0.6) * 20)),
+    x: getX(i),
+    values: {
+      win: Math.round(getGames(i) * 0.45),
+      draw: Math.round(getGames(i, 2) * 0.1),
+      loss: Math.round(getGames(i, 4) * 0.45),
+    },
   }))
 );
 
@@ -24,15 +52,17 @@ const meta: Meta<typeof ChartLine> = {
     },
   },
   argTypes: {
+    categoryTickSize: { control: 'number' },
     className: { table: { disable: true } },
-    color: { control: 'color' },
     data: { control: 'object' },
+    formatCategory: { table: { disable: true } },
     formatValue: { table: { disable: true } },
-    formatXTick: { control: false },
+    mode: { control: 'inline-radio', options: ['overlaid', 'stacked'] },
     padding: { control: 'number' },
     paddingX: { control: 'number' },
     paddingY: { control: 'number' },
-    tickSizeX: { control: 'number' },
+    series: { control: 'object' },
+    valueTickSize: { control: 'number' },
   },
   render: (args) => (
     <div
@@ -57,17 +87,30 @@ type Story = StoryObj<typeof meta>;
 
 export const Responsive: Story = {
   args: {
-    color: '#0090FF',
     data: getData(12),
-    label: 'Games',
+    series: GAMES_SERIES,
   },
 };
 
 export const FixedSize: Story = {
   args: {
-    color: '#0090FF',
     data: getData(36),
-    label: 'Games',
-    tickSizeX: 48,
+    series: GAMES_SERIES,
+    categoryTickSize: 48,
+  },
+};
+
+export const Overlaid: Story = {
+  args: {
+    data: getOutcomeData(12),
+    series: OUTCOME_SERIES,
+  },
+};
+
+export const Stacked: Story = {
+  args: {
+    data: getOutcomeData(12),
+    mode: 'stacked',
+    series: OUTCOME_SERIES,
   },
 };

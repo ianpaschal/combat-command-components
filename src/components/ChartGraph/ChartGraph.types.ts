@@ -45,6 +45,13 @@ export type ChartGraphValueAxis = {
    * value x axis runs from left to right, and a value y axis from bottom to top.
    */
   ticks: number[];
+
+  /**
+   * The space between ticks, in pixels. With it, the plot is exactly as long as its ticks need
+   * along this axis, and scrolls along it when it has less space. Without it, the plot fills the
+   * space it has along this axis.
+   */
+  tickSize?: number;
 };
 
 export type ChartGraphAxis = ChartGraphCategoryAxis | ChartGraphValueAxis;

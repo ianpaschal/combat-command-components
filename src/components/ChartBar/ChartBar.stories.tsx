@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ChartBar, ChartBarDatum } from './ChartBar';
+import {
+  ChartBar,
+  ChartBarDatum,
+  ChartBarSeries,
+} from './ChartBar';
 
 const FACTIONS = [
   'Germany',
@@ -17,9 +21,46 @@ const FACTIONS = [
   'Australia',
 ];
 
+const WIN_RATE_SERIES: ChartBarSeries[] = [
+  { key: 'winRate', color: '#0090FF', label: 'Win rate' },
+];
+
+const SIDE_SERIES: ChartBarSeries[] = [
+  { key: 'attacker', color: '#0090FF', label: 'As attacker' },
+  { key: 'defender', color: '#F76B15', label: 'As defender' },
+];
+
+const OUTCOME_SERIES: ChartBarSeries[] = [
+  { key: 'win', color: '#0090FF', label: 'Wins' },
+  { key: 'draw', color: '#8B8D98', label: 'Draws' },
+  { key: 'loss', color: '#F76B15', label: 'Losses' },
+];
+
+const getWinRate = (i: number): number => Math.round(56 - i * 2.5 + Math.sin(i * 0.9) * 4);
+
 const getData = (count: number): ChartBarDatum[] => (
-  FACTIONS.slice(0, count).map((x, i) => ({ x, value: Math.round(56 - i * 2.5 + Math.sin(i * 0.9) * 4) }))
+  FACTIONS.slice(0, count).map((x, i) => ({ x, values: { winRate: getWinRate(i) } }))
 );
+
+const getSideData = (count: number): ChartBarDatum[] => (
+  FACTIONS.slice(0, count).map((x, i) => ({
+    x,
+    values: {
+      attacker: getWinRate(i) + Math.round(Math.cos(i * 1.3) * 6),
+      defender: getWinRate(i) - Math.round(Math.cos(i * 1.3) * 6),
+    },
+  }))
+);
+
+const getOutcomeData = (count: number): ChartBarDatum[] => (
+  FACTIONS.slice(0, count).map((x, i) => {
+    const draw = Math.round(8 + Math.sin(i * 1.7) * 4);
+    const win = getWinRate(i) - Math.round(draw / 2);
+    return { x, values: { win: win / 100, draw: draw / 100, loss: (100 - win - draw) / 100 } };
+  })
+);
+
+const formatPercent = (value: number): string => `${Math.round(value * 100)}%`;
 
 const meta: Meta<typeof ChartBar> = {
   title: 'Charts/ChartBar',
@@ -29,21 +70,24 @@ const meta: Meta<typeof ChartBar> = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'One value per category, as vertical or horizontal bars. Drag the corner of the box to resize it.',
+        component: 'One or more series per category, as grouped or stacked bars, vertical or horizontal. Drag the corner of the box to resize it.',
       },
     },
   },
   argTypes: {
     barSize: { control: 'number' },
+    categoryTickSize: { control: 'number' },
     className: { table: { disable: true } },
-    color: { control: 'color' },
     data: { control: 'object' },
     formatValue: { table: { disable: true } },
+    mode: { control: 'inline-radio', options: ['grouped', 'stacked'] },
     orientation: { control: 'inline-radio', options: ['horizontal', 'vertical'] },
     padding: { control: 'number' },
     paddingX: { control: 'number' },
     paddingY: { control: 'number' },
-    tickSize: { control: 'number' },
+    series: { control: 'object' },
+    spacing: { control: 'number' },
+    valueTickSize: { control: 'number' },
   },
   render: (args) => (
     <div
@@ -67,16 +111,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const shared = {
-  color: '#0090FF',
-  label: 'Win rate',
+  formatValue: (value: number) => `${value}%`,
+  series: WIN_RATE_SERIES,
 };
 
 export const Responsive: Story = {
   args: {
     ...shared,
     data: getData(6),
-    formatValue: (value: number) => `${value}%`,
-    label: 'Win rate',
     orientation: 'vertical',
   },
 };
@@ -85,10 +127,29 @@ export const FixedSize: Story = {
   args: {
     ...shared,
     barSize: 16,
-    color: '#0090FF',
     data: getData(12),
-    formatValue: (value: number) => `${value}%`,
     orientation: 'horizontal',
-    tickSize: 32,
+    categoryTickSize: 32,
+  },
+};
+
+export const Grouped: Story = {
+  args: {
+    ...shared,
+    data: getSideData(6),
+    series: SIDE_SERIES,
+  },
+};
+
+export const Stacked: Story = {
+  args: {
+    barSize: 16,
+    data: getOutcomeData(12),
+    formatValue: formatPercent,
+    mode: 'stacked',
+    orientation: 'horizontal',
+    series: OUTCOME_SERIES,
+    categoryTickSize: 32,
+    valueTicks: [0, 0.25, 0.5, 0.75, 1],
   },
 };

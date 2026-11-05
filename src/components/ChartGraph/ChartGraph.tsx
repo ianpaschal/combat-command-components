@@ -28,16 +28,20 @@ import styles from './ChartGraph.module.scss';
 const TOOLTIP_OFFSET = 12;
 
 /**
- * Gets the fixed length of the plot along an axis, if the axis' categories have
- * a fixed size.
+ * Gets the fixed length of the plot along an axis, if the axis' ticks have a
+ * fixed size.
  *
  * @param axis - The axis
  * @param padding - The padding at each end of the axis
  * @returns The length, or nothing if the plot fills the space it has
  */
-const getFixedLength = (axis: ChartGraphAxisConfig, padding: number): number | undefined => (
-  axis.type === 'category' && axis.tickSize ? getCategorySteps(axis) * axis.tickSize + padding * 2 : undefined
-);
+const getFixedLength = (axis: ChartGraphAxisConfig, padding: number): number | undefined => {
+  if (!axis.tickSize) {
+    return undefined;
+  }
+  const steps = axis.type === 'category' ? getCategorySteps(axis) : Math.max(1, axis.ticks.length - 1);
+  return steps * axis.tickSize + padding * 2;
+};
 
 type ActiveCategory = {
   value: string;
