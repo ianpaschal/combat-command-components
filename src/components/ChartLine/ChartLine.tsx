@@ -2,6 +2,7 @@ import { ReactElement, useId } from 'react';
 
 import {
   ChartPlot,
+  ChartPlotEdgeLabels,
   ChartPlotPaddingProps,
   ChartTooltipContent,
   getNiceTicks,
@@ -70,6 +71,14 @@ export interface ChartLineProps extends ChartPlotPaddingProps {
   data: ChartLineDatum[];
 
   /**
+   * How the labels at the very ends of the axes sit. `shift` moves them inward
+   * so that they end at the ends of the axes, rather than being cut off.
+   * `center` keeps them centered on their values like the other labels, so
+   * they need padding to show in full. Defaults to `shift`.
+   */
+  edgeLabels?: ChartPlotEdgeLabels;
+
+  /**
    * Whether to fill the area under each line with a gradient that fades out
    * towards the bottom. Stacked lines always fill the bands between them.
    * Defaults to `true`.
@@ -94,6 +103,12 @@ export interface ChartLineProps extends ChartPlotPaddingProps {
    * which only supports values of 0 and above. Defaults to `overlaid`.
    */
   mode?: 'overlaid' | 'stacked';
+
+  /**
+   * Whether a chart which scrolls starts scrolled to its last x value, such as
+   * the latest values of a time series. Defaults to `false`.
+   */
+  scrollToEnd?: boolean;
 
   /**
    * The series, in the order they are drawn: each over the ones before it when
@@ -122,6 +137,7 @@ export const ChartLine = ({
   className,
   curve = 'smooth',
   data,
+  edgeLabels,
   fill = true,
   formatValue,
   formatCategory,
@@ -133,6 +149,7 @@ export const ChartLine = ({
   paddingRight,
   paddingBottom,
   paddingLeft,
+  scrollToEnd,
   series,
   valueTickSize,
   valueTicks,
@@ -174,6 +191,7 @@ export const ChartLine = ({
   return (
     <ChartPlot
       className={className}
+      edgeLabels={edgeLabels}
       padding={padding}
       paddingX={paddingX}
       paddingY={paddingY}
@@ -182,6 +200,7 @@ export const ChartLine = ({
       paddingBottom={paddingBottom}
       paddingLeft={paddingLeft}
       getTooltip={getTooltip}
+      scrollToEnd={scrollToEnd}
       x={{
         type: 'category',
         values: data.map(({ x }) => x),

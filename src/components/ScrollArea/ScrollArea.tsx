@@ -2,6 +2,7 @@ import {
   ComponentPropsWithoutRef,
   CSSProperties,
   forwardRef,
+  Ref,
 } from 'react';
 import { ScrollArea as BaseScrollArea } from '@base-ui/react/scroll-area';
 import clsx from 'clsx';
@@ -15,6 +16,9 @@ type ScrollAreaProps = ComponentPropsWithoutRef<'div'> & {
   disabled?: boolean;
   focusable?: boolean;
   offset?: Partial<Record<'top' | 'bottom' | 'left' | 'right', string | number | undefined>>;
+
+  /** A ref to the element which scrolls, to read or set its scroll position. */
+  viewportRef?: Ref<HTMLDivElement>;
 };
 
 export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
@@ -25,6 +29,7 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
   onScroll,
   offset,
   style,
+  viewportRef,
   ...props
 }, ref) => (
   <BaseScrollArea.Root
@@ -43,6 +48,7 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
     <BaseScrollArea.Viewport
       className={styles.scrollAreaViewport}
       onScroll={onScroll}
+      ref={viewportRef}
       {...(!focusable && { tabIndex: -1 })}
     >
       <BaseScrollArea.Content>

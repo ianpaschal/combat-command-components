@@ -30,7 +30,7 @@ const DATA: ChartLineDatum[] = [
   { x: 'MAR', values: { win: 30, loss: 10 } },
 ];
 
-const getPlot = (container: HTMLElement): Element => container.querySelector('[class*="chartPlotPlot"]')!;
+const getPlot = (container: HTMLElement): Element => container.querySelector('[class*="chartPlotSvg"]')!.parentElement!;
 
 /* The plot is mocked at 400 by 300 pixels, so with three x values as points,
  * they sit at 0, 200 and 400 pixels.

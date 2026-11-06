@@ -129,6 +129,8 @@ export type ChartPlotPaddingProps = {
   paddingLeft?: number;
 };
 
+export type ChartPlotEdgeLabels = 'shift' | 'center';
+
 export type ChartPlotAxisPadding = {
 
   /** The padding at the start of the axis: the left of an x axis, or the top of a y axis. */

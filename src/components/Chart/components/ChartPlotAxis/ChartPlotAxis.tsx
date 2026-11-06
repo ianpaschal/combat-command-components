@@ -1,13 +1,10 @@
-import {
-  CSSProperties,
-  forwardRef,
-  Ref,
-} from 'react';
+import { CSSProperties, forwardRef } from 'react';
 import clsx from 'clsx';
 
 import {
   ChartPlotAxis as ChartPlotAxisConfig,
   ChartPlotAxisPadding,
+  ChartPlotEdgeLabels,
 } from '../ChartPlot/ChartPlot.types';
 import { getAxisFraction } from '../ChartPlot/ChartPlot.utils';
 
@@ -16,13 +13,13 @@ import styles from './ChartPlotAxis.module.scss';
 export interface ChartPlotAxisProps {
   axis: ChartPlotAxisConfig;
   className?: string;
-  isY: boolean;
 
   /**
-   * A ref to the last label, to measure how far it overhangs the end of the
-   * axis.
+   * How the labels at the very ends of the axis sit: moved inward to end at
+   * the ends of the axis, or centered on their values.
    */
-  lastLabelRef?: Ref<HTMLSpanElement>;
+  edgeLabels: ChartPlotEdgeLabels;
+  isY: boolean;
 
   /**
    * The padding at each end of the axis, in pixels.
@@ -46,31 +43,51 @@ const getLabels = (axis: ChartPlotAxisConfig): { key: string; label: string; val
   )
 );
 
+/**
+ * Gets which end of the axis a label sits at, if any.
+ *
+ * @param fraction - How far along the axis the label's value lies, from 0 to 1
+ * @returns The end, or nothing for a label between the ends
+ */
+const getEdge = (fraction: number): 'start' | 'end' | undefined => {
+  if (fraction === 0) {
+    return 'start';
+  }
+  if (fraction === 1) {
+    return 'end';
+  }
+  return undefined;
+};
+
 /* Labels an axis of a `ChartPlot`. Each label sits centered on its value, at
- * the same position as in the plot.
+ * the same position as in the plot. Labels at the very ends of the axis can
+ * instead be moved inward, to end at the ends of the axis.
  */
 export const ChartPlotAxis = forwardRef<HTMLDivElement, ChartPlotAxisProps>(({
   axis,
   className,
+  edgeLabels,
   isY,
-  lastLabelRef,
   padding,
 }, ref) => (
   <div className={clsx(styles.chartPlotAxis, isY ? styles.chartPlotAxisY : styles.chartPlotAxisX, className)} ref={ref}>
-    {getLabels(axis).map(({ key, label, value }, i, labels) => (
-      <span
-        className={styles.chartPlotAxisLabel}
-        key={key}
-        ref={i === labels.length - 1 ? lastLabelRef : undefined}
-        style={{
-          '--fraction': getAxisFraction(axis, value, isY),
-          '--padding-start': `${padding.start}px`,
-          '--padding-end': `${padding.end}px`,
-        } as CSSProperties}
-      >
-        {label}
-      </span>
-    ))}
+    {getLabels(axis).map(({ key, label, value }) => {
+      const fraction = getAxisFraction(axis, value, isY);
+      return (
+        <span
+          className={styles.chartPlotAxisLabel}
+          data-edge={edgeLabels === 'shift' ? getEdge(fraction) : undefined}
+          key={key}
+          style={{
+            '--fraction': fraction,
+            '--padding-start': `${padding.start}px`,
+            '--padding-end': `${padding.end}px`,
+          } as CSSProperties}
+        >
+          {label}
+        </span>
+      );
+    })}
   </div>
 ));
 

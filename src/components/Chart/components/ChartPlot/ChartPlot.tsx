@@ -4,6 +4,8 @@ import {
   ReactElement,
   ReactNode,
   SVGLineElementAttributes,
+  UIEvent,
+  useRef,
 } from 'react';
 import clsx from 'clsx';
 
@@ -12,9 +14,11 @@ import { Chart } from '../../Chart';
 import { useElementSize } from '../../Chart.hooks';
 import { ChartPlotAxis } from '../ChartPlotAxis';
 import { ChartTooltipContent } from '../ChartTooltip';
+import { useScrollToEnd } from './ChartPlot.hooks';
 import {
   ChartPlotAxis as ChartPlotAxisConfig,
   ChartPlotAxisPadding,
+  ChartPlotEdgeLabels,
   ChartPlotLayout,
   ChartPlotPaddingProps,
 } from './ChartPlot.types';
@@ -42,17 +46,32 @@ export interface ChartPlotProps extends ChartPlotPaddingProps {
    * screens. Without it, there is no tooltip.
    */
   getTooltip?: (value: string) => ChartTooltipContent;
+
+  /**
+   * How the labels at the very ends of the axes sit. `shift` moves them inward
+   * so that they end at the ends of the axes, rather than being cut off.
+   * `center` keeps them centered on their values like the other labels, so
+   * they need padding to show in full. Defaults to `shift`.
+   */
+  edgeLabels?: ChartPlotEdgeLabels;
+
+  /**
+   * Whether a plot which scrolls starts scrolled to the end of its category
+   * axis, such as the latest values of a time series. Defaults to `false`.
+   */
+  scrollToEnd?: boolean;
   x: ChartPlotAxisConfig;
   y: ChartPlotAxisConfig;
 }
 
-/* The frame of a chart with an x and a y axis. The plot sits in a scroll area,
- * and the axes stick to its left and bottom edges, so that the plot scrolls
- * under them.
+/* The frame of a chart with an x and a y axis. The plot and each axis sit in
+ * scroll areas of their own. Only the plot's can be scrolled, and the axes'
+ * follow it, so that the browser clips each of them at its own edges.
  */
 export const ChartPlot = ({
   children,
   className,
+  edgeLabels = 'shift',
   padding = 0,
   paddingX = padding,
   paddingY = padding,
@@ -61,38 +80,38 @@ export const ChartPlot = ({
   paddingBottom = paddingY,
   paddingLeft = paddingX,
   getTooltip,
+  scrollToEnd = false,
   x,
   y,
 }: ChartPlotProps): ReactElement => {
-  const [plotRef, plotSize] = useElementSize<HTMLDivElement>();
+  const plotViewportRef = useRef<HTMLDivElement>(null);
+  const xAxisViewportRef = useRef<HTMLDivElement>(null);
+  const yAxisViewportRef = useRef<HTMLDivElement>(null);
+  const plotContentRef = useRef<HTMLDivElement>(null);
+  const [plotAreaRef, plotAreaSize] = useElementSize<HTMLDivElement>();
   const [xAxisRef, xAxisSize] = useElementSize<HTMLDivElement>();
   const [yAxisRef, yAxisSize] = useElementSize<HTMLDivElement>();
-  const [lastXLabelRef, lastXLabelSize] = useElementSize<HTMLSpanElement>();
-
   const xPadding: ChartPlotAxisPadding = { start: paddingLeft, end: paddingRight };
   const yPadding: ChartPlotAxisPadding = { start: paddingTop, end: paddingBottom };
   const plotWidth = getFixedLength(x, xPadding);
   const plotHeight = getFixedLength(y, yPadding);
+  const width = plotWidth ?? plotAreaSize.width;
+  const height = plotHeight ?? plotAreaSize.height;
 
-  /* Labels are centered on their values, so the labels at the top of the y axis
-   * and the end of the x axis overhang the plot, and the grid leaves room for
-   * them on top of the padding.
+  /* The axes' scroll areas take no space of their own, so their tracks are
+   * sized from their labels.
    */
-  const getGridStyle = (height: number): CSSProperties => ({
-    gridTemplateColumns: `auto ${plotWidth ? `${plotWidth}px` : 'minmax(0, 1fr)'}`,
-    gridTemplateRows: `${plotHeight ? `${plotHeight}px` : 'minmax(0, 1fr)'} auto`,
-    width: plotWidth ? 'max-content' : '100%',
-    height: plotHeight ? undefined : height,
-    paddingTop: '0.5lh',
-    paddingRight: lastXLabelSize.width / 2,
-  });
+  const gridStyle: CSSProperties = {
+    gridTemplateColumns: `${yAxisSize.width}px minmax(0, ${plotWidth ? `${plotWidth}px` : '1fr'})`,
+    gridTemplateRows: `minmax(0, ${plotHeight ? `${plotHeight}px` : '1fr'}) ${xAxisSize.height}px`,
+  };
   const plot: Omit<ChartPlotLayout, 'activeValue'> = {
-    bandX: getAxisBand(x, plotSize.width, xPadding),
-    bandY: getAxisBand(y, plotSize.height, yPadding),
-    getX: (value) => getAxisPosition(getAxisFraction(x, value, false), plotSize.width, xPadding),
-    getY: (value) => getAxisPosition(getAxisFraction(y, value, true), plotSize.height, yPadding),
-    height: plotSize.height,
-    width: plotSize.width,
+    bandX: getAxisBand(x, width, xPadding),
+    bandY: getAxisBand(y, height, yPadding),
+    getX: (value) => getAxisPosition(getAxisFraction(x, value, false), width, xPadding),
+    getY: (value) => getAxisPosition(getAxisFraction(y, value, true), height, yPadding),
+    height,
+    width,
   };
 
   /* Hovering and tapping pick the category nearest the pointer, along whichever
@@ -101,6 +120,16 @@ export const ChartPlot = ({
   const isCategoryY = x.type !== 'category' && y.type === 'category';
   const categoryAxis = isCategoryY ? y : x;
   const getCategoryPosition = isCategoryY ? plot.getY : plot.getX;
+  useScrollToEnd(plotViewportRef, plotContentRef, scrollToEnd, isCategoryY);
+
+  const handlePlotScroll = (event: UIEvent<HTMLDivElement>): void => {
+    if (xAxisViewportRef.current) {
+      xAxisViewportRef.current.scrollLeft = event.currentTarget.scrollLeft;
+    }
+    if (yAxisViewportRef.current) {
+      yAxisViewportRef.current.scrollTop = event.currentTarget.scrollTop;
+    }
+  };
 
   const getCategoryAtPointer = (event: PointerEvent<Element>): string | undefined => {
     if (categoryAxis.type !== 'category' || !categoryAxis.values.length) {
@@ -134,22 +163,34 @@ export const ChartPlot = ({
 
   return (
     <Chart className={clsx(styles.chartPlot, className)} getTooltip={getTooltip}>
-      {({ activeKey, getAreaHandlers, height }) => (
-        <ScrollArea
-          dir={scrollToEnd ? 'rtl' : undefined}
-          offset={{ bottom: xAxisSize.height, left: yAxisSize.width }}
-        >
-          <div className={styles.chartPlotGrid} style={getGridStyle(height)}>
-            <ChartPlotAxis
-              axis={y}
-              className={styles.chartPlotYAxis}
-              isY
-              padding={yPadding}
-              ref={yAxisRef}
-            />
+      {({ activeKey, getAreaHandlers }) => (
+        <div className={styles.chartPlotGrid} style={gridStyle}>
+          <ScrollArea
+            className={styles.chartPlotYAxis}
+            disabled
+            focusable={false}
+            viewportRef={yAxisViewportRef}
+          >
+            <div className={styles.chartPlotYAxisContent} style={{ height }}>
+              <ChartPlotAxis
+                axis={y}
+                className={styles.chartPlotYAxisLabels}
+                edgeLabels={edgeLabels}
+                isY
+                padding={yPadding}
+                ref={yAxisRef}
+              />
+            </div>
+          </ScrollArea>
+          <ScrollArea
+            className={styles.chartPlotPlot}
+            onScroll={handlePlotScroll}
+            ref={plotAreaRef}
+            viewportRef={plotViewportRef}
+          >
             <div
-              className={styles.chartPlotPlot}
-              ref={plotRef}
+              ref={plotContentRef}
+              style={{ width, height }}
               {...getAreaHandlers(getCategoryAtPointer)}
             >
               <svg className={styles.chartPlotSvg}>
@@ -174,23 +215,30 @@ export const ChartPlot = ({
                   />
                 ))}
                 {renderHighlight(activeKey)}
-                {plotSize.width > 0 && plotSize.height > 0 && children?.({
+                {width > 0 && height > 0 && children?.({
                   ...plot,
                   activeValue: activeKey,
                 })}
               </svg>
             </div>
-            <div className={styles.chartPlotCorner} />
-            <ChartPlotAxis
-              axis={x}
-              className={styles.chartPlotXAxis}
-              isY={false}
-              lastLabelRef={lastXLabelRef}
-              padding={xPadding}
-              ref={xAxisRef}
-            />
-          </div>
-        </ScrollArea>
+          </ScrollArea>
+          <ScrollArea
+            className={styles.chartPlotXAxis}
+            disabled
+            focusable={false}
+            viewportRef={xAxisViewportRef}
+          >
+            <div style={{ width }}>
+              <ChartPlotAxis
+                axis={x}
+                edgeLabels={edgeLabels}
+                isY={false}
+                padding={xPadding}
+                ref={xAxisRef}
+              />
+            </div>
+          </ScrollArea>
+        </div>
       )}
     </Chart>
   );

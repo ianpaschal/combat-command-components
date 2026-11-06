@@ -23,6 +23,14 @@
         left: calc(var(--padding-start) + var(--fraction) * (100% - var(--padding-start) - var(--padding-end)));
         transform: translateX(-50%);
         justify-self: start;
+
+        &[data-edge="start"] {
+          transform: none;
+        }
+
+        &[data-edge="end"] {
+          transform: translateX(-100%);
+        }
       }
     }
 
@@ -34,6 +42,14 @@
         transform: translateY(-50%);
         align-self: start;
         justify-self: end;
+
+        &[data-edge="start"] {
+          transform: none;
+        }
+
+        &[data-edge="end"] {
+          transform: translateY(-100%);
+        }
       }
     }
   }

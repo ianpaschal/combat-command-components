@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import {
   ChartPlot,
   ChartPlotCategoryAxis,
+  ChartPlotEdgeLabels,
   ChartPlotPaddingProps,
   ChartPlotValueAxis,
   ChartTooltipContent,
@@ -73,6 +74,14 @@ export interface ChartBarProps extends ChartPlotPaddingProps {
   /** The categories, in order along the category axis. */
   data: ChartBarDatum[];
 
+  /**
+   * How the labels at the very ends of the axes sit. `shift` moves them inward
+   * so that they end at the ends of the axes, rather than being cut off.
+   * `center` keeps them centered on their values like the other labels, so
+   * they need padding to show in full. Defaults to `shift`.
+   */
+  edgeLabels?: ChartPlotEdgeLabels;
+
   /** Formats the labels of the value axis and the values in the tooltip. */
   formatValue?: (value: number) => string;
 
@@ -84,6 +93,12 @@ export interface ChartBarProps extends ChartPlotPaddingProps {
 
   /** Which direction the bars run. */
   orientation?: 'horizontal' | 'vertical';
+
+  /**
+   * Whether a chart which scrolls starts scrolled to its last category.
+   * Defaults to `false`.
+   */
+  scrollToEnd?: boolean;
 
   /** The series, in the order their bars are drawn. */
   series: ChartBarSeries[];
@@ -116,6 +131,7 @@ export const ChartBar = ({
   className,
   cornerRadius = DEFAULT_CORNER_RADIUS,
   data,
+  edgeLabels,
   formatValue,
   mode = 'grouped',
   orientation = 'vertical',
@@ -126,6 +142,7 @@ export const ChartBar = ({
   paddingRight,
   paddingBottom,
   paddingLeft,
+  scrollToEnd,
   series,
   spacing = DEFAULT_SPACING,
   valueTickSize,
@@ -169,6 +186,7 @@ export const ChartBar = ({
   return (
     <ChartPlot
       className={className}
+      edgeLabels={edgeLabels}
       padding={padding}
       paddingX={paddingX}
       paddingY={paddingY}
@@ -177,6 +195,7 @@ export const ChartBar = ({
       paddingBottom={paddingBottom}
       paddingLeft={paddingLeft}
       getTooltip={getTooltip}
+      scrollToEnd={scrollToEnd}
       x={isHorizontal ? valueAxis : categoryAxis}
       y={isHorizontal ? categoryAxis : valueAxis}
     >

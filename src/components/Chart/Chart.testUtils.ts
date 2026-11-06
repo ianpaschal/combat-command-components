@@ -3,7 +3,8 @@ import { vi } from 'vitest';
 
 /**
  * Replaces `ResizeObserver`, which jsdom lacks, with one which reports every
- * observed element at a fixed size as soon as it is observed.
+ * observed element at a fixed size as soon as it is observed. Axis labels,
+ * which are spans, report no size, as jsdom lays out no text.
  *
  * @param width - The width to report
  * @param height - The height to report
@@ -17,7 +18,11 @@ export const mockElementSize = (width: number, height: number): void => {
     }
 
     observe(target: Element): void {
-      const entry = { target, borderBoxSize: [{ inlineSize: width, blockSize: height }] };
+      const isLabel = target.tagName === 'SPAN';
+      const entry = {
+        target,
+        borderBoxSize: [{ inlineSize: isLabel ? 0 : width, blockSize: isLabel ? 0 : height }],
+      };
       this.callback([entry as unknown as ResizeObserverEntry], this as unknown as ResizeObserver);
     }
 

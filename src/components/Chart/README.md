@@ -29,12 +29,13 @@ Charts without axes take a list of slices, each with a `key`, `color`, `label` a
 
 Charts fill their container by default.
 Charts with axes can instead give each axis a fixed tick size with `categoryTickSize` and `valueTickSize`.
-The plot is then exactly as long as its ticks need along that axis, and scrolls under its axes when the chart is smaller.
+The plot is then exactly as long as its ticks need along that axis, and scrolls when the chart is smaller, with its axes following it.
+`scrollToEnd` starts a scrolling chart at the end of its category axis, such as the latest values of a time series.
 
 ### Contents
 
 - `<Chart/>` - The root of every chart. It measures itself, tracks the selected item, and shows its tooltip. It draws its children from its size and selection.
-- `<ChartPlot/>` - The frame of a chart with an x and a y axis. The plot sits in a scroll area, and the axes stick to its left and bottom edges, so that the plot scrolls under them.
+- `<ChartPlot/>` - The frame of a chart with an x and a y axis. The plot and each axis sit in scroll areas of their own. Only the plot's can be scrolled, and the axes' follow it.
 - `<ChartPlotAxis/>` - One of a plot's axes, with its labels centered on their values.
 - `<ChartTooltip/>` - The tooltip, with a title and one row per series, shown in a portal next to the pointer.
 - `useChartSelection` - Tracks the selected item, and provides pointer handlers for single items, such as slices, or for areas which work out the item under the pointer, such as a plot.

@@ -29,7 +29,7 @@ const DATA: ChartBarDatum[] = [
   { x: 'Italy', values: { attacker: 45, defender: 55 } },
 ];
 
-const getPlot = (container: HTMLElement): Element => container.querySelector('[class*="chartPlotPlot"]')!;
+const getPlot = (container: HTMLElement): Element => container.querySelector('[class*="chartPlotSvg"]')!.parentElement!;
 
 const getBars = (container: HTMLElement): Element[] => [...container.querySelectorAll('[class*="chartBarBar"]')];
 

@@ -100,7 +100,7 @@
         }
 
         /* Fills the corner that Base UI leaves for the horizontal scrollbar. */
-        .scroll-area[data-has-overflow-x] & {
+        .scroll-area[data-has-overflow-x] > & {
           margin-bottom: calc(var(--scroll-area-offset-bottom, 0px) - (var(--size) + var(--margin) * 2));
         }
       }
@@ -119,7 +119,7 @@
         }
 
         /* Fills the corner that Base UI leaves for the vertical scrollbar. */
-        .scroll-area[data-has-overflow-y] & {
+        .scroll-area[data-has-overflow-y] > & {
           margin-right: calc(var(--scroll-area-offset-right, 0px) - (var(--size) + var(--margin) * 2));
         }
       }
