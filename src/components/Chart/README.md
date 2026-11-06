@@ -33,9 +33,10 @@ The plot is then exactly as long as its ticks need along that axis, and scrolls 
 
 ### Contents
 
+- `<Chart/>` - The root of every chart. It measures itself, tracks the selected item, and shows its tooltip. It draws its children from its size and selection.
 - `<ChartPlot/>` - The frame of a chart with an x and a y axis. The plot sits in a scroll area, and the axes stick to its left and bottom edges, so that the plot scrolls under them.
 - `<ChartPlotAxis/>` - One of a plot's axes, with its labels centered on their values.
 - `<ChartTooltip/>` - The tooltip, with a title and one row per series, shown in a portal next to the pointer.
-- `useChartItemSelection` - Tracks the selected item of a chart without axes, and provides the pointer handlers for each item.
+- `useChartSelection` - Tracks the selected item, and provides pointer handlers for single items, such as slices, or for areas which work out the item under the pointer, such as a plot.
 - `useChartDismiss` - Clears a chart's selection when the viewer taps outside it or scrolls.
 - `useElementSize` - Tracks the size of an element.

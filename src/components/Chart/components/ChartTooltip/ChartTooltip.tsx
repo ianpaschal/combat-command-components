@@ -48,7 +48,7 @@ export const ChartTooltip = ({
     className={styles.chartTooltipPortal}
     style={getTooltipStyle(x, y, window.innerWidth, window.innerHeight)}
   >
-    <div className={sx({ variant: 'solid', corners: 'wide', elevation: 5 }, styles.chartTooltip)}>
+    <div className={sx({ variant: 'solid', corners: 'normal', elevation: 5 }, styles.chartTooltip)}>
       <div className={styles.chartTooltipTitle}>{title}</div>
       {rows.map(({ color, label, value }) => (
         <div className={styles.chartTooltipRow} key={label}>

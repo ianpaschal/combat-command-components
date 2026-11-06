@@ -1,11 +1,7 @@
 import { ReactElement } from 'react';
 import clsx from 'clsx';
 
-import {
-  ChartTooltip,
-  useChartItemSelection,
-  useElementSize,
-} from '../Chart';
+import { Chart, ChartTooltipContent } from '../Chart';
 import { getBarExtent, getBarSegments } from '../ChartBar/ChartBar.utils';
 import { ChartPieSlice } from '../ChartPie/ChartPie.types';
 import { getSliceTooltip, groupSmallSlices } from '../ChartPie/ChartPie.utils';
@@ -92,9 +88,6 @@ export const ChartRatio = ({
   spacing = DEFAULT_SPACING,
   thickness = DEFAULT_THICKNESS,
 }: ChartRatioProps): ReactElement => {
-  const [ref, { width }] = useElementSize<HTMLDivElement>();
-  const { active, getItemHandlers } = useChartItemSelection(ref);
-
   const slices = groupSmallSlices(data, otherThreshold, {
     key: OTHER_KEY,
     color: otherColor,
@@ -104,57 +97,63 @@ export const ChartRatio = ({
   const filled = Math.min(1, Math.max(0, fill));
   const hasRemainder = !!remainderColor && filled < 1;
 
-  /* Segments are laid out as shares of the bar, with the remainder last. */
+  // Segments are laid out as shares of the bar, with the remainder last:
   const shares = slices.map(({ value }) => (total ? (Math.max(0, value) / total) * filled : 0));
   const segments = getBarSegments(hasRemainder ? [...shares, 1 - filled] : shares, 0, true, spacing);
 
-  const activeSlice = slices.find(({ key }) => key === active?.key);
+  const getTooltip = (key: string): ChartTooltipContent | undefined => {
+    const slice = slices.find((s) => s.key === key);
+    return slice && total > 0 ? getSliceTooltip(slice, total, formatValue) : undefined;
+  };
 
   return (
-    <div className={clsx(styles.chartRatio, className)} ref={ref} style={{ height: thickness }}>
-      <svg className={styles.chartRatioSvg}>
-        {width > 0 && segments.map(({
-          index,
-          from,
-          to,
-          startInset,
-          endInset,
-        }) => {
-          const { position, length } = getBarExtent(from * width, to * width, startInset, endInset);
-          const rx = Math.min(cornerRadius, thickness / 2, length / 2);
-          if (index === slices.length) {
+    <Chart
+      className={clsx(styles.chartRatio, className)}
+      getTooltip={getTooltip}
+      style={{ height: thickness }}
+    >
+      {({ activeKey, getItemHandlers, width }) => (
+        <svg className={styles.chartRatioSvg}>
+          {width > 0 && segments.map(({
+            index,
+            from,
+            to,
+            startInset,
+            endInset,
+          }) => {
+            const { position, length } = getBarExtent(from * width, to * width, startInset, endInset);
+            const rx = Math.min(cornerRadius, thickness / 2, length / 2);
+            if (index === slices.length) {
+              return (
+                <rect
+                  className={styles.chartRatioRemainder}
+                  fill={remainderColor}
+                  height={thickness}
+                  key="remainder"
+                  rx={rx}
+                  width={length}
+                  x={position}
+                />
+              );
+            }
+            const { color, key } = slices[index];
             return (
               <rect
-                className={styles.chartRatioRemainder}
-                fill={remainderColor}
+                className={styles.chartRatioSegment}
+                data-dimmed={activeKey !== undefined && activeKey !== key ? '' : undefined}
+                fill={color}
                 height={thickness}
-                key="remainder"
+                key={key}
                 rx={rx}
                 width={length}
                 x={position}
+                {...getItemHandlers(key)}
               />
             );
-          }
-          const { color, key } = slices[index];
-          return (
-            <rect
-              className={styles.chartRatioSegment}
-              data-dimmed={active && active.key !== key ? '' : undefined}
-              fill={color}
-              height={thickness}
-              key={key}
-              rx={rx}
-              width={length}
-              x={position}
-              {...getItemHandlers(key)}
-            />
-          );
-        })}
-      </svg>
-      {active && activeSlice && total > 0 && (
-        <ChartTooltip {...getSliceTooltip(activeSlice, total, formatValue)} x={active.x} y={active.y} />
+          })}
+        </svg>
       )}
-    </div>
+    </Chart>
   );
 };
 

@@ -88,51 +88,72 @@ export type ChartActiveItem = {
   y: number;
 };
 
-export type ChartItemHandlers = {
+export type ChartPointerHandlers = {
   onPointerLeave: (event: ReactPointerEvent<Element>) => void;
   onPointerMove: (event: ReactPointerEvent<Element>) => void;
   onPointerUp: (event: ReactPointerEvent<Element>) => void;
 };
 
+export type ChartSelection = {
+
+  /**
+   * The selected item, if any.
+   */
+  active?: ChartActiveItem;
+
+  /**
+   * Gets the pointer handlers for an area, such as a plot, which works out
+   * which item the pointer is over.
+   */
+  getAreaHandlers: (getKey: (event: ReactPointerEvent<Element>) => string | undefined) => ChartPointerHandlers;
+
+  /**
+   * Gets the pointer handlers for one item, such as a slice or a segment.
+   */
+  getItemHandlers: (key: string) => ChartPointerHandlers;
+};
+
 /**
- * Tracks which of a chart's items, such as slices or segments, is selected:
- * the hovered one, or on touch screens the tapped one. Tapping a selected item
- * again, tapping outside the chart, or scrolling clears it.
+ * Tracks which of a chart's items is selected: the hovered one, or on touch
+ * screens the tapped one. Tapping a selected item again, tapping outside the
+ * chart, or scrolling clears it.
  *
  * @param ref - The chart's root element
- * @returns The selected item, and the pointer handlers to attach to each item
+ * @returns The selected item, and the pointer handlers to attach to items or
+ *   areas
  */
-export const useChartItemSelection = (ref: RefObject<HTMLElement | null>): {
-  active?: ChartActiveItem;
-  getItemHandlers: (key: string) => ChartItemHandlers;
-} => {
+export const useChartSelection = (ref: RefObject<HTMLElement | null>): ChartSelection => {
   const [active, setActive] = useState<ChartActiveItem>();
   useChartDismiss(ref, !!active, () => setActive(undefined));
 
-  const getActiveItem = (key: string, event: ReactPointerEvent<Element>): ChartActiveItem => ({
-    key,
-    x: event.clientX,
-    y: event.clientY,
-  });
+  const getAreaHandlers: ChartSelection['getAreaHandlers'] = (getKey) => {
+    const getActiveItem = (event: ReactPointerEvent<Element>): ChartActiveItem | undefined => {
+      const key = getKey(event);
+      return key === undefined ? undefined : { key, x: event.clientX, y: event.clientY };
+    };
+    return {
+      onPointerLeave: (event) => {
+        if (event.pointerType !== 'touch') {
+          setActive(undefined);
+        }
+      },
+      onPointerMove: (event) => {
+        if (event.pointerType !== 'touch') {
+          setActive(getActiveItem(event));
+        }
+      },
 
-  const getItemHandlers = (key: string): ChartItemHandlers => ({
-    onPointerLeave: (event) => {
-      if (event.pointerType !== 'touch') {
-        setActive(undefined);
-      }
-    },
-    onPointerMove: (event) => {
-      if (event.pointerType !== 'touch') {
-        setActive(getActiveItem(key, event));
-      }
-    },
-    onPointerUp: (event) => {
-      if (event.pointerType === 'touch') {
-        const next = getActiveItem(key, event);
-        setActive((current) => (current?.key === key ? undefined : next));
-      }
-    },
-  });
+      /* Touch screens select by tapping, since dragging scrolls. */
+      onPointerUp: (event) => {
+        if (event.pointerType === 'touch') {
+          const next = getActiveItem(event);
+          setActive((current) => (current?.key === next?.key ? undefined : next));
+        }
+      },
+    };
+  };
 
-  return { active, getItemHandlers };
+  const getItemHandlers: ChartSelection['getItemHandlers'] = (key) => getAreaHandlers(() => key);
+
+  return { active, getAreaHandlers, getItemHandlers };
 };

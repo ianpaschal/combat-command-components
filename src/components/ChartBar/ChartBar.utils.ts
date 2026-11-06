@@ -6,7 +6,8 @@ export type ChartBarSizes = {
   thickness: number;
 
   /**
-   * The thickness of a category's whole group of bars, including the spacing between them.
+   * The thickness of a category's whole group of bars, including the spacing
+   * between them.
    */
   groupSize: number;
 };
@@ -29,7 +30,8 @@ export type ChartBarSegment = {
   to: number;
 
   /**
-   * How far to pull in the segment's start, in pixels, to leave a gap before it.
+   * How far to pull in the segment's start, in pixels, to leave a gap before
+   * it.
    */
   startInset: number;
 
@@ -42,7 +44,8 @@ export type ChartBarSegment = {
 export type ChartBarExtent = {
 
   /**
-   * Where the bar starts along the value axis, in pixels, whichever way it runs.
+   * Where the bar starts along the value axis, in pixels, whichever way it
+   * runs.
    */
   position: number;
 
@@ -53,11 +56,13 @@ export type ChartBarExtent = {
 };
 
 /**
- * Gets the thickness of each bar in a category, and of the category's whole group of bars.
+ * Gets the thickness of each bar in a category, and of the category's whole
+ * group of bars.
  *
- * @param groupThickness - The thickness the group fills when no bar size is given
+ * @param groupThickness - The thickness the group fills when no bar size is
+ *   given
  * @param count - How many bars sit side by side in the group
- * @param spacing - The gap between neighbouring bars, in pixels
+ * @param spacing - The gap between neighboring bars, in pixels
  * @param barSize - A fixed thickness for each bar, if any
  * @returns The sizes
  */
@@ -73,9 +78,10 @@ export const getBarSizes = (
 };
 
 /**
- * Gets where each series' bar runs in a category. Grouped bars each run from the baseline, and
- * stacked bars run on from the end of the one before, giving up half the spacing at each edge they
- * share with another. Series with a value of 0 get no bar.
+ * Gets where each series' bar runs in a category. Grouped bars each run from
+ * the baseline, and stacked bars run on from the end of the one before, giving
+ * up half the spacing at each edge they share with another. Series with a value
+ * of 0 get no bar.
  *
  * @param values - The value of each series, in series order
  * @param baseline - The value bars start from
@@ -108,7 +114,8 @@ export const getBarSegments = (
 };
 
 /**
- * Gets where a bar sits along the value axis, in pixels, after pulling in its ends.
+ * Gets where a bar sits along the value axis, in pixels, after pulling in its
+ * ends.
  *
  * @param start - The position of the bar's starting value
  * @param end - The position of the bar's ending value

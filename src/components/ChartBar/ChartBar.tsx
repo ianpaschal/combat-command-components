@@ -46,15 +46,17 @@ export type ChartBarDatum = {
 export interface ChartBarProps extends ChartPlotPaddingProps {
 
   /**
-   * The thickness of each bar, in pixels. When grouped, this is the thickness of each series' bar.
-   * Without it, each category's bars fill most of its band.
+   * The thickness of each bar, in pixels. When grouped, this is the thickness
+   * of each series' bar. Without it, each category's bars fill most of its
+   * band.
    */
   barSize?: number;
 
   /**
-   * The space each bar's category gets along the category axis, in pixels. With it, the plot is
-   * exactly as long as its bars need, and scrolls along the category axis when the chart has less
-   * space. Without it, the plot fills the chart.
+   * The space each bar's category gets along the category axis, in pixels. With
+   * it, the plot is exactly as long as its bars need, and scrolls along the
+   * category axis when the chart has less space. Without it, the plot fills the
+   * chart.
    */
   categoryTickSize?: number;
 
@@ -63,8 +65,8 @@ export interface ChartBarProps extends ChartPlotPaddingProps {
   className?: string;
 
   /**
-   * The radius of each bar's corners, in pixels. It shrinks to fit thin or short bars. Defaults
-   * to 4.
+   * The radius of each bar's corners, in pixels. It shrinks to fit thin or
+   * short bars. Defaults to 4.
    */
   cornerRadius?: number;
 
@@ -84,21 +86,22 @@ export interface ChartBarProps extends ChartPlotPaddingProps {
   series: ChartBarSeries[];
 
   /**
-   * The gap between the bars of a category, in pixels: between grouped bars, or between the
-   * segments of a stacked bar. Defaults to 2.
+   * The gap between the bars of a category, in pixels: between grouped bars, or
+   * between the segments of a stacked bar. Defaults to 2.
    */
   spacing?: number;
 
   /**
-   * The space between value ticks, in pixels. With it, the plot is exactly as long as its ticks
-   * need along the value axis, and scrolls along it when the chart has less space. Without it, the
-   * plot fills the chart.
+   * The space between value ticks, in pixels. With it, the plot is exactly as
+   * long as its ticks need along the value axis, and scrolls along it when the
+   * chart has less space. Without it, the plot fills the chart.
    */
   valueTickSize?: number;
 
   /**
-   * The values to mark on the value axis. The axis runs from the first to the last. Without them,
-   * the axis runs from 0 to a round value above the highest bar.
+   * The values to mark on the value axis. The axis runs from the first to the
+   * last. Without them, the axis runs from 0 to a round value above the highest
+   * bar.
    */
   valueTicks?: number[];
 }

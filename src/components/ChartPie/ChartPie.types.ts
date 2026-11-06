@@ -50,13 +50,14 @@ export type ChartPieSliceGeometry = {
   angles: ChartPieAngles;
 
   /**
-   * The width of the gap between neighboring slices, in pixels. Gaps have straight, parallel
-   * sides.
+   * The width of the gap between neighboring slices, in pixels. Gaps have
+   * straight, parallel sides.
    */
   spacing: number;
 
   /**
-   * The radius of the slice's corners, in pixels. It shrinks to fit thin slices and narrow rings.
+   * The radius of the slice's corners, in pixels. It shrinks to fit thin slices
+   * and narrow rings.
    */
   cornerRadius: number;
 
@@ -72,7 +73,8 @@ export type ChartPieSliceGeometry = {
 };
 
 /**
- * The bounding box of the area a pie covers, around its center, for a radius of 1.
+ * The bounding box of the area a pie covers, around its center, for a radius of
+ * 1.
  */
 export type ChartPieBounds = {
   minX: number;
@@ -82,7 +84,8 @@ export type ChartPieBounds = {
 };
 
 /**
- * Where a slice's rounded corner sits, measured from its start edge. The end edge mirrors it.
+ * Where a slice's rounded corner sits, measured from its start edge. The end
+ * edge mirrors it.
  */
 export type ChartPieCorner = {
 

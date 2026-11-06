@@ -11,9 +11,9 @@ export const getLinearPath = (points: ChartLinePoint[]): string => (
 );
 
 /**
- * Gets an SVG path through points, as a smooth curve which never overshoots them, so that it
- * doesn't suggest highs or lows that aren't in the data. The curve is a monotone cubic, like
- * `curveMonotoneX` in d3.
+ * Gets an SVG path through points, as a smooth curve which never overshoots
+ * them, so that it doesn't suggest highs or lows that aren't in the data. The
+ * curve is a monotone cubic, like `curveMonotoneX` in d3.
  *
  * @param points - The points, from left to right
  * @returns The path

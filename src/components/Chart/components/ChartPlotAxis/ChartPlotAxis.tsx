@@ -5,8 +5,8 @@ import {
 } from 'react';
 import clsx from 'clsx';
 
-import { ChartPlotAxis as ChartPlotAxisConfig } from '../../ChartPlot.types';
-import { getAxisFraction } from '../../ChartPlot.utils';
+import { ChartPlotAxis as ChartPlotAxisConfig } from '../ChartPlot/ChartPlot.types';
+import { getAxisFraction } from '../ChartPlot/ChartPlot.utils';
 
 import styles from './ChartPlotAxis.module.scss';
 
@@ -16,7 +16,8 @@ export interface ChartPlotAxisProps {
   isY: boolean;
 
   /**
-   * A ref to the last label, to measure how far it overhangs the end of the axis.
+   * A ref to the last label, to measure how far it overhangs the end of the
+   * axis.
    */
   lastLabelRef?: Ref<HTMLSpanElement>;
 
@@ -42,8 +43,8 @@ const getLabels = (axis: ChartPlotAxisConfig): { key: string; label: string; val
   )
 );
 
-/* Labels an axis of a `ChartPlot`. Each label sits centered on its value, at the same position as
- * in the plot.
+/* Labels an axis of a `ChartPlot`. Each label sits centered on its value, at
+ * the same position as in the plot.
  */
 export const ChartPlotAxis = forwardRef<HTMLDivElement, ChartPlotAxisProps>(({
   axis,

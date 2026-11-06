@@ -37,9 +37,9 @@
 
       background-color: var(--chart-plot-plot-color, transparent);
 
-      /* The axes are see-through, so the plot is clipped where they cover it: on
-       * the left by as far as it is scrolled sideways, and at the bottom by as
-       * far as there is left to scroll down.
+      /* The axes are see-through, so the plot is clipped where they cover it:
+       * on the left by as far as it is scrolled sideways, and at the bottom by
+       * as far as there is left to scroll down.
        */
       clip-path: inset(0 0 var(--scroll-area-overflow-y-end, 0) var(--scroll-area-overflow-x-start, 0));
     }
@@ -60,7 +60,9 @@
       stroke-width: 1;
     }
 
-    /* The axes stick to the edges of the scroll area, so that the plot scrolls under them. */
+    /* The axes stick to the edges of the scroll area, so that the plot scrolls
+     * under them.
+     */
     &-y-axis {
       position: sticky;
       z-index: 2;
@@ -71,7 +73,7 @@
 
       background-color: var(--chart-plot-y-axis-color, transparent);
 
-      /* A scrolling axis goes under the corner, so its labels scroll under it. */
+      // A scrolling axis goes under the corner, so its labels scroll under it:
       [data-has-overflow-y] & {
         z-index: 0;
         clip-path: inset(-0.5lh 0 var(--scroll-area-overflow-y-end, 0) 0);
@@ -88,7 +90,7 @@
 
       background-color: var(--chart-plot-x-axis-color, transparent);
 
-      /* A scrolling axis goes under the corner, so its labels scroll under it. */
+      // A scrolling axis goes under the corner, so its labels scroll under it:
       [data-has-overflow-x] & {
         z-index: 0;
         clip-path: inset(0 -50% 0 var(--scroll-area-overflow-x-start, 0));

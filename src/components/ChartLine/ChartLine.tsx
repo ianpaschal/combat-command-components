@@ -37,7 +37,8 @@ export type ChartLineDatum = {
   x: string;
 
   /**
-   * The value of each series at this x value, by series key. A missing value counts as 0.
+   * The value of each series at this x value, by series key. A missing value
+   * counts as 0.
    */
   values: Record<string, number>;
 };
@@ -45,8 +46,9 @@ export type ChartLineDatum = {
 export interface ChartLineProps extends ChartPlotPaddingProps {
 
   /**
-   * The space each x value gets, in pixels. With it, the plot is exactly as wide as its x values
-   * need, and scrolls sideways when the chart is narrower. Without it, the plot fills the chart.
+   * The space each x value gets, in pixels. With it, the plot is exactly as
+   * wide as its x values need, and scrolls sideways when the chart is narrower.
+   * Without it, the plot fills the chart.
    */
   categoryTickSize?: number;
 
@@ -57,8 +59,8 @@ export interface ChartLineProps extends ChartPlotPaddingProps {
   className?: string;
 
   /**
-   * How the lines run between points. `smooth` curves through them without overshooting, and
-   * `linear` draws straight segments. Defaults to `smooth`.
+   * How the lines run between points. `smooth` curves through them without
+   * overshooting, and `linear` draws straight segments. Defaults to `smooth`.
    */
   curve?: 'smooth' | 'linear';
 
@@ -68,43 +70,48 @@ export interface ChartLineProps extends ChartPlotPaddingProps {
   data: ChartLineDatum[];
 
   /**
-   * Whether to fill the area under each line with a gradient that fades out towards the bottom.
-   * Stacked lines always fill the bands between them. Defaults to `true`.
+   * Whether to fill the area under each line with a gradient that fades out
+   * towards the bottom. Stacked lines always fill the bands between them.
+   * Defaults to `true`.
    */
   fill?: boolean;
 
   /**
-   * Formats the labels of the y axis and the values in the tooltip. Defaults to `String`.
+   * Formats the labels of the y axis and the values in the tooltip. Defaults to
+   * `String`.
    */
   formatValue?: (value: number) => string;
 
   /**
-   * Formats the labels of the x axis. Defaults to showing the x values as they are.
+   * Formats the labels of the x axis. Defaults to showing the x values as they
+   * are.
    */
   formatCategory?: (x: string) => string;
 
   /**
-   * How the series are drawn. `overlaid` draws each line from 0, over the ones before it, and
-   * `stacked` draws each line on top of the ones before it, which only supports values of 0 and
-   * above. Defaults to `overlaid`.
+   * How the series are drawn. `overlaid` draws each line from 0, over the ones
+   * before it, and `stacked` draws each line on top of the ones before it,
+   * which only supports values of 0 and above. Defaults to `overlaid`.
    */
   mode?: 'overlaid' | 'stacked';
 
   /**
-   * The series, in the order they are drawn: each over the ones before it when overlaid, and
-   * upwards from the baseline when stacked.
+   * The series, in the order they are drawn: each over the ones before it when
+   * overlaid, and upwards from the baseline when stacked.
    */
   series: ChartLineSeries[];
 
   /**
-   * The space between value ticks, in pixels. With it, the plot is exactly as tall as its ticks
-   * need, and scrolls up and down when the chart is shorter. Without it, the plot fills the chart.
+   * The space between value ticks, in pixels. With it, the plot is exactly as
+   * tall as its ticks need, and scrolls up and down when the chart is shorter.
+   * Without it, the plot fills the chart.
    */
   valueTickSize?: number;
 
   /**
-   * The values to mark on the y axis. The axis runs from the first to the last. Without them, the
-   * axis runs from 0 to a round value above the highest point.
+   * The values to mark on the y axis. The axis runs from the first to the last.
+   * Without them, the axis runs from 0 to a round value above the highest
+   * point.
    */
   valueTicks?: number[];
 }
@@ -130,8 +137,8 @@ export const ChartLine = ({
   const isStacked = mode === 'stacked';
   const getValue = (datum: ChartLineDatum, key: string): number => datum.values[key] ?? 0;
 
-  /* The top of each series at each x value: its own value when overlaid, or the running total of
-   * it and the series before it when stacked.
+  /* The top of each series at each x value: its own value when overlaid, or the
+   * running total of it and the series before it when stacked.
    */
   const tops = series.map((_, i) => data.map((datum) => (
     isStacked ? (

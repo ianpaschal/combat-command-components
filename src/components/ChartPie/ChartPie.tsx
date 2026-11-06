@@ -1,10 +1,10 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 
 import {
-  ChartTooltip,
-  useChartItemSelection,
-  useElementSize,
+  Chart,
+  ChartRenderProps,
+  ChartTooltipContent,
 } from '../Chart';
 import { ChartPieAngles, ChartPieSlice } from './ChartPie.types';
 import {
@@ -31,8 +31,8 @@ export interface ChartPieProps {
   className?: string;
 
   /**
-   * The radius of each slice's corners, in pixels. It shrinks to fit thin slices and narrow rings.
-   * Defaults to 4.
+   * The radius of each slice's corners, in pixels. It shrinks to fit thin
+   * slices and narrow rings. Defaults to 4 (px).
    */
   cornerRadius?: number;
 
@@ -58,8 +58,8 @@ export interface ChartPieProps {
   formatValue?: (value: number) => string;
 
   /**
-   * The radius of the hole in the middle, as a fraction of the pie's radius, for a donut. Defaults
-   * to 0, for a full pie.
+   * The radius of the hole in the middle, as a fraction of the pie's radius,
+   * for a donut. Defaults to 0, for a full pie.
    */
   innerRadius?: number;
 
@@ -79,8 +79,8 @@ export interface ChartPieProps {
   otherLabel?: string;
 
   /**
-   * The share of the total, from 0 to 1, below which slices are folded into a single "Other"
-   * slice. Defaults to 0, which folds nothing.
+   * The share of the total, from 0 to 1, below which slices are folded into a
+   * single "Other" slice. Defaults to 0, which folds nothing.
    */
   otherThreshold?: number;
 
@@ -119,9 +119,6 @@ export const ChartPie = ({
   spacing = DEFAULT_SPACING,
   sweep = 1,
 }: ChartPieProps): ReactElement => {
-  const [ref, { width, height }] = useElementSize<HTMLDivElement>();
-  const { active, getItemHandlers } = useChartItemSelection(ref);
-
   const slices = groupSmallSlices(data, otherThreshold, {
     key: OTHER_KEY,
     color: otherColor,
@@ -142,29 +139,35 @@ export const ChartPie = ({
   const bounds = getSweepBounds(spannedSweep, rotation, isCounterclockwise, innerRadius);
   const boundsWidth = bounds.maxX - bounds.minX || 1;
   const boundsHeight = bounds.maxY - bounds.minY || 1;
-  const radius = Math.max(0, height > 0 ? (
-    Math.min(width / boundsWidth, height / boundsHeight)
-  ) : (
-    width / boundsWidth
-  ));
-  const cx = -radius * bounds.minX;
-  const cy = -radius * bounds.minY;
-  const getPath = (sliceAngles: ChartPieAngles): string => getSlicePath({
-    cx,
-    cy,
-    outerRadius: radius,
-    innerRadius: radius * innerRadius,
-    angles: sliceAngles,
-    spacing,
-    cornerRadius,
-    rotation,
-    isCounterclockwise,
-  });
 
-  const activeSlice = slices.find(({ key }) => key === active?.key);
+  const getTooltip = (key: string): ChartTooltipContent | undefined => {
+    const slice = slices.find((s) => s.key === key);
+    return slice && total > 0 ? getSliceTooltip(slice, total, formatValue) : undefined;
+  };
 
-  return (
-    <div className={clsx(styles.chartPie, className)} ref={ref}>
+  const renderPie = ({
+    activeKey,
+    getItemHandlers,
+    height,
+    width,
+  }: ChartRenderProps): ReactNode => {
+    const radius = Math.max(0, height > 0 ? (
+      Math.min(width / boundsWidth, height / boundsHeight)
+    ) : (
+      width / boundsWidth
+    ));
+    const getPath = (sliceAngles: ChartPieAngles): string => getSlicePath({
+      cx: -radius * bounds.minX,
+      cy: -radius * bounds.minY,
+      outerRadius: radius,
+      innerRadius: radius * innerRadius,
+      angles: sliceAngles,
+      spacing,
+      cornerRadius,
+      rotation,
+      isCounterclockwise,
+    });
+    return (
       <svg
         className={styles.chartPieSvg}
         height={radius * boundsHeight}
@@ -181,17 +184,20 @@ export const ChartPie = ({
           <path
             className={styles.chartPieSlice}
             d={getPath(angles[i])}
-            data-dimmed={active && active.key !== key ? '' : undefined}
+            data-dimmed={activeKey !== undefined && activeKey !== key ? '' : undefined}
             fill={color}
             key={key}
             {...getItemHandlers(key)}
           />
         ))}
       </svg>
-      {active && activeSlice && total > 0 && (
-        <ChartTooltip {...getSliceTooltip(activeSlice, total, formatValue)} x={active.x} y={active.y} />
-      )}
-    </div>
+    );
+  };
+
+  return (
+    <Chart className={clsx(styles.chartPie, className)} getTooltip={getTooltip}>
+      {renderPie}
+    </Chart>
   );
 };
 

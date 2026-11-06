@@ -3,8 +3,8 @@ import { CSSProperties } from 'react';
 const TOOLTIP_OFFSET = 12;
 
 /**
- * Gets where to place a chart's tooltip, next to the pointer and towards the middle of the
- * viewport, so that it stays on screen.
+ * Gets where to place a chart's tooltip, next to the pointer and towards the
+ * middle of the viewport, so that it stays on screen.
  *
  * @param x - The pointer's horizontal position in the viewport
  * @param y - The pointer's vertical position in the viewport
