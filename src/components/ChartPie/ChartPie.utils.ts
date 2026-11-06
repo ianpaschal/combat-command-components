@@ -10,8 +10,8 @@ import {
 
 /**
  * Folds slices whose share of the total is below a threshold into a single
- * "Other" slice, at the end. Nothing is folded unless at least two slices fall
- * below the threshold.
+ * "Other" slice, at the end. Slices of 0 or below are never folded. Nothing is
+ * folded unless at least two slices fall below the threshold.
  *
  * @param slices - The slices
  * @param threshold - The share below which slices are folded, from 0 to 1
@@ -27,7 +27,7 @@ export const groupSmallSlices = (
   if (!total || threshold <= 0) {
     return slices;
   }
-  const small = slices.filter(({ value }) => value / total < threshold);
+  const small = slices.filter(({ value }) => value > 0 && value / total < threshold);
   if (small.length < 2) {
     return slices;
   }

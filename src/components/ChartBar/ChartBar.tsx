@@ -76,7 +76,10 @@ export interface ChartBarProps extends ChartPlotPaddingProps {
   /** Formats the labels of the value axis and the values in the tooltip. */
   formatValue?: (value: number) => string;
 
-  /** How the series of a category are drawn. */
+  /**
+   * How the series of a category are drawn. Stacked bars only support values of
+   * 0 and above.
+   */
   mode?: 'grouped' | 'stacked';
 
   /** Which direction the bars run. */

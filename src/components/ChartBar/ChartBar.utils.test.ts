@@ -58,6 +58,13 @@ describe('getBarSegments', () => {
   it('starts from the baseline.', () => {
     expect(getBarSegments([10], 5, false, 0)[0]).toMatchObject({ from: 5, to: 10 });
   });
+
+  it('stacks from 0, clamping segments to the baseline and skipping those below it.', () => {
+    expect(getBarSegments([5, 10, 5], 10, true, 2)).toEqual([
+      { index: 1, from: 10, to: 15, startInset: 0, endInset: 1 },
+      { index: 2, from: 15, to: 20, startInset: 1, endInset: 0 },
+    ]);
+  });
 });
 
 describe('getBarExtent', () => {

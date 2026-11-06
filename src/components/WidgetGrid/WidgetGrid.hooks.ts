@@ -1,7 +1,7 @@
 import {
   CSSProperties,
   Ref,
-  useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from 'react';
@@ -26,7 +26,7 @@ export const useWidgetGrid = ({
   const ref = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const element = ref.current;
     if (!element) {
       return;
@@ -37,7 +37,8 @@ export const useWidgetGrid = ({
     });
 
     resizeObserver.observe(element);
-    setWidth(element.offsetWidth);
+    const { paddingLeft, paddingRight } = getComputedStyle(element);
+    setWidth(element.clientWidth - parseFloat(paddingLeft) - parseFloat(paddingRight));
     return () => resizeObserver.disconnect();
   }, []);
 

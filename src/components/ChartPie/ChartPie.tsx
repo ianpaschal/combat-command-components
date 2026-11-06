@@ -195,7 +195,11 @@ export const ChartPie = ({
   };
 
   return (
-    <Chart className={clsx(styles.chartPie, className)} getTooltip={getTooltip}>
+    <Chart
+      className={clsx(styles.chartPie, className)}
+      getTooltip={getTooltip}
+      style={{ aspectRatio: `${boundsWidth} / ${boundsHeight}` }}
+    >
       {renderPie}
     </Chart>
   );

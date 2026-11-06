@@ -148,7 +148,7 @@ export const ChartLine = ({
     )
   )));
   const ticks = valueTicks ?? getNiceTicks(tops.flat());
-  const baseline = ticks[0] ?? 0;
+  const baseline = Math.min(Math.max(0, ticks[0] ?? 0), ticks[ticks.length - 1] ?? 0);
   const getPath = (points: ChartLinePoint[]): string => (
     curve === 'smooth' ? getSmoothPath(points) : getLinearPath(points)
   );

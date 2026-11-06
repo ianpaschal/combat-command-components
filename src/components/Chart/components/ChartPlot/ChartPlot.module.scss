@@ -74,7 +74,7 @@
       background-color: var(--chart-plot-y-axis-color, transparent);
 
       // A scrolling axis goes under the corner, so its labels scroll under it:
-      [data-has-overflow-y] & {
+      .chart-plot [data-has-overflow-y] & {
         z-index: 0;
         clip-path: inset(-0.5lh 0 var(--scroll-area-overflow-y-end, 0) 0);
       }
@@ -91,7 +91,7 @@
       background-color: var(--chart-plot-x-axis-color, transparent);
 
       // A scrolling axis goes under the corner, so its labels scroll under it:
-      [data-has-overflow-x] & {
+      .chart-plot [data-has-overflow-x] & {
         z-index: 0;
         clip-path: inset(0 -50% 0 var(--scroll-area-overflow-x-start, 0));
       }

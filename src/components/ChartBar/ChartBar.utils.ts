@@ -81,7 +81,7 @@ export const getBarSizes = (
  * Gets where each series' bar runs in a category. Grouped bars each run from
  * the baseline, and stacked bars run on from the end of the one before, giving
  * up half the spacing at each edge they share with another. Series with a value
- * of 0 get no bar.
+ * of 0, or that end at or below the baseline when stacked, get no bar.
  *
  * @param values - The value of each series, in series order
  * @param baseline - The value bars start from
@@ -95,22 +95,22 @@ export const getBarSegments = (
   isStacked: boolean,
   spacing: number,
 ): ChartBarSegment[] => {
+  let total = 0;
   const visible = values
-    .map((value, index) => ({ value, index }))
-    .filter(({ value }) => value !== 0);
-  let total = baseline;
-  return visible.map(({ value, index }, i) => {
-    const from = isStacked ? total : baseline;
-    const to = isStacked ? total + value : value;
-    total = to;
-    return {
-      index,
-      from,
-      to,
-      startInset: isStacked && i > 0 ? spacing / 2 : 0,
-      endInset: isStacked && i < visible.length - 1 ? spacing / 2 : 0,
-    };
-  });
+    .map((value, index) => {
+      const from = isStacked ? Math.max(total, baseline) : baseline;
+      const to = isStacked ? Math.max(total + value, baseline) : value;
+      total += value;
+      return { value, index, from, to };
+    })
+    .filter(({ value, from, to }) => value !== 0 && (!isStacked || from !== to));
+  return visible.map(({ index, from, to }, i) => ({
+    index,
+    from,
+    to,
+    startInset: isStacked && i > 0 ? spacing / 2 : 0,
+    endInset: isStacked && i < visible.length - 1 ? spacing / 2 : 0,
+  }));
 };
 
 /**

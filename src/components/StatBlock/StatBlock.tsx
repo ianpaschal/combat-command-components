@@ -31,8 +31,10 @@ export const StatBlock = ({
     setDisplayValue(value);
   }, [value]);
 
+  const formattedValue = `${new Intl.NumberFormat(undefined, format).format(value)}${suffix ?? ''}`;
+
   return (
-    <div className={clsx(styles.statBlock, className)} aria-label={label} role="img">
+    <div className={clsx(styles.statBlock, className)} aria-label={`${label}: ${formattedValue}`} role="img">
       <NumberFlow format={format} suffix={suffix} value={displayValue} />
     </div>
   );

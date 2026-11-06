@@ -47,6 +47,17 @@ describe('groupSmallSlices', () => {
     const slices = getSlices([0, 0]);
     expect(groupSmallSlices(slices, 0.5, OTHER)).toBe(slices);
   });
+
+  it('leaves slices of 0 or below out of the "Other" slice.', () => {
+    const slices = getSlices([50, 40, 0, 6, -3, 4]);
+    expect(groupSmallSlices(slices, 0.1, OTHER)).toEqual([
+      slices[0],
+      slices[1],
+      slices[2],
+      slices[4],
+      { ...OTHER, value: 10, children: [slices[3], slices[5]] },
+    ]);
+  });
 });
 
 describe('getSliceAngles', () => {
