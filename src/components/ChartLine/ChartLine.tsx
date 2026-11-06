@@ -129,6 +129,10 @@ export const ChartLine = ({
   padding,
   paddingX,
   paddingY,
+  paddingTop,
+  paddingRight,
+  paddingBottom,
+  paddingLeft,
   series,
   valueTickSize,
   valueTicks,
@@ -173,6 +177,10 @@ export const ChartLine = ({
       padding={padding}
       paddingX={paddingX}
       paddingY={paddingY}
+      paddingTop={paddingTop}
+      paddingRight={paddingRight}
+      paddingBottom={paddingBottom}
+      paddingLeft={paddingLeft}
       getTooltip={getTooltip}
       x={{
         type: 'category',

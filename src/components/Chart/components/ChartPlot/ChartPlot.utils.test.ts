@@ -4,7 +4,11 @@ import {
   it,
 } from 'vitest';
 
-import { ChartPlotCategoryAxis, ChartPlotValueAxis } from './ChartPlot.types';
+import {
+  ChartPlotAxisPadding,
+  ChartPlotCategoryAxis,
+  ChartPlotValueAxis,
+} from './ChartPlot.types';
 import {
   getAxisBand,
   getAxisFraction,
@@ -17,6 +21,8 @@ import {
 const BAND_AXIS: ChartPlotCategoryAxis = { type: 'category', values: ['a', 'b', 'c', 'd'] };
 const POINT_AXIS: ChartPlotCategoryAxis = { ...BAND_AXIS, placement: 'point' };
 const VALUE_AXIS: ChartPlotValueAxis = { type: 'value', ticks: [0, 25, 50, 75, 100] };
+const NONE: ChartPlotAxisPadding = { start: 0, end: 0 };
+const EVEN_10: ChartPlotAxisPadding = { start: 10, end: 10 };
 
 describe('getCategorySteps', () => {
   it('has one step per band.', () => {
@@ -75,40 +81,45 @@ describe('getAxisFraction', () => {
 
 describe('getAxisPosition', () => {
   it('maps a fraction onto the length between the padding.', () => {
-    expect(getAxisPosition(0, 200, 10)).toBe(10);
-    expect(getAxisPosition(0.5, 200, 10)).toBe(100);
-    expect(getAxisPosition(1, 200, 10)).toBe(190);
+    expect(getAxisPosition(0, 200, EVEN_10)).toBe(10);
+    expect(getAxisPosition(0.5, 200, EVEN_10)).toBe(100);
+    expect(getAxisPosition(1, 200, EVEN_10)).toBe(190);
+  });
+
+  it('allows different padding at each end.', () => {
+    expect(getAxisPosition(0, 200, { start: 0, end: 20 })).toBe(0);
+    expect(getAxisPosition(1, 200, { start: 0, end: 20 })).toBe(180);
   });
 });
 
 describe('getAxisBand', () => {
   it('splits the length between the padding into steps.', () => {
-    expect(getAxisBand(BAND_AXIS, 220, 10)).toBe(50);
-    expect(getAxisBand(POINT_AXIS, 300, 0)).toBe(100);
+    expect(getAxisBand(BAND_AXIS, 220, EVEN_10)).toBe(50);
+    expect(getAxisBand(POINT_AXIS, 300, NONE)).toBe(100);
   });
 
   it('returns 0 for a value axis.', () => {
-    expect(getAxisBand(VALUE_AXIS, 200, 0)).toBe(0);
+    expect(getAxisBand(VALUE_AXIS, 200, NONE)).toBe(0);
   });
 });
 
 describe('getFixedLength', () => {
   it('returns nothing without a tick size.', () => {
-    expect(getFixedLength(BAND_AXIS, 10)).toBeUndefined();
-    expect(getFixedLength(VALUE_AXIS, 10)).toBeUndefined();
+    expect(getFixedLength(BAND_AXIS, EVEN_10)).toBeUndefined();
+    expect(getFixedLength(VALUE_AXIS, EVEN_10)).toBeUndefined();
   });
 
   it('sizes a category axis by its steps.', () => {
-    expect(getFixedLength({ ...BAND_AXIS, tickSize: 32 }, 0)).toBe(128);
-    expect(getFixedLength({ ...POINT_AXIS, tickSize: 48 }, 0)).toBe(144);
+    expect(getFixedLength({ ...BAND_AXIS, tickSize: 32 }, NONE)).toBe(128);
+    expect(getFixedLength({ ...POINT_AXIS, tickSize: 48 }, NONE)).toBe(144);
   });
 
   it('sizes a value axis by the gaps between its ticks.', () => {
-    expect(getFixedLength({ ...VALUE_AXIS, tickSize: 40 }, 0)).toBe(160);
+    expect(getFixedLength({ ...VALUE_AXIS, tickSize: 40 }, NONE)).toBe(160);
   });
 
   it('adds the padding at each end.', () => {
-    expect(getFixedLength({ ...BAND_AXIS, tickSize: 32 }, 12)).toBe(152);
+    expect(getFixedLength({ ...BAND_AXIS, tickSize: 32 }, { start: 4, end: 20 })).toBe(152);
   });
 });
 

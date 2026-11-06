@@ -1,4 +1,8 @@
-import { ChartPlotAxis, ChartPlotCategoryAxis } from './ChartPlot.types';
+import {
+  ChartPlotAxis,
+  ChartPlotAxisPadding,
+  ChartPlotCategoryAxis,
+} from './ChartPlot.types';
 
 const NICE_STEPS = [1, 2, 2.5, 5, 10];
 
@@ -55,9 +59,9 @@ export const getAxisFraction = (
 export const getAxisPosition = (
   fraction: number,
   length: number,
-  padding: number,
+  padding: ChartPlotAxisPadding,
 ): number => (
-  padding + fraction * (length - padding * 2)
+  padding.start + fraction * (length - padding.start - padding.end)
 );
 
 /**
@@ -72,9 +76,9 @@ export const getAxisPosition = (
 export const getAxisBand = (
   axis: ChartPlotAxis,
   length: number,
-  padding: number,
+  padding: ChartPlotAxisPadding,
 ): number => (
-  axis.type === 'category' ? (length - padding * 2) / getCategorySteps(axis) : 0
+  axis.type === 'category' ? (length - padding.start - padding.end) / getCategorySteps(axis) : 0
 );
 
 /**
@@ -87,13 +91,13 @@ export const getAxisBand = (
  */
 export const getFixedLength = (
   axis: ChartPlotAxis,
-  padding: number,
+  padding: ChartPlotAxisPadding,
 ): number | undefined => {
   if (!axis.tickSize) {
     return undefined;
   }
   const steps = axis.type === 'category' ? getCategorySteps(axis) : Math.max(1, axis.ticks.length - 1);
-  return steps * axis.tickSize + padding * 2;
+  return steps * axis.tickSize + padding.start + padding.end;
 };
 
 /**

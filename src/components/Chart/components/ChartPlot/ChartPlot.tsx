@@ -14,6 +14,7 @@ import { ChartPlotAxis } from '../ChartPlotAxis';
 import { ChartTooltipContent } from '../ChartTooltip';
 import {
   ChartPlotAxis as ChartPlotAxisConfig,
+  ChartPlotAxisPadding,
   ChartPlotLayout,
   ChartPlotPaddingProps,
 } from './ChartPlot.types';
@@ -55,6 +56,10 @@ export const ChartPlot = ({
   padding = 0,
   paddingX = padding,
   paddingY = padding,
+  paddingTop = paddingY,
+  paddingRight = paddingX,
+  paddingBottom = paddingY,
+  paddingLeft = paddingX,
   getTooltip,
   x,
   y,
@@ -64,26 +69,28 @@ export const ChartPlot = ({
   const [yAxisRef, yAxisSize] = useElementSize<HTMLDivElement>();
   const [lastXLabelRef, lastXLabelSize] = useElementSize<HTMLSpanElement>();
 
-  const plotWidth = getFixedLength(x, paddingX);
-  const plotHeight = getFixedLength(y, paddingY);
+  const xPadding: ChartPlotAxisPadding = { start: paddingLeft, end: paddingRight };
+  const yPadding: ChartPlotAxisPadding = { start: paddingTop, end: paddingBottom };
+  const plotWidth = getFixedLength(x, xPadding);
+  const plotHeight = getFixedLength(y, yPadding);
 
   /* Labels are centered on their values, so the labels at the top of the y axis
-   * and the end of the x axis overhang the plot, unless the padding leaves room
-   * for them.
+   * and the end of the x axis overhang the plot, and the grid leaves room for
+   * them on top of the padding.
    */
   const getGridStyle = (height: number): CSSProperties => ({
     gridTemplateColumns: `auto ${plotWidth ? `${plotWidth}px` : 'minmax(0, 1fr)'}`,
     gridTemplateRows: `${plotHeight ? `${plotHeight}px` : 'minmax(0, 1fr)'} auto`,
     width: plotWidth ? 'max-content' : '100%',
     height: plotHeight ? undefined : height,
-    paddingTop: `max(0px, 0.5lh - ${paddingY}px)`,
-    paddingRight: Math.max(0, lastXLabelSize.width / 2 - paddingX),
+    paddingTop: '0.5lh',
+    paddingRight: lastXLabelSize.width / 2,
   });
   const plot: Omit<ChartPlotLayout, 'activeValue'> = {
-    bandX: getAxisBand(x, plotSize.width, paddingX),
-    bandY: getAxisBand(y, plotSize.height, paddingY),
-    getX: (value) => getAxisPosition(getAxisFraction(x, value, false), plotSize.width, paddingX),
-    getY: (value) => getAxisPosition(getAxisFraction(y, value, true), plotSize.height, paddingY),
+    bandX: getAxisBand(x, plotSize.width, xPadding),
+    bandY: getAxisBand(y, plotSize.height, yPadding),
+    getX: (value) => getAxisPosition(getAxisFraction(x, value, false), plotSize.width, xPadding),
+    getY: (value) => getAxisPosition(getAxisFraction(y, value, true), plotSize.height, yPadding),
     height: plotSize.height,
     width: plotSize.width,
   };
@@ -128,13 +135,16 @@ export const ChartPlot = ({
   return (
     <Chart className={clsx(styles.chartPlot, className)} getTooltip={getTooltip}>
       {({ activeKey, getAreaHandlers, height }) => (
-        <ScrollArea offset={{ bottom: xAxisSize.height, left: yAxisSize.width }}>
+        <ScrollArea
+          dir={scrollToEnd ? 'rtl' : undefined}
+          offset={{ bottom: xAxisSize.height, left: yAxisSize.width }}
+        >
           <div className={styles.chartPlotGrid} style={getGridStyle(height)}>
             <ChartPlotAxis
               axis={y}
               className={styles.chartPlotYAxis}
               isY
-              padding={paddingY}
+              padding={yPadding}
               ref={yAxisRef}
             />
             <div
@@ -176,7 +186,7 @@ export const ChartPlot = ({
               className={styles.chartPlotXAxis}
               isY={false}
               lastLabelRef={lastXLabelRef}
-              padding={paddingX}
+              padding={xPadding}
               ref={xAxisRef}
             />
           </div>

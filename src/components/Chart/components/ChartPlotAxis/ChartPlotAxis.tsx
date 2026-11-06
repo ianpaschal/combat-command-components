@@ -5,7 +5,10 @@ import {
 } from 'react';
 import clsx from 'clsx';
 
-import { ChartPlotAxis as ChartPlotAxisConfig } from '../ChartPlot/ChartPlot.types';
+import {
+  ChartPlotAxis as ChartPlotAxisConfig,
+  ChartPlotAxisPadding,
+} from '../ChartPlot/ChartPlot.types';
 import { getAxisFraction } from '../ChartPlot/ChartPlot.utils';
 
 import styles from './ChartPlotAxis.module.scss';
@@ -24,7 +27,7 @@ export interface ChartPlotAxisProps {
   /**
    * The padding at each end of the axis, in pixels.
    */
-  padding: number;
+  padding: ChartPlotAxisPadding;
 }
 
 const getLabels = (axis: ChartPlotAxisConfig): { key: string; label: string; value: string | number }[] => (
@@ -61,7 +64,8 @@ export const ChartPlotAxis = forwardRef<HTMLDivElement, ChartPlotAxisProps>(({
         ref={i === labels.length - 1 ? lastLabelRef : undefined}
         style={{
           '--fraction': getAxisFraction(axis, value, isY),
-          '--padding': `${padding}px`,
+          '--padding-start': `${padding.start}px`,
+          '--padding-end': `${padding.end}px`,
         } as CSSProperties}
       >
         {label}

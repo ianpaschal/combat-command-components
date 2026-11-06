@@ -97,9 +97,10 @@ export type ChartPlotLayout = {
 export type ChartPlotPaddingProps = {
 
   /**
-   * The space between the edges of the plot and its outermost values on every
-   * side, in pixels. Without padding, labels and marks at the edges are cut
-   * off.
+   * The empty space on every side of the plot, in pixels, between its outermost
+   * values and the axes, or the edge of the chart on sides without an axis.
+   * Labels which overhang the outermost values get room of their own, so the
+   * space is the same however wide they are.
    */
   padding?: number;
 
@@ -114,4 +115,25 @@ export type ChartPlotPaddingProps = {
    * `padding`.
    */
   paddingY?: number;
+
+  /** The space at the top of the plot, in pixels. Overrides `paddingY`. */
+  paddingTop?: number;
+
+  /** The space at the right of the plot, in pixels. Overrides `paddingX`. */
+  paddingRight?: number;
+
+  /** The space at the bottom of the plot, in pixels. Overrides `paddingY`. */
+  paddingBottom?: number;
+
+  /** The space at the left of the plot, in pixels. Overrides `paddingX`. */
+  paddingLeft?: number;
+};
+
+export type ChartPlotAxisPadding = {
+
+  /** The padding at the start of the axis: the left of an x axis, or the top of a y axis. */
+  start: number;
+
+  /** The padding at the end of the axis: the right of an x axis, or the bottom of a y axis. */
+  end: number;
 };

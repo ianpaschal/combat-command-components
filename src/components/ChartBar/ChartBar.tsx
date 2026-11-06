@@ -122,6 +122,10 @@ export const ChartBar = ({
   padding,
   paddingX,
   paddingY,
+  paddingTop,
+  paddingRight,
+  paddingBottom,
+  paddingLeft,
   series,
   spacing = DEFAULT_SPACING,
   valueTickSize,
@@ -168,6 +172,10 @@ export const ChartBar = ({
       padding={padding}
       paddingX={paddingX}
       paddingY={paddingY}
+      paddingTop={paddingTop}
+      paddingRight={paddingRight}
+      paddingBottom={paddingBottom}
+      paddingLeft={paddingLeft}
       getTooltip={getTooltip}
       x={isHorizontal ? valueAxis : categoryAxis}
       y={isHorizontal ? categoryAxis : valueAxis}

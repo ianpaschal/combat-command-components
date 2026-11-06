@@ -20,7 +20,7 @@
       padding-top: var(--label-offset);
 
       .chart-plot-axis-label {
-        left: calc(var(--padding) + var(--fraction) * (100% - var(--padding) * 2));
+        left: calc(var(--padding-start) + var(--fraction) * (100% - var(--padding-start) - var(--padding-end)));
         transform: translateX(-50%);
         justify-self: start;
       }
@@ -30,7 +30,7 @@
       padding-right: var(--label-offset);
 
       .chart-plot-axis-label {
-        top: calc(var(--padding) + var(--fraction) * (100% - var(--padding) * 2));
+        top: calc(var(--padding-start) + var(--fraction) * (100% - var(--padding-start) - var(--padding-end)));
         transform: translateY(-50%);
         align-self: start;
         justify-self: end;
