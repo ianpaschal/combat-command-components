@@ -1,5 +1,6 @@
 import {
   ChartPieAngles,
+  ChartPieBounds,
   ChartPieCorner,
   ChartPieGroupedSlice,
   ChartPieSlice,
@@ -39,20 +40,70 @@ export const groupSmallSlices = (
 };
 
 /**
- * Gets the angles each slice spans, in radians, clockwise from the top.
- * Negative values count as 0.
+ * Gets the angles each slice spans, in radians from the origin. Negative values
+ * count as 0.
  *
  * @param values - The slices' values
+ * @param sweep - The share of the circle the slices fill together, from 0 to 1
  * @returns The angles, in slice order, all 0 if the total is 0
  */
-export const getSliceAngles = (values: number[]): ChartPieAngles[] => {
+export const getSliceAngles = (values: number[], sweep = 1): ChartPieAngles[] => {
   const total = values.reduce((sum, value) => sum + Math.max(0, value), 0);
   let angle = 0;
   return values.map((value) => {
     const start = angle;
-    angle += total ? (Math.max(0, value) / total) * Math.PI * 2 : 0;
+    angle += total ? (Math.max(0, value) / total) * Math.PI * 2 * sweep : 0;
     return { start, end: angle };
   });
+};
+
+/**
+ * Gets the bounding box of the area a pie covers, so that a pie which only
+ * fills part of the circle can be sized and centered on what it covers.
+ *
+ * @param sweep - The share of the circle the pie covers, from 0 to 1
+ * @param rotation - Where angle 0 points, in radians clockwise from the top
+ * @param isCounterclockwise - Whether angles run counterclockwise
+ * @param innerRatio - The radius of the hole, as a fraction of the pie's radius
+ * @returns The bounds, for a radius of 1
+ */
+export const getSweepBounds = (
+  sweep: number,
+  rotation: number,
+  isCounterclockwise: boolean,
+  innerRatio: number,
+): ChartPieBounds => {
+  const span = Math.PI * 2 * Math.min(1, Math.max(0, sweep));
+  const direction = isCounterclockwise ? -1 : 1;
+  const toPoint = (radius: number, angle: number): [number, number] => [
+    radius * Math.sin(rotation + direction * angle),
+    -radius * Math.cos(rotation + direction * angle),
+  ];
+
+  /* The area reaches out to the ends of its arcs, and to the outer arc's top,
+   * right, bottom and left wherever the arc passes them.
+   */
+  const extremes = [0, 1, 2, 3]
+    .map((quarter) => {
+      const angle = (direction * (quarter * Math.PI / 2 - rotation)) % (Math.PI * 2);
+      return angle < 0 ? angle + Math.PI * 2 : angle;
+    })
+    .filter((angle) => angle <= span);
+  const points = [
+    toPoint(1, 0),
+    toPoint(1, span),
+    toPoint(innerRatio, 0),
+    toPoint(innerRatio, span),
+    ...extremes.map((angle) => toPoint(1, angle)),
+  ];
+  const xs = points.map(([x]) => x);
+  const ys = points.map(([, y]) => y);
+  return {
+    minX: Math.min(...xs),
+    maxX: Math.max(...xs),
+    minY: Math.min(...ys),
+    maxY: Math.max(...ys),
+  };
 };
 
 const CORNER_FIT_STEPS = 12;
@@ -93,6 +144,7 @@ export const getSlicePath = ({
   spacing,
   cornerRadius,
   rotation,
+  isCounterclockwise,
 }: ChartPieSliceGeometry): string => {
   const span = end - start;
   const h = Math.max(0, spacing / 2);
@@ -103,8 +155,9 @@ export const getSlicePath = ({
   /* Points along an edge are given by how far they are along its ray (t) and
    * how far they are shifted into the slice (offset).
    */
+  const direction = isCounterclockwise ? -1 : 1;
   const toPoint = (radius: number, angle: number): string => (
-    `${round(cx + radius * Math.sin(angle + rotation))},${round(cy - radius * Math.cos(angle + rotation))}`
+    `${round(cx + radius * Math.sin(rotation + direction * angle))},${round(cy - radius * Math.cos(rotation + direction * angle))}`
   );
   const startEdgePoint = (t: number, offset: number): string => (
     toPoint(Math.hypot(t, offset), start + Math.atan2(offset, t))
@@ -112,8 +165,10 @@ export const getSlicePath = ({
   const endEdgePoint = (t: number, offset: number): string => (
     toPoint(Math.hypot(t, offset), end - Math.atan2(offset, t))
   );
+
+  // Arcs are described as if the pie ran clockwise, and mirrored with it:
   const arc = (radius: number, isLarge: boolean, isClockwise: boolean, to: string): string => (
-    `A${round(radius)},${round(radius)} 0 ${isLarge ? 1 : 0} ${isClockwise ? 1 : 0} ${to}`
+    `A${round(radius)},${round(radius)} 0 ${isLarge ? 1 : 0} ${isClockwise !== isCounterclockwise ? 1 : 0} ${to}`
   );
 
   /* A whole circle has no edges, and can't be drawn as one arc, so it is drawn

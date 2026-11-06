@@ -36,12 +36,16 @@ const meta: Meta<typeof ChartPie> = {
     className: { table: { disable: true } },
     cornerRadius: { control: 'number' },
     data: { control: 'object' },
+    direction: { control: 'inline-radio', options: ['clockwise', 'counterclockwise'] },
+    fill: { control: { type: 'range', min: 0, max: 1, step: 0.05 } },
     formatValue: { table: { disable: true } },
     innerRadius: { control: { type: 'range', min: 0, max: 0.9, step: 0.05 } },
     origin: { control: 'inline-radio', options: ['top', 'right', 'bottom', 'left'] },
     otherColor: { control: 'color' },
     otherThreshold: { control: { type: 'range', min: 0, max: 0.2, step: 0.01 } },
+    remainderColor: { control: 'color' },
     spacing: { control: 'number' },
+    sweep: { control: { type: 'range', min: 0, max: 1, step: 0.05 } },
   },
   render: (args) => (
     <div
@@ -82,5 +86,34 @@ export const WithOther: Story = {
     data: FACTIONS,
     innerRadius: 0.6,
     otherThreshold: 0.05,
+  },
+};
+
+export const Hemisphere: Story = {
+  args: {
+    data: OUTCOMES,
+    innerRadius: 0.6,
+    origin: 'left',
+    sweep: 0.5,
+  },
+};
+
+export const WithRemainder: Story = {
+  args: {
+    data: OUTCOMES,
+    innerRadius: 0.6,
+    fill: 0.7,
+    remainderColor: 'var(--color-card-border)',
+  },
+};
+
+export const Gauge: Story = {
+  args: {
+    data: OUTCOMES,
+    fill: 0.7,
+    innerRadius: 0.6,
+    origin: 'left',
+    remainderColor: 'var(--color-card-border)',
+    sweep: 0.5,
   },
 };

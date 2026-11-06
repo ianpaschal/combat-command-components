@@ -15,6 +15,10 @@
       height: 100%;
     }
 
+    &-remainder {
+      pointer-events: none;
+    }
+
     &-slice {
       transition: opacity 150ms;
 

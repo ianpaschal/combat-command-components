@@ -9,10 +9,11 @@ import clsx from 'clsx';
 import { ChartGraphTooltip } from '../ChartGraph';
 import { useElementSize, usePointerDownOutside } from '../ChartGraph/ChartGraph.hooks';
 import { getTooltipStyle } from '../ChartGraph/ChartGraph.utils';
-import { ChartPieSlice } from './ChartPie.types';
+import { ChartPieAngles, ChartPieSlice } from './ChartPie.types';
 import {
   getSliceAngles,
   getSlicePath,
+  getSweepBounds,
   groupSmallSlices,
 } from './ChartPie.utils';
 
@@ -43,9 +44,20 @@ export interface ChartPieProps {
   cornerRadius?: number;
 
   /**
-   * The slices, in order clockwise from the origin.
+   * The slices, in order from the origin.
    */
   data: ChartPieSlice[];
+
+  /**
+   * Which way the slices run from the origin. Defaults to `clockwise`.
+   */
+  direction?: 'clockwise' | 'counterclockwise';
+
+  /**
+   * The share of the sweep the slices fill together, from 0 to 1, to show a
+   * proportion of a proportion. Defaults to 1.
+   */
+  fill?: number;
 
   /**
    * Formats the values in the tooltip. Defaults to `String`.
@@ -59,7 +71,7 @@ export interface ChartPieProps {
   innerRadius?: number;
 
   /**
-   * Where the first slice starts. Slices run clockwise from there. Defaults to `top`.
+   * Where the first slice starts. Defaults to `top`.
    */
   origin?: 'top' | 'right' | 'bottom' | 'left';
 
@@ -80,9 +92,22 @@ export interface ChartPieProps {
   otherThreshold?: number;
 
   /**
+   * The color of a segment filling the rest of the sweep when `fill` is
+   * below 1, as any CSS color. Without it, the rest of the sweep is left empty.
+   */
+  remainderColor?: string;
+
+  /**
    * The gap between neighboring slices, in pixels. Defaults to 2.
    */
   spacing?: number;
+
+  /**
+   * The share of the circle the chart spans, from 0 to 1. A sweep of 0.5 with a
+   * `left` origin makes a hemisphere chart. The chart is sized and centered on
+   * the part of the circle it spans. Defaults to 1.
+   */
+  sweep?: number;
 }
 
 /**
@@ -94,13 +119,17 @@ export const ChartPie = ({
   className,
   cornerRadius = DEFAULT_CORNER_RADIUS,
   data,
+  direction = 'clockwise',
+  fill = 1,
   formatValue = String,
   innerRadius = 0,
   origin = 'top',
   otherColor = 'var(--color-text-muted)',
   otherLabel = 'Other',
   otherThreshold = 0,
+  remainderColor,
   spacing = DEFAULT_SPACING,
+  sweep = 1,
 }: ChartPieProps): ReactElement => {
   const [ref, { width, height }] = useElementSize<HTMLDivElement>();
   const [active, setActive] = useState<ActiveSlice>();
@@ -112,8 +141,32 @@ export const ChartPie = ({
     label: otherLabel,
   });
   const total = slices.reduce((sum, { value }) => sum + Math.max(0, value), 0);
-  const angles = getSliceAngles(slices.map(({ value }) => value));
-  const radius = Math.min(width, height) / 2;
+  const spannedSweep = Math.min(1, Math.max(0, sweep));
+  const filledSweep = spannedSweep * Math.min(1, Math.max(0, fill));
+  const angles = getSliceAngles(slices.map(({ value }) => value), filledSweep);
+  const hasRemainder = !!remainderColor && filledSweep < spannedSweep;
+  const rotation = ORIGIN_ROTATIONS[origin];
+  const isCounterclockwise = direction === 'counterclockwise';
+
+  /* The pie is sized and centered on the part of the circle it spans. */
+  const bounds = getSweepBounds(spannedSweep, rotation, isCounterclockwise, innerRadius);
+  const radius = Math.max(0, Math.min(
+    width / (bounds.maxX - bounds.minX || 1),
+    height / (bounds.maxY - bounds.minY || 1),
+  ));
+  const cx = width / 2 - radius * (bounds.minX + bounds.maxX) / 2;
+  const cy = height / 2 - radius * (bounds.minY + bounds.maxY) / 2;
+  const getPath = (sliceAngles: ChartPieAngles): string => getSlicePath({
+    cx,
+    cy,
+    outerRadius: radius,
+    innerRadius: radius * innerRadius,
+    angles: sliceAngles,
+    spacing,
+    cornerRadius,
+    rotation,
+    isCounterclockwise,
+  });
 
   const getActiveSlice = (key: string, event: PointerEvent<SVGPathElement>): ActiveSlice | undefined => {
     const rect = ref.current?.getBoundingClientRect();
@@ -161,19 +214,17 @@ export const ChartPie = ({
   return (
     <div className={clsx(styles.chartPie, className)} ref={ref}>
       <svg className={styles.chartPieSvg}>
+        {radius > 0 && hasRemainder && (
+          <path
+            className={styles.chartPieRemainder}
+            d={getPath({ start: Math.PI * 2 * filledSweep, end: Math.PI * 2 * spannedSweep })}
+            fill={remainderColor}
+          />
+        )}
         {radius > 0 && slices.map(({ color, key }, i) => (
           <path
             className={styles.chartPieSlice}
-            d={getSlicePath({
-              cx: width / 2,
-              cy: height / 2,
-              outerRadius: radius,
-              innerRadius: radius * innerRadius,
-              angles: angles[i],
-              spacing,
-              cornerRadius,
-              rotation: ORIGIN_ROTATIONS[origin],
-            })}
+            d={getPath(angles[i])}
             data-dimmed={active && active.key !== key ? '' : undefined}
             fill={color}
             key={key}

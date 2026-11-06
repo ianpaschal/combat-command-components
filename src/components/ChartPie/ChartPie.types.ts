@@ -45,12 +45,12 @@ export type ChartPieSliceGeometry = {
   innerRadius: number;
 
   /**
-   * The angles the slice spans, clockwise from the origin.
+   * The angles the slice spans, from the origin in the pie's direction.
    */
   angles: ChartPieAngles;
 
   /**
-   * The width of the gap between neighbouring slices, in pixels. Gaps have straight, parallel
+   * The width of the gap between neighboring slices, in pixels. Gaps have straight, parallel
    * sides.
    */
   spacing: number;
@@ -64,6 +64,21 @@ export type ChartPieSliceGeometry = {
    * Where angle 0 points, in radians clockwise from the top.
    */
   rotation: number;
+
+  /**
+   * Whether angles run counterclockwise from the origin, mirroring the slice.
+   */
+  isCounterclockwise: boolean;
+};
+
+/**
+ * The bounding box of the area a pie covers, around its center, for a radius of 1.
+ */
+export type ChartPieBounds = {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
 };
 
 /**
