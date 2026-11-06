@@ -1,0 +1,11 @@
+import { Meta, Title, Canvas, Markdown, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as ChartBarStories from './ChartBar.stories';
+import Readme from './README.md?raw';
+
+<Meta of={ChartBarStories} />
+<Title />
+<Canvas of={ChartBarStories.Responsive} />
+<Markdown>{Readme}</Markdown>
+### Props
+<Controls of={ChartBarStories.Responsive} />
+<Stories />

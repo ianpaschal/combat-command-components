@@ -1,0 +1,33 @@
+@use "../../style/layers";
+
+@layer components {
+  .chart-pie {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    min-height: 0;
+
+    &-svg {
+      display: block;
+      flex-shrink: 0;
+    }
+
+    &-remainder {
+      pointer-events: none;
+    }
+
+    &-slice {
+      transition: opacity 150ms;
+
+      &[data-dimmed] {
+        opacity: 0.4;
+      }
+    }
+  }
+}

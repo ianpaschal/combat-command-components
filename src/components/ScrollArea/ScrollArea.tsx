@@ -6,8 +6,8 @@ import {
 import { ScrollArea as BaseScrollArea } from '@base-ui/react/scroll-area';
 import clsx from 'clsx';
 
+import { sx } from '../../utils';
 import { getCssValue } from '../../utils/getCssValue';
-import { getStyleClassNames } from '../../utils/getStyleClassNames';
 
 import styles from './ScrollArea.module.scss';
 
@@ -51,11 +51,29 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(({
     </BaseScrollArea.Viewport>
     {!disabled && (
       <>
-        <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="vertical">
-          <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'secondary' }), styles.scrollAreaThumb)} />
+        <BaseScrollArea.Scrollbar
+          className={styles.scrollAreaScrollbar}
+          orientation="vertical"
+        >
+          <BaseScrollArea.Thumb
+            className={sx({
+              variant: 'shaded',
+              intent: 'secondary',
+            }, styles.scrollAreaThumb)}
+            data-interactive
+          />
         </BaseScrollArea.Scrollbar>
-        <BaseScrollArea.Scrollbar className={styles.scrollAreaScrollbar} orientation="horizontal">
-          <BaseScrollArea.Thumb className={clsx(...getStyleClassNames({ variant: 'shaded', intent: 'secondary' }), styles.scrollAreaThumb)} />
+        <BaseScrollArea.Scrollbar
+          className={styles.scrollAreaScrollbar}
+          orientation="horizontal"
+        >
+          <BaseScrollArea.Thumb
+            className={sx({
+              variant: 'shaded',
+              intent: 'secondary',
+            }, styles.scrollAreaThumb)}
+            data-interactive
+          />
         </BaseScrollArea.Scrollbar>
         <BaseScrollArea.Corner />
       </>

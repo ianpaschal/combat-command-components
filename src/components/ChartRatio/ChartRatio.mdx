@@ -1,0 +1,11 @@
+import { Meta, Title, Canvas, Markdown, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as ChartRatioStories from './ChartRatio.stories';
+import Readme from './README.md?raw';
+
+<Meta of={ChartRatioStories} />
+<Title />
+<Canvas of={ChartRatioStories.Default} />
+<Markdown>{Readme}</Markdown>
+### Props
+<Controls of={ChartRatioStories.Default} />
+<Stories />

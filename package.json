@@ -85,6 +85,7 @@
   "dependencies": {
     "@base-ui/react": "^1.4.1",
     "@fontsource/figtree": "^5.2.10",
+    "@number-flow/react": "^0.6.2",
     "@tanstack/react-store": "^0.8.0",
     "@tanstack/store": "^0.8.0",
     "@types/geojson": "^7946.0.16",
