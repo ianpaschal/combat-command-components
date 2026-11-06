@@ -12,6 +12,7 @@ import {
 import {
   getSliceAngles,
   getSlicePath,
+  getSliceTooltip,
   getSweepBounds,
   groupSmallSlices,
 } from './ChartPie.utils';
@@ -70,6 +71,27 @@ describe('getSliceAngles', () => {
     const angles = getSliceAngles([1, 1], 0.5);
     expect(angles[0]).toEqual({ start: 0, end: Math.PI / 2 });
     expect(angles[1]).toEqual({ start: Math.PI / 2, end: Math.PI });
+  });
+});
+
+describe('getSliceTooltip', () => {
+  it('names a slice once, with its value and share.', () => {
+    const [slice] = getSlices([25]);
+    expect(getSliceTooltip(slice, 100, String)).toEqual({
+      rows: [{ color: 'blue', label: '25', value: '25%' }],
+      title: 'Slice 0',
+    });
+  });
+
+  it('lists the slices folded into the "Other" slice.', () => {
+    const children = getSlices([6, 4]);
+    expect(getSliceTooltip({ ...OTHER, value: 10, children }, 100, String)).toEqual({
+      rows: [
+        { color: 'blue', label: 'Slice 0', value: '6 (6%)' },
+        { color: 'blue', label: 'Slice 1', value: '4 (4%)' },
+      ],
+      title: 'Other (10%)',
+    });
   });
 });
 
@@ -167,6 +189,26 @@ describe('getSlicePath', () => {
   it('rounds each corner with an arc of the corner radius.', () => {
     expect(getSlicePath({ ...QUARTER, cornerRadius: 4 }).match(/A4,4/g)).toHaveLength(2);
     expect(getSlicePath({ ...QUARTER, innerRadius: 25, cornerRadius: 4 }).match(/A4,4/g)).toHaveLength(4);
+  });
+
+  it('shrinks the corner radius to fit a thin pie slice.', () => {
+    const path = getSlicePath({ ...QUARTER, angles: { start: 0, end: 0.3 }, spacing: 4, cornerRadius: 30 });
+    const radii = [...path.matchAll(/A([\d.]+),/g)].map(([, radius]) => Number(radius)).filter((radius) => radius < 50);
+    expect(radii).toHaveLength(2);
+    expect(radii.every((radius) => radius > 0 && radius < 30)).toBe(true);
+  });
+
+  it('shrinks the corner radius to fit a thin donut slice.', () => {
+    const path = getSlicePath({
+      ...QUARTER,
+      innerRadius: 30,
+      angles: { start: 0, end: 0.4 },
+      spacing: 4,
+      cornerRadius: 10,
+    });
+    const radii = [...path.matchAll(/A([\d.]+),/g)].map(([, radius]) => Number(radius)).filter((radius) => radius < 30);
+    expect(radii).toHaveLength(4);
+    expect(radii.every((radius) => radius > 0 && radius < 10)).toBe(true);
   });
 
   it('shrinks the corner radius to fit a narrow ring.', () => {

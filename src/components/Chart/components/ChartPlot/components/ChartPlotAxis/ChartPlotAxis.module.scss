@@ -1,7 +1,7 @@
-@use "../../../../style/layers";
+@use "../../../../../../style/layers";
 
 @layer components {
-  .chart-graph-axis {
+  .chart-plot-axis {
     --label-offset: 0.5rem;
 
     /* Every label sits in the same grid cell, so that the axis is as wide or as tall as its largest
@@ -19,7 +19,7 @@
     &-x {
       padding-top: var(--label-offset);
 
-      .chart-graph-axis-label {
+      .chart-plot-axis-label {
         left: calc(var(--padding) + var(--fraction) * (100% - var(--padding) * 2));
         transform: translateX(-50%);
         justify-self: start;
@@ -29,7 +29,7 @@
     &-y {
       padding-right: var(--label-offset);
 
-      .chart-graph-axis-label {
+      .chart-plot-axis-label {
         top: calc(var(--padding) + var(--fraction) * (100% - var(--padding) * 2));
         transform: translateY(-50%);
         align-self: start;

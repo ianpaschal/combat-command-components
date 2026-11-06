@@ -23,7 +23,6 @@ const FACTIONS: ChartPieSlice[] = [
 const meta: Meta<typeof ChartPie> = {
   title: 'Charts/ChartPie',
   component: ChartPie,
-  tags: ['autodocs'],
   parameters: {
     layout: 'padded',
     docs: {

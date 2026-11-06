@@ -42,7 +42,6 @@ const getOutcomeData = (count: number): ChartLineDatum[] => (
 const meta: Meta<typeof ChartLine> = {
   title: 'Charts/ChartLine',
   component: ChartLine,
-  tags: ['autodocs'],
   parameters: {
     layout: 'padded',
     docs: {

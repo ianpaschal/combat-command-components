@@ -5,13 +5,13 @@ import {
 } from 'react';
 import clsx from 'clsx';
 
-import { ChartGraphAxis as ChartGraphAxisConfig } from '../../ChartGraph.types';
-import { getAxisFraction } from '../../ChartGraph.utils';
+import { ChartPlotAxis as ChartPlotAxisConfig } from '../../ChartPlot.types';
+import { getAxisFraction } from '../../ChartPlot.utils';
 
-import styles from './ChartGraphAxis.module.scss';
+import styles from './ChartPlotAxis.module.scss';
 
-export interface ChartGraphAxisProps {
-  axis: ChartGraphAxisConfig;
+export interface ChartPlotAxisProps {
+  axis: ChartPlotAxisConfig;
   className?: string;
   isY: boolean;
 
@@ -26,7 +26,7 @@ export interface ChartGraphAxisProps {
   padding: number;
 }
 
-const getLabels = (axis: ChartGraphAxisConfig): { key: string; label: string; value: string | number }[] => (
+const getLabels = (axis: ChartPlotAxisConfig): { key: string; label: string; value: string | number }[] => (
   axis.type === 'category' ? (
     (axis.ticks ?? axis.values).map((value) => ({
       key: value,
@@ -42,20 +42,20 @@ const getLabels = (axis: ChartGraphAxisConfig): { key: string; label: string; va
   )
 );
 
-/* Labels an axis of a `ChartGraph`. Each label sits centered on its value, at the same position as
+/* Labels an axis of a `ChartPlot`. Each label sits centered on its value, at the same position as
  * in the plot.
  */
-export const ChartGraphAxis = forwardRef<HTMLDivElement, ChartGraphAxisProps>(({
+export const ChartPlotAxis = forwardRef<HTMLDivElement, ChartPlotAxisProps>(({
   axis,
   className,
   isY,
   lastLabelRef,
   padding,
 }, ref) => (
-  <div className={clsx(styles.chartGraphAxis, isY ? styles.chartGraphAxisY : styles.chartGraphAxisX, className)} ref={ref}>
+  <div className={clsx(styles.chartPlotAxis, isY ? styles.chartPlotAxisY : styles.chartPlotAxisX, className)} ref={ref}>
     {getLabels(axis).map(({ key, label, value }, i, labels) => (
       <span
-        className={styles.chartGraphAxisLabel}
+        className={styles.chartPlotAxisLabel}
         key={key}
         ref={i === labels.length - 1 ? lastLabelRef : undefined}
         style={{
@@ -69,4 +69,4 @@ export const ChartGraphAxis = forwardRef<HTMLDivElement, ChartGraphAxisProps>(({
   </div>
 ));
 
-ChartGraphAxis.displayName = 'ChartGraphAxis';
+ChartPlotAxis.displayName = 'ChartPlotAxis';

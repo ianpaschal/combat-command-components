@@ -7,67 +7,72 @@ import {
 } from 'react';
 import clsx from 'clsx';
 
-import { ChartGraphAxis } from './components/ChartGraphAxis';
-import { ScrollArea } from '../ScrollArea';
-import { useElementSize, usePointerDownOutside } from './ChartGraph.hooks';
+import { ChartPlotAxis } from './components/ChartPlotAxis';
+import { ScrollArea } from '../../../ScrollArea';
+import { useChartDismiss, useElementSize } from '../../Chart.hooks';
+import { ChartTooltip, ChartTooltipContent } from '../ChartTooltip';
 import {
-  ChartGraphAxis as ChartGraphAxisConfig,
-  ChartGraphPaddingProps,
-  ChartGraphPlot,
-} from './ChartGraph.types';
+  ChartPlotAxis as ChartPlotAxisConfig,
+  ChartPlotLayout,
+  ChartPlotPaddingProps,
+} from './ChartPlot.types';
 import {
   getAxisBand,
   getAxisFraction,
   getAxisPosition,
   getFixedLength,
-  getTooltipStyle,
-} from './ChartGraph.utils';
+} from './ChartPlot.utils';
 
-import styles from './ChartGraph.module.scss';
+import styles from './ChartPlot.module.scss';
 
 type ActiveCategory = {
   value: string;
-  tooltipStyle: CSSProperties;
+
+  /**
+   * The pointer's position in the viewport, where the tooltip is shown.
+   */
+  x: number;
+  y: number;
 };
 
-export interface ChartGraphProps extends ChartGraphPaddingProps {
+export interface ChartPlotProps extends ChartPlotPaddingProps {
 
   /**
    * Draws the chart's data, as SVG, from the plot's size and positions.
    */
-  children?: (plot: ChartGraphPlot) => ReactNode;
+  children?: (plot: ChartPlotLayout) => ReactNode;
   className?: string;
 
   /**
-   * Renders the tooltip of the hovered category, or of the tapped one on touch
+   * Gets the tooltip of the hovered category, or of the tapped one on touch
    * screens. Without it, there is no tooltip.
    */
-  renderTooltip?: (value: string) => ReactNode;
-  x: ChartGraphAxisConfig;
-  y: ChartGraphAxisConfig;
+  getTooltip?: (value: string) => ChartTooltipContent;
+  x: ChartPlotAxisConfig;
+  y: ChartPlotAxisConfig;
 }
 
 /* The frame of a chart with an x and a y axis. The plot sits in a scroll area,
  * and the axes stick to its left and bottom edges, so that the plot scrolls
  * under them.
  */
-export const ChartGraph = ({
+export const ChartPlot = ({
   children,
   className,
   padding = 0,
   paddingX = padding,
   paddingY = padding,
-  renderTooltip,
+  getTooltip,
   x,
   y,
-}: ChartGraphProps): ReactElement => {
+}: ChartPlotProps): ReactElement => {
   const [ref, { height }] = useElementSize<HTMLDivElement>();
   const [plotRef, plotSize] = useElementSize<HTMLDivElement>();
   const [xAxisRef, xAxisSize] = useElementSize<HTMLDivElement>();
   const [yAxisRef, yAxisSize] = useElementSize<HTMLDivElement>();
   const [lastXLabelRef, lastXLabelSize] = useElementSize<HTMLSpanElement>();
   const [active, setActive] = useState<ActiveCategory>();
-  usePointerDownOutside(ref, !!active, () => setActive(undefined));
+  useChartDismiss(ref, !!active, () => setActive(undefined));
 
   const plotWidth = getFixedLength(x, paddingX);
   const plotHeight = getFixedLength(y, paddingY);
@@ -84,7 +89,7 @@ export const ChartGraph = ({
     paddingTop: `max(0px, 0.5lh - ${paddingY}px)`,
     paddingRight: Math.max(0, lastXLabelSize.width / 2 - paddingX),
   };
-  const plot: ChartGraphPlot = {
+  const plot: ChartPlotLayout = {
     activeValue: active?.value,
     bandX: getAxisBand(x, plotSize.width, paddingX),
     bandY: getAxisBand(y, plotSize.height, paddingY),
@@ -102,8 +107,7 @@ export const ChartGraph = ({
   const getCategoryPosition = isCategoryY ? plot.getY : plot.getX;
 
   const getActiveCategory = (event: PointerEvent<HTMLDivElement>): ActiveCategory | undefined => {
-    const rootRect = ref.current?.getBoundingClientRect();
-    if (categoryAxis.type !== 'category' || !categoryAxis.values.length || !rootRect) {
+    if (categoryAxis.type !== 'category' || !categoryAxis.values.length) {
       return undefined;
     }
     const plotRect = event.currentTarget.getBoundingClientRect();
@@ -115,7 +119,7 @@ export const ChartGraph = ({
         nearest
       )
     ));
-    return { value, tooltipStyle: getTooltipStyle(event.clientX, event.clientY, rootRect) };
+    return { value, x: event.clientX, y: event.clientY };
   };
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>): void => {
@@ -149,34 +153,34 @@ export const ChartGraph = ({
     }
     const position = getCategoryPosition(active.value);
     return isCategoryY ? (
-      <line className={styles.chartGraphHighlightLine} x1={0} x2={plot.width} y1={position} y2={position} />
+      <line className={styles.chartPlotHighlightLine} x1={0} x2={plot.width} y1={position} y2={position} />
     ) : (
-      <line className={styles.chartGraphHighlightLine} x1={position} x2={position} y1={0} y2={plot.height} />
+      <line className={styles.chartPlotHighlightLine} x1={position} x2={position} y1={0} y2={plot.height} />
     );
   };
 
   return (
-    <div className={clsx(styles.chartGraph, className)} ref={ref}>
+    <div className={clsx(styles.chartPlot, className)} ref={ref}>
       <ScrollArea offset={{ bottom: xAxisSize.height, left: yAxisSize.width }}>
-        <div className={styles.chartGraphGrid} style={gridStyle}>
-          <ChartGraphAxis
+        <div className={styles.chartPlotGrid} style={gridStyle}>
+          <ChartPlotAxis
             axis={y}
-            className={styles.chartGraphYAxis}
+            className={styles.chartPlotYAxis}
             isY
             padding={paddingY}
             ref={yAxisRef}
           />
           <div
-            className={styles.chartGraphPlot}
+            className={styles.chartPlotPlot}
             onPointerLeave={handlePointerLeave}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             ref={plotRef}
           >
-            <svg className={styles.chartGraphSvg}>
+            <svg className={styles.chartPlotSvg}>
               {x.type === 'value' && x.ticks.map((tick) => (
                 <line
-                  className={styles.chartGraphGridLine}
+                  className={styles.chartPlotGridLine}
                   key={`x-${tick}`}
                   x1={plot.getX(tick)}
                   x2={plot.getX(tick)}
@@ -186,7 +190,7 @@ export const ChartGraph = ({
               ))}
               {y.type === 'value' && y.ticks.map((tick) => (
                 <line
-                  className={styles.chartGraphGridLine}
+                  className={styles.chartPlotGridLine}
                   key={`y-${tick}`}
                   x1={0}
                   x2={plot.width}
@@ -198,10 +202,10 @@ export const ChartGraph = ({
               {plotSize.width > 0 && plotSize.height > 0 && children?.(plot)}
             </svg>
           </div>
-          <div className={styles.chartGraphCorner} />
-          <ChartGraphAxis
+          <div className={styles.chartPlotCorner} />
+          <ChartPlotAxis
             axis={x}
-            className={styles.chartGraphXAxis}
+            className={styles.chartPlotXAxis}
             isY={false}
             lastLabelRef={lastXLabelRef}
             padding={paddingX}
@@ -209,13 +213,11 @@ export const ChartGraph = ({
           />
         </div>
       </ScrollArea>
-      {active && renderTooltip && (
-        <div className={styles.chartGraphTooltip} style={active.tooltipStyle}>
-          {renderTooltip(active.value)}
-        </div>
+      {active && getTooltip && (
+        <ChartTooltip {...getTooltip(active.value)} x={active.x} y={active.y} />
       )}
     </div>
   );
 };
 
-ChartGraph.displayName = 'ChartGraph';
+ChartPlot.displayName = 'ChartPlot';

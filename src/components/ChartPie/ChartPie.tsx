@@ -1,18 +1,16 @@
-import {
-  CSSProperties,
-  PointerEvent,
-  ReactElement,
-  useState,
-} from 'react';
+import { ReactElement } from 'react';
 import clsx from 'clsx';
 
-import { ChartGraphTooltip } from '../ChartGraph';
-import { useElementSize, usePointerDownOutside } from '../ChartGraph/ChartGraph.hooks';
-import { getTooltipStyle } from '../ChartGraph/ChartGraph.utils';
+import {
+  ChartTooltip,
+  useChartItemSelection,
+  useElementSize,
+} from '../Chart';
 import { ChartPieAngles, ChartPieSlice } from './ChartPie.types';
 import {
   getSliceAngles,
   getSlicePath,
+  getSliceTooltip,
   getSweepBounds,
   groupSmallSlices,
 } from './ChartPie.utils';
@@ -27,11 +25,6 @@ const ORIGIN_ROTATIONS = {
   right: Math.PI / 2,
   bottom: Math.PI,
   left: Math.PI * 1.5,
-};
-
-type ActiveSlice = {
-  key: string;
-  tooltipStyle: CSSProperties;
 };
 
 export interface ChartPieProps {
@@ -110,11 +103,6 @@ export interface ChartPieProps {
   sweep?: number;
 }
 
-/**
- * Formats a share of a total as a whole percentage.
- */
-const formatShare = (share: number): string => `${Math.round(share * 100)}%`;
-
 export const ChartPie = ({
   className,
   cornerRadius = DEFAULT_CORNER_RADIUS,
@@ -132,8 +120,7 @@ export const ChartPie = ({
   sweep = 1,
 }: ChartPieProps): ReactElement => {
   const [ref, { width, height }] = useElementSize<HTMLDivElement>();
-  const [active, setActive] = useState<ActiveSlice>();
-  usePointerDownOutside(ref, !!active, () => setActive(undefined));
+  const { active, getItemHandlers } = useChartItemSelection(ref);
 
   const slices = groupSmallSlices(data, otherThreshold, {
     key: OTHER_KEY,
@@ -148,14 +135,20 @@ export const ChartPie = ({
   const rotation = ORIGIN_ROTATIONS[origin];
   const isCounterclockwise = direction === 'counterclockwise';
 
-  /* The pie is sized and centered on the part of the circle it spans. */
+  /* The SVG takes the shape of the part of the circle the pie spans, so a half
+   * pie is twice as wide as it is tall, and is as big as fits in the chart.
+   * Without a height to fit, the pie fits the width and the chart grows to it.
+   */
   const bounds = getSweepBounds(spannedSweep, rotation, isCounterclockwise, innerRadius);
-  const radius = Math.max(0, Math.min(
-    width / (bounds.maxX - bounds.minX || 1),
-    height / (bounds.maxY - bounds.minY || 1),
+  const boundsWidth = bounds.maxX - bounds.minX || 1;
+  const boundsHeight = bounds.maxY - bounds.minY || 1;
+  const radius = Math.max(0, height > 0 ? (
+    Math.min(width / boundsWidth, height / boundsHeight)
+  ) : (
+    width / boundsWidth
   ));
-  const cx = width / 2 - radius * (bounds.minX + bounds.maxX) / 2;
-  const cy = height / 2 - radius * (bounds.minY + bounds.maxY) / 2;
+  const cx = -radius * bounds.minX;
+  const cy = -radius * bounds.minY;
   const getPath = (sliceAngles: ChartPieAngles): string => getSlicePath({
     cx,
     cy,
@@ -168,52 +161,15 @@ export const ChartPie = ({
     isCounterclockwise,
   });
 
-  const getActiveSlice = (key: string, event: PointerEvent<SVGPathElement>): ActiveSlice | undefined => {
-    const rect = ref.current?.getBoundingClientRect();
-    return rect ? { key, tooltipStyle: getTooltipStyle(event.clientX, event.clientY, rect) } : undefined;
-  };
-
-  const handlePointerMove = (key: string, event: PointerEvent<SVGPathElement>): void => {
-    if (event.pointerType !== 'touch') {
-      setActive(getActiveSlice(key, event));
-    }
-  };
-
-  const handlePointerLeave = (event: PointerEvent<SVGPathElement>): void => {
-    if (event.pointerType !== 'touch') {
-      setActive(undefined);
-    }
-  };
-
-  /* Touch screens select a slice by tapping it, and clear it by tapping it again. */
-  const handlePointerUp = (key: string, event: PointerEvent<SVGPathElement>): void => {
-    if (event.pointerType === 'touch') {
-      const next = getActiveSlice(key, event);
-      setActive((current) => (current?.key === key ? undefined : next));
-    }
-  };
-
-  const renderTooltip = (): ReactElement | null => {
-    const slice = slices.find(({ key }) => key === active?.key);
-    if (!slice || !total) {
-      return null;
-    }
-    const rows = slice.children ?? [slice];
-    return (
-      <ChartGraphTooltip
-        rows={rows.map(({ color, label, value }) => ({
-          color,
-          label,
-          value: `${formatValue(value)} (${formatShare(value / total)})`,
-        }))}
-        title={slice.children ? `${slice.label} (${formatShare(slice.value / total)})` : slice.label}
-      />
-    );
-  };
+  const activeSlice = slices.find(({ key }) => key === active?.key);
 
   return (
     <div className={clsx(styles.chartPie, className)} ref={ref}>
-      <svg className={styles.chartPieSvg}>
+      <svg
+        className={styles.chartPieSvg}
+        height={radius * boundsHeight}
+        width={radius * boundsWidth}
+      >
         {radius > 0 && hasRemainder && (
           <path
             className={styles.chartPieRemainder}
@@ -228,16 +184,12 @@ export const ChartPie = ({
             data-dimmed={active && active.key !== key ? '' : undefined}
             fill={color}
             key={key}
-            onPointerLeave={handlePointerLeave}
-            onPointerMove={(event) => handlePointerMove(key, event)}
-            onPointerUp={(event) => handlePointerUp(key, event)}
+            {...getItemHandlers(key)}
           />
         ))}
       </svg>
-      {active && (
-        <div className={styles.chartPieTooltip} style={active.tooltipStyle}>
-          {renderTooltip()}
-        </div>
+      {active && activeSlice && total > 0 && (
+        <ChartTooltip {...getSliceTooltip(activeSlice, total, formatValue)} x={active.x} y={active.y} />
       )}
     </div>
   );

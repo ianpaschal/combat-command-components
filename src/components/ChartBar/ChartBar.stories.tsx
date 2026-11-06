@@ -65,7 +65,6 @@ const formatPercent = (value: number): string => `${Math.round(value * 100)}%`;
 const meta: Meta<typeof ChartBar> = {
   title: 'Charts/ChartBar',
   component: ChartBar,
-  tags: ['autodocs'],
   parameters: {
     layout: 'padded',
     docs: {

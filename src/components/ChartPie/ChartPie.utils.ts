@@ -1,3 +1,4 @@
+import { ChartTooltipContent } from '../Chart';
 import {
   ChartPieAngles,
   ChartPieBounds,
@@ -37,6 +38,45 @@ export const groupSmallSlices = (
       value: small.reduce((sum, { value }) => sum + value, 0), children: small,
     },
   ];
+};
+
+/**
+ * Formats a share of a total as a whole percentage.
+ */
+const formatShare = (share: number): string => `${Math.round(share * 100)}%`;
+
+/**
+ * Gets the content of a slice's tooltip: its value and share, or for the
+ * "Other" slice, the value and share of each slice folded into it.
+ *
+ * @param slice - The slice
+ * @param total - The total of all slices
+ * @param formatValue - Formats the values
+ * @returns The tooltip's title and rows
+ */
+export const getSliceTooltip = (
+  slice: ChartPieGroupedSlice,
+  total: number,
+  formatValue: (value: number) => string,
+): ChartTooltipContent => {
+  if (!slice.children) {
+    return {
+      rows: [{
+        color: slice.color,
+        label: formatValue(slice.value),
+        value: formatShare(slice.value / total),
+      }],
+      title: slice.label,
+    };
+  }
+  return {
+    rows: slice.children.map(({ color, label, value }) => ({
+      color,
+      label,
+      value: `${formatValue(value)} (${formatShare(value / total)})`,
+    })),
+    title: `${slice.label} (${formatShare(slice.value / total)})`,
+  };
 };
 
 /**
@@ -200,24 +240,29 @@ export const getSlicePath = ({
     radius: number,
     c: number,
     isOuter: boolean,
-  ): ChartPieCorner | undefined => {
+  ): ChartPieCorner => {
     const centerDistance = isOuter ? radius - c : radius + c;
-    if (centerDistance <= h + c) {
-      return undefined;
-    }
-    const t = Math.sqrt(centerDistance ** 2 - (h + c) ** 2);
+    const t = Math.sqrt(Math.max(0, centerDistance ** 2 - (h + c) ** 2));
     return { t, angle: Math.atan2(h + c, t) };
   };
+
+  /* An outer corner circle only fits if its center is further from the center
+   * than from the edge. Inner corners always fit, as the hole is wider than
+   * half the gap.
+   */
   const fits = (c: number): boolean => {
+    if (R - c <= h + c) {
+      return false;
+    }
     const outer = getCorner(R, c, true);
-    if (!outer || 2 * outer.angle > span) {
+    if (2 * outer.angle > span) {
       return false;
     }
     if (!r) {
       return outer.t >= apex;
     }
     const inner = getCorner(r, c, false);
-    return !!inner && 2 * inner.angle <= span && inner.t <= outer.t;
+    return 2 * inner.angle <= span && inner.t <= outer.t;
   };
 
   // The corner radius shrinks until the corners fit:
@@ -231,10 +276,7 @@ export const getSlicePath = ({
     c = low;
   }
 
-  const outer = getCorner(R, c, true) ?? {
-    t: Math.sqrt(R ** 2 - h ** 2),
-    angle: Math.asin(h / R),
-  };
+  const outer = getCorner(R, c, true);
   const outerStart = start + outer.angle;
   const outerEnd = end - outer.angle;
   let path = `M${startEdgePoint(outer.t, h)}`;
@@ -250,10 +292,7 @@ export const getSlicePath = ({
     );
   }
 
-  const inner = getCorner(r, c, false) ?? {
-    t: Math.sqrt(r ** 2 - h ** 2),
-    angle: Math.asin(h / r),
-  };
+  const inner = getCorner(r, c, false);
   const innerStart = start + inner.angle;
   const innerEnd = end - inner.angle;
   path += `L${endEdgePoint(inner.t, h)}`;

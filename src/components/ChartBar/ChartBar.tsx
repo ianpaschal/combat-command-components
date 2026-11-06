@@ -1,13 +1,13 @@
 import { ReactElement } from 'react';
 
 import {
-  ChartGraph,
-  ChartGraphCategoryAxis,
-  ChartGraphPaddingProps,
-  ChartGraphTooltip,
-  ChartGraphValueAxis,
-} from '../ChartGraph';
-import { getNiceTicks } from '../ChartGraph/ChartGraph.utils';
+  ChartPlot,
+  ChartPlotCategoryAxis,
+  ChartPlotPaddingProps,
+  ChartPlotValueAxis,
+  ChartTooltipContent,
+  getNiceTicks,
+} from '../Chart';
 import {
   getBarExtent,
   getBarSegments,
@@ -43,7 +43,7 @@ export type ChartBarDatum = {
   values: Record<string, number>;
 };
 
-export interface ChartBarProps extends ChartGraphPaddingProps {
+export interface ChartBarProps extends ChartPlotPaddingProps {
 
   /**
    * The thickness of each bar, in pixels. When grouped, this is the thickness of each series' bar.
@@ -131,20 +131,20 @@ export const ChartBar = ({
       series.map(({ key }) => getValue(datum, key))
     )
   )));
-  const categoryAxis: ChartGraphCategoryAxis = {
+  const categoryAxis: ChartPlotCategoryAxis = {
     type: 'category',
     values: data.map(({ x }) => x),
     ticks: categoryTicks,
     tickSize: categoryTickSize,
   };
-  const valueAxis: ChartGraphValueAxis = {
+  const valueAxis: ChartPlotValueAxis = {
     type: 'value',
     ticks,
     formatTick: formatValue,
     tickSize: valueTickSize,
   };
   const baseline = Math.min(Math.max(0, ticks[0] ?? 0), ticks[ticks.length - 1] ?? 0);
-  const renderTooltip = (x: string): ReactElement => {
+  const getTooltip = (x: string): ChartTooltipContent => {
     const datum = data.find((d) => d.x === x);
 
     /* Vertical stacked series are listed top to bottom, as they are drawn. */
@@ -153,21 +153,16 @@ export const ChartBar = ({
       label,
       value: formatValue ? formatValue(getValue(datum, key)) : String(getValue(datum, key)),
     })) : [];
-    return (
-      <ChartGraphTooltip
-        rows={isStacked && !isHorizontal ? rows.reverse() : rows}
-        title={x}
-      />
-    );
+    return { rows: isStacked && !isHorizontal ? rows.reverse() : rows, title: x };
   };
 
   return (
-    <ChartGraph
+    <ChartPlot
       className={className}
       padding={padding}
       paddingX={paddingX}
       paddingY={paddingY}
-      renderTooltip={renderTooltip}
+      getTooltip={getTooltip}
       x={isHorizontal ? valueAxis : categoryAxis}
       y={isHorizontal ? categoryAxis : valueAxis}
     >
@@ -221,7 +216,7 @@ export const ChartBar = ({
           });
         });
       }}
-    </ChartGraph>
+    </ChartPlot>
   );
 };
 

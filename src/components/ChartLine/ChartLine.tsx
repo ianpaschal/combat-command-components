@@ -1,11 +1,11 @@
 import { ReactElement, useId } from 'react';
 
 import {
-  ChartGraph,
-  ChartGraphPaddingProps,
-  ChartGraphTooltip,
-} from '../ChartGraph';
-import { getNiceTicks } from '../ChartGraph/ChartGraph.utils';
+  ChartPlot,
+  ChartPlotPaddingProps,
+  ChartTooltipContent,
+  getNiceTicks,
+} from '../Chart';
 import {
   ChartLinePoint,
   getAreaPath,
@@ -17,7 +17,7 @@ import {
 const LINE_WIDTH = 2;
 const FILL_OPACITY = 0.3;
 const STACKED_FILL_OPACITY = 0.5;
-const ACTIVE_DOT_RADIUS = 4;
+const ACTIVE_DOT_RADIUS = 5;
 
 export type ChartLineSeries = {
   key: string;
@@ -42,7 +42,7 @@ export type ChartLineDatum = {
   values: Record<string, number>;
 };
 
-export interface ChartLineProps extends ChartGraphPaddingProps {
+export interface ChartLineProps extends ChartPlotPaddingProps {
 
   /**
    * The space each x value gets, in pixels. With it, the plot is exactly as wide as its x values
@@ -145,7 +145,7 @@ export const ChartLine = ({
   const getPath = (points: ChartLinePoint[]): string => (
     curve === 'smooth' ? getSmoothPath(points) : getLinearPath(points)
   );
-  const renderTooltip = (x: string): ReactElement => {
+  const getTooltip = (x: string): ChartTooltipContent => {
     const datum = data.find((d) => d.x === x);
 
     /* Stacked series are listed top to bottom, as they are drawn. */
@@ -154,21 +154,19 @@ export const ChartLine = ({
       label,
       value: formatValue ? formatValue(getValue(datum, key)) : String(getValue(datum, key)),
     })) : [];
-    return (
-      <ChartGraphTooltip
-        rows={isStacked ? rows.reverse() : rows}
-        title={formatCategory ? formatCategory(x) : x}
-      />
-    );
+    return {
+      rows: isStacked ? rows.reverse() : rows,
+      title: formatCategory ? formatCategory(x) : x,
+    };
   };
 
   return (
-    <ChartGraph
+    <ChartPlot
       className={className}
       padding={padding}
       paddingX={paddingX}
       paddingY={paddingY}
-      renderTooltip={renderTooltip}
+      getTooltip={getTooltip}
       x={{
         type: 'category',
         values: data.map(({ x }) => x),
@@ -229,14 +227,12 @@ export const ChartLine = ({
                 fill={color}
                 key={`dot-${key}`}
                 r={ACTIVE_DOT_RADIUS}
-                stroke="var(--color-text-header)"
-                strokeWidth={LINE_WIDTH}
               />
             ))}
           </>
         );
       }}
-    </ChartGraph>
+    </ChartPlot>
   );
 };
 

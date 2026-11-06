@@ -1,8 +1,8 @@
-@use "../../style/layers";
+@use "../../../../style/layers";
 
 @layer components {
-  .chart-graph {
-    --chart-graph-grid-line-color: var(--color-card-border);
+  .chart-plot {
+    --chart-plot-grid-line-color: var(--color-card-border);
 
     position: relative;
 
@@ -35,7 +35,7 @@
       min-width: 0;
       min-height: 0;
 
-      background-color: var(--chart-graph-plot-color, transparent);
+      background-color: var(--chart-plot-plot-color, transparent);
 
       /* The axes are see-through, so the plot is clipped where they cover it: on
        * the left by as far as it is scrolled sideways, and at the bottom by as
@@ -51,19 +51,13 @@
     }
 
     &-grid-line {
-      stroke: var(--chart-graph-grid-line-color);
+      stroke: var(--chart-plot-grid-line-color);
       stroke-width: 1;
     }
 
     &-highlight-line {
       stroke: var(--color-text-header);
       stroke-width: 1;
-    }
-
-    &-tooltip {
-      pointer-events: none;
-      position: absolute;
-      z-index: 3;
     }
 
     /* The axes stick to the edges of the scroll area, so that the plot scrolls under them. */
@@ -75,7 +69,7 @@
       grid-column: 1;
       grid-row: 1;
 
-      background-color: var(--chart-graph-y-axis-color, transparent);
+      background-color: var(--chart-plot-y-axis-color, transparent);
 
       /* A scrolling axis goes under the corner, so its labels scroll under it. */
       [data-has-overflow-y] & {
@@ -92,7 +86,7 @@
       grid-column: 2;
       grid-row: 2;
 
-      background-color: var(--chart-graph-x-axis-color, transparent);
+      background-color: var(--chart-plot-x-axis-color, transparent);
 
       /* A scrolling axis goes under the corner, so its labels scroll under it. */
       [data-has-overflow-x] & {
@@ -110,7 +104,7 @@
       grid-column: 1;
       grid-row: 2;
 
-      background-color: var(--chart-graph-corner-color, transparent);
+      background-color: var(--chart-plot-corner-color, transparent);
     }
   }
 }

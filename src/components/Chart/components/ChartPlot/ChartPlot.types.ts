@@ -1,4 +1,4 @@
-export type ChartGraphCategoryAxis = {
+export type ChartPlotCategoryAxis = {
   type: 'category';
 
   /**
@@ -32,7 +32,7 @@ export type ChartGraphCategoryAxis = {
   tickSize?: number;
 };
 
-export type ChartGraphValueAxis = {
+export type ChartPlotValueAxis = {
   type: 'value';
 
   /**
@@ -54,9 +54,9 @@ export type ChartGraphValueAxis = {
   tickSize?: number;
 };
 
-export type ChartGraphAxis = ChartGraphCategoryAxis | ChartGraphValueAxis;
+export type ChartPlotAxis = ChartPlotCategoryAxis | ChartPlotValueAxis;
 
-export type ChartGraphPlot = {
+export type ChartPlotLayout = {
 
   /**
    * The category being hovered, or selected by tapping on touch screens, if any.
@@ -88,7 +88,7 @@ export type ChartGraphPlot = {
   width: number;
 };
 
-export type ChartGraphPaddingProps = {
+export type ChartPlotPaddingProps = {
 
   /**
    * The space between the edges of the plot and its outermost values on every side, in pixels.

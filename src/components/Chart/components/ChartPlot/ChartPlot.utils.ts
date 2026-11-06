@@ -1,26 +1,6 @@
-import { CSSProperties } from 'react';
-
-import { ChartGraphAxis, ChartGraphCategoryAxis } from './ChartGraph.types';
+import { ChartPlotAxis, ChartPlotCategoryAxis } from './ChartPlot.types';
 
 const NICE_STEPS = [1, 2, 2.5, 5, 10];
-const TOOLTIP_OFFSET = 12;
-
-/**
- * Gets where to place a chart's tooltip, next to the pointer and towards the middle of the chart,
- * so that it stays inside the chart.
- *
- * @param clientX - The pointer's horizontal position in the viewport
- * @param clientY - The pointer's vertical position in the viewport
- * @param rect - The chart's bounding rectangle
- * @returns The tooltip's position, relative to the chart
- */
-export const getTooltipStyle = (clientX: number, clientY: number, rect: DOMRect): CSSProperties => {
-  const left = clientX - rect.left;
-  const top = clientY - rect.top;
-  const shiftX = left > rect.width / 2 ? `calc(-100% - ${TOOLTIP_OFFSET}px)` : `${TOOLTIP_OFFSET}px`;
-  const shiftY = top > rect.height / 2 ? `calc(-100% - ${TOOLTIP_OFFSET}px)` : `${TOOLTIP_OFFSET}px`;
-  return { left, top, transform: `translate(${shiftX}, ${shiftY})` };
-};
 
 /**
  * Gets how many steps a category axis is divided into: one band per category, or one gap between
@@ -29,7 +9,7 @@ export const getTooltipStyle = (clientX: number, clientY: number, rect: DOMRect)
  * @param axis - The axis
  * @returns The number of steps, at least 1
  */
-export const getCategorySteps = (axis: ChartGraphCategoryAxis): number => (
+export const getCategorySteps = (axis: ChartPlotCategoryAxis): number => (
   Math.max(1, axis.placement === 'point' ? axis.values.length - 1 : axis.values.length)
 );
 
@@ -42,7 +22,7 @@ export const getCategorySteps = (axis: ChartGraphCategoryAxis): number => (
  * @param isY - Whether the axis is a y axis, along which values grow upwards
  * @returns The fraction, or 0 for a category which isn't on the axis
  */
-export const getAxisFraction = (axis: ChartGraphAxis, value: string | number, isY: boolean): number => {
+export const getAxisFraction = (axis: ChartPlotAxis, value: string | number, isY: boolean): number => {
   if (axis.type === 'category') {
     const index = axis.values.indexOf(String(value));
     if (index < 0) {
@@ -80,7 +60,7 @@ export const getAxisPosition = (fraction: number, length: number, padding: numbe
  * @param padding - The padding at each end of the axis
  * @returns The size, or 0 for a value axis
  */
-export const getAxisBand = (axis: ChartGraphAxis, length: number, padding: number): number => (
+export const getAxisBand = (axis: ChartPlotAxis, length: number, padding: number): number => (
   axis.type === 'category' ? (length - padding * 2) / getCategorySteps(axis) : 0
 );
 
@@ -92,7 +72,7 @@ export const getAxisBand = (axis: ChartGraphAxis, length: number, padding: numbe
  * @param padding - The padding at each end of the axis
  * @returns The length, or nothing if the plot fills the space it has
  */
-export const getFixedLength = (axis: ChartGraphAxis, padding: number): number | undefined => {
+export const getFixedLength = (axis: ChartPlotAxis, padding: number): number | undefined => {
   if (!axis.tickSize) {
     return undefined;
   }
@@ -116,7 +96,7 @@ export const getNiceTicks = (values: number[], count = 4): number[] => {
   }
   const rawStep = (max - min) / count;
   const magnitude = 10 ** Math.floor(Math.log10(rawStep));
-  const step = (NICE_STEPS.find((nice) => nice * magnitude >= rawStep) ?? 10) * magnitude;
+  const step = Math.min(...NICE_STEPS.filter((nice) => nice * magnitude >= rawStep)) * magnitude;
   const start = Math.floor(min / step) * step;
   const end = Math.ceil(max / step) * step;
   return Array.from({ length: Math.round((end - start) / step) + 1 }, (_, i) => (

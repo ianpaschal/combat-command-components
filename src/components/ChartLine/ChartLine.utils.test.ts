@@ -50,6 +50,10 @@ describe('getSmoothPath', () => {
     expect(Math.max(...ys)).toBeLessThanOrEqual(100);
   });
 
+  it('handles points which share an x position.', () => {
+    expect(getNumbers(getSmoothPath([[0, 0], [0, 10], [10, 20]])).every(Number.isFinite)).toBe(true);
+  });
+
   it('stays flat between equal neighbouring points.', () => {
     const path = getSmoothPath([[0, 50], [50, 50], [100, 50]]);
     expect(getNumbers(path).filter((_, i) => i % 2 === 1).every((y) => y === 50)).toBe(true);

@@ -4,7 +4,7 @@ import {
   it,
 } from 'vitest';
 
-import { ChartGraphCategoryAxis, ChartGraphValueAxis } from './ChartGraph.types';
+import { ChartPlotCategoryAxis, ChartPlotValueAxis } from './ChartPlot.types';
 import {
   getAxisBand,
   getAxisFraction,
@@ -12,11 +12,11 @@ import {
   getCategorySteps,
   getFixedLength,
   getNiceTicks,
-} from './ChartGraph.utils';
+} from './ChartPlot.utils';
 
-const BAND_AXIS: ChartGraphCategoryAxis = { type: 'category', values: ['a', 'b', 'c', 'd'] };
-const POINT_AXIS: ChartGraphCategoryAxis = { ...BAND_AXIS, placement: 'point' };
-const VALUE_AXIS: ChartGraphValueAxis = { type: 'value', ticks: [0, 25, 50, 75, 100] };
+const BAND_AXIS: ChartPlotCategoryAxis = { type: 'category', values: ['a', 'b', 'c', 'd'] };
+const POINT_AXIS: ChartPlotCategoryAxis = { ...BAND_AXIS, placement: 'point' };
+const VALUE_AXIS: ChartPlotValueAxis = { type: 'value', ticks: [0, 25, 50, 75, 100] };
 
 describe('getCategorySteps', () => {
   it('has one step per band.', () => {
@@ -66,6 +66,10 @@ describe('getAxisFraction', () => {
 
   it('returns 0 when the ticks have no range.', () => {
     expect(getAxisFraction({ type: 'value', ticks: [5] }, 5, false)).toBe(0);
+  });
+
+  it('runs from 0 to 1 without ticks.', () => {
+    expect(getAxisFraction({ type: 'value', ticks: [] }, 0.25, false)).toBe(0.25);
   });
 });
 
