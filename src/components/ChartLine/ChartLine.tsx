@@ -2,8 +2,7 @@ import { ReactElement, useId } from 'react';
 
 import {
   ChartPlot,
-  ChartPlotEdgeLabels,
-  ChartPlotPaddingProps,
+  ChartPlotFrameProps,
   ChartTooltipContent,
   getNiceTicks,
 } from '../Chart';
@@ -44,7 +43,12 @@ export type ChartLineDatum = {
   values: Record<string, number>;
 };
 
-export interface ChartLineProps extends ChartPlotPaddingProps {
+/**
+ * The props of a line chart. The props it shares with the other charts with
+ * axes, such as `padding` and `xAxisPosition`, are described on
+ * `ChartPlotFrameProps`.
+ */
+export interface ChartLineProps extends ChartPlotFrameProps {
 
   /**
    * The space each x value gets, in pixels. With it, the plot is exactly as
@@ -69,14 +73,6 @@ export interface ChartLineProps extends ChartPlotPaddingProps {
    * The x values, in order along the x axis.
    */
   data: ChartLineDatum[];
-
-  /**
-   * How the labels at the very ends of the axes sit. `shift` moves them inward
-   * so that they end at the ends of the axes, rather than being cut off.
-   * `center` keeps them centered on their values like the other labels, so
-   * they need padding to show in full. Defaults to `shift`.
-   */
-  edgeLabels?: ChartPlotEdgeLabels;
 
   /**
    * Whether to fill the area under each line with a gradient that fades out
@@ -105,12 +101,6 @@ export interface ChartLineProps extends ChartPlotPaddingProps {
   mode?: 'overlaid' | 'stacked';
 
   /**
-   * Whether a chart which scrolls starts scrolled to its last x value, such as
-   * the latest values of a time series. Defaults to `false`.
-   */
-  scrollToEnd?: boolean;
-
-  /**
    * The series, in the order they are drawn: each over the ones before it when
    * overlaid, and upwards from the baseline when stacked.
    */
@@ -137,22 +127,14 @@ export const ChartLine = ({
   className,
   curve = 'smooth',
   data,
-  edgeLabels,
   fill = true,
   formatValue,
   formatCategory,
   mode = 'overlaid',
-  padding,
-  paddingX,
-  paddingY,
-  paddingTop,
-  paddingRight,
-  paddingBottom,
-  paddingLeft,
-  scrollToEnd,
   series,
   valueTickSize,
   valueTicks,
+  ...frameProps
 }: ChartLineProps): ReactElement => {
   const gradientId = useId();
   const isStacked = mode === 'stacked';
@@ -190,17 +172,21 @@ export const ChartLine = ({
 
   return (
     <ChartPlot
+      {...frameProps}
       className={className}
-      edgeLabels={edgeLabels}
-      padding={padding}
-      paddingX={paddingX}
-      paddingY={paddingY}
-      paddingTop={paddingTop}
-      paddingRight={paddingRight}
-      paddingBottom={paddingBottom}
-      paddingLeft={paddingLeft}
       getTooltip={getTooltip}
-      scrollToEnd={scrollToEnd}
+      overlay={({ activeValue, getX, getY }) => {
+        const activeIndex = data.findIndex(({ x }) => x === activeValue);
+        return activeIndex >= 0 && series.map(({ color, key }, i) => (
+          <circle
+            cx={getX(data[activeIndex].x)}
+            cy={getY(tops[i][activeIndex])}
+            fill={color}
+            key={`dot-${key}`}
+            r={ACTIVE_DOT_RADIUS}
+          />
+        ));
+      }}
       x={{
         type: 'category',
         values: data.map(({ x }) => x),
@@ -216,12 +202,11 @@ export const ChartLine = ({
         tickSize: valueTickSize,
       }}
     >
-      {({ activeValue, getX, getY }) => {
+      {({ getX, getY }) => {
         const lines = tops.map((values) => {
           const points: ChartLinePoint[] = data.map(({ x }, i) => [getX(x), getY(values[i])]);
           return { points, path: getPath(points) };
         });
-        const activeIndex = data.findIndex(({ x }) => x === activeValue);
         return (
           <>
             {isStacked && lines.map(({ path }, i) => (
@@ -252,15 +237,6 @@ export const ChartLine = ({
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={LINE_WIDTH}
-              />
-            ))}
-            {activeIndex >= 0 && series.map(({ color, key }, i) => (
-              <circle
-                cx={lines[i].points[activeIndex][0]}
-                cy={lines[i].points[activeIndex][1]}
-                fill={color}
-                key={`dot-${key}`}
-                r={ACTIVE_DOT_RADIUS}
               />
             ))}
           </>

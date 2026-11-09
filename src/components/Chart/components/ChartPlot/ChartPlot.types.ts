@@ -97,10 +97,9 @@ export type ChartPlotLayout = {
 export type ChartPlotPaddingProps = {
 
   /**
-   * The empty space on every side of the plot, in pixels, between its outermost
-   * values and the axes, or the edge of the chart on sides without an axis.
-   * Labels which overhang the outermost values get room of their own, so the
-   * space is the same however wide they are.
+   * The empty space inside the plot on every side, in pixels, between its edges
+   * and its outermost values. The axes' labels move with the values, so the
+   * padding moves them in from the plot's edges too. Defaults to 0.
    */
   padding?: number;
 
@@ -130,6 +129,55 @@ export type ChartPlotPaddingProps = {
 };
 
 export type ChartPlotEdgeLabels = 'shift' | 'center';
+
+export type ChartPlotXAxisPosition = 'top' | 'bottom' | 'both';
+
+export type ChartPlotYAxisPosition = 'left' | 'right' | 'both';
+
+export type ChartPlotAxisSide = 'top' | 'right' | 'bottom' | 'left';
+
+/**
+ * The props of a plot's frame which every chart with axes passes on.
+ */
+export type ChartPlotFrameProps = ChartPlotPaddingProps & {
+
+  /**
+   * The space on the outer side of each axis, in pixels, such as to the left of
+   * a y axis on the left. It is inside the axes' scroll areas, so their edges
+   * and shadows still reach the edges of the chart. Defaults to 0.
+   */
+  axisPadding?: number;
+
+  /**
+   * How the labels at the very ends of the axes sit. `shift` moves them inward,
+   * so that they end at the ends of the axes rather than being cut off.
+   * `center` keeps them centered on their values like the other labels, so
+   * they need padding to show in full. Labels centered in bands are never at
+   * the very ends. Defaults to `shift`.
+   */
+  edgeLabels?: ChartPlotEdgeLabels;
+
+  /**
+   * Whether a plot which scrolls starts scrolled to the end of its category
+   * axis, such as the latest values of a time series, and stays there as it
+   * grows until the viewer scrolls away. Defaults to `false`.
+   */
+  scrollToEnd?: boolean;
+
+  /**
+   * Where the x axis sits: above the plot, below it, or on both sides. The x
+   * axis is the horizontal one, whether it shows categories or values.
+   * Defaults to `bottom`.
+   */
+  xAxisPosition?: ChartPlotXAxisPosition;
+
+  /**
+   * Where the y axis sits: left of the plot, right of it, or on both sides. The
+   * y axis is the vertical one, whether it shows categories or values. Defaults
+   * to `left`.
+   */
+  yAxisPosition?: ChartPlotYAxisPosition;
+};
 
 export type ChartPlotAxisPadding = {
 

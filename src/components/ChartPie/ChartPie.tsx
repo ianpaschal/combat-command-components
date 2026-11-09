@@ -6,7 +6,7 @@ import {
   ChartRenderProps,
   ChartTooltipContent,
 } from '../Chart';
-import { ChartPieAngles, ChartPieSlice } from './ChartPie.types';
+import { ChartPieAngles, ChartPieGroupedSlice } from './ChartPie.types';
 import {
   getSliceAngles,
   getSlicePath,
@@ -37,9 +37,11 @@ export interface ChartPieProps {
   cornerRadius?: number;
 
   /**
-   * The slices, in order from the origin.
+   * The slices, in order from the origin. A slice which stands for several
+   * others, such as an "Other" slice folded before the chart gets it, can list
+   * them as `children` to show them in its tooltip.
    */
-  data: ChartPieSlice[];
+  data: ChartPieGroupedSlice[];
 
   /**
    * Which way the slices run from the origin. Defaults to `clockwise`.

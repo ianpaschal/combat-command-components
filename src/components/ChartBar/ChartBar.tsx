@@ -3,8 +3,7 @@ import { ReactElement } from 'react';
 import {
   ChartPlot,
   ChartPlotCategoryAxis,
-  ChartPlotEdgeLabels,
-  ChartPlotPaddingProps,
+  ChartPlotFrameProps,
   ChartPlotValueAxis,
   ChartTooltipContent,
   getNiceTicks,
@@ -13,6 +12,7 @@ import {
   getBarExtent,
   getBarSegments,
   getBarSizes,
+  getRangePath,
 } from './ChartBar.utils';
 
 import styles from './ChartBar.module.scss';
@@ -20,6 +20,7 @@ import styles from './ChartBar.module.scss';
 const DEFAULT_CORNER_RADIUS = 4;
 const BAND_FILL = 0.6;
 const DEFAULT_SPACING = 2;
+const RANGE_CAP_SIZE = 8;
 
 export type ChartBarSeries = {
   key: string;
@@ -42,9 +43,28 @@ export type ChartBarDatum = {
    * The value of each series in this category, by series key. A missing value counts as 0.
    */
   values: Record<string, number>;
+
+  /**
+   * The color of each series' bar in this category, by series key, as any CSS
+   * color. A missing color falls back to the series' color.
+   */
+  colors?: Record<string, string>;
+
+  /**
+   * The range each series' value is likely in, by series key, as the lowest and
+   * highest values, such as a confidence interval. Each range is drawn as a
+   * whisker over its bar. Ignored when stacked.
+   */
+  ranges?: Record<string, [number, number]>;
 };
 
-export interface ChartBarProps extends ChartPlotPaddingProps {
+/**
+ * The props of a bar chart. The props it shares with the other charts with
+ * axes, such as `padding` and `xAxisPosition`, are described on
+ * `ChartPlotFrameProps`. The x and y axes are the horizontal and vertical ones,
+ * so in a horizontal bar chart the categories are on the y axis.
+ */
+export interface ChartBarProps extends ChartPlotFrameProps {
 
   /**
    * The thickness of each bar, in pixels. When grouped, this is the thickness
@@ -74,14 +94,6 @@ export interface ChartBarProps extends ChartPlotPaddingProps {
   /** The categories, in order along the category axis. */
   data: ChartBarDatum[];
 
-  /**
-   * How the labels at the very ends of the axes sit. `shift` moves them inward
-   * so that they end at the ends of the axes, rather than being cut off.
-   * `center` keeps them centered on their values like the other labels, so
-   * they need padding to show in full. Defaults to `shift`.
-   */
-  edgeLabels?: ChartPlotEdgeLabels;
-
   /** Formats the labels of the value axis and the values in the tooltip. */
   formatValue?: (value: number) => string;
 
@@ -93,12 +105,6 @@ export interface ChartBarProps extends ChartPlotPaddingProps {
 
   /** Which direction the bars run. */
   orientation?: 'horizontal' | 'vertical';
-
-  /**
-   * Whether a chart which scrolls starts scrolled to its last category.
-   * Defaults to `false`.
-   */
-  scrollToEnd?: boolean;
 
   /** The series, in the order their bars are drawn. */
   series: ChartBarSeries[];
@@ -131,31 +137,29 @@ export const ChartBar = ({
   className,
   cornerRadius = DEFAULT_CORNER_RADIUS,
   data,
-  edgeLabels,
   formatValue,
   mode = 'grouped',
   orientation = 'vertical',
-  padding,
-  paddingX,
-  paddingY,
-  paddingTop,
-  paddingRight,
-  paddingBottom,
-  paddingLeft,
-  scrollToEnd,
   series,
   spacing = DEFAULT_SPACING,
   valueTickSize,
   valueTicks,
+  ...frameProps
 }: ChartBarProps): ReactElement => {
   const isHorizontal = orientation === 'horizontal';
   const isStacked = mode === 'stacked';
   const getValue = (datum: ChartBarDatum, key: string): number => datum.values[key] ?? 0;
+  const getColor = (datum: ChartBarDatum, { color, key }: ChartBarSeries): string => (
+    datum.colors?.[key] ?? color
+  );
+  const getRange = (datum: ChartBarDatum, key: string): [number, number] | undefined => (
+    isStacked ? undefined : datum.ranges?.[key]
+  );
   const ticks = valueTicks ?? getNiceTicks(data.flatMap((datum) => (
     isStacked ? (
       [series.reduce((total, { key }) => total + getValue(datum, key), 0)]
     ) : (
-      series.map(({ key }) => getValue(datum, key))
+      series.flatMap(({ key }) => [getValue(datum, key), ...(getRange(datum, key) ?? [])])
     )
   )));
   const categoryAxis: ChartPlotCategoryAxis = {
@@ -175,27 +179,19 @@ export const ChartBar = ({
     const datum = data.find((d) => d.x === x);
 
     /* Vertical stacked series are listed top to bottom, as they are drawn. */
-    const rows = datum ? series.map(({ color, key, label }) => ({
-      color,
-      label,
-      value: formatValue ? formatValue(getValue(datum, key)) : String(getValue(datum, key)),
+    const rows = datum ? series.map((item) => ({
+      color: getColor(datum, item),
+      label: item.label,
+      value: formatValue ? formatValue(getValue(datum, item.key)) : String(getValue(datum, item.key)),
     })) : [];
     return { rows: isStacked && !isHorizontal ? rows.reverse() : rows, title: x };
   };
 
   return (
     <ChartPlot
+      {...frameProps}
       className={className}
-      edgeLabels={edgeLabels}
-      padding={padding}
-      paddingX={paddingX}
-      paddingY={paddingY}
-      paddingTop={paddingTop}
-      paddingRight={paddingRight}
-      paddingBottom={paddingBottom}
-      paddingLeft={paddingLeft}
       getTooltip={getTooltip}
-      scrollToEnd={scrollToEnd}
       x={isHorizontal ? valueAxis : categoryAxis}
       y={isHorizontal ? categoryAxis : valueAxis}
     >
@@ -218,14 +214,15 @@ export const ChartBar = ({
         return data.flatMap((datum) => {
           const groupStart = getCategoryPosition(datum.x) - groupSize / 2;
           const values = series.map(({ key }) => getValue(datum, key));
-          return getBarSegments(values, baseline, isStacked, spacing).map(({
+          const isDimmed = activeValue !== undefined && activeValue !== datum.x;
+          return getBarSegments(values, baseline, isStacked, spacing).flatMap(({
             index,
             from,
             to,
             startInset,
             endInset,
           }) => {
-            const { color, key } = series[index];
+            const { key } = series[index];
             const { position, length } = getBarExtent(
               getValuePosition(from),
               getValuePosition(to),
@@ -233,19 +230,34 @@ export const ChartBar = ({
               endInset,
             );
             const offset = groupStart + (isStacked ? 0 : index * (thickness + spacing));
-            return (
+            const range = getRange(datum, key);
+            return [
               <rect
                 className={styles.chartBarBar}
-                data-dimmed={activeValue !== undefined && activeValue !== datum.x ? '' : undefined}
-                fill={color}
+                data-dimmed={isDimmed ? '' : undefined}
+                fill={getColor(datum, series[index])}
                 height={isHorizontal ? thickness : length}
                 key={`${datum.x}-${key}`}
                 rx={Math.min(cornerRadius, thickness / 2, length / 2)}
                 width={isHorizontal ? length : thickness}
                 x={isHorizontal ? position : offset}
                 y={isHorizontal ? offset : position}
-              />
-            );
+              />,
+              range && (
+                <path
+                  className={styles.chartBarRange}
+                  d={getRangePath(
+                    getValuePosition(range[0]),
+                    getValuePosition(range[1]),
+                    offset + thickness / 2,
+                    Math.min(RANGE_CAP_SIZE, thickness) / 2,
+                    isHorizontal,
+                  )}
+                  data-dimmed={isDimmed ? '' : undefined}
+                  key={`${datum.x}-${key}-range`}
+                />
+              ),
+            ];
           });
         });
       }}

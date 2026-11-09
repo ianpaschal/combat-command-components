@@ -8,6 +8,7 @@ import {
   getBarExtent,
   getBarSegments,
   getBarSizes,
+  getRangePath,
 } from './ChartBar.utils';
 
 describe('getBarSizes', () => {
@@ -86,5 +87,15 @@ describe('getBarExtent', () => {
 
   it('gives a length of 0 when the insets meet.', () => {
     expect(getBarExtent(0, 1, 1, 1).length).toBe(0);
+  });
+});
+
+describe('getRangePath', () => {
+  it('draws a sideways whisker with upright caps for horizontal bars.', () => {
+    expect(getRangePath(10, 50, 20, 4, true)).toBe('M10,20H50M10,16V24M50,16V24');
+  });
+
+  it('draws an upright whisker with sideways caps for vertical bars.', () => {
+    expect(getRangePath(80, 30, 20, 4, false)).toBe('M20,80V30M16,80H24M16,30H24');
   });
 });

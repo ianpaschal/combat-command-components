@@ -133,3 +133,28 @@ export const getBarExtent = (
   const position = start <= end ? start + startInset : start - startInset - length;
   return { position, length };
 };
+
+/**
+ * Gets the path of a range's whisker: a line along the value axis from the low
+ * to the high value, with a cap across it at each end.
+ *
+ * @param low - The position of the low value
+ * @param high - The position of the high value
+ * @param center - The position of the bar's middle, across the value axis
+ * @param capSize - How far each cap reaches to either side of the line
+ * @param isHorizontal - Whether the value axis runs sideways
+ * @returns The path
+ */
+export const getRangePath = (
+  low: number,
+  high: number,
+  center: number,
+  capSize: number,
+  isHorizontal: boolean,
+): string => (
+  isHorizontal ? (
+    `M${low},${center}H${high}M${low},${center - capSize}V${center + capSize}M${high},${center - capSize}V${center + capSize}`
+  ) : (
+    `M${center},${low}V${high}M${center - capSize},${low}H${center + capSize}M${center - capSize},${high}H${center + capSize}`
+  )
+);

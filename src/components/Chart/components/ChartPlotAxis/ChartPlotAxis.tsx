@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import {
   ChartPlotAxis as ChartPlotAxisConfig,
   ChartPlotAxisPadding,
+  ChartPlotAxisSide,
   ChartPlotEdgeLabels,
 } from '../ChartPlot/ChartPlot.types';
 import { getAxisFraction } from '../ChartPlot/ChartPlot.utils';
@@ -19,12 +20,18 @@ export interface ChartPlotAxisProps {
    * the ends of the axis, or centered on their values.
    */
   edgeLabels: ChartPlotEdgeLabels;
-  isY: boolean;
 
   /**
    * The padding at each end of the axis, in pixels.
    */
   padding: ChartPlotAxisPadding;
+
+  /**
+   * Which side of the plot the axis sits on. Top and bottom axes are x axes,
+   * and left and right axes are y axes. The labels sit on the side facing the
+   * plot.
+   */
+  side: ChartPlotAxisSide;
 }
 
 const getLabels = (axis: ChartPlotAxisConfig): { key: string; label: string; value: string | number }[] => (
@@ -67,28 +74,35 @@ export const ChartPlotAxis = forwardRef<HTMLDivElement, ChartPlotAxisProps>(({
   axis,
   className,
   edgeLabels,
-  isY,
   padding,
-}, ref) => (
-  <div className={clsx(styles.chartPlotAxis, isY ? styles.chartPlotAxisY : styles.chartPlotAxisX, className)} ref={ref}>
-    {getLabels(axis).map(({ key, label, value }) => {
-      const fraction = getAxisFraction(axis, value, isY);
-      return (
-        <span
-          className={styles.chartPlotAxisLabel}
-          data-edge={edgeLabels === 'shift' ? getEdge(fraction) : undefined}
-          key={key}
-          style={{
-            '--fraction': fraction,
-            '--padding-start': `${padding.start}px`,
-            '--padding-end': `${padding.end}px`,
-          } as CSSProperties}
-        >
-          {label}
-        </span>
-      );
-    })}
-  </div>
-));
+  side,
+}, ref) => {
+  const isY = side === 'left' || side === 'right';
+  return (
+    <div
+      className={clsx(styles.chartPlotAxis, isY ? styles.chartPlotAxisY : styles.chartPlotAxisX, className)}
+      data-side={side}
+      ref={ref}
+    >
+      {getLabels(axis).map(({ key, label, value }) => {
+        const fraction = getAxisFraction(axis, value, isY);
+        return (
+          <span
+            className={styles.chartPlotAxisLabel}
+            data-edge={edgeLabels === 'shift' ? getEdge(fraction) : undefined}
+            key={key}
+            style={{
+              '--fraction': fraction,
+              '--padding-start': `${padding.start}px`,
+              '--padding-end': `${padding.end}px`,
+            } as CSSProperties}
+          >
+            {label}
+          </span>
+        );
+      })}
+    </div>
+  );
+});
 
 ChartPlotAxis.displayName = 'ChartPlotAxis';

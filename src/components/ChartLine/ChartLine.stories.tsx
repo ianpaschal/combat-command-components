@@ -51,6 +51,7 @@ const meta: Meta<typeof ChartLine> = {
     },
   },
   argTypes: {
+    axisPadding: { control: 'number' },
     categoryTickSize: { control: 'number' },
     className: { table: { disable: true } },
     data: { control: 'object' },
@@ -68,6 +69,8 @@ const meta: Meta<typeof ChartLine> = {
     scrollToEnd: { control: 'boolean' },
     series: { control: 'object' },
     valueTickSize: { control: 'number' },
+    xAxisPosition: { control: 'inline-radio', options: ['top', 'bottom', 'both'] },
+    yAxisPosition: { control: 'inline-radio', options: ['left', 'right', 'both'] },
   },
   render: (args) => (
     <div

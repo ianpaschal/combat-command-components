@@ -32,6 +32,12 @@
           transform: translateX(-100%);
         }
       }
+
+      // The labels face the plot, so an axis above it has its gap below them:
+      &[data-side="top"] {
+        padding-top: 0;
+        padding-bottom: var(--label-offset);
+      }
     }
 
     &-y {
@@ -49,6 +55,16 @@
 
         &[data-edge="end"] {
           transform: translateY(-100%);
+        }
+      }
+
+      // The labels face the plot, so an axis right of it aligns them to the left:
+      &[data-side="right"] {
+        padding-right: 0;
+        padding-left: var(--label-offset);
+
+        .chart-plot-axis-label {
+          justify-self: start;
         }
       }
     }

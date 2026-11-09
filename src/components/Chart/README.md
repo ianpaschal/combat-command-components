@@ -31,13 +31,54 @@ Charts fill their container by default.
 Charts with axes can instead give each axis a fixed tick size with `categoryTickSize` and `valueTickSize`.
 The plot is then exactly as long as its ticks need along that axis, and scrolls when the chart is smaller, with its axes following it.
 `scrollToEnd` starts a scrolling chart at the end of its category axis, such as the latest values of a time series.
+It keeps the chart there as the chart grows, until the viewer scrolls away from the end.
+
+### Charts With Axes
+
+`<ChartBar/>` and `<ChartLine/>` share the props of their frame, which are described on `ChartPlotFrameProps`.
+
+#### Axes
+
+The x axis is the horizontal one and the y axis is the vertical one, whatever they show.
+In a horizontal bar chart, the categories are on the y axis.
+
+- `xAxisPosition` - Puts the x axis `top`, `bottom` or on `both` sides of the plot. Defaults to `bottom`.
+- `yAxisPosition` - Puts the y axis `left`, `right` or on `both` sides of the plot. Defaults to `left`.
+
+The labels always sit on the side of an axis which faces the plot.
+
+#### Spacing
+
+The plot and its axes have two kinds of spacing:
+
+- `padding` - Empty space inside the plot, between its edges and its outermost values. The axes' labels move with the values, so it moves them in too. `paddingX`, `paddingY`, `paddingTop`, `paddingRight`, `paddingBottom` and `paddingLeft` override it for some sides.
+- `axisPadding` - Empty space on the outer side of each axis, such as to the left of a y axis on the left. It is inside the axes' scroll areas, so their edges and shadows still reach the edges of the chart.
+
+To run a chart to the edges of a card, take away the card's padding around it and give the chart the same `axisPadding`.
+
+#### Edge Labels
+
+Labels are centered on their values, so the labels at the very ends of an axis would reach past the plot and be cut off.
+`edgeLabels` sets how they sit:
+
+- `shift` - Moves them inward, so that they end at the ends of the axis. This is the default.
+- `center` - Keeps them centered like the other labels. Use `padding` to make room for them.
+
+Labels centered in bands, such as a bar chart's categories, are never at the very ends.
+
+#### Clipping
+
+The plot and each axis sit in scroll areas of their own, which clip what they show at their edges.
+No label shows past the edge of the plot, even while it scrolls.
+The marks for the selected item, such as the line and dots on a line chart, sit in an overlay above the plot instead, so they show in full on its edges.
 
 ### Contents
 
 - `<Chart/>` - The root of every chart. It measures itself, tracks the selected item, and shows its tooltip. It draws its children from its size and selection.
-- `<ChartPlot/>` - The frame of a chart with an x and a y axis. The plot and each axis sit in scroll areas of their own. Only the plot's can be scrolled, and the axes' follow it.
-- `<ChartPlotAxis/>` - One of a plot's axes, with its labels centered on their values.
+- `<ChartPlot/>` - The frame of a chart with axes. The plot and each axis sit in scroll areas of their own. Only the plot's can be scrolled, and the axes' follow it. It draws the chart's data from `children`, and the marks for the selected item from `overlay`.
+- `<ChartPlotAxis/>` - One of a plot's axes, on one side of it, with its labels centered on their values or shifted in at the ends.
 - `<ChartTooltip/>` - The tooltip, with a title and one row per series, shown in a portal next to the pointer.
 - `useChartSelection` - Tracks the selected item, and provides pointer handlers for single items, such as slices, or for areas which work out the item under the pointer, such as a plot.
 - `useChartDismiss` - Clears a chart's selection when the viewer taps outside it or scrolls.
+- `useScrollToEnd` - Keeps a scroll area scrolled to its end as it or its content changes size, until the viewer scrolls away.
 - `useElementSize` - Tracks the size of an element.

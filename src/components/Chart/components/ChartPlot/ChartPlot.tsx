@@ -18,9 +18,9 @@ import { useScrollToEnd } from './ChartPlot.hooks';
 import {
   ChartPlotAxis as ChartPlotAxisConfig,
   ChartPlotAxisPadding,
-  ChartPlotEdgeLabels,
+  ChartPlotAxisSide,
+  ChartPlotFrameProps,
   ChartPlotLayout,
-  ChartPlotPaddingProps,
 } from './ChartPlot.types';
 import {
   getAxisBand,
@@ -33,7 +33,14 @@ import styles from './ChartPlot.module.scss';
 
 type LineProps = Pick<SVGLineElementAttributes<SVGLineElement>, 'x1' | 'x2' | 'y1' | 'y2'>;
 
-export interface ChartPlotProps extends ChartPlotPaddingProps {
+const OUTER_PADDING: Record<ChartPlotAxisSide, 'paddingTop' | 'paddingRight' | 'paddingBottom' | 'paddingLeft'> = {
+  top: 'paddingTop',
+  right: 'paddingRight',
+  bottom: 'paddingBottom',
+  left: 'paddingLeft',
+};
+
+export interface ChartPlotProps extends ChartPlotFrameProps {
 
   /**
    * Draws the chart's data, as SVG, from the plot's size and positions.
@@ -48,18 +55,11 @@ export interface ChartPlotProps extends ChartPlotPaddingProps {
   getTooltip?: (value: string) => ChartTooltipContent;
 
   /**
-   * How the labels at the very ends of the axes sit. `shift` moves them inward
-   * so that they end at the ends of the axes, rather than being cut off.
-   * `center` keeps them centered on their values like the other labels, so
-   * they need padding to show in full. Defaults to `shift`.
+   * Draws marks for the selected category, as SVG, from the same size and
+   * positions as `children`. They sit over the plot without being clipped by
+   * it, so that marks on its edges show in full.
    */
-  edgeLabels?: ChartPlotEdgeLabels;
-
-  /**
-   * Whether a plot which scrolls starts scrolled to the end of its category
-   * axis, such as the latest values of a time series. Defaults to `false`.
-   */
-  scrollToEnd?: boolean;
+  overlay?: (plot: ChartPlotLayout) => ReactNode;
   x: ChartPlotAxisConfig;
   y: ChartPlotAxisConfig;
 }
@@ -69,6 +69,7 @@ export interface ChartPlotProps extends ChartPlotPaddingProps {
  * follow it, so that the browser clips each of them at its own edges.
  */
 export const ChartPlot = ({
+  axisPadding = 0,
   children,
   className,
   edgeLabels = 'shift',
@@ -80,13 +81,15 @@ export const ChartPlot = ({
   paddingBottom = paddingY,
   paddingLeft = paddingX,
   getTooltip,
+  overlay,
   scrollToEnd = false,
   x,
+  xAxisPosition = 'bottom',
   y,
+  yAxisPosition = 'left',
 }: ChartPlotProps): ReactElement => {
   const plotViewportRef = useRef<HTMLDivElement>(null);
-  const xAxisViewportRef = useRef<HTMLDivElement>(null);
-  const yAxisViewportRef = useRef<HTMLDivElement>(null);
+  const axisViewportsRef = useRef<Partial<Record<ChartPlotAxisSide, HTMLDivElement | null>>>({});
   const plotContentRef = useRef<HTMLDivElement>(null);
   const [plotAreaRef, plotAreaSize] = useElementSize<HTMLDivElement>();
   const [xAxisRef, xAxisSize] = useElementSize<HTMLDivElement>();
@@ -98,12 +101,21 @@ export const ChartPlot = ({
   const width = plotWidth ?? plotAreaSize.width;
   const height = plotHeight ?? plotAreaSize.height;
 
+  const xSides: ChartPlotAxisSide[] = xAxisPosition === 'both' ? ['top', 'bottom'] : [xAxisPosition];
+  const ySides: ChartPlotAxisSide[] = yAxisPosition === 'both' ? ['left', 'right'] : [yAxisPosition];
+  const getTrackSize = (side: ChartPlotAxisSide): number => {
+    if (xSides.includes(side)) {
+      return xAxisSize.height + axisPadding;
+    }
+    return ySides.includes(side) ? yAxisSize.width + axisPadding : 0;
+  };
+
   /* The axes' scroll areas take no space of their own, so their tracks are
-   * sized from their labels.
+   * sized from their labels. Sides without an axis have empty tracks.
    */
   const gridStyle: CSSProperties = {
-    gridTemplateColumns: `${yAxisSize.width}px minmax(0, ${plotWidth ? `${plotWidth}px` : '1fr'})`,
-    gridTemplateRows: `minmax(0, ${plotHeight ? `${plotHeight}px` : '1fr'}) ${xAxisSize.height}px`,
+    gridTemplateColumns: `${getTrackSize('left')}px minmax(0, ${plotWidth ? `${plotWidth}px` : '1fr'}) ${getTrackSize('right')}px`,
+    gridTemplateRows: `${getTrackSize('top')}px minmax(0, ${plotHeight ? `${plotHeight}px` : '1fr'}) ${getTrackSize('bottom')}px`,
   };
   const plot: Omit<ChartPlotLayout, 'activeValue'> = {
     bandX: getAxisBand(x, width, xPadding),
@@ -123,12 +135,19 @@ export const ChartPlot = ({
   useScrollToEnd(plotViewportRef, plotContentRef, scrollToEnd, isCategoryY);
 
   const handlePlotScroll = (event: UIEvent<HTMLDivElement>): void => {
-    if (xAxisViewportRef.current) {
-      xAxisViewportRef.current.scrollLeft = event.currentTarget.scrollLeft;
-    }
-    if (yAxisViewportRef.current) {
-      yAxisViewportRef.current.scrollTop = event.currentTarget.scrollTop;
-    }
+    const { scrollLeft, scrollTop } = event.currentTarget;
+    xSides.forEach((side) => {
+      const viewport = axisViewportsRef.current[side];
+      if (viewport) {
+        viewport.scrollLeft = scrollLeft;
+      }
+    });
+    ySides.forEach((side) => {
+      const viewport = axisViewportsRef.current[side];
+      if (viewport) {
+        viewport.scrollTop = scrollTop;
+      }
+    });
   };
 
   const getCategoryAtPointer = (event: PointerEvent<Element>): string | undefined => {
@@ -161,27 +180,55 @@ export const ChartPlot = ({
     );
   };
 
+  /* The overlay sits over the plot's scroll area rather than in it, so it is
+   * moved by the plot's scroll position. Scrolling clears the selection, so it
+   * only needs the position from when the category was selected.
+   */
+  const getOverlayTransform = (): string => {
+    const viewport = plotViewportRef.current;
+    return `translate(${-(viewport?.scrollLeft ?? 0)} ${-(viewport?.scrollTop ?? 0)})`;
+  };
+
+  /* Only the first of a pair of axes is measured, as both have the same
+   * labels.
+   */
+  const renderAxis = (side: ChartPlotAxisSide, index: number): ReactNode => {
+    const isY = side === 'left' || side === 'right';
+    const measureRef = isY ? yAxisRef : xAxisRef;
+    return (
+      <ScrollArea
+        className={styles.chartPlotAxis}
+        data-side={side}
+        disabled
+        focusable={false}
+        key={side}
+        viewportRef={(viewport) => {
+          axisViewportsRef.current[side] = viewport;
+        }}
+      >
+        <div
+          className={isY ? styles.chartPlotYAxisContent : undefined}
+          style={{ ...(isY ? { height } : { width }), [OUTER_PADDING[side]]: axisPadding }}
+        >
+          <ChartPlotAxis
+            axis={isY ? y : x}
+            className={isY ? styles.chartPlotYAxisLabels : undefined}
+            edgeLabels={edgeLabels}
+            padding={isY ? yPadding : xPadding}
+            ref={index === 0 ? measureRef : undefined}
+            side={side}
+          />
+        </div>
+      </ScrollArea>
+    );
+  };
+
   return (
     <Chart className={clsx(styles.chartPlot, className)} getTooltip={getTooltip}>
       {({ activeKey, getAreaHandlers }) => (
         <div className={styles.chartPlotGrid} style={gridStyle}>
-          <ScrollArea
-            className={styles.chartPlotYAxis}
-            disabled
-            focusable={false}
-            viewportRef={yAxisViewportRef}
-          >
-            <div className={styles.chartPlotYAxisContent} style={{ height }}>
-              <ChartPlotAxis
-                axis={y}
-                className={styles.chartPlotYAxisLabels}
-                edgeLabels={edgeLabels}
-                isY
-                padding={yPadding}
-                ref={yAxisRef}
-              />
-            </div>
-          </ScrollArea>
+          {ySides.map(renderAxis)}
+          {xSides.map(renderAxis)}
           <ScrollArea
             className={styles.chartPlotPlot}
             onScroll={handlePlotScroll}
@@ -214,7 +261,6 @@ export const ChartPlot = ({
                     y2={plot.getY(tick)}
                   />
                 ))}
-                {renderHighlight(activeKey)}
                 {width > 0 && height > 0 && children?.({
                   ...plot,
                   activeValue: activeKey,
@@ -222,22 +268,14 @@ export const ChartPlot = ({
               </svg>
             </div>
           </ScrollArea>
-          <ScrollArea
-            className={styles.chartPlotXAxis}
-            disabled
-            focusable={false}
-            viewportRef={xAxisViewportRef}
-          >
-            <div style={{ width }}>
-              <ChartPlotAxis
-                axis={x}
-                edgeLabels={edgeLabels}
-                isY={false}
-                padding={xPadding}
-                ref={xAxisRef}
-              />
-            </div>
-          </ScrollArea>
+          {activeKey !== undefined && (
+            <svg className={styles.chartPlotOverlay}>
+              <g transform={getOverlayTransform()}>
+                {renderHighlight(activeKey)}
+                {overlay?.({ ...plot, activeValue: activeKey })}
+              </g>
+            </svg>
+          )}
         </div>
       )}
     </Chart>

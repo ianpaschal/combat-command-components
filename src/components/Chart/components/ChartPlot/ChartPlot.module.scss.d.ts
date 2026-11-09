@@ -1,10 +1,10 @@
 export declare const chartPlot: string;
+export declare const chartPlotAxis: string;
 export declare const chartPlotGrid: string;
 export declare const chartPlotGridLine: string;
 export declare const chartPlotHighlightLine: string;
+export declare const chartPlotOverlay: string;
 export declare const chartPlotPlot: string;
 export declare const chartPlotSvg: string;
-export declare const chartPlotXAxis: string;
-export declare const chartPlotYAxis: string;
 export declare const chartPlotYAxisContent: string;
 export declare const chartPlotYAxisLabels: string;

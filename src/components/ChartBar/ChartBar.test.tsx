@@ -93,4 +93,28 @@ describe('ChartBar', () => {
     expect(Number(attacker.getAttribute('width'))).toBe(238);
     expect(Number(defender.getAttribute('x'))).toBe(242);
   });
+
+  it('colors a bar by its category\'s color, falling back to its series\' color.', () => {
+    const data: ChartBarDatum[] = [
+      { ...DATA[0], colors: { attacker: 'red' } },
+      DATA[1],
+    ];
+    const { container } = render(<ChartBar data={data} series={SERIES} />);
+    expect(getBars(container).map((bar) => bar.getAttribute('fill'))).toEqual(['red', 'orange', 'blue', 'orange']);
+  });
+
+  it('draws a whisker over each bar with a range.', () => {
+    const data: ChartBarDatum[] = [
+      { ...DATA[0], ranges: { attacker: [50, 70] } },
+      DATA[1],
+    ];
+    const { container } = render(<ChartBar data={data} series={SERIES} />);
+    expect(container.querySelectorAll('[class*="chartBarRange"]')).toHaveLength(1);
+  });
+
+  it('ignores ranges when stacked.', () => {
+    const data: ChartBarDatum[] = [{ ...DATA[0], ranges: { attacker: [50, 70] } }];
+    const { container } = render(<ChartBar data={data} mode="stacked" series={SERIES} />);
+    expect(container.querySelectorAll('[class*="chartBarRange"]')).toHaveLength(0);
+  });
 });

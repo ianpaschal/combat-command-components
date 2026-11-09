@@ -16,8 +16,9 @@ With several series, `mode` sets how they are drawn:
 
 ### Hovering
 
-The first and last x values sit at the edges of the plot.
+The first and last x values sit at the edges of the plot, unless `padding` moves them in.
 Hovering shows a line through the nearest x value, a dot on each series, and a tooltip with every series' value.
+The line and dots sit above the plot, so they show in full on its edges.
 In stacked charts, the tooltip lists the series from top to bottom, as they are drawn.
 
 ### Sizing
@@ -25,3 +26,9 @@ In stacked charts, the tooltip lists the series from top to bottom, as they are 
 Without tick sizes, the plot fills the chart.
 `categoryTickSize` gives each x value a fixed amount of space, so the plot scrolls sideways when the chart is too narrow.
 `categoryTicks` limits which x values are labeled, for charts with many of them.
+`scrollToEnd` starts a scrolling chart at its last x value, which suits time series.
+
+### Axes and Spacing
+
+The axes, padding, edge labels and clipping work as in every chart with axes.
+See "Charts With Axes" on the Charts overview page.

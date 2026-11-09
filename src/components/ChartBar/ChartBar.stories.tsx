@@ -42,6 +42,18 @@ const getData = (count: number): ChartBarDatum[] => (
   FACTIONS.slice(0, count).map((x, i) => ({ x, values: { winRate: getWinRate(i) } }))
 );
 
+/**
+ * Gives each win rate a range which narrows as its faction plays more games,
+ * like a confidence interval.
+ */
+const getRangeData = (count: number): ChartBarDatum[] => (
+  getData(count).map((datum, i) => {
+    const winRate = datum.values.winRate;
+    const margin = 6 + ((i * 7) % 5) * 6;
+    return { ...datum, ranges: { winRate: [Math.max(0, winRate - margin), Math.min(100, winRate + margin)] } };
+  })
+);
+
 const getSideData = (count: number): ChartBarDatum[] => (
   FACTIONS.slice(0, count).map((x, i) => ({
     x,
@@ -74,6 +86,7 @@ const meta: Meta<typeof ChartBar> = {
     },
   },
   argTypes: {
+    axisPadding: { control: 'number' },
     barSize: { control: 'number' },
     categoryTickSize: { control: 'number' },
     className: { table: { disable: true } },
@@ -94,6 +107,8 @@ const meta: Meta<typeof ChartBar> = {
     series: { control: 'object' },
     spacing: { control: 'number' },
     valueTickSize: { control: 'number' },
+    xAxisPosition: { control: 'inline-radio', options: ['top', 'bottom', 'both'] },
+    yAxisPosition: { control: 'inline-radio', options: ['left', 'right', 'both'] },
   },
   render: (args) => (
     <div
@@ -136,6 +151,17 @@ export const FixedSize: Story = {
     data: getData(12),
     orientation: 'horizontal',
     categoryTickSize: 32,
+  },
+};
+
+export const WithRanges: Story = {
+  args: {
+    ...shared,
+    barSize: 16,
+    data: getRangeData(12),
+    orientation: 'horizontal',
+    categoryTickSize: 32,
+    valueTicks: [0, 25, 50, 75, 100],
   },
 };
 
