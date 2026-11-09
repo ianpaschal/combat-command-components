@@ -1,0 +1,10 @@
+@use "../../style/layers";
+
+@layer components {
+  .stat-block {
+    font-size: 2.5rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-header);
+  }
+}

@@ -1,0 +1,11 @@
+import { Meta, Title, Canvas, Markdown, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as ChartPieStories from './ChartPie.stories';
+import Readme from './README.md?raw';
+
+<Meta of={ChartPieStories} />
+<Title />
+<Canvas of={ChartPieStories.Pie} />
+<Markdown>{Readme}</Markdown>
+### Props
+<Controls of={ChartPieStories.Pie} />
+<Stories />

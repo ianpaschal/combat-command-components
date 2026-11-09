@@ -1,0 +1,8 @@
+@use "../../style/layers";
+
+@layer components {
+  .widget-grid {
+    display: grid;
+    width: 100%;
+  }
+}

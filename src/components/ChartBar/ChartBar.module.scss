@@ -1,0 +1,28 @@
+@use "../../style/layers";
+
+@layer components {
+  .chart-bar {
+    &-bar {
+      transition: opacity 150ms;
+
+      &[data-dimmed] {
+        opacity: 0.4;
+      }
+    }
+
+    &-range {
+      pointer-events: none;
+
+      fill: none;
+      stroke: var(--color-text-muted);
+      stroke-linecap: round;
+      stroke-width: 1.5;
+
+      transition: opacity 150ms;
+
+      &[data-dimmed] {
+        opacity: 0.4;
+      }
+    }
+  }
+}

@@ -16,6 +16,10 @@ export interface RatioBarProps {
   removeEmpty?: boolean;
 }
 
+/**
+ * @deprecated Use `ChartRatio`, which adds gaps, rounded corners, tooltips and
+ * "Other" folding, and takes the same data as `ChartPie`.
+ */
 export const RatioBar = ({
   className,
   sections,

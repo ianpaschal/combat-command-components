@@ -1,0 +1,102 @@
+@use "../../../../style/layers";
+
+@layer components {
+  .chart-plot {
+    --chart-plot-grid-line-color: var(--color-card-border);
+
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    min-height: 0;
+
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-small);
+    color: var(--color-text-body);
+
+    &-grid {
+      display: grid;
+      align-content: start;
+      justify-content: start;
+
+      width: 100%;
+      height: 100%;
+    }
+
+    &-plot {
+      grid-column: 2;
+      grid-row: 2;
+      background-color: var(--chart-plot-plot-color, transparent);
+
+      &:focus-visible {
+        outline: var(--focus-width) solid var(--color-ghost-secondary-focus-outline);
+        outline-offset: calc(-1 * var(--focus-width));
+      }
+    }
+
+    &-svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    &-overlay {
+      pointer-events: none;
+
+      z-index: 1;
+
+      overflow: visible;
+      grid-column: 2;
+      grid-row: 2;
+
+      width: 100%;
+      height: 100%;
+    }
+
+    &-grid-line {
+      stroke: var(--chart-plot-grid-line-color);
+      stroke-width: 1;
+    }
+
+    &-highlight-line {
+      stroke: var(--color-text-header);
+      stroke-width: 1;
+    }
+
+    /* The axes follow the plot's scroll position, and can't be scrolled
+     * themselves. Each sits in the track on its side of the plot.
+     */
+    &-axis {
+      pointer-events: none;
+
+      &[data-side="top"] {
+        grid-column: 2;
+        grid-row: 1;
+      }
+
+      &[data-side="right"] {
+        grid-column: 3;
+        grid-row: 2;
+      }
+
+      &[data-side="bottom"] {
+        grid-column: 2;
+        grid-row: 3;
+      }
+
+      &[data-side="left"] {
+        grid-column: 1;
+        grid-row: 2;
+      }
+    }
+
+    &-y-axis-content {
+      width: max-content;
+    }
+
+    &-y-axis-labels {
+      height: 100%;
+    }
+  }
+}
