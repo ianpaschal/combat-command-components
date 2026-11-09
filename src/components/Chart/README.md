@@ -15,6 +15,20 @@ Tooltips are rendered in a portal on the document's body, with a fixed position.
 They are never clipped by a card or scroll area around the chart.
 They open towards the middle of the viewport, so that they stay on screen.
 
+### Keyboard and Screen Readers
+
+The plot of a chart with axes can be focused with the Tab key, and shows a focus ring when it is.
+
+- The arrow keys select the next or previous category, and Home and End select the first or last.
+- A category out of view is scrolled into view, and its tooltip is shown in the middle of the plot.
+- Escape clears the selection, as does moving focus away.
+
+A category selected with the keyboard is announced to screen readers through a live region, with its title and each series' value.
+The tooltip itself is hidden from screen readers, so that it isn't read twice.
+
+`label` gives the plot its accessible name, such as the chart's title.
+The SVG and the axes are hidden from screen readers.
+
 ### Data
 
 Charts with axes take their data in the same shape:
@@ -24,6 +38,11 @@ Charts with axes take their data in the same shape:
 
 Charts without axes take a list of slices, each with a `key`, `color`, `label` and `value`.
 `<ChartPie/>` and `<ChartRatio/>` take the same slices, so the same data can be shown either way.
+
+### Legends
+
+Charts don't draw their own legends.
+`<ChartLegend/>` takes the same `series` as a chart, so it can be placed anywhere around it.
 
 ### Sizing
 

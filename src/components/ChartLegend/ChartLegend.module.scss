@@ -1,0 +1,43 @@
+@use "../../style/layers";
+
+@layer components {
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+
+    &[data-align="start"] {
+      justify-content: start;
+    }
+
+    &[data-align="center"] {
+      justify-content: center;
+    }
+
+    &[data-align="end"] {
+      justify-content: end;
+    }
+
+    &-item {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+
+      font-size: var(--font-size-small);
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    &-swatch {
+      flex-shrink: 0;
+      width: 0.625rem;
+      height: 0.625rem;
+      border-radius: 2px;
+    }
+  }
+}

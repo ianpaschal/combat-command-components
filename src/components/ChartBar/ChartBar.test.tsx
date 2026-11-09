@@ -1,4 +1,9 @@
-import { cleanup, render } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 import {
   afterEach,
   beforeEach,
@@ -101,6 +106,18 @@ describe('ChartBar', () => {
     ];
     const { container } = render(<ChartBar data={data} series={SERIES} />);
     expect(getBars(container).map((bar) => bar.getAttribute('fill'))).toEqual(['red', 'orange', 'blue', 'orange']);
+  });
+
+  it('selects categories with the arrow keys, announcing them, and clears with Escape.', () => {
+    const { container } = render(<ChartBar data={DATA} label="Win rates" series={SERIES} />);
+    const plot = screen.getByRole('group', { name: 'Win rates' });
+    fireEvent.keyDown(plot, { key: 'ArrowRight' });
+    fireEvent.keyDown(plot, { key: 'ArrowRight' });
+    expect(getBars(container).map((bar) => bar.hasAttribute('data-dimmed'))).toEqual([true, true, false, false]);
+    expect(container.querySelector('[aria-live]')?.textContent).toBe('Italy, Attacker 45, Defender 55');
+    fireEvent.keyDown(plot, { key: 'Escape' });
+    expect(getBars(container).some((bar) => bar.hasAttribute('data-dimmed'))).toBe(false);
+    expect(container.querySelector('[aria-live]')?.textContent).toBe('');
   });
 
   it('draws a whisker over each bar with a range.', () => {

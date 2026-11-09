@@ -1,5 +1,6 @@
 import {
   CSSProperties,
+  KeyboardEvent,
   PointerEvent,
   ReactElement,
   ReactNode,
@@ -27,6 +28,7 @@ import {
   getAxisFraction,
   getAxisPosition,
   getFixedLength,
+  getKeyboardIndex,
 } from './ChartPlot.utils';
 
 import styles from './ChartPlot.module.scss';
@@ -81,6 +83,7 @@ export const ChartPlot = ({
   paddingBottom = paddingY,
   paddingLeft = paddingX,
   getTooltip,
+  label,
   overlay,
   scrollToEnd = false,
   x,
@@ -162,6 +165,58 @@ export const ChartPlot = ({
     ));
   };
 
+  const categoryValues = categoryAxis.type === 'category' ? categoryAxis.values : [];
+
+  /* The arrow keys, Home and End select a category, scrolling it into view if
+   * it is out of it, and Escape clears the selection.
+   */
+  const handlePlotKeyDown = (
+    event: KeyboardEvent<HTMLDivElement>,
+    activeKey: string | undefined,
+    select: (key: string | undefined) => void,
+  ): void => {
+    if (event.key === 'Escape' && activeKey !== undefined) {
+      event.preventDefault();
+      select(undefined);
+      return;
+    }
+    const index = getKeyboardIndex(event.key, categoryValues.indexOf(activeKey ?? ''), categoryValues.length);
+    if (index === undefined) {
+      return;
+    }
+    event.preventDefault();
+    const value = categoryValues[index];
+    const viewport = plotViewportRef.current;
+    if (viewport) {
+      const position = getCategoryPosition(value);
+      const start = isCategoryY ? viewport.scrollTop : viewport.scrollLeft;
+      const length = isCategoryY ? viewport.clientHeight : viewport.clientWidth;
+      if (position < start || position > start + length) {
+        viewport[isCategoryY ? 'scrollTop' : 'scrollLeft'] = position - length / 2;
+      }
+    }
+    select(value);
+  };
+
+  /* A category selected with the keyboard has its tooltip in the middle of the
+   * plot's visible part, across from the category.
+   */
+  const getAnchor = (value: string): { x: number; y: number } | undefined => {
+    const viewport = plotViewportRef.current;
+    if (!viewport) {
+      return undefined;
+    }
+    const rect = viewport.getBoundingClientRect();
+    const position = getCategoryPosition(value);
+    return isCategoryY ? {
+      x: rect.left + rect.width / 2,
+      y: rect.top + position - viewport.scrollTop,
+    } : {
+      x: rect.left + position - viewport.scrollLeft,
+      y: rect.top + rect.height / 2,
+    };
+  };
+
   /* Points get a line through them. Bands are left to the chart, which knows
    * the size of what it draws in them.
    */
@@ -197,6 +252,7 @@ export const ChartPlot = ({
     const measureRef = isY ? yAxisRef : xAxisRef;
     return (
       <ScrollArea
+        aria-hidden
         className={styles.chartPlotAxis}
         data-side={side}
         disabled
@@ -224,15 +280,21 @@ export const ChartPlot = ({
   };
 
   return (
-    <Chart className={clsx(styles.chartPlot, className)} getTooltip={getTooltip}>
-      {({ activeKey, getAreaHandlers }) => (
+    <Chart className={clsx(styles.chartPlot, className)} getAnchor={getAnchor} getTooltip={getTooltip}>
+      {({ activeKey, getAreaHandlers, select }) => (
         <div className={styles.chartPlotGrid} style={gridStyle}>
           {ySides.map(renderAxis)}
           {xSides.map(renderAxis)}
           <ScrollArea
+            aria-label={label}
             className={styles.chartPlotPlot}
+            focusable={false}
+            onBlur={() => select(undefined)}
+            onKeyDown={(event) => handlePlotKeyDown(event, activeKey, select)}
             onScroll={handlePlotScroll}
             ref={plotAreaRef}
+            role="group"
+            tabIndex={0}
             viewportRef={plotViewportRef}
           >
             <div
@@ -240,7 +302,7 @@ export const ChartPlot = ({
               style={{ width, height }}
               {...getAreaHandlers(getCategoryAtPointer)}
             >
-              <svg className={styles.chartPlotSvg}>
+              <svg aria-hidden className={styles.chartPlotSvg}>
                 {x.type === 'value' && x.ticks.map((tick) => (
                   <line
                     className={styles.chartPlotGridLine}
@@ -269,7 +331,7 @@ export const ChartPlot = ({
             </div>
           </ScrollArea>
           {activeKey !== undefined && (
-            <svg className={styles.chartPlotOverlay}>
+            <svg aria-hidden className={styles.chartPlotOverlay}>
               <g transform={getOverlayTransform()}>
                 {renderHighlight(activeKey)}
                 {overlay?.({ ...plot, activeValue: activeKey })}

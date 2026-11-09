@@ -9,6 +9,7 @@ With several series, `mode` sets how they are drawn:
 - `stacked` - The series are drawn end to end in a single bar. Stacked bars only support values of 0 and above.
 
 `spacing` sets the gap between grouped bars, or between the segments of a stacked bar.
+To name the series, place a `<ChartLegend/>` with the same `series` next to the chart.
 
 A category can give each series its own color as `colors`, keyed by series like `values`.
 Use it to tell apart the bars of a single series, such as by shading them from highest to lowest.

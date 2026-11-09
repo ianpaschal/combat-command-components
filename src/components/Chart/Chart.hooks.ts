@@ -3,6 +3,7 @@ import {
   RefObject,
   useEffect,
   useLayoutEffect,
+  useReducer,
   useRef,
   useState,
 } from 'react';
@@ -50,14 +51,18 @@ export const useElementSize = <T extends HTMLElement>(): [RefObject<T | null>, E
  * @param ref - The element
  * @param isEnabled - Whether to listen
  * @param onDismiss - The callback
+ * @param onScroll - Called instead of `onDismiss` when anything scrolls, if given
  */
 export const useChartDismiss = (
   ref: RefObject<HTMLElement | null>,
   isEnabled: boolean,
   onDismiss: () => void,
+  onScroll?: () => void,
 ): void => {
   const callbackRef = useRef(onDismiss);
   callbackRef.current = onDismiss;
+  const scrollCallbackRef = useRef(onScroll);
+  scrollCallbackRef.current = onScroll;
 
   useEffect(() => {
     if (!isEnabled) {
@@ -68,7 +73,7 @@ export const useChartDismiss = (
         callbackRef.current();
       }
     };
-    const handleScroll = (): void => callbackRef.current();
+    const handleScroll = (): void => (scrollCallbackRef.current ?? callbackRef.current)();
     document.addEventListener('pointerdown', handleDocumentPointerDown);
     document.addEventListener('scroll', handleScroll, { capture: true, passive: true });
     return () => {
@@ -83,9 +88,10 @@ export type ChartActiveItem = {
 
   /**
    * The pointer's position in the viewport, where the tooltip is shown.
+   * Without it, the item was selected with the keyboard.
    */
-  x: number;
-  y: number;
+  x?: number;
+  y?: number;
 };
 
 export type ChartPointerHandlers = {
@@ -111,20 +117,29 @@ export type ChartSelection = {
    * Gets the pointer handlers for one item, such as a slice or a segment.
    */
   getItemHandlers: (key: string) => ChartPointerHandlers;
+
+  /**
+   * Selects an item with the keyboard, or clears the selection.
+   */
+  select: (key: string | undefined) => void;
 };
 
 /**
- * Tracks which of a chart's items is selected: the hovered one, or on touch
- * screens the tapped one. Tapping a selected item again, tapping outside the
- * chart, or scrolling clears it.
+ * Tracks which of a chart's items is selected: the hovered one, on touch
+ * screens the tapped one, or the one picked with the keyboard. Tapping a
+ * selected item again, tapping outside the chart, or scrolling clears it.
+ * Scrolling keeps an item picked with the keyboard, and redraws the chart so
+ * that its tooltip and marks follow it.
  *
  * @param ref - The chart's root element
- * @returns The selected item, and the pointer handlers to attach to items or
- *   areas
+ * @returns The selected item, the pointer handlers to attach to items or
+ *   areas, and a way to select with the keyboard
  */
 export const useChartSelection = (ref: RefObject<HTMLElement | null>): ChartSelection => {
   const [active, setActive] = useState<ChartActiveItem>();
-  useChartDismiss(ref, !!active, () => setActive(undefined));
+  const [, redraw] = useReducer((count: number) => count + 1, 0);
+  const isKeyboardSelection = active !== undefined && active.x === undefined;
+  useChartDismiss(ref, !!active, () => setActive(undefined), isKeyboardSelection ? redraw : undefined);
 
   const getAreaHandlers: ChartSelection['getAreaHandlers'] = (getKey) => {
     const getActiveItem = (event: ReactPointerEvent<Element>): ChartActiveItem | undefined => {
@@ -155,5 +170,12 @@ export const useChartSelection = (ref: RefObject<HTMLElement | null>): ChartSele
 
   const getItemHandlers: ChartSelection['getItemHandlers'] = (key) => getAreaHandlers(() => key);
 
-  return { active, getAreaHandlers, getItemHandlers };
+  const select: ChartSelection['select'] = (key) => setActive(key === undefined ? undefined : { key });
+
+  return {
+    active,
+    getAreaHandlers,
+    getItemHandlers,
+    select,
+  };
 };

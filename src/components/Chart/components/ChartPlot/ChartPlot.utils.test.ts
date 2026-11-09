@@ -15,6 +15,7 @@ import {
   getAxisPosition,
   getCategorySteps,
   getFixedLength,
+  getKeyboardIndex,
   getNiceTicks,
 } from './ChartPlot.utils';
 
@@ -140,5 +141,29 @@ describe('getNiceTicks', () => {
 
   it('avoids floating point noise.', () => {
     expect(getNiceTicks([0.3])).toEqual([0, 0.1, 0.2, 0.3]);
+  });
+});
+
+describe('getKeyboardIndex', () => {
+  it('steps forward and back with the arrow keys, stopping at the ends.', () => {
+    expect(getKeyboardIndex('ArrowRight', 1, 4)).toBe(2);
+    expect(getKeyboardIndex('ArrowDown', 3, 4)).toBe(3);
+    expect(getKeyboardIndex('ArrowLeft', 1, 4)).toBe(0);
+    expect(getKeyboardIndex('ArrowUp', 0, 4)).toBe(0);
+  });
+
+  it('starts at the first category stepping forward, and the last stepping back.', () => {
+    expect(getKeyboardIndex('ArrowRight', -1, 4)).toBe(0);
+    expect(getKeyboardIndex('ArrowLeft', -1, 4)).toBe(3);
+  });
+
+  it('jumps to the ends with Home and End.', () => {
+    expect(getKeyboardIndex('Home', 2, 4)).toBe(0);
+    expect(getKeyboardIndex('End', 1, 4)).toBe(3);
+  });
+
+  it('ignores other keys, and charts without categories.', () => {
+    expect(getKeyboardIndex('Enter', 1, 4)).toBeUndefined();
+    expect(getKeyboardIndex('ArrowRight', -1, 0)).toBeUndefined();
   });
 });

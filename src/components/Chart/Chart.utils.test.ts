@@ -4,7 +4,19 @@ import {
   it,
 } from 'vitest';
 
-import { getTooltipStyle } from './Chart.utils';
+import { getAnnouncement, getTooltipStyle } from './Chart.utils';
+
+describe('getAnnouncement', () => {
+  it('reads out the title, then each row\'s label and value.', () => {
+    expect(getAnnouncement({
+      title: 'Germany',
+      rows: [
+        { color: 'blue', label: 'Attacker', value: '60%' },
+        { color: 'orange', label: 'Defender', value: '40%' },
+      ],
+    })).toBe('Germany, Attacker 60%, Defender 40%');
+  });
+});
 
 describe('getTooltipStyle', () => {
   it('places the tooltip below and right of the pointer in the top left of the viewport.', () => {

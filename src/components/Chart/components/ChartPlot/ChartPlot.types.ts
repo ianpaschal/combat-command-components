@@ -149,6 +149,12 @@ export type ChartPlotFrameProps = ChartPlotPaddingProps & {
   axisPadding?: number;
 
   /**
+   * The chart's accessible name, such as its title, for the plot and its data
+   * table. Screen readers announce it when the plot is focused.
+   */
+  label?: string;
+
+  /**
    * How the labels at the very ends of the axes sit. `shift` moves them inward,
    * so that they end at the ends of the axes rather than being cut off.
    * `center` keeps them centered on their values like the other labels, so

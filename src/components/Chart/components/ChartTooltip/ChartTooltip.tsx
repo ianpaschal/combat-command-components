@@ -37,6 +37,8 @@ export interface ChartTooltipProps extends ChartTooltipContent {
 /* A chart's tooltip: the hovered item, and one row per series. It is shown next
  * to the pointer, in a portal on the document's body, so that it is never
  * clipped by a card or scroll area around the chart.
+ *
+ * It is hidden from screen readers, which hear the chart's announcement instead.
  */
 export const ChartTooltip = ({
   rows,
@@ -45,6 +47,7 @@ export const ChartTooltip = ({
   y,
 }: ChartTooltipProps): ReactElement => createPortal(
   <div
+    aria-hidden
     className={styles.chartTooltipPortal}
     style={getTooltipStyle(x, y, window.innerWidth, window.innerHeight)}
   >

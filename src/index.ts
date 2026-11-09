@@ -7,6 +7,7 @@ export * from './components/Breadcrumbs';
 export * from './components/Button';
 export * from './components/Card';
 export * from './components/ChartBar';
+export * from './components/ChartLegend';
 export * from './components/ChartLine';
 export * from './components/ChartPie';
 export * from './components/ChartRatio';

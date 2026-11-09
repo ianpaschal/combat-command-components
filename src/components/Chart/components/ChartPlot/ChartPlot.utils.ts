@@ -101,6 +101,38 @@ export const getFixedLength = (
 };
 
 /**
+ * Gets the category a key moves the selection to. The arrow keys step to the
+ * next or previous category, and Home and End jump to the first or last. With
+ * nothing selected, stepping forward starts at the first category and stepping
+ * back at the last.
+ *
+ * @param key - The key's name, as in `KeyboardEvent.key`
+ * @param index - The index of the selected category, or -1 if there is none
+ * @param count - How many categories there are
+ * @returns The index of the category to select, or `undefined` if the key
+ *   doesn't move the selection
+ */
+export const getKeyboardIndex = (key: string, index: number, count: number): number | undefined => {
+  if (!count) {
+    return undefined;
+  }
+  switch (key) {
+    case 'ArrowRight':
+    case 'ArrowDown':
+      return index < 0 ? 0 : Math.min(index + 1, count - 1);
+    case 'ArrowLeft':
+    case 'ArrowUp':
+      return index < 0 ? count - 1 : Math.max(index - 1, 0);
+    case 'Home':
+      return 0;
+    case 'End':
+      return count - 1;
+    default:
+      return undefined;
+  }
+};
+
+/**
  * Gets evenly spaced round values from 0, or from the lowest value if it is
  * negative, up to at least the highest value, to mark on a value axis.
  *

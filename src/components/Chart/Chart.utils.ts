@@ -1,5 +1,7 @@
 import { CSSProperties } from 'react';
 
+import type { ChartTooltipContent } from './components/ChartTooltip';
+
 const TOOLTIP_OFFSET = 12;
 
 /**
@@ -22,3 +24,13 @@ export const getTooltipStyle = (
   const shiftY = y > viewportHeight / 2 ? `calc(-100% - ${TOOLTIP_OFFSET}px)` : `${TOOLTIP_OFFSET}px`;
   return { left: x, top: y, transform: `translate(${shiftX}, ${shiftY})` };
 };
+
+/**
+ * Reads out a tooltip as one sentence, for screen readers.
+ *
+ * @param tooltip - The tooltip
+ * @returns The tooltip's title, then each row's label and value
+ */
+export const getAnnouncement = ({ rows, title }: ChartTooltipContent): string => (
+  [title, ...rows.map(({ label, value }) => `${label} ${value}`)].join(', ')
+);

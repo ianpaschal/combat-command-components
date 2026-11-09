@@ -8,6 +8,8 @@ With several series, `mode` sets how they are drawn:
 - `overlaid` - Each line runs from 0, over the ones before it. With `fill`, each line has a gradient under it.
 - `stacked` - Each line runs on top of the ones before it, with solid bands between them. Stacked lines only support values of 0 and above.
 
+To name the series, place a `<ChartLegend/>` with the same `series` next to the chart.
+
 ### Curves
 
 `curve` sets how lines run between points.

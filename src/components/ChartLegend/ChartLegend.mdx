@@ -1,0 +1,11 @@
+import { Meta, Title, Canvas, Markdown, Controls, Stories } from '@storybook/addon-docs/blocks';
+import * as ChartLegendStories from './ChartLegend.stories';
+import Readme from './README.md?raw';
+
+<Meta of={ChartLegendStories} />
+<Title />
+<Canvas of={ChartLegendStories.Default} />
+<Markdown>{Readme}</Markdown>
+### Props
+<Controls of={ChartLegendStories.Default} />
+<Stories />
