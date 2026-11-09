@@ -21,7 +21,7 @@ export type ChartPlotCategoryAxis = {
   placement?: 'band' | 'point';
 
   /**
-   * The categories to label. Without them, every category is labelled.
+   * The categories to label. Without them, every category is labeled.
    */
   ticks?: string[];
 

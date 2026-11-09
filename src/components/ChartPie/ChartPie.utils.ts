@@ -212,7 +212,8 @@ export const getSlicePath = ({
   );
 
   /* A whole circle has no edges, and can't be drawn as one arc, so it is drawn
-   * as two halves. */
+   * as two halves.
+   */
   if (span >= Math.PI * 2 - 1e-9) {
     const circle = (radius: number, isClockwise: boolean): string => (
       `M${toPoint(radius, 0)}${arc(radius, true, isClockwise, toPoint(radius, Math.PI))}${arc(radius, true, isClockwise, toPoint(radius, 0))}Z`

@@ -5,7 +5,8 @@ export type WidgetGridColumns = number | Record<number, number>;
  *
  * @param columns - A fixed column count, or a map of minimum width to column count
  * @param width - The grid's width in pixels
- * @returns The column count of the widest minimum width that fits, or of the narrowest if none fit
+ * @returns The column count of the widest minimum width that fits, or of the narrowest if none fit,
+ *   or 1 if the map is empty
  */
 export const getColumnCount = (columns: WidgetGridColumns, width: number): number => {
   if (typeof columns === 'number') {
@@ -13,5 +14,5 @@ export const getColumnCount = (columns: WidgetGridColumns, width: number): numbe
   }
   const minWidths = Object.keys(columns).map(Number).sort((a, b) => a - b);
   const minWidth = minWidths.filter((value) => value <= width).pop() ?? minWidths[0];
-  return columns[minWidth];
+  return columns[minWidth] ?? 1;
 };

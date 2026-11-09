@@ -53,8 +53,8 @@ export const ChartTooltip = ({
   >
     <div className={sx({ variant: 'solid', corners: 'normal', elevation: 5 }, styles.chartTooltip)}>
       <div className={styles.chartTooltipTitle}>{title}</div>
-      {rows.map(({ color, label, value }) => (
-        <div className={styles.chartTooltipRow} key={label}>
+      {rows.map(({ color, label, value }, i) => (
+        <div className={styles.chartTooltipRow} key={i}>
           <span className={styles.chartTooltipSwatch} style={{ backgroundColor: color }} />
           <span className={styles.chartTooltipLabel}>{label}</span>
           <span className={styles.chartTooltipValue}>{value}</span>

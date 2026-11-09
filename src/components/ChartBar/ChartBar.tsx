@@ -81,7 +81,7 @@ export interface ChartBarProps extends ChartPlotFrameProps {
    */
   categoryTickSize?: number;
 
-  /** The categories to label. Without them, every category is labelled. */
+  /** The categories to label. Without them, every category is labeled. */
   categoryTicks?: string[];
   className?: string;
 

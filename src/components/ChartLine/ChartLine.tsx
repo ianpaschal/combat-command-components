@@ -58,7 +58,7 @@ export interface ChartLineProps extends ChartPlotFrameProps {
   categoryTickSize?: number;
 
   /**
-   * The x values to label. Without them, every x value is labelled.
+   * The x values to label. Without them, every x value is labeled.
    */
   categoryTicks?: string[];
   className?: string;

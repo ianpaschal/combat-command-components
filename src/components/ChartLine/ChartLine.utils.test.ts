@@ -54,7 +54,7 @@ describe('getSmoothPath', () => {
     expect(getNumbers(getSmoothPath([[0, 0], [0, 10], [10, 20]])).every(Number.isFinite)).toBe(true);
   });
 
-  it('stays flat between equal neighbouring points.', () => {
+  it('stays flat between equal neighboring points.', () => {
     const path = getSmoothPath([[0, 50], [50, 50], [100, 50]]);
     expect(getNumbers(path).filter((_, i) => i % 2 === 1).every((y) => y === 50)).toBe(true);
   });
