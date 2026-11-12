@@ -15,7 +15,7 @@ import { Widget } from './Widget';
 import { WidgetPosition } from './Widget.utils';
 
 const POSITIONS: Record<number, WidgetPosition> = {
-  4: { from: [1, 1], to: [2, 1] },
+  4: { from: [0, 0], to: [2, 1] },
 };
 
 describe('Widget', () => {

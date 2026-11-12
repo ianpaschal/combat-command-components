@@ -1,2 +1,2 @@
 export { Widget, type WidgetProps } from './Widget';
-export type { WidgetPosition, WidgetSlot } from './Widget.utils';
+export type { WidgetCorner, WidgetPosition } from './Widget.utils';

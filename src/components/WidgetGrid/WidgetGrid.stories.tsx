@@ -33,33 +33,33 @@ export const Default: Story = {
       <Widget
         glass={glass}
         positions={{
-          2: { from: [1, 1], to: [1, 1] },
-          4: { from: [1, 1], to: [1, 1] },
-          6: { from: [1, 1], to: [1, 1] },
+          2: { from: [0, 0], to: [1, 1] },
+          4: { from: [0, 0], to: [1, 1] },
+          6: { from: [0, 0], to: [1, 1] },
         }}
       />
       <Widget
         glass={glass}
         positions={{
-          2: { from: [2, 1], to: [2, 1] },
-          4: { from: [1, 2], to: [1, 2] },
-          6: { from: [1, 2], to: [1, 2] },
+          2: { from: [1, 0], to: [2, 1] },
+          4: { from: [0, 1], to: [1, 2] },
+          6: { from: [0, 1], to: [1, 2] },
         }}
       />
       <Widget
         glass={glass}
         positions={{
-          2: { from: [1, 2], to: [2, 3] },
-          4: { from: [2, 1], to: [3, 2] },
-          6: { from: [2, 1], to: [3, 2] },
+          2: { from: [0, 1], to: [2, 3] },
+          4: { from: [1, 0], to: [3, 2] },
+          6: { from: [1, 0], to: [3, 2] },
         }}
       />
       <Widget
         glass={glass}
         positions={{
-          2: { from: [1, 4], to: [2, 4] },
-          4: { from: [4, 1], to: [4, 2] },
-          6: { from: [4, 1], to: [6, 2] },
+          2: { from: [0, 3], to: [2, 4] },
+          4: { from: [3, 0], to: [4, 2] },
+          6: { from: [3, 0], to: [6, 2] },
         }}
       />
     </WidgetGrid>
