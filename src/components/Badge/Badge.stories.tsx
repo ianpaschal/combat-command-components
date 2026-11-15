@@ -30,6 +30,29 @@ const meta: Meta<typeof Badge> = {
       ],
       description: 'The color for the badge.',
     },
+    position: {
+      control: 'select',
+      options: [
+        'top-left',
+        'top',
+        'top-right',
+        'left',
+        'right',
+        'bottom-right',
+        'bottom',
+        'bottom-left',
+      ],
+      description: 'Where the badge sits relative to its child.',
+    },
+    size: {
+      control: 'radio',
+      options: [
+        'small',
+        'normal',
+        'large',
+      ],
+      description: 'The size of the badge.',
+    },
   },
 };
 

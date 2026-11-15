@@ -10,14 +10,15 @@
       --content-size: 0.75rem;
       --padding-y: calc((var(--size) - var(--content-size)) / 2);
       --padding-x: calc(var(--padding-y) + 0.125rem);
+      --offset: calc(var(--size) / -2);
 
       @include text.shared;
 
       content: var(--badge-value);
 
       position: absolute;
-      top: calc(var(--size) / -2);
-      right: calc(var(--size) / -2);
+      top: var(--offset);
+      right: var(--offset);
 
       box-sizing: border-box;
       min-width: var(--size);
@@ -33,6 +34,63 @@
       text-align: center;
 
       background: var(--badge-color-bg);
+    }
+
+    &[data-badge-size="small"]::after {
+      --size: 1rem;
+      --content-size: 0.625rem;
+    }
+
+    &[data-badge-size="large"]::after {
+      --size: 1.5rem;
+      --content-size: 0.875rem;
+    }
+
+    &[data-badge-position="top-left"]::after {
+      top: var(--offset);
+      right: auto;
+      left: var(--offset);
+    }
+
+    &[data-badge-position="top"]::after {
+      top: var(--offset);
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &[data-badge-position="left"]::after {
+      top: 50%;
+      right: auto;
+      left: var(--offset);
+      transform: translateY(-50%);
+    }
+
+    &[data-badge-position="right"]::after {
+      top: 50%;
+      right: var(--offset);
+      transform: translateY(-50%);
+    }
+
+    &[data-badge-position="bottom-right"]::after {
+      top: auto;
+      right: var(--offset);
+      bottom: var(--offset);
+    }
+
+    &[data-badge-position="bottom"]::after {
+      top: auto;
+      right: auto;
+      bottom: var(--offset);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &[data-badge-position="bottom-left"]::after {
+      top: auto;
+      right: auto;
+      bottom: var(--offset);
+      left: var(--offset);
     }
   }
 }
