@@ -24,6 +24,7 @@ export * from './components/ImageViewer';
 export * from './components/InputCurrency';
 export * from './components/InputDateTime';
 export * from './components/InputDuration';
+export * from './components/InputFile';
 export * from './components/InputPanel';
 export * from './components/InputText';
 export * from './components/InputTextArea';
