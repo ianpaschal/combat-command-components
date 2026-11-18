@@ -3,12 +3,20 @@ import { nanoid } from 'nanoid';
 
 import { DialogProps } from './Dialog';
 
+export type DialogOwnProps = Omit<DialogProps, 'id' | 'open' | 'dirty' | 'disabled'>;
+
 export const createDialogManager = () => {
   const store = new Store<DialogProps[]>([]);
 
-  const open = (props: Omit<DialogProps, 'id' | 'open' | 'dirty'>): string => {
+  const open = (props: DialogOwnProps): string => {
     const id = nanoid();
-    store.setState((state) => [...state, { id, open: false, dirty: false, ...props }]);
+    store.setState((state) => [ ...state, {
+      id,
+      open: false,
+      dirty: false,
+      disabled: false,
+      ...props,
+    }]);
     return id;
   };
 
@@ -43,7 +51,14 @@ export const createDialogManager = () => {
     } : d));
   };
 
-  const setProps = (id: string, props: Omit<DialogProps, 'id' | 'open' | 'dirty'>): void => {
+  const setDisabled = (id: string, disabled: boolean): void => {
+    store.setState((state) => state.map((d) => d.id === id ? {
+      ...d,
+      disabled,
+    } : d));
+  };
+
+  const setProps = ( id: string, props: DialogOwnProps): void => {
     store.setState((state) => state.map((d) => d.id === id ? {
       ...d,
       ...props,
@@ -55,6 +70,7 @@ export const createDialogManager = () => {
     open,
     remove,
     setDirty,
+    setDisabled,
     setOpen,
     setProps,
     store,

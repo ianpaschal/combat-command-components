@@ -27,6 +27,7 @@ export type DialogProps = {
   confirmText?: string;
   content?: ReactNode;
   dirty: boolean;
+  disabled: boolean;
   disablePadding?: boolean;
   disableScroll?: boolean;
   fullHeight?: boolean;
@@ -52,6 +53,7 @@ export const Dialog = ({
   confirmText,
   content,
   dirty,
+  disabled,
   disablePadding = false,
   disableScroll = false,
   fullHeight = false,
@@ -70,7 +72,7 @@ export const Dialog = ({
   const { remove, setDirty, setOpen } = useDialogManager();
 
   const handleOpenChange = (open: boolean): void => {
-    if (!open) {
+    if (!open && !disabled) {
       if (onCancel) {
         onCancel(dirty);
       } else {
@@ -127,7 +129,7 @@ export const Dialog = ({
             </BaseDialog.Title>
             {!preventCancel && (
               <BaseDialog.Close render={(props) => (
-                <Button {...props} className={styles.dialogHeaderClose} icon={<X />} variant="ghost" intent="secondary" />
+                <Button {...props} className={styles.dialogHeaderClose} icon={<X />} variant="ghost" intent="secondary" disabled={disabled} />
               )} />
             )}
           </div>
@@ -147,19 +149,20 @@ export const Dialog = ({
           <div className={styles.dialogFooter}>
             {!preventCancel && (
               <BaseDialog.Close render={(props) => (
-                <Button {...props} text={cancelText ?? 'Cancel'} variant="shaded" intent="secondary" />
+                <Button {...props} text={cancelText ?? 'Cancel'} variant="shaded" intent="secondary" disabled={disabled} />
               )} />
             )}
             {actions?.length ? actions.map((action, i) => (
               <Button
                 {...action}
                 key={`action_${i}`}
+                disabled={disabled || action.disabled}
                 tabIndex={0}
                 onClick={() => action.onClick ? action.onClick(id) : undefined}
               />
             )) : (
               <BaseDialog.Close render={(props) => (
-                <Button {...props} text={confirmText ?? 'Confirm'} intent="primary" />
+                <Button {...props} text={confirmText ?? 'Confirm'} intent="primary" disabled={disabled} />
               )} />
             )}
           </div>

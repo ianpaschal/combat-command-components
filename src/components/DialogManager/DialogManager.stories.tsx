@@ -99,6 +99,36 @@ const DirtyConfirmationStory = (args: StoryArgs): ReactElement => {
   );
 };
 
+const DisabledStory = (args: StoryArgs): ReactElement => {
+  const { open, setDisabled } = useDialogManager();
+  const handleClick = (): void => {
+    open({
+      ...args,
+      renderContent: (props: DialogContext) => (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'start' }}>
+          <span>Disabling the dialog prevents it from being closed and disables all of its actions.</span>
+          <Button
+            text="Disable for 3 Seconds"
+            onClick={() => {
+              setDisabled(props.id, true);
+              setTimeout(() => setDisabled(props.id, false), 3000);
+            }}
+          />
+        </div>
+      ),
+      actions: [
+        {
+          text: 'Save',
+          intent: 'primary',
+        },
+      ],
+    });
+  };
+  return (
+    <Button text="Click Me" onClick={handleClick} />
+  );
+};
+
 const meta: Meta<StoryArgs> = {
   title: 'Components/Dialog',
   parameters: {
@@ -223,6 +253,20 @@ export const DirtyConfirmation: Story = {
   render: (args) => (
     <DialogManager>
       <DirtyConfirmationStory {...args} />
+    </DialogManager>
+  ),
+};
+
+export const Disabled: Story = {
+  name: 'Disabled',
+  args: {
+    title: 'Disabled Dialog',
+    maxWidth: 480,
+    disablePadding: false,
+  },
+  render: (args) => (
+    <DialogManager>
+      <DisabledStory {...args} />
     </DialogManager>
   ),
 };
