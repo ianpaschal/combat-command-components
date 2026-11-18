@@ -15,3 +15,6 @@ export {
   useDialogProvider, // FIXME: REMOVE NEXT MAJOR
   useDialogsState,
 } from './DialogManager.hooks';
+export {
+  type DialogOwnProps,
+} from './DialogManager.store';
